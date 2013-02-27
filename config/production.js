@@ -18,8 +18,8 @@
 
 var config = {
   detailedErrors: false
-, hostname: null
-, port: 4000
+, hostname: '0.0.0.0'
+, port: process.env.PORT
 
 // Using Postgres as the default, with only a Postgres DB
 , model: {
