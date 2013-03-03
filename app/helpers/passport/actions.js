@@ -36,7 +36,8 @@ passport.use(new LocalStrategy(function(username, password, done) {
 
 SUPPORTED_SERVICES.forEach(function (item) {
   var config = {
-        callbackURL: geddy.config.fullHostname + '/auth/' +
+        //callbackURL: geddy.config.fullHostname + '/auth/' +
+        callbackURL: 'thawing-hamlet-4089.herokuapp.com/auth/' +
             item + '/callback'
       }
     , Strategy = require('passport-' + item).Strategy;
