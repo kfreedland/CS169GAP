@@ -18,7 +18,7 @@
 
 var config = {
   detailedErrors: false
-, hostname: 'thawing-hamlet-4089.herokuapp.com'
+, hostname: '0.0.0.0'
 , port: process.env.PORT
 
 // Using Postgres as the default, with only a Postgres DB
