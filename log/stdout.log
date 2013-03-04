@@ -48,3 +48,18 @@
 [Mon, 04 Mar 2013 22:59:31 GMT] INFO Server worker running in development on port 4000 with a PID of: 3910
 [Mon, 04 Mar 2013 22:59:31 GMT] DEBUG LOGGING STARTED ============================================
 [Mon, 04 Mar 2013 22:59:31 GMT] DEBUG ============================================================
+[Mon, 04 Mar 2013 23:21:57 GMT] INFO Code changed, killing 3910, cycling ...
+[Mon, 04 Mar 2013 23:21:57 GMT] INFO Creating 1 worker process.
+[Mon, 04 Mar 2013 23:21:58 GMT] INFO Server worker running in development on port 4000 with a PID of: 4318
+[Mon, 04 Mar 2013 23:21:58 GMT] DEBUG LOGGING STARTED ============================================
+[Mon, 04 Mar 2013 23:21:58 GMT] DEBUG ============================================================
+[Mon, 04 Mar 2013 23:22:17 GMT] INFO Code changed, killing 4318, cycling ...
+[Mon, 04 Mar 2013 23:22:17 GMT] INFO Creating 1 worker process.
+[Mon, 04 Mar 2013 23:22:18 GMT] INFO Server worker running in development on port 4000 with a PID of: 4321
+[Mon, 04 Mar 2013 23:22:18 GMT] DEBUG LOGGING STARTED ============================================
+[Mon, 04 Mar 2013 23:22:18 GMT] DEBUG ============================================================
+[Mon, 04 Mar 2013 23:22:22 GMT] INFO Code changed, killing 4321, cycling ...
+[Mon, 04 Mar 2013 23:22:22 GMT] INFO Creating 1 worker process.
+[Mon, 04 Mar 2013 23:22:23 GMT] INFO Server worker running in development on port 4000 with a PID of: 4324
+[Mon, 04 Mar 2013 23:22:23 GMT] DEBUG LOGGING STARTED ============================================
+[Mon, 04 Mar 2013 23:22:23 GMT] DEBUG ============================================================

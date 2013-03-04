@@ -48,7 +48,25 @@ var Activity = function () {
     latitude: {type: 'number'},
     longitude: {type: 'number'},
   });
-
+Activity.search = function search(params, callback)
+{
+  /** data is of the following form
+  Name: string
+  Description: string
+  time1: time
+  time2: time
+  flag: string startEnd, openClose, anyTime, dayTime, nightTime
+  begin_date: date
+  end_date: date
+  low_price: int
+  high_price: int
+  low_num_participants: int
+  high_num_participants: int
+  latitude: number
+  longitude: number
+  **/
+  
+}
   /*
   this.property('login', 'string', {required: true});
   this.property('password', 'string', {required: true});
