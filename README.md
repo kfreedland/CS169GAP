@@ -4,7 +4,6 @@ CS169GAP
 	<p>Latest version has facebook passport auth:</p> 
 	<p>sudo npm install passport-facebook</p>
 	<p>Heroku URL: thawing-hamlet-4089.herokuapp.com</p>
-<p></p>
 
 <b>Changelog Entry 1:</b>
 	//required fields that the client checks is valid
@@ -13,7 +12,6 @@ CS169GAP
     <p>queryInfo.end_date = params.end_date;</p>
     <p>queryInfo.latitude = params.latitude;</p>
     <p>queryInfo.longitude = params.longitude;</p>
-<p></p>
 
 <b>Changelog Entry 0:</b>
 	//ActivityModel Fields
