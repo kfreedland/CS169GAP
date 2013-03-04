@@ -1,19 +1,21 @@
 CS169GAP
 ========
-Info needed to Run App:
+<b>Info needed to Run App:</b>
 	<p>Latest version has facebook passport auth:</p> 
 	<p>sudo npm install passport-facebook</p>
 	<p>Heroku URL: thawing-hamlet-4089.herokuapp.com</p>
+<p></p>
 
-Changelog Entry 1:
+<b>Changelog Entry 1:</b>
 	//required fields that the client checks is valid
     <p>queryInfo.flag = params.flag;</p>
     <p>queryInfo.begin_date = params.begin_date;</p>
     <p>queryInfo.end_date = params.end_date;</p>
     <p>queryInfo.latitude = params.latitude;</p>
     <p>queryInfo.longitude = params.longitude;</p>
+<p></p>
 
-Changelog Entry 0:
+<b>Changelog Entry 0:</b>
 	//ActivityModel Fields
 	<p>Name: string</p>
 	<p>Description: string</p>
