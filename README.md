@@ -14,7 +14,7 @@ Changelog Entry 1:
     <p>queryInfo.longitude = params.longitude;</p>
 
 Changelog Entry 0:
-	//ActivityModel Fields:
+	//ActivityModel Fields
 	<p>Name: string</p>
 	<p>Description: string</p>
 	<p>time1: time</p>
