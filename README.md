@@ -7,7 +7,7 @@ Info needed to Run App:
 
 Changelog Entry 1:
 	//required fields that the client checks is valid
-    queryInfo.flag = params.flag;
+    <p>queryInfo.flag = params.flag;</p>
     queryInfo.begin_date = params.begin_date;
     queryInfo.end_date = params.end_date;
     queryInfo.latitude = params.latitude;
