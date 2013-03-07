@@ -70,12 +70,14 @@ var actions = new (function () {
           var self = this;
           req.session = this.session.data;
           // FIXME: hack until Passport defers to resp.redirect
+          console.log("GOT TO CREATE CALLBACK");
           resp.end = function () {};
           resp.setHeader = function (headerName, val) {
             resp.redirect(val);
           };
           passport.authenticate(authType, function (err, profile) {
             if (!profile) {
+              console.log("No Profile");
               self.redirect(failureRedirect);
             }
             else {
@@ -92,14 +94,14 @@ var actions = new (function () {
                 });
               }
               catch (e) {
-                self.respond("Got an exception inner")
-                self.error(e);
+                self.respond("Got an exception inner : " + e);
+                // self.error(e);
               }
             }
           })(req, resp, function (e) {
             if (e) {
-              self.respond("Got an exception outer")
-              self.error(e);
+              self.respond("Got an exception outer : " + e);
+              // self.error(e);
             }
           });
         };
