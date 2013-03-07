@@ -2,7 +2,6 @@ var Activities = function () {
   this.respondsWith = ['html', 'json', 'xml', 'js', 'txt'];
   /** data is of the following form
   Name: string
-  Description: string
   time1: time
   time2: time
   flag: string startEnd, openClose, anyTime, dayTime, nightTime
@@ -45,12 +44,18 @@ var Activities = function () {
       queryInfo.time2 = params.time2;
     }
 
+    if(params.flag == "anyTime" || params.flag == "dayTime" || params.Flag == "nightTime")
+    {
+      queryInfo.time1 = null;
+      queryInfo.time2 = null;
+    }
     //required fields that the client checks is valid
     queryInfo.flag = params.flag;
     queryInfo.begin_date = params.begin_date;
     queryInfo.end_date = params.end_date;
-    queryInfo.latitude = params.latitude;
-    queryInfo.longitude = params.longitude;
+    queryInfo.myLat = params.latitude;
+    queryInfo.myLong = params.longitude;
+    queryInfo.maxDist = params.maxDist;
 
     queryInfo.low_price = 0;
     if(params.low_price)

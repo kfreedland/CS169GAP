@@ -1,4 +1,4 @@
-[Mon, 04 Mar 2013 22:59:00 GMT] INFO Server starting with config: {
+[Thu, 07 Mar 2013 04:41:58 GMT] INFO Server starting with config: {
   "environment": "development",
   "workers": 1,
   "port": 4000,
@@ -43,23 +43,13 @@
   },
   "secret": "FfsFJsEzHchNYMP2HyLH7yHL0CZe3LfVeBeG4QuIGdKdTN5FPQLSdsHUPvbBvEAPdFvhvLn0vcoEV9Qm97M6bNrRxvKVeeQeM5dCQvRxXjIHyw1QYQW12IIJtiVRCkIk"
 }
-[Mon, 04 Mar 2013 22:59:00 GMT] INFO Creating 1 worker process.
-[Mon, 04 Mar 2013 22:59:30 GMT] INFO Creating 1 worker process.
-[Mon, 04 Mar 2013 22:59:31 GMT] INFO Server worker running in development on port 4000 with a PID of: 3910
-[Mon, 04 Mar 2013 22:59:31 GMT] DEBUG LOGGING STARTED ============================================
-[Mon, 04 Mar 2013 22:59:31 GMT] DEBUG ============================================================
-[Mon, 04 Mar 2013 23:21:57 GMT] INFO Code changed, killing 3910, cycling ...
-[Mon, 04 Mar 2013 23:21:57 GMT] INFO Creating 1 worker process.
-[Mon, 04 Mar 2013 23:21:58 GMT] INFO Server worker running in development on port 4000 with a PID of: 4318
-[Mon, 04 Mar 2013 23:21:58 GMT] DEBUG LOGGING STARTED ============================================
-[Mon, 04 Mar 2013 23:21:58 GMT] DEBUG ============================================================
-[Mon, 04 Mar 2013 23:22:17 GMT] INFO Code changed, killing 4318, cycling ...
-[Mon, 04 Mar 2013 23:22:17 GMT] INFO Creating 1 worker process.
-[Mon, 04 Mar 2013 23:22:18 GMT] INFO Server worker running in development on port 4000 with a PID of: 4321
-[Mon, 04 Mar 2013 23:22:18 GMT] DEBUG LOGGING STARTED ============================================
-[Mon, 04 Mar 2013 23:22:18 GMT] DEBUG ============================================================
-[Mon, 04 Mar 2013 23:22:22 GMT] INFO Code changed, killing 4321, cycling ...
-[Mon, 04 Mar 2013 23:22:22 GMT] INFO Creating 1 worker process.
-[Mon, 04 Mar 2013 23:22:23 GMT] INFO Server worker running in development on port 4000 with a PID of: 4324
-[Mon, 04 Mar 2013 23:22:23 GMT] DEBUG LOGGING STARTED ============================================
-[Mon, 04 Mar 2013 23:22:23 GMT] DEBUG ============================================================
+[Thu, 07 Mar 2013 04:41:58 GMT] INFO Creating 1 worker process.
+[Thu, 07 Mar 2013 04:41:59 GMT] INFO Server worker running in development on port 4000 with a PID of: 5125
+[Thu, 07 Mar 2013 04:41:59 GMT] DEBUG LOGGING STARTED ============================================
+[Thu, 07 Mar 2013 04:41:59 GMT] DEBUG ============================================================
+[Thu, 07 Mar 2013 04:42:13 GMT] INFO Code changed, killing 5125, cycling ...
+[Thu, 07 Mar 2013 04:42:13 GMT] INFO Creating 1 worker process.
+[Thu, 07 Mar 2013 04:42:23 GMT] INFO Creating 1 worker process.
+[Thu, 07 Mar 2013 04:42:24 GMT] INFO Server worker running in development on port 4000 with a PID of: 5134
+[Thu, 07 Mar 2013 04:42:24 GMT] DEBUG LOGGING STARTED ============================================
+[Thu, 07 Mar 2013 04:42:24 GMT] DEBUG ============================================================
