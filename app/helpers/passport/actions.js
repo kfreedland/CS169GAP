@@ -84,13 +84,13 @@ var actions = new (function () {
               try {
                 user.lookupByPassport(authType, profile, function (err, user) {
                   if (err) {
-                    console.log("Got error in lookupByPassport")
+                    console.log("Got error in lookupByPassport: " + err);
                     self.error(err);
                   }
                   else {
                     self.session.set('userId', user.id);
                     self.session.set('authType', authType);
-                    console.log("No Error so about to redirect to successRedirect: " + successRedirect)
+                    console.log("No Error so about to redirect to successRedirect: " + successRedirect);
                     self.redirect(successRedirect);
                   }
                 });
