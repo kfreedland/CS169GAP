@@ -65,6 +65,7 @@ user = new (function () {
         callback(err, null);
       }
       else {
+        console.log("Passport.first didn't get error and got data: " + data);
         if (!data) {
           pass = Passport.create({
             authType: authType
@@ -76,6 +77,7 @@ user = new (function () {
               callback(err, null);
             }
             else {
+              console.log("Passport.save didn't error. Going to _findOrCreateUser");
               _findOrCreateUser(pass, profile, callback);
             }
           });
