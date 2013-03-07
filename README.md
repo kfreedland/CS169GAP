@@ -47,10 +47,10 @@ CS169GAP
 	<p>4 - Password Too Long / Empty</p>
 
 
-CREATE ACTIVITY:
+<h2>CREATE ACTIVITY:</h2>
 //Creates activity in database with corresponding fields
 
-<h2>Params: {</h2>
+<h3>Params: {</h3>
 <ul>
 		<li>'name': [string, required],</li>
 		<li>'description': [string],</li>
