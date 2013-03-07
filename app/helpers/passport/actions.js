@@ -92,11 +92,13 @@ var actions = new (function () {
                 });
               }
               catch (e) {
+                self.respond("Got an exception inner")
                 self.error(e);
               }
             }
           })(req, resp, function (e) {
             if (e) {
+              self.respond("Got an exception outer")
               self.error(e);
             }
           });
