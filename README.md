@@ -13,6 +13,23 @@ CS169GAP
     <p>queryInfo.latitude = params.latitude;</p>
     <p>queryInfo.longitude = params.longitude;</p>
 
+<b>Changelog Entry 0:</b>
+	//ActivityModel Fields
+	<p>Name: string</p>
+	<p>Description: string</p>
+	<p>time1: time</p>
+	<p>time2: time</p>
+	<p>flag: string -vals=startEnd, openClose, anyTime, dayTime, nightTime</p>
+	<p>begin_date: date</p>
+	<p>end_date: date</p>
+	<p>low_price: int</p>
+	<p>high_price: int</p>
+	<p>low_num_participants: int</p>
+	<p>high_num_participants: int</p>
+	<p>latitude: number</p>
+	<p>longitude: number</p>
+
+
 <h1>API:<h1>
 
 <b>Response Status Codes:<b>
@@ -30,36 +47,23 @@ CS169GAP
 
 CREATE ACTIVITY:
 //Creates activity in database with corresponding fields
-Params: {
-		'name': <string, required>,
-		'description': <string>,
-		'time1': <time, required-IF flag=='start_end' || flag=='open_close'>,
-		'time2': <time, required-IF flag=='start_end' || flag=='open_close'>,
-		'flag': <string subset of: ['start_end', 'open_close', 'any_time', 'day_time', 'night_time'], required>,
-		'begin_date': <date>,
-		'end_date': <date>,
-		'low_price': <int, required>,
-		'high_price': <int, required>,
-		'low_num_participants': <int>,
-		'high_num_participants': <int>,
-		'latitude': <number>,
-		'longitude': <number>
+
+<h2>Params: {</h2>
+<ul>
+		<li>'name': <string, required>,</li>
+		<li>'description': <string>,</li>
+		<li>'time1': <time, required-IF flag=='start_end' || flag=='open_close'>,</li>
+		<li>'time2': <time, required-IF flag=='start_end' || flag=='open_close'>,</li>
+		<li>'flag': <string subset of: ['start_end', 'open_close', 'any_time', 'day_time', 'night_time'], required>,</li>
+		<li>'begin_date': <date>,</li>
+		<li>'end_date': <date>,</li>
+		<li>'low_price': <int, required>,</li>
+		<li>'high_price': <int, required>,</li>
+		<li>'low_num_participants': <int>,</li>
+		<li>'high_num_participants': <int>,</li>
+		<li>'latitude': <number>,</li>
+		<li>'longitude': <number></li>
 	}
+</ul>
 
 Returns Response Code
-
-<b>Changelog Entry 0:</b>
-	//ActivityModel Fields
-	<p>Name: string</p>
-	<p>Description: string</p>
-	<p>time1: time</p>
-	<p>time2: time</p>
-	<p>flag: string -vals=startEnd, openClose, anyTime, dayTime, nightTime</p>
-	<p>begin_date: date</p>
-	<p>end_date: date</p>
-	<p>low_price: int</p>
-	<p>high_price: int</p>
-	<p>low_num_participants: int</p>
-	<p>high_num_participants: int</p>
-	<p>latitude: number</p>
-	<p>longitude: number</p>
