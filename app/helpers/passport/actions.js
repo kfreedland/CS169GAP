@@ -84,24 +84,26 @@ var actions = new (function () {
               try {
                 user.lookupByPassport(authType, profile, function (err, user) {
                   if (err) {
+                    console.log("Got error in lookupByPassport")
                     self.error(err);
                   }
                   else {
                     self.session.set('userId', user.id);
                     self.session.set('authType', authType);
+                    console.log("No Error so about to redirect to successRedirect: " + successRedirect)
                     self.redirect(successRedirect);
                   }
                 });
               }
               catch (e) {
-                self.respond("Got an exception inner : " + e);
-                // self.error(e);
+                console.log("Got an exception inner : " + e);
+                self.error(e);
               }
             }
           })(req, resp, function (e) {
             if (e) {
-              self.respond("Got an exception outer : " + e);
-              // self.error(e);
+              console.log("Got an exception outer : " + e);
+              self.error(e);
             }
           });
         };
