@@ -46,25 +46,28 @@ CS169GAP
 <h1>API:</h1>
 
 <b>Response Status Codes:<b>
-	<p>200 - Success</p>
-	<p>500 - Internal Server Error</p>
-	<p>401 - Unauthorized</p>
-	<p>404 - Not Found</p>
-
+	<ul>
+		<li>200 - Success</li>
+		<li>500 - Internal Server Error</li>
+		<li>401 - Unauthorized</li>
+		<li>404 - Not Found</li>
+	</ul>
 <b>errCode:</b>
-	<p>1 - Success (for all API)</p>
-	<p>2 - User Exists (for Create User)</p>
-	<p>3 - Username Too Long / Empty (for Create User)</p>
-	<p>4 - Password Too Long / Empty (for Create User)</p>
-	<p>5 - Auth Failed (for Login)</p>
-	<p>6 - Missing Required Parameter (for Create/Find Activity)</p>
-
+	<ul>
+		<li>1 - Success (for all API)</li>
+		<li>2 - User Exists (for Create User)</li>
+		<li>3 - Username Too Long / Empty (for Create User)</li>
+		<li>4 - Password Too Long / Empty (for Create User)</li>
+		<li>5 - Auth Failed (for Login)</li>
+		<li>6 - Missing Required Parameter (for Create/Find Activity)</li>
+	</ul>
 
 <h2>CREATE ACTIVITY:</h2>
 //Creates activity in database with corresponding fields
 
 <h3>Params: </h3>
 <ul>
+	{
 		<li>'name': [string, required],</li>
 		<li>'description': [string],</li>
 		<li>'time1': [time, required-IF flag=='start_end' || flag=='open_close'],</li>
@@ -79,6 +82,5 @@ CS169GAP
 		<li>'latitude': [number],</li>
 		<li>'longitude': [number],</li>
 		<li>'category': [string]</li>
+	}
 </ul>
-
-Returns Response Code
