@@ -13,14 +13,19 @@ CS169GAP
     <p>queryInfo.latitude = params.latitude;</p>
     <p>queryInfo.longitude = params.longitude;</p>
 
-API:
+<h1>API:<h1>
 
-Response Status Codes:
-200 - Success
-500 - Internal Server Error
-401 - Unauthorized
-402 - Missing Parameters ?
-404 - Not Found
+<b>Response Status Codes:<b>
+	<p>200 - Success</p>
+	<p>500 - Internal Server Error</p>
+	<p>401 - Unauthorized</p>
+	<p>404 - Not Found</p>
+
+<b>errCodes:</b>
+	<p>1 - Success</p>
+	<p>2 - User Exists</p>
+	<p>3 - Username Too Long / Empty</p>
+	<p>4 - Password Too Long / Empty</p>
 
 
 CREATE ACTIVITY:
