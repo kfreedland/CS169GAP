@@ -70,33 +70,42 @@ var actions = new (function () {
           var self = this;
           req.session = this.session.data;
           // FIXME: hack until Passport defers to resp.redirect
+          console.log("GOT TO CREATE CALLBACK");
           resp.end = function () {};
           resp.setHeader = function (headerName, val) {
             resp.redirect(val);
           };
           passport.authenticate(authType, function (err, profile) {
+            console.log("got through passport authenticate");
             if (!profile) {
+              console.log("No Profile");
               self.redirect(failureRedirect);
             }
             else {
               try {
                 user.lookupByPassport(authType, profile, function (err, user) {
+                  console.log("got through lookup by passport");
                   if (err) {
+                    console.log("Got error in lookupByPassport: " + err);
                     self.error(err);
                   }
                   else {
                     self.session.set('userId', user.id);
+                    // self.session.set('user', user);
                     self.session.set('authType', authType);
+                    console.log("No Error so about to redirect to successRedirect: " + successRedirect);
                     self.redirect(successRedirect);
                   }
                 });
               }
               catch (e) {
+                console.log("Got an exception inner : " + e);
                 self.error(e);
               }
             }
           })(req, resp, function (e) {
             if (e) {
+              console.log("Got an exception outer : " + e);
               self.error(e);
             }
           });

@@ -10,15 +10,21 @@ _findOrCreateUser = function (passport, profile, callback) {
       , userData;
 
     if (err) {
+      console.log("_findOrCreateUser got error: " + err);
       callback(err, null);
     }
     else {
       if (!data) {
         userData = strategies[passport.authType].parseProfile(profile);
+        console.log("Got userData: ");
+        for (var key in userData){
+          console.log(key + " : " + userData[key]);
+        }
         user = User.create(userData);
         // User won't have all required fields, force-save
         user.save({force: true}, function (err, data) {
           if (err) {
+            console.log("_findOrCreateUser user.save1 got error: " + err);
             callback(err, null);
           }
           else {
@@ -27,6 +33,7 @@ _findOrCreateUser = function (passport, profile, callback) {
             //console.dir(user);
             //console.dir(passport);
               if (err) {
+                console.log("_findOrCreateUser user.save2 after addPassport got error: " + err);
                 callback(err, null);
               }
               else {
@@ -54,9 +61,11 @@ user = new (function () {
     passport = Passport.first({authType: authType, key: key}, function (err, data) {
       var pass;
       if (err) {
+        console.log("Passport.first got error: " + err);
         callback(err, null);
       }
       else {
+        console.log("Passport.first didn't get error and got data: " + data);
         if (!data) {
           pass = Passport.create({
             authType: authType
@@ -64,9 +73,11 @@ user = new (function () {
           });
           pass.save(function (err, data) {
             if (err) {
+              console.log("Passport.save errored: " + err);
               callback(err, null);
             }
             else {
+              console.log("Passport.save didn't error. Going to _findOrCreateUser");
               _findOrCreateUser(pass, profile, callback);
             }
           });

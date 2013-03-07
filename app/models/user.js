@@ -1,10 +1,10 @@
 var User = function () {
 
-  this.property('username', 'string', {required: true});
+  this.property('username', 'string');
   this.property('password', 'string', {required: true});
   this.property('familyName', 'string', {required: true});
   this.property('givenName', 'string', {required: true});
-  this.property('email', 'string', {required: true});
+  this.property('email', 'string');
 
   this.validatesLength('username', {min: 3});
   this.validatesLength('password', {min: 8});
