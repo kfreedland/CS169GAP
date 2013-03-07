@@ -76,6 +76,7 @@ var actions = new (function () {
             resp.redirect(val);
           };
           passport.authenticate(authType, function (err, profile) {
+            console.log("got through passport authenticate");
             if (!profile) {
               console.log("No Profile");
               self.redirect(failureRedirect);
@@ -83,6 +84,7 @@ var actions = new (function () {
             else {
               try {
                 user.lookupByPassport(authType, profile, function (err, user) {
+                  console.log("got through lookup by passport");
                   if (err) {
                     console.log("Got error in lookupByPassport: " + err);
                     self.error(err);
