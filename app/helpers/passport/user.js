@@ -16,7 +16,6 @@ _findOrCreateUser = function (passport, profile, callback) {
     else {
       if (!data) {
         userData = strategies[passport.authType].parseProfile(profile);
-        console.log("Got data " + data);
         console.log("Got userData: " + userData);
         user = User.create(userData);
         // User won't have all required fields, force-save
