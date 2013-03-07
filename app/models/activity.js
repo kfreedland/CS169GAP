@@ -16,6 +16,7 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
+    category: {type: 'string'}
   });
 
 var geoSearchHelper = function(records, lat, long, callback)

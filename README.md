@@ -5,6 +5,10 @@ CS169GAP
 	<p>sudo npm install passport-facebook</p>
 	<p>Heroku URL: thawing-hamlet-4089.herokuapp.com</p>
 
+<b>Changelog Entry 2:</b>
+	//ActivityModel Fields
+	<p>Category: string</p>
+
 <b>Changelog Entry 1:</b>
 	//required fields that the client checks is valid
     <p>queryInfo.flag = params.flag;</p>
@@ -28,6 +32,7 @@ CS169GAP
 	<p>high_num_participants: int</p>
 	<p>latitude: number</p>
 	<p>longitude: number</p>
+	<p>category: string</p>
 
 
 <h1>API:<h1>
@@ -38,11 +43,13 @@ CS169GAP
 	<p>401 - Unauthorized</p>
 	<p>404 - Not Found</p>
 
-<b>errCodes:</b>
-	<p>1 - Success</p>
-	<p>2 - User Exists</p>
-	<p>3 - Username Too Long / Empty</p>
-	<p>4 - Password Too Long / Empty</p>
+<b>errCode:</b>
+	<p>1 - Success (for all API)</p>
+	<p>2 - User Exists (for Create User)</p>
+	<p>3 - Username Too Long / Empty (for Create User)</p>
+	<p>4 - Password Too Long / Empty (for Create User)</p>
+	<p>5 - Auth Failed (for Login)</p>
+	<p>6 - Missing Required Parameter (for Create/Find Activity)</p>
 
 
 <h2>CREATE ACTIVITY:</h2>
@@ -63,7 +70,8 @@ CS169GAP
 		<li>'low_num_participants': [int],</li>
 		<li>'high_num_participants': [int],</li>
 		<li>'latitude': [number],</li>
-		<li>'longitude': [number]</li>
+		<li>'longitude': [number],</li>
+		<li>'category': [string]</li>
 	}
 </ul>
 
