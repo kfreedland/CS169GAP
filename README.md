@@ -1,12 +1,12 @@
 CS169GAP
 ========
-<h1>RUN CONFIGURATION<h1>
+<h1>RUN CONFIGURATION</h1>
 <b>Info needed to Run App:</b>
 	<p>Latest version has facebook passport auth:</p> 
 	<p>sudo npm install passport-facebook</p>
 	<p>Heroku URL: thawing-hamlet-4089.herokuapp.com</p>
 
-<h1> CHANGELOGS:<h1>
+<h1> CHANGELOGS:</h1>
 <b>Changelog Entry 1:</b>
 	//required fields that the client checks is valid
     <p>flag</p>
@@ -32,7 +32,7 @@ CS169GAP
 	<p>longitude: number</p>
 
 
-<h1>API:<h1>
+<h1>API:</h1>
 
 <b>Response Status Codes:<b>
 	<p>200 - Success</p>
