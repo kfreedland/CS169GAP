@@ -90,7 +90,8 @@ var actions = new (function () {
                     self.error(err);
                   }
                   else {
-                    self.session.set('userId', user.id);
+                    self.session['userId'] = user.id;
+                    // self.session.set('userId', user.id);
                     self.session.set('user', user);
                     self.session.set('authType', authType);
                     console.log("No Error so about to redirect to successRedirect: " + successRedirect);
