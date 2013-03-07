@@ -14,7 +14,38 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
+    duration:{type: 'number'}
   });
+
+  this.create = function(parameterDict, callback){
+
+    var self = this;
+
+    //make sure required fields are non-null
+    if (parameterDict.name == null){
+      callback({"errCode": -1});    
+    } else if (parameterDict.flag == null){
+      callback({"errCode": -1});    
+    } else if (parameterDict.time_1 == null){
+      callback({"errCode": -1});    
+    } else if (parameterDict.time_2 == null){
+      callback({"errCode": -1});    
+    } else if (parameterDict.low_price == null){
+      callback({"errCode": -1});    
+    } else {
+
+      var newActivity = geddy.model.Activity.create(parameterDict);
+            geddy.model.Activity.save(newActivity, 
+              function (err, result){
+
+                if(err){
+                  callback({"errCode":-1});
+                } else {
+                  callback ({"errCode": 1});
+                }
+              });
+    }
+  };
 
   /*
   this.property('login', 'string', {required: true});
