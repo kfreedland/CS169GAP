@@ -48,8 +48,9 @@ CS169GAP
 <h2>CREATE ACTIVITY:</h2>
 //Creates activity in database with corresponding fields
 
-<h3>Params: {</h3>
+<h3>Params: </h3>
 <ul>
+	{
 		<li>'name': [string, required],</li>
 		<li>'description': [string],</li>
 		<li>'time1': [time, required-IF flag=='start_end' || flag=='open_close'],</li>
