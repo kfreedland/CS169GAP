@@ -47,20 +47,23 @@ CS169GAP
 
 CREATE ACTIVITY:
 //Creates activity in database with corresponding fields
-Params: {
-		'name': <string, required>,
-		'description': <string>,
-		'time1': <time, required-IF flag=='start_end' || flag=='open_close'>,
-		'time2': <time, required-IF flag=='start_end' || flag=='open_close'>,
-		'flag': <string subset of: ['start_end', 'open_close', 'any_time', 'day_time', 'night_time'], required>,
-		'begin_date': <date>,
-		'end_date': <date>,
-		'low_price': <int, required>,
-		'high_price': <int, required>,
-		'low_num_participants': <int>,
-		'high_num_participants': <int>,
-		'latitude': <number>,
-		'longitude': <number>
+
+<h2>Params: {</h2>
+<ul>
+		<li>'name': <string, required>,</li>
+		<li>'description': <string>,</li>
+		<li>'time1': <time, required-IF flag=='start_end' || flag=='open_close'>,</li>
+		<li>'time2': <time, required-IF flag=='start_end' || flag=='open_close'>,</li>
+		<li>'flag': <string subset of: ['start_end', 'open_close', 'any_time', 'day_time', 'night_time'], required>,</li>
+		<li>'begin_date': <date>,</li>
+		<li>'end_date': <date>,</li>
+		<li>'low_price': <int, required>,</li>
+		<li>'high_price': <int, required>,</li>
+		<li>'low_num_participants': <int>,</li>
+		<li>'high_num_participants': <int>,</li>
+		<li>'latitude': <number>,</li>
+		<li>'longitude': <number></li>
 	}
+</ul>
 
 Returns Response Code
