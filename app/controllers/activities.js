@@ -18,75 +18,74 @@ var Activities = function () {
   {
     var self = this;
     console.log("Activities controller");
+    var hour = 3600000;
     //We want to assure ourselves that the model only gets the relevant params and not anything extra
     //I use default values for fields that are left blank to make for easier queries in the model
     queryInfo = {};
-    //defualts to no name
-    queryInfo.name="";
-    if (params.name)
+    if(params.name && (typeof params.name == 'string'))
     {
-      queryInfo.name = params.name;
+      queryInfo.name = {'like': name};
+      geddy.model.Activity.search(queryInfo, function(responseDict)
+      {
+        console.log("RESP IS: "+responseDict);
+        self.respond(responsedict, {format: 'json'});
+      });
     }
-
-    today = new Date();
-    currentTime = today.getUTC
-    //defaults to right now
-    queryInfo.time1 = today.toLocaleTimeString();
-    
-    tomorrow = new Date();
-    tomorrow.setDate(today.getDate()+1);
-    //defaults to 24 hours ahead of today;
-    queryInfo.time2 = tomorrow.toLocaleTimeString();
-
-    if(params.time1 && params.time2)
+    else
     {
-      queryInfo.time1 = params.time1;
-      queryInfo.time2 = params.time2;
+      if(params.time1 && (typeof params.time1 == 'number'))
+      {
+        queryInfo.time1 = {gt: Math.max(params.time1-hour,0)};
+      }
+
+      if(params.time2 && (typeof params.time2 == 'number'))
+      {
+        queryInfo.time2 = {lt: Math.max(params.time2+hour)};
+      }
+
+      if(params.begin_date && (typeof params.begin_date == 'number'))
+      {
+        queryInfo.begin_date = {gt: params.begin_date};
+      }
+
+      if(params.end_date && (typeof params.end_date == 'number'))
+      {
+        queryInfo.end_date = {lt: params.begin_date};
+      }
+
+      if(params.flag && (typeof params.time1 == 'string'))
+      {
+        queryInfo.flag = params.flag;
+      }
+
+      if(params.low_price && (typeof params.low_price == 'number'))
+      {
+        queryInfo.low_price = {gt: Math.floor(params.low_price*.75)};
+      }
+
+      if(params.high_price && (typeof params.high_price == 'number'))
+      {
+        queryInfo.high_price = {lt: Math.ceil(params.high_price*1.25)};
+      }
+
+      if(params.low_num_participants && (typeof params.low_num_participants == 'number'))
+      {
+        queryInfo.low_num_participants = {gt: Math.floor(params.low_num_participants*.90)};
+      }
+
+      if(params.high_num_participants && (typeof params.high_num_participants == 'number'))
+      {
+        queryInfo.high_num_participants = {lt: Math.ceil(params.high_num_participants*1.1)}
+      }
+
+      geddy.model.Activity.search(queryInfo, params.latitude, params.longitude, function(responseDict)
+      {
+        console.log("RESP IS: "+responseDict);
+        self.respond(responseDict, {format: 'json'});
+      });
     }
-
-    if(params.flag == "anyTime" || params.flag == "dayTime" || params.Flag == "nightTime")
-    {
-      queryInfo.time1 = null;
-      queryInfo.time2 = null;
-    }
-    //required fields that the client checks is valid
-    queryInfo.flag = params.flag;
-    queryInfo.begin_date = params.begin_date;
-    queryInfo.end_date = params.end_date;
-    queryInfo.myLat = params.latitude;
-    queryInfo.myLong = params.longitude;
-    queryInfo.maxDist = params.maxDist;
-
-    queryInfo.low_price = 0;
-    if(params.low_price)
-    {
-      queryInfo.low_price = params.low_price;
-    }
-
-    queryInfo.high_price = Number.MAX_VALUE;
-    if(params.high_price)
-    {
-      queryInfo.high_price = params.high_price;
-    }
-
-    queryInfo.low_num_participants = 0;
-    if(params.low_num_participants)
-    {
-      queryInfo.low_num_participants = params.low_num_participants;
-    }
-
-    queryInfo.high_num_participants = Number.MAX_VALUE;
-    if(params.high_num_participants)
-    {
-      queryInfo.high_num_participants = params.high_num_participants;
-    }
-
-    geddy.model.Activity.search(queryInfo, function(responseDict)
-    {
-      console.log("ERRCODE IS: "+responseDict);
-      self.respond(responsedict, {format: 'json'});
-    });
   }
+  /*
   this.index = function (req, resp, params) {
     var self = this;
 
@@ -94,11 +93,12 @@ var Activities = function () {
       self.respond({params: params, activities: activities});
     });
   };
-
+  */
+/*
   this.add = function (req, resp, params) {
     this.respond({params: params});
   };
-
+*/
   this.create = function (req, resp, params) {
 
     var self = this;
@@ -108,7 +108,7 @@ var Activities = function () {
         self.respond(result);
       });
   };
-
+/*
   this.show = function (req, resp, params) {
     var self = this;
 
@@ -116,7 +116,8 @@ var Activities = function () {
       self.respond({params: params, activity: activity.toObj()});
     });
   };
-
+  */
+/*
   this.edit = function (req, resp, params) {
     var self = this;
 
@@ -124,7 +125,8 @@ var Activities = function () {
       self.respond({params: params, activity: activity});
     });
   };
-
+  */
+/*
   this.update = function (req, resp, params) {
     var self = this;
 
@@ -141,7 +143,8 @@ var Activities = function () {
       });
     });
   };
-
+*/
+/*
   this.destroy = function (req, resp, params) {
     var self = this;
 
@@ -153,7 +156,7 @@ var Activities = function () {
         self.redirect({controller: self.name});
       }
     });
-  };
+  };*/
 
 };
 

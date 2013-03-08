@@ -1,4 +1,4 @@
-[Fri, 08 Mar 2013 20:41:53 GMT] INFO Server starting with config: {
+[Fri, 08 Mar 2013 20:50:43 GMT] INFO Server starting with config: {
   "environment": "development",
   "workers": 1,
   "port": 4000,
@@ -43,7 +43,7 @@
   },
   "secret": "FfsFJsEzHchNYMP2HyLH7yHL0CZe3LfVeBeG4QuIGdKdTN5FPQLSdsHUPvbBvEAPdFvhvLn0vcoEV9Qm97M6bNrRxvKVeeQeM5dCQvRxXjIHyw1QYQW12IIJtiVRCkIk"
 }
-[Fri, 08 Mar 2013 20:41:53 GMT] INFO Creating 1 worker process.
-[Fri, 08 Mar 2013 20:41:54 GMT] INFO Server worker running in development on port 4000 with a PID of: 2103
-[Fri, 08 Mar 2013 20:41:54 GMT] DEBUG LOGGING STARTED ============================================
-[Fri, 08 Mar 2013 20:41:54 GMT] DEBUG ============================================================
+[Fri, 08 Mar 2013 20:50:43 GMT] INFO Creating 1 worker process.
+[Fri, 08 Mar 2013 20:50:43 GMT] INFO Server worker running in development on port 4000 with a PID of: 2185
+[Fri, 08 Mar 2013 20:50:43 GMT] DEBUG LOGGING STARTED ============================================
+[Fri, 08 Mar 2013 20:50:43 GMT] DEBUG ============================================================
