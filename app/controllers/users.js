@@ -4,7 +4,7 @@ var passport = require('../helpers/passport')
 
 var Users = function () {
   this.before(requireAuth, {
-    except: ['add', 'create']
+    except: ['add', 'create', 'unitTests']
   });
 
   this.respondsWith = ['html', 'json', 'xml', 'js', 'txt'];
@@ -26,29 +26,16 @@ var Users = function () {
       , user = geddy.model.User.create(params)
       , sha;
 
-    // Non-blocking uniqueness checks are hard
-    geddy.model.User.first({username: user.username}, function(err, data) {
-      if (data) {
+    var callback = function(responseDict){
+      if (responseDict.errCode == 2){
         params.errors = {
-          username: 'This username is already in use.'
+         username: 'This username is already in use.'
         };
-        self.transfer('add');
       }
-      else {
-        if (user.isValid()) {
-          user.password = cryptPass(user.password);
-        }
-        user.save(function(err, data) {
-          if (err) {
-            params.errors = err;
-            self.transfer('add');
-          }
-          else {
-            self.redirect({controller: self.name});
-          }
-        });
-      }
-    });
+      self.respond(responseDict, {format: 'json'});
+    };
+
+    geddy.model.User.add(user, callback);
 
   };
 
@@ -115,6 +102,14 @@ var Users = function () {
       } else {
         self.redirect({controller: self.name});
       }
+    });
+  };
+
+  this.unitTests = function (req, resp, params) {
+    var self = this;
+    geddy.model.User.TESTAPI_unitTests(function (answerDict) {
+      console.log("responding from unitTests");
+      self.respond(answerDict, {format: 'json'});
     });
   };
 
