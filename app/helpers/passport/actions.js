@@ -69,6 +69,9 @@ var actions = new (function () {
         return function (req, resp, params) {
           var self = this;
           req.session = this.session.data;
+
+          var responseDict = {};
+
           // FIXME: hack until Passport defers to resp.redirect
           console.log("GOT TO CREATE CALLBACK");
           resp.end = function () {};
@@ -79,7 +82,10 @@ var actions = new (function () {
             console.log("got through passport authenticate");
             if (!profile) {
               console.log("No Profile");
-              self.redirect(failureRedirect);
+              //Error errCode = 5
+              responseDict['errCode'] = 5;
+              self.respond(responseDict, {format: 'json'});
+              // self.redirect(failureRedirect);
             }
             else {
               try {
@@ -87,14 +93,20 @@ var actions = new (function () {
                   console.log("got through lookup by passport");
                   if (err) {
                     console.log("Got error in lookupByPassport: " + err);
-                    self.error(err);
+                    //Error errCode = 5
+                    responseDict['errCode'] = 5;
+                    self.respond(responseDict, {format: 'json'});
+                    // self.error(err);
                   }
                   else {
                     self.session.set('userId', user.id);
                     // self.session.set('user', user);
                     self.session.set('authType', authType);
                     console.log("No Error so about to redirect to successRedirect: " + successRedirect);
-                    self.redirect(successRedirect);
+                    //Success errCode = 1 
+                    responseDict['errCode'] = 1;
+                    self.respond(responseDict, {format: 'json'});
+                    // self.redirect(successRedirect);
                   }
                 });
               }
@@ -116,12 +128,19 @@ var actions = new (function () {
     var self = this
       , handler = function (badCredsError, user, noCredsError) {
           if (badCredsError || noCredsError) {
-            self.redirect(failureRedirect);
+            //Error errCode = 5
+            responseDict['errCode'] = 5;
+            self.respond(responseDict, {format: 'json'});
+            // self.redirect(failureRedirect);
           }
           else {
             self.session.set('userId', user.id);
             self.session.set('authType', 'local');
-            self.redirect(successRedirect);
+
+            //Success errCode = 1
+            responseDict['errCode'] = 1;
+            self.respond(responseDict, {format: 'json'});
+            // self.redirect(successRedirect);
           }
         };
     // FIXME: Passport wants a request body or query
