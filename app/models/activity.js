@@ -5,6 +5,7 @@ var Activity = function () {
   this.defineProperties({
     name: {type: 'string', required: true},
     description: {type: 'string'},
+    category:{type: 'string'},
     time1: {type: '1'},
     time2: {type: '2'},
     flag: {type: 'string'},
@@ -16,8 +17,42 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
+    duration:{type: 'number'}
     category: {type: 'string'}
   });
+
+  this.create = function(parameterDict, callback){
+
+    var self = this;
+
+    //make sure required fields are non-null
+    if (parameterDict.name == null){
+      callback({"errCode": 6});    
+    } else if (parameterDict.flag == null){
+      callback({"errCode": 6});    
+    } else if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
+      if(parameterDict.time1 == null || parameterDict.time2 == null){
+        callback({"errCode": 6});    
+      }
+    } else if(parameterDict.flag == null){
+      callback({"errCode": 6}); 
+    } if (parameterDict.flag != 'start_end' || parameterDict.flag != 'open_close'
+      ||)
+
+    
+
+      var newActivity = geddy.model.Activity.create(parameterDict);
+            geddy.model.Activity.save(newActivity, 
+              function (err, result){
+
+                if(err){
+                  callback({"errCode":-1});
+                } else {
+                  callback ({"errCode": 1});
+                }
+              });
+    }
+  };
 
 var geoSearchHelper = function(records, lat, long, callback)
 {
