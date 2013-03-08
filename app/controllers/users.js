@@ -27,6 +27,7 @@ var Users = function () {
       , sha;
 
     var callback = function(errCode) {
+      console.log("Got to callback with errCode: " + errCode);
       var responseDict = {};
       responseDict['errCode'] = errCode;
       self.respond(responseDict, {format: 'json'});
