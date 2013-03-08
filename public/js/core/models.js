@@ -282,11 +282,7 @@ Activity.search = function search(params, callback)
       }); 
     }
   }
-<<<<<<< HEAD
 };       
-=======
-};
->>>>>>> ac726b862bd43a109950bab4620fb2100de56e93
   /*
   this.property('login', 'string', {required: true});
   this.property('password', 'string', {required: true});
@@ -308,7 +304,6 @@ Activity.search = function search(params, callback)
     // Do some stuff
   };
   */
-
 
 /*
 // Can also define them on the prototype
