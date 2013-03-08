@@ -107,20 +107,6 @@ var Activities = function () {
       function addCallBack(result){
         self.respond(result);
       });
-
-    // params.id = params.id || geddy.string.uuid(10);
-
-    // var self = this
-    //   , activity = geddy.model.Activity.create(params);
-
-    // activity.save(function(err, data) {
-    //   if (err) {
-    //     params.errors = err;
-    //     self.transfer('add');
-    //   } else {
-    //     self.redirect({controller: self.name});
-    //   }
-    // });
   };
 
   this.show = function (req, resp, params) {
