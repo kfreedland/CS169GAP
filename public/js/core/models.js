@@ -6,6 +6,7 @@ var Activity = function () {
   this.defineProperties({
     name: {type: 'string', required: true},
     description: {type: 'string'},
+    category:{type: 'string'},
     time1: {type: '1'},
     time2: {type: '2'},
     flag: {type: 'string'},
@@ -17,8 +18,44 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
+    duration:{type: 'number'},
     category: {type: 'string'}
   });
+
+  this.create = function(parameterDict, callback){
+
+    var self = this;
+
+    //make sure required fields are non-null
+    if (parameterDict.name == null){
+      callback({"errCode": 6});    
+    } else if (parameterDict.flag == null){
+      callback({"errCode": 6});    
+    } else if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
+      if(parameterDict.time1 == null || parameterDict.time2 == null){
+        callback({"errCode": 6});    
+      }
+    } else if(parameterDict.flag == null){
+      callback({"errCode": 6}); 
+    } else if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
+           && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && parameterDict.flag != 'night_time'){
+      callback({"errCode":6});
+    }
+
+    
+
+      var newActivity = geddy.model.Activity.create(parameterDict);
+            geddy.model.Activity.save(newActivity, 
+              function (err, result){
+
+                if(err){
+                  callback({"errCode":-1});
+                } else {
+                  callback ({"errCode": 1});
+                }
+              });
+    }
+  };
 
 var geoSearchHelper = function(records, lat, long, callback)
 {
@@ -245,7 +282,7 @@ Activity.search = function search(params, callback)
       }); 
     }
   }
-}        
+};
   /*
   this.property('login', 'string', {required: true});
   this.property('password', 'string', {required: true});
@@ -268,7 +305,7 @@ Activity.search = function search(params, callback)
   };
   */
 
-};
+
 
 /*
 // Can also define them on the prototype
@@ -312,9 +349,6 @@ var User = function () {
   this.validatesConfirmed('password', 'confirmPassword');
 
   this.hasMany('Passports');
-<<<<<<< HEAD
-=======
-
 
   this.create = function (user, callback){
   	// Non-blocking uniqueness checks are hard
@@ -323,9 +357,9 @@ var User = function () {
         params.errors = {
           username: 'This username is already in use.'
         };
-        //User exists errCode = 2
+        //User Exists errCode = 2
         callback(2);
-        // self.transfer('add');
+        //self.transfer('add');
       }
       else {
         if (user.isValid()) {
@@ -349,7 +383,6 @@ var User = function () {
   };
 
 
->>>>>>> a2a8de3ee2807afd506b0f26fd9ffe4b1ebb1f15
 };
 
 User = geddy.model.register('User', User);
