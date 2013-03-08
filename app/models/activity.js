@@ -38,7 +38,7 @@ var Activity = function () {
       callback({"errCode": 6}); 
     } else if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
            && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && parameterDict.flag != 'night_time'){
-      callBack{"errCode":6}
+      callBack({"errCode":6});
     }
 
     
@@ -281,7 +281,7 @@ Activity.search = function search(params, callback)
       }); 
     }
   }
-}        
+};       
   /*
   this.property('login', 'string', {required: true});
   this.property('password', 'string', {required: true});
@@ -304,7 +304,6 @@ Activity.search = function search(params, callback)
   };
   */
 
-};
 
 /*
 // Can also define them on the prototype
