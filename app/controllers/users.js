@@ -26,42 +26,35 @@ var Users = function () {
       , user = geddy.model.User.create(params)
       , sha;
 
-    var callback = function(errCode) {
-      console.log("Got to callback with errCode: " + errCode);
-      var responseDict = {};
-      responseDict['errCode'] = errCode;
-      self.respond(responseDict, {format: 'json'});
-    };
-
-    geddy.model.User.create(user, callback);
-    //   geddy.model.User.first({username: user.username}, function(err, data) {
-    //   if (data) {
-    //     params.errors = {
-    //       username: 'This username is already in use.'
-    //     };
-    //     //User exists errCode = 2
-    //     callback(2);
-    //     // self.transfer('add');
-    //   }
-    //   else {
-    //     if (user.isValid()) {
-    //       user.password = cryptPass(user.password);
-    //     }
-    //     user.save(function(err, data) {
-    //       if (err) {
-    //         params.errors = err;
-    //         consol.log("got error: " + err);
-    //         callback(err);
-    //         // self.transfer('add');
-    //       }
-    //       else {
-    //         //Success errCode = 1
-    //         callback(1);
-    //         // self.redirect({controller: self.name});
-    //       }
-    //     });
-    //   }
-    // });
+    
+    geddy.model.User.first({username: user.username}, function(err, data) {
+      if (data) {
+        params.errors = {
+          username: 'This username is already in use.'
+        };
+        //User exists errCode = 2
+        callback(2);
+        // self.transfer('add');
+      }
+      else {
+        if (user.isValid()) {
+          user.password = cryptPass(user.password);
+        }
+        user.save(function(err, data) {
+          if (err) {
+            params.errors = err;
+            consol.log("got error: " + err);
+            callback(err);
+            // self.transfer('add');
+          }
+          else {
+            //Success errCode = 1
+            callback(1);
+            // self.redirect({controller: self.name});
+          }
+        });
+      }
+    });
 
 
 
