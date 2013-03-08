@@ -17,7 +17,7 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
-    duration:{type: 'number'}
+    duration:{type: 'number'},
     category: {type: 'string'}
   });
 
@@ -36,8 +36,10 @@ var Activity = function () {
       }
     } else if(parameterDict.flag == null){
       callback({"errCode": 6}); 
-    } if (parameterDict.flag != 'start_end' || parameterDict.flag != 'open_close'
-      ||)
+    } else if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
+           && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && parameterDict.flag != 'night_time'){
+      callBack{"errCode":6}
+    }
 
     
 
