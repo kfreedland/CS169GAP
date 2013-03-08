@@ -1,4 +1,70 @@
 (function () {
+var Passport = function () {
+  this.property('authType', 'string');
+  this.property('key', 'string');
+
+  this.belongsTo('User');
+};
+
+Passport = geddy.model.register('Passport', Passport);
+
+}());
+
+(function () {
+var User = function () {
+
+  this.property('username', 'string');
+  this.property('password', 'string', {required: true});
+  this.property('familyName', 'string', {required: true});
+  this.property('givenName', 'string', {required: true});
+  this.property('email', 'string');
+
+  this.validatesLength('username', {min: 3});
+  this.validatesLength('password', {min: 8});
+  this.validatesConfirmed('password', 'confirmPassword');
+
+  this.hasMany('Passports');
+
+  this.create = function (user, callback){
+  	// Non-blocking uniqueness checks are hard
+    User.first({username: user.username}, function(err, data) {
+      if (data) {
+        params.errors = {
+          username: 'This username is already in use.'
+        };
+        //User Exists errCode = 2
+        callback(2);
+        //self.transfer('add');
+      }
+      else {
+        if (user.isValid()) {
+          user.password = cryptPass(user.password);
+        }
+        user.save(function(err, data) {
+          if (err) {
+            params.errors = err;
+            //User Exists? errCode = 2
+            callback(2);
+            //self.transfer('add');
+          }
+          else {
+          	//Success errCode = 1
+          	callback(1);
+            //self.redirect({controller: self.name});
+          }
+        });
+      }
+    });
+  };
+
+
+};
+
+User = geddy.model.register('User', User);
+
+}());
+
+(function () {
 const MIN_RETURNED = 1;
 const MAX_RETURNED = 2;
 var Activity = function () {
@@ -6,6 +72,7 @@ var Activity = function () {
   this.defineProperties({
     name: {type: 'string', required: true},
     description: {type: 'string'},
+    category:{type: 'string'},
     time1: {type: '1'},
     time2: {type: '2'},
     flag: {type: 'string'},
@@ -17,8 +84,44 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
+    duration:{type: 'number'},
     category: {type: 'string'}
   });
+
+  this.create = function(parameterDict, callback){
+
+    var self = this;
+
+    //make sure required fields are non-null
+    if (parameterDict.name == null){
+      callback({"errCode": 6});    
+    } else if (parameterDict.flag == null){
+      callback({"errCode": 6});    
+    } else if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
+      if(parameterDict.time1 == null || parameterDict.time2 == null){
+        callback({"errCode": 6});    
+      }
+    } else if(parameterDict.flag == null){
+      callback({"errCode": 6}); 
+    } else if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
+           && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && parameterDict.flag != 'night_time'){
+      callBack{"errCode":6}
+    }
+
+    
+
+      var newActivity = geddy.model.Activity.create(parameterDict);
+            geddy.model.Activity.save(newActivity, 
+              function (err, result){
+
+                if(err){
+                  callback({"errCode":-1});
+                } else {
+                  callback ({"errCode": 1});
+                }
+              });
+    }
+  };
 
 var geoSearchHelper = function(records, lat, long, callback)
 {
@@ -45,7 +148,7 @@ var geoSearchHelper = function(records, lat, long, callback)
   returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
   callback(returnRecords, count);
 }
-Activity.search = function search(params, callback)
+Activity.search = function search(params, myLat, myLong, callback)
 {
   /** data is of the following form
   Name: string
@@ -61,190 +164,34 @@ Activity.search = function search(params, callback)
   latitude: number
   longitude: number
   **/
-  var name = params.name;
-  var myLat = params.myLat;
-  var myLong = params.myLong;
-  if (name != "")
+  respDict ={};
+  //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
+  if(!(typeof params=='object'))
   {
-    //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
-    Activity.all({name: {'like': name}}, function (err, activities)
+    respDict.errCode = 7;
+    callback(respDict);
+  }
+  Activity.all(params, function (err, activities)
+  {
+    if(err)
     {
-      if(err)
-      {
-        throw err;
-      }
-      console.log("found activities");
-      console.dir(activities);
+      throw err;
+    }
+    console.log("found activities");
+    console.dir(activities);
+    if(myLat && myLong && typeof myLat =='number' && typeof myLong =='number')
+    {
       geoSearchHelper(activities, myLat, myLong, function(returnRecords, count)
       {
         callback(returnRecords);
       });
       callback(activities);
-    });
-  }
-  else 
-  {
-    //we want to do a search on all criteria if possible and then return this dict if it has enough data in it.
-    if (time1 && time2)
-    {
-      Activity.all({
-                  or: [{time1: {gt: params.time1}}, {time1: {eql: params.time1}}], 
-                  or: [{time2: {lt: params.time2}}, {time2: {eql: params.time2}}],
-                  or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                  or: [{end_date: {lt: params.end_date}}, {end_date: {eql: params.end_date}}],  
-                  flag: params.flag,
-                  or: [{low_price: {gt: params.low_price}}, {low_price: {eql: params.low_price}}], 
-                  or: [{high_price: {lt: params.high_price}}, {high_price: {eql: params.high_price}}],  
-                  or: [{low_num_participants: {gt: params.low_num_participants}}, {low_num_participants: {eql: params.low_num_participants}}],
-                  or: [{high_num_participants: {lt: params.high_num_participants}}, {high_num_participants: {eql: params.high_num_participants}}]
-                }, 
-      function(err, activities)
-      {
-        if(err)
-        {
-          throw err;
-        }
-        console.log("found activities");
-        console.dir(activities);
-        geoSearchHelper(activities, myLat, myLong,  
-        function(returnRecords, count)
-        {
-          if(count >= MIN_RETURNED)
-          {
-            callback(returnRecords);
-          }
-          else
-          //drop the participant requirement and the end date
-          {
-            Activity.all({
-                        or: [{time1: {gt: params.time1}}, {time1: {eql: params.time1}}], 
-                        or: [{time2: {lt: params.time2}}, {time2: {eql: params.time2}}],
-                        or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                        flag: params.flag,
-                        or: [{low_price: {gt: params.low_price}}, {low_price: {eql: params.low_price}}], 
-                        or: [{high_price: {lt: params.high_price}}, {high_price: {eql: params.high_price}}]}, 
-            function(err, activities)
-            {
-              if(err)
-              {
-                throw err;
-              }
-              console.log("found activities");
-              console.dir(activities);
-              geoSearchHelper(activities, myLat, myLong,
-              function(returnRecords, count)
-              {
-                if(count >= MIN_RETURNED)
-                {
-                  callback(returnRecords);
-                }
-                else
-                {
-                  //drop the price requirement, if this fails return as much as we can
-                  Activity.all({
-                              or: [{time1: {gt: params.time1}}, {time1: {eql: params.time1}}], 
-                              or: [{time2: {lt: params.time2}}, {time2: {eql: params.time2}}],
-                              or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                              flag: params.flag},
-                  function(err, activities)
-                  {
-                    if(err)
-                    {
-                      throw err;
-                    }
-                    console.log("found activities");
-                    console.dir(activities);
-                    geoSearchHelper(activities, myLat, myLong,  
-                    function(returnRecords, count)
-                    {
-                      callback(returnRecords);
-                    });
-                  });
-                }
-              });
-            });
-          }
-        });
-      }); 
     }
     else
-    //remove time1 and time2 and only use the flag in the queries
     {
-            Activity.all({
-                  or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                  or: [{end_date: {lt: params.end_date}}, {end_date: {eql: params.end_date}}],  
-                  flag: params.flag,
-                  or: [{low_price: {gt: params.low_price}}, {low_price: {eql: params.low_price}}], 
-                  or: [{high_price: {lt: params.high_price}}, {high_price: {eql: params.high_price}}],  
-                  or: [{low_num_participants: {gt: params.low_num_participants}}, {low_num_participants: {eql: params.low_num_participants}}],
-                  or: [{high_num_participants: {lt: params.high_num_participants}}, {high_num_participants: {eql: params.high_num_participants}}]
-                }, 
-      function(err, activities)
-      {
-        if(err)
-        {
-          throw err;
-        }
-        console.log("found activities");
-        console.dir(activities);
-        geoSearchHelper(activities, myLat, myLong,  
-        function(returnRecords, count)
-        {
-          if(count >= MIN_RETURNED)
-          {
-            callback(returnRecords);
-          }
-          else
-          //drop the participant requirement and the end date
-          {
-            Activity.all({
-                        or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                        flag: params.flag,
-                        or: [{low_price: {gt: params.low_price}}, {low_price: {eql: params.low_price}}], 
-                        or: [{high_price: {lt: params.high_price}}, {high_price: {eql: params.high_price}}]}, 
-            function(err, activities)
-            {
-              if(err)
-              {
-                throw err;
-              }
-              console.log("found activities");
-              console.dir(activities);
-              geoSearchHelper(activities, myLat, myLong,  
-              function(returnRecords, count)
-              {
-                if(count >= MIN_RETURNED)
-                {
-                  callback(returnRecords);
-                }
-                else
-                {
-                  //drop the price requirement, if this fails return as much as we can
-                  Activity.all({
-                              or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                              flag: params.flag},
-                  function(err, activities)
-                  {
-                    if(err)
-                    {
-                      throw err;
-                    }
-                    console.log("found activities");
-                    console.dir(activities);
-                    geoSearchHelper(activities, myLat, myLong,  
-                    function(returnRecords, count)
-                    {
-                      callback(returnRecords);
-                    });
-                  });
-                }
-              });
-            });
-          }
-        });
-      }); 
+      callback(activities);
     }
-  }
+  });
 }        
   /*
   this.property('login', 'string', {required: true});
@@ -283,37 +230,5 @@ Activity.someStaticProperty = 'YYZ';
 */
 
 Activity = geddy.model.register('Activity', Activity);
-
-}());
-
-(function () {
-var Passport = function () {
-  this.property('authType', 'string');
-  this.property('key', 'string');
-
-  this.belongsTo('User');
-};
-
-Passport = geddy.model.register('Passport', Passport);
-
-}());
-
-(function () {
-var User = function () {
-
-  this.property('username', 'string');
-  this.property('password', 'string', {required: true});
-  this.property('familyName', 'string', {required: true});
-  this.property('givenName', 'string', {required: true});
-  this.property('email', 'string');
-
-  this.validatesLength('username', {min: 3});
-  this.validatesLength('password', {min: 8});
-  this.validatesConfirmed('password', 'confirmPassword');
-
-  this.hasMany('Passports');
-};
-
-User = geddy.model.register('User', User);
 
 }());
