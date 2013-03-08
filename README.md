@@ -9,11 +9,16 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 3:</b>
+	//errCode
+	<p>7 - Backend Error</p>
+
 <b>Changelog Entry 2:</b>
 	//ActivityModel Fields
 	<ul>
 		<li>Category: string</li>
 	</ul>
+
 <b>Changelog Entry 1:</b>
 	//required fields that the client checks is valid
 	<ul>
@@ -60,6 +65,7 @@ CS169GAP
 		<li>4 - Password Too Long / Empty (for Create User)</li>
 		<li>5 - Auth Failed (for Login)</li>
 		<li>6 - Missing Required Parameter (for Create/Find Activity)</li>
+		<li>7 - Backend Error - Probably retry</li>
 	</ul>
 
 <h2>CREATE ACTIVITY:</h2>
