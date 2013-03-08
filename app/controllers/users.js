@@ -26,17 +26,13 @@ var Users = function () {
       , user = geddy.model.User.create(params)
       , sha;
 
-    
+    // Non-blocking uniqueness checks are hard
     geddy.model.User.first({username: user.username}, function(err, data) {
       if (data) {
         params.errors = {
           username: 'This username is already in use.'
         };
-        //User exists errCode = 2
-        var responseDict = {};
-        responseDict['errCode'] = 2;
-        self.respond(responseDict, {format: 'json'});
-        // self.transfer('add');
+        self.transfer('add');
       }
       else {
         if (user.isValid()) {
@@ -45,32 +41,14 @@ var Users = function () {
         user.save(function(err, data) {
           if (err) {
             params.errors = err;
-            consol.log("got error: " + err);
-            var responseDict = {};
-            responseDict['errCode'] = err;
-            self.respond(responseDict, {format: 'json'});
-            // self.transfer('add');
+            self.transfer('add');
           }
           else {
-            //Success errCode = 1
-            var responseDict = {};
-            responseDict['errCode'] = 1;
-            self.respond(responseDict, {format: 'json'});
-            // self.redirect({controller: self.name});
+            self.redirect({controller: self.name});
           }
         });
       }
     });
-
-
-
-    // var callback = function (errCode){
-    //     var responseDict = {};
-    //     responseDict['errCode'] = errCode;
-    //     self.respond(responseDict, {format: 'json'});
-    // };
-
-    // geddy.model.User.create(user, callback);
 
   };
 

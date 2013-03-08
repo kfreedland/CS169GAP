@@ -71,7 +71,6 @@ user = new (function () {
             authType: authType
           , key: key
           });
-          console.log("Passport.create succeeded");
           pass.save(function (err, data) {
             if (err) {
               console.log("Passport.save errored: " + err);
