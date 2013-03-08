@@ -13,11 +13,11 @@ Passport = geddy.model.register('Passport', Passport);
 (function () {
 var User = function () {
 
-  this.property('username', 'string', {required: true});
+  this.property('username', 'string');
   this.property('password', 'string', {required: true});
   this.property('familyName', 'string', {required: true});
   this.property('givenName', 'string', {required: true});
-  this.property('email', 'string', {required: true});
+  this.property('email', 'string');
 
   this.validatesLength('username', {min: 3});
   this.validatesLength('password', {min: 8});
@@ -49,9 +49,10 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
+    category: {type: 'string'}
   });
 
-var geoSearchHelper = function(records, lat, long, milesDist, callback)
+var geoSearchHelper = function(records, lat, long, callback)
 {
   var consDist = 69.1;
   var consAng = 57.3;
@@ -61,22 +62,22 @@ var geoSearchHelper = function(records, lat, long, milesDist, callback)
   {
     var record = records[idx];
     console.log("RECORD: "+record);
+    //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude-lat, 2) + Math.pow((record.longitude-long) * Math.cos(lat/57.3), 2))
-    if (dist <= milesDist)
-      reocrd.dist = dist
-      returnRecords[count] = record;
-      count++;
-      if(count == MAX_RETURNED)
-      {
-        returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
-        callback(returnRecords, count);
-        return;
-      }
+    record.dist = dist
+    returnRecords[count] = record;
+    count++;
+    if(count == MAX_RETURNED)
+    {
+      returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
+      callback(returnRecords, count);
+      return;
+    }
   }
   returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
   callback(returnRecords, count);
 }
-Activity.search = function search(params, callback)
+Activity.search = function search(params, myLat, myLong, callback)
 {
   /** data is of the following form
   Name: string
@@ -92,189 +93,34 @@ Activity.search = function search(params, callback)
   latitude: number
   longitude: number
   **/
-  var name = params.name;
-  var myLat = params.myLat;
-  var myLong = params.myLong;
-  var maxDist = params.maxDist;
-  if (name != "")
+  respDict ={};
+  //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
+  if(!(typeof params=='object'))
   {
-    //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
-    Activity.all({name: {'like': name}}, function (err, activities)
+    respDict.errCode = 7;
+    callback(respDict);
+  }
+  Activity.all(params, function (err, activities)
+  {
+    if(err)
     {
-      if(err)
-      {
-        throw err;
-      }
-      console.log("found activities");
-      console.dir(activities);
-      geoSearchHelper(activities, myLat, myLong, maxDist, function(returnRecords, count)
+      throw err;
+    }
+    console.log("found activities");
+    console.dir(activities);
+    if(myLat && myLong && typeof myLat =='number' && typeof myLong =='number')
+    {
+      geoSearchHelper(activities, myLat, myLong, function(returnRecords, count)
       {
         callback(returnRecords);
       });
       callback(activities);
-    });
-  }
-  else 
-  {
-    //we want to do a search on all criteria if possible and then return this dict if it has enough data in it.
-    if (time1 && time2)
-    {
-      Activity.all({
-                  or: [{time1: {gt: params.time1}}, {time1: {eql: params.time1}}], 
-                  or: [{time2: {lt: params.time2}}, {time2: {eql: params.time2}}],
-                  or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                  or: [{end_date: {lt: params.end_date}}, {end_date: {eql: params.end_date}}],  
-                  flag: params.flag,
-                  or: [{low_price: {gt: params.low_price}}, {low_price: {eql: params.low_price}}], 
-                  or: [{high_price: {lt: params.high_price}}, {high_price: {eql: params.high_price}}],  
-                  or: [{low_num_participants: {gt: params.low_num_participants}}, {low_num_participants: {eql: params.low_num_participants}}],
-                  or: [{high_num_participants: {lt: params.high_num_participants}}, {high_num_participants: {eql: params.high_num_participants}}]
-                }, 
-      function(err, activities)
-      {
-        if(err)
-        {
-          throw err;
-        }
-        console.log("found activities");
-        console.dir(activities);
-        geoSearchHelper(activities, myLat, myLong, maxDist, 
-        function(returnRecords, count)
-        {
-          if(count >= MIN_RETURNED)
-          {
-            callback(returnRecords);
-          }
-          else
-          //drop the participant requirement and the end date
-          {
-            Activity.all({
-                        or: [{time1: {gt: params.time1}}, {time1: {eql: params.time1}}], 
-                        or: [{time2: {lt: params.time2}}, {time2: {eql: params.time2}}],
-                        or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                        flag: params.flag,
-                        or: [{low_price: {gt: params.low_price}}, {low_price: {eql: params.low_price}}], 
-                        or: [{high_price: {lt: params.high_price}}, {high_price: {eql: params.high_price}}]}, 
-            function(err, activities)
-            {
-              if(err)
-              {
-                throw err;
-              }
-              console.log("found activities");
-              console.dir(activities);
-              geoSearchHelper(activities, myLat, myLong, maxDist, 
-              function(returnRecords, count)
-              {
-                if(count >= MIN_RETURNED)
-                {
-                  callback(returnRecords);
-                }
-                else
-                {
-                  //drop the price requirement, if this fails return as much as we can
-                  Activity.all({
-                              or: [{time1: {gt: params.time1}}, {time1: {eql: params.time1}}], 
-                              or: [{time2: {lt: params.time2}}, {time2: {eql: params.time2}}],
-                              or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                              flag: params.flag},
-                  function(err, activities)
-                  {
-                    if(err)
-                    {
-                      throw err;
-                    }
-                    console.log("found activities");
-                    console.dir(activities);
-                    geoSearchHelper(activities, myLat, myLong, maxDist, function(returnRecords, count)
-                    {
-                      callback(returnRecords);
-                    });
-                  });
-                }
-              });
-            });
-          }
-        });
-      }); 
     }
     else
-    //remove time1 and time2 and only use the flag in the queries
     {
-            Activity.all({
-                  or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                  or: [{end_date: {lt: params.end_date}}, {end_date: {eql: params.end_date}}],  
-                  flag: params.flag,
-                  or: [{low_price: {gt: params.low_price}}, {low_price: {eql: params.low_price}}], 
-                  or: [{high_price: {lt: params.high_price}}, {high_price: {eql: params.high_price}}],  
-                  or: [{low_num_participants: {gt: params.low_num_participants}}, {low_num_participants: {eql: params.low_num_participants}}],
-                  or: [{high_num_participants: {lt: params.high_num_participants}}, {high_num_participants: {eql: params.high_num_participants}}]
-                }, 
-      function(err, activities)
-      {
-        if(err)
-        {
-          throw err;
-        }
-        console.log("found activities");
-        console.dir(activities);
-        geoSearchHelper(activities, myLat, myLong, maxDist, 
-        function(returnRecords, count)
-        {
-          if(count >= MIN_RETURNED)
-          {
-            callback(returnRecords);
-          }
-          else
-          //drop the participant requirement and the end date
-          {
-            Activity.all({
-                        or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                        flag: params.flag,
-                        or: [{low_price: {gt: params.low_price}}, {low_price: {eql: params.low_price}}], 
-                        or: [{high_price: {lt: params.high_price}}, {high_price: {eql: params.high_price}}]}, 
-            function(err, activities)
-            {
-              if(err)
-              {
-                throw err;
-              }
-              console.log("found activities");
-              console.dir(activities);
-              geoSearchHelper(activities, myLat, myLong, maxDist, 
-              function(returnRecords, count)
-              {
-                if(count >= MIN_RETURNED)
-                {
-                  callback(returnRecords);
-                }
-                else
-                {
-                  //drop the price requirement, if this fails return as much as we can
-                  Activity.all({
-                              or: [{begin_date: {gt: params.begin_date}}, {begin_date: {eql: params.begin_date}}], 
-                              flag: params.flag},
-                  function(err, activities)
-                  {
-                    if(err)
-                    {
-                      throw err;
-                    }
-                    console.log("found activities");
-                    console.dir(activities);
-                    geoSearchHelper(activities, myLat, myLong, maxDist, function(returnRecords, count)
-                    {
-                      callback(returnRecords);
-                    });
-                  });
-                }
-              });
-            });
-          }
-        });
-      }); 
+      callback(activities);
     }
-  }
+  });
 }        
   /*
   this.property('login', 'string', {required: true});
