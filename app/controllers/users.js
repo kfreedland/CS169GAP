@@ -9,17 +9,17 @@ var Users = function () {
 
   this.respondsWith = ['html', 'json', 'xml', 'js', 'txt'];
 
-  this.index = function (req, resp, params) {
-    var self = this;
+  // this.index = function (req, resp, params) {
+  //   var self = this;
 
-    geddy.model.User.all(function(err, users) {
-      self.respond({params: params, users: users});
-    });
-  };
+  //   geddy.model.User.all(function(err, users) {
+  //     self.respond({params: params, users: users});
+  //   });
+  // };
 
-  this.add = function (req, resp, params) {
-    this.respond({params: params});
-  };
+  // this.add = function (req, resp, params) {
+  //   this.respond({params: params});
+  // };
 
   this.create = function (req, resp, params) {
     var self = this
@@ -34,74 +34,112 @@ var Users = function () {
     };
 
     geddy.model.User.create(user, callback);
+    //   geddy.model.User.first({username: user.username}, function(err, data) {
+    //   if (data) {
+    //     params.errors = {
+    //       username: 'This username is already in use.'
+    //     };
+    //     //User exists errCode = 2
+    //     callback(2);
+    //     // self.transfer('add');
+    //   }
+    //   else {
+    //     if (user.isValid()) {
+    //       user.password = cryptPass(user.password);
+    //     }
+    //     user.save(function(err, data) {
+    //       if (err) {
+    //         params.errors = err;
+    //         consol.log("got error: " + err);
+    //         callback(err);
+    //         // self.transfer('add');
+    //       }
+    //       else {
+    //         //Success errCode = 1
+    //         callback(1);
+    //         // self.redirect({controller: self.name});
+    //       }
+    //     });
+    //   }
+    // });
+
+
+
+    // var callback = function (errCode){
+    //     var responseDict = {};
+    //     responseDict['errCode'] = errCode;
+    //     self.respond(responseDict, {format: 'json'});
+    // };
+
+    // geddy.model.User.create(user, callback);
 
   };
 
-  this.show = function (req, resp, params) {
-    var self = this;
+  // this.show = function (req, resp, params) {
+  //   var self = this;
 
-    geddy.model.User.first(params.id, function(err, user) {
-      if (!user) {
-        var err = new Error();
-        err.statusCode = 400;
-        self.error(err);
-      } else {
-        user.password = '';
-        self.respond({params: params, user: user.toObj()});
-      }
-    });
-  };
+  //   geddy.model.User.first(params.id, function(err, user) {
+  //     if (!user) {
+  //       var err = new Error();
+  //       err.statusCode = 400;
+  //       self.error(err);
+  //     } else {
+  //       user.password = '';
+  //       self.respond({params: params, user: user.toObj()});
+  //     }
+  //   });
+  // };
 
-  this.edit = function (req, resp, params) {
-    var self = this;
+  // this.edit = function (req, resp, params) {
+  //   var self = this;
 
-    geddy.model.User.first(params.id, function(err, user) {
-      if (!user) {
-        var err = new Error();
-        err.statusCode = 400;
-        self.error(err);
-      } else {
-        self.respond({params: params, user: user});
-      }
-    });
-  };
+  //   geddy.model.User.first(params.id, function(err, user) {
+  //     if (!user) {
+  //       var err = new Error();
+  //       err.statusCode = 400;
+  //       self.error(err);
+  //     } else {
+  //       self.respond({params: params, user: user});
+  //     }
+  //   });
+  // };
 
-  this.update = function (req, resp, params) {
-    var self = this;
+  // this.update = function (req, resp, params) {
+  //   var self = this;
 
-    geddy.model.User.first(params.id, function(err, user) {
-      // Only update password if it's changed
-      var skip = params.password ? [] : ['password'];
+  //   geddy.model.User.first(params.id, function(err, user) {
+  //     // Only update password if it's changed
+  //     var skip = params.password ? [] : ['password'];
 
-      user.updateAttributes(params, {skip: skip});
+  //     user.updateAttributes(params, {skip: skip});
 
-      if (params.password && user.isValid()) {
-        user.password = cryptPass(user.password);
-      }
+  //     if (params.password && user.isValid()) {
+  //       user.password = cryptPass(user.password);
+  //     }
 
-      user.save(function(err, data) {
-        if (err) {
-          params.errors = err;
-          self.transfer('edit');
-        } else {
-          self.redirect({controller: self.name});
-        }
-      });
-    });
-  };
+  //     user.save(function(err, data) {
+  //       if (err) {
+  //         params.errors = err;
+  //         self.transfer('edit');
+  //       } else {
+  //         self.redirect({controller: self.name});
+  //       }
+  //     });
+  //   });
+  // };
 
-  this.destroy = function (req, resp, params) {
-    var self = this;
+  // this.destroy = function (req, resp, params) {
+  //   var self = this;
 
-    geddy.model.User.remove(params.id, function(err) {
-      if (err) {
-        params.errors = err;
-        self.transfer('edit');
-      } else {
-        self.redirect({controller: self.name});
-      }
-    });
-  };
+  //   geddy.model.User.remove(params.id, function(err) {
+  //     if (err) {
+  //       params.errors = err;
+  //       self.transfer('edit');
+  //     } else {
+  //       self.redirect({controller: self.name});
+  //     }
+  //   });
+  // };
 
 };
 
