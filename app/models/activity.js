@@ -18,6 +18,7 @@ var Activity = function () {
     latitude: {type: 'number'},
     longitude: {type: 'number'},
     duration:{type: 'number'}
+    category: {type: 'string'}
   });
 
   this.create = function(parameterDict, callback){
