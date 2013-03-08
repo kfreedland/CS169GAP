@@ -1,0 +1,39 @@
+***************
+*** 1,4 ****
+  [Fri, 08 Mar 2013 20:20:40 GMT] INFO Server starting with config: {
+    "environment": "development",
+    "workers": 1,
+    "port": 4000,
+--- 1,8 ----
++ <<<<<<< HEAD
+  [Fri, 08 Mar 2013 20:20:40 GMT] INFO Server starting with config: {
++ =======
++ [Fri, 08 Mar 2013 19:55:44 GMT] INFO Server starting with config: {
++ >>>>>>> ac726b862bd43a109950bab4620fb2100de56e93
+    "environment": "development",
+    "workers": 1,
+    "port": 4000,
+***************
+*** 43,49 ****
+    },
+    "secret": "FfsFJsEzHchNYMP2HyLH7yHL0CZe3LfVeBeG4QuIGdKdTN5FPQLSdsHUPvbBvEAPdFvhvLn0vcoEV9Qm97M6bNrRxvKVeeQeM5dCQvRxXjIHyw1QYQW12IIJtiVRCkIk"
+  }
+  [Fri, 08 Mar 2013 20:20:40 GMT] INFO Creating 1 worker process.
+  [Fri, 08 Mar 2013 20:20:40 GMT] INFO Server worker running in development on port 4000 with a PID of: 1705
+  [Fri, 08 Mar 2013 20:20:40 GMT] DEBUG LOGGING STARTED ============================================
+  [Fri, 08 Mar 2013 20:20:40 GMT] DEBUG ============================================================
+--- 47,60 ----
+    },
+    "secret": "FfsFJsEzHchNYMP2HyLH7yHL0CZe3LfVeBeG4QuIGdKdTN5FPQLSdsHUPvbBvEAPdFvhvLn0vcoEV9Qm97M6bNrRxvKVeeQeM5dCQvRxXjIHyw1QYQW12IIJtiVRCkIk"
+  }
++ <<<<<<< HEAD
+  [Fri, 08 Mar 2013 20:20:40 GMT] INFO Creating 1 worker process.
+  [Fri, 08 Mar 2013 20:20:40 GMT] INFO Server worker running in development on port 4000 with a PID of: 1705
+  [Fri, 08 Mar 2013 20:20:40 GMT] DEBUG LOGGING STARTED ============================================
+  [Fri, 08 Mar 2013 20:20:40 GMT] DEBUG ============================================================
++ =======
++ [Fri, 08 Mar 2013 19:55:44 GMT] INFO Creating 1 worker process.
++ [Fri, 08 Mar 2013 19:55:44 GMT] INFO Server worker running in development on port 4000 with a PID of: 1386
++ [Fri, 08 Mar 2013 19:55:44 GMT] DEBUG LOGGING STARTED ============================================
++ [Fri, 08 Mar 2013 19:55:44 GMT] DEBUG ============================================================
++ >>>>>>> ac726b862bd43a109950bab4620fb2100de56e93
