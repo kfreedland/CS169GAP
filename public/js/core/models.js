@@ -282,7 +282,11 @@ Activity.search = function search(params, callback)
       }); 
     }
   }
+<<<<<<< HEAD
 };       
+=======
+};
+>>>>>>> ac726b862bd43a109950bab4620fb2100de56e93
   /*
   this.property('login', 'string', {required: true});
   this.property('password', 'string', {required: true});
@@ -367,14 +371,14 @@ var User = function () {
         user.save(function(err, data) {
           if (err) {
             params.errors = err;
-            //User Exists? errCode = 2
-            callback(2);
-            //self.transfer('add');
+            consol.log("got error: " + err);
+            callback(err);
+            // self.transfer('add');
           }
           else {
-          	//Success errCode = 1
-          	callback(1);
-            //self.redirect({controller: self.name});
+            //Success errCode = 1
+            callback(1);
+            // self.redirect({controller: self.name});
           }
         });
       }

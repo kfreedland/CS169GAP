@@ -304,7 +304,6 @@ Activity.search = function search(params, callback)
   };
   */
 
-
 /*
 // Can also define them on the prototype
 Activity.prototype.someOtherMethod = function () {

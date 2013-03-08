@@ -30,14 +30,14 @@ var User = function () {
         user.save(function(err, data) {
           if (err) {
             params.errors = err;
-            //User Exists? errCode = 2
-            callback(2);
-            //self.transfer('add');
+            consol.log("got error: " + err);
+            callback(err);
+            // self.transfer('add');
           }
           else {
-          	//Success errCode = 1
-          	callback(1);
-            //self.redirect({controller: self.name});
+            //Success errCode = 1
+            callback(1);
+            // self.redirect({controller: self.name});
           }
         });
       }
