@@ -15,51 +15,58 @@ CS169GAP
 
 <b>Changelog Entry 2:</b>
 	//ActivityModel Fields
-	<p>Category: string</p>
+	<ul>
+		<li>Category: string</li>
+	</ul>
 
 <b>Changelog Entry 1:</b>
 	//required fields that the client checks is valid
-    <p>flag</p>
-    <p>begin_date</p>
-    <p>end_date</p>
-    <p>latitude</p>
-    <p>longitude</p>
+	<ul>
+	    <li>flag</li>
+	    <li>begin_date</li>
+	    <li>end_date</li>
+	    <li>latitude</li>
+	    <li>longitude</li>
+	</ul>
 
 <b>Changelog Entry 0:</b>
 	//ActivityModel Fields
-	<p>Name: string</p>
-	<p>Description: string</p>
-	<p>time1: time</p>
-	<p>time2: time</p>
-	<p>flag: string -vals=startEnd, openClose, anyTime, dayTime, nightTime</p>
-	<p>begin_date: date</p>
-	<p>end_date: date</p>
-	<p>low_price: int</p>
-	<p>high_price: int</p>
-	<p>low_num_participants: int</p>
-	<p>high_num_participants: int</p>
-	<p>latitude: number</p>
-	<p>longitude: number</p>
-	<p>category: string</p>
-
+	<ul>
+		<li>Name: string</li>
+		<li>Description: string</li>
+		<li>time1: time</li>
+		<li>time2: time</li>
+		<li>flag: string -vals=startEnd, openClose, anyTime, dayTime, nightTime</p>
+		<li>begin_date: date</li>
+		<li>end_date: date</li>
+		<li>low_price: int</li>
+		<li>high_price: int</li>
+		<li>low_num_participants: int</li>
+		<li>high_num_participants: int</li>
+		<li>latitude: number</li>
+		<li>longitude: number</li>
+		<li>category: string</li>
+	</ul>
 
 <h1>API:</h1>
 
 <b>Response Status Codes:<b>
-	<p>200 - Success</p>
-	<p>500 - Internal Server Error</p>
-	<p>401 - Unauthorized</p>
-	<p>404 - Not Found</p>
-
+	<ul>
+		<li>200 - Success</li>
+		<li>500 - Internal Server Error</li>
+		<li>401 - Unauthorized</li>
+		<li>404 - Not Found</li>
+	</ul>
 <b>errCode:</b>
-	<p>1 - Success (for all API)</p>
-	<p>2 - User Exists (for Create User)</p>
-	<p>3 - Username Too Long / Empty (for Create User)</p>
-	<p>4 - Password Too Long / Empty (for Create User)</p>
-	<p>5 - Auth Failed (for Login)</p>
-	<p>6 - Missing Required Parameter (for Create/Find Activity)</p>
-	<p>7 - Backend Error - Probably retry</p>
-
+	<ul>
+		<li>1 - Success (for all API)</li>
+		<li>2 - User Exists (for Create User)</li>
+		<li>3 - Username Too Long / Empty (for Create User)</li>
+		<li>4 - Password Too Long / Empty (for Create User)</li>
+		<li>5 - Auth Failed (for Login)</li>
+		<li>6 - Missing Required Parameter (for Create/Find Activity)</li>
+		<li>7 - Backend Error - Probably retry</li>
+	</ul>
 
 <h2>CREATE ACTIVITY:</h2>
 //Creates activity in database with corresponding fields
@@ -83,5 +90,3 @@ CS169GAP
 		<li>'category': [string]</li>
 	}
 </ul>
-
-Returns Response Code
