@@ -1,36 +1,4 @@
 (function () {
-var Passport = function () {
-  this.property('authType', 'string');
-  this.property('key', 'string');
-
-  this.belongsTo('User');
-};
-
-Passport = geddy.model.register('Passport', Passport);
-
-}());
-
-(function () {
-var User = function () {
-
-  this.property('username', 'string', {required: true});
-  this.property('password', 'string', {required: true});
-  this.property('familyName', 'string', {required: true});
-  this.property('givenName', 'string', {required: true});
-  this.property('email', 'string', {required: true});
-
-  this.validatesLength('username', {min: 3});
-  this.validatesLength('password', {min: 8});
-  this.validatesConfirmed('password', 'confirmPassword');
-
-  this.hasMany('Passports');
-};
-
-User = geddy.model.register('User', User);
-
-}());
-
-(function () {
 const MIN_RETURNED = 1;
 const MAX_RETURNED = 2;
 var Activity = function () {
@@ -49,9 +17,10 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
+    category: {type: 'string'}
   });
 
-var geoSearchHelper = function(records, lat, long, milesDist, callback)
+var geoSearchHelper = function(records, lat, long, callback)
 {
   var consDist = 69.1;
   var consAng = 57.3;
@@ -61,17 +30,17 @@ var geoSearchHelper = function(records, lat, long, milesDist, callback)
   {
     var record = records[idx];
     console.log("RECORD: "+record);
+    //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude-lat, 2) + Math.pow((record.longitude-long) * Math.cos(lat/57.3), 2))
-    if (dist <= milesDist)
-      reocrd.dist = dist
-      returnRecords[count] = record;
-      count++;
-      if(count == MAX_RETURNED)
-      {
-        returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
-        callback(returnRecords, count);
-        return;
-      }
+    record.dist = dist
+    returnRecords[count] = record;
+    count++;
+    if(count == MAX_RETURNED)
+    {
+      returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
+      callback(returnRecords, count);
+      return;
+    }
   }
   returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
   callback(returnRecords, count);
@@ -95,7 +64,6 @@ Activity.search = function search(params, callback)
   var name = params.name;
   var myLat = params.myLat;
   var myLong = params.myLong;
-  var maxDist = params.maxDist;
   if (name != "")
   {
     //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
@@ -107,7 +75,7 @@ Activity.search = function search(params, callback)
       }
       console.log("found activities");
       console.dir(activities);
-      geoSearchHelper(activities, myLat, myLong, maxDist, function(returnRecords, count)
+      geoSearchHelper(activities, myLat, myLong, function(returnRecords, count)
       {
         callback(returnRecords);
       });
@@ -138,7 +106,7 @@ Activity.search = function search(params, callback)
         }
         console.log("found activities");
         console.dir(activities);
-        geoSearchHelper(activities, myLat, myLong, maxDist, 
+        geoSearchHelper(activities, myLat, myLong,  
         function(returnRecords, count)
         {
           if(count >= MIN_RETURNED)
@@ -163,7 +131,7 @@ Activity.search = function search(params, callback)
               }
               console.log("found activities");
               console.dir(activities);
-              geoSearchHelper(activities, myLat, myLong, maxDist, 
+              geoSearchHelper(activities, myLat, myLong,
               function(returnRecords, count)
               {
                 if(count >= MIN_RETURNED)
@@ -186,7 +154,8 @@ Activity.search = function search(params, callback)
                     }
                     console.log("found activities");
                     console.dir(activities);
-                    geoSearchHelper(activities, myLat, myLong, maxDist, function(returnRecords, count)
+                    geoSearchHelper(activities, myLat, myLong,  
+                    function(returnRecords, count)
                     {
                       callback(returnRecords);
                     });
@@ -218,7 +187,7 @@ Activity.search = function search(params, callback)
         }
         console.log("found activities");
         console.dir(activities);
-        geoSearchHelper(activities, myLat, myLong, maxDist, 
+        geoSearchHelper(activities, myLat, myLong,  
         function(returnRecords, count)
         {
           if(count >= MIN_RETURNED)
@@ -241,7 +210,7 @@ Activity.search = function search(params, callback)
               }
               console.log("found activities");
               console.dir(activities);
-              geoSearchHelper(activities, myLat, myLong, maxDist, 
+              geoSearchHelper(activities, myLat, myLong,  
               function(returnRecords, count)
               {
                 if(count >= MIN_RETURNED)
@@ -262,7 +231,8 @@ Activity.search = function search(params, callback)
                     }
                     console.log("found activities");
                     console.dir(activities);
-                    geoSearchHelper(activities, myLat, myLong, maxDist, function(returnRecords, count)
+                    geoSearchHelper(activities, myLat, myLong,  
+                    function(returnRecords, count)
                     {
                       callback(returnRecords);
                     });
@@ -313,5 +283,37 @@ Activity.someStaticProperty = 'YYZ';
 */
 
 Activity = geddy.model.register('Activity', Activity);
+
+}());
+
+(function () {
+var Passport = function () {
+  this.property('authType', 'string');
+  this.property('key', 'string');
+
+  this.belongsTo('User');
+};
+
+Passport = geddy.model.register('Passport', Passport);
+
+}());
+
+(function () {
+var User = function () {
+
+  this.property('username', 'string');
+  this.property('password', 'string', {required: true});
+  this.property('familyName', 'string', {required: true});
+  this.property('givenName', 'string', {required: true});
+  this.property('email', 'string');
+
+  this.validatesLength('username', {min: 3});
+  this.validatesLength('password', {min: 8});
+  this.validatesConfirmed('password', 'confirmPassword');
+
+  this.hasMany('Passports');
+};
+
+User = geddy.model.register('User', User);
 
 }());
