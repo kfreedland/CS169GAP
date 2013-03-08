@@ -100,19 +100,13 @@ var Activities = function () {
   };
 */
   this.create = function (req, resp, params) {
-    params.id = params.id || geddy.string.uuid(10);
 
-    var self = this
-      , activity = geddy.model.Activity.create(params);
+    var self = this;
 
-    activity.save(function(err, data) {
-      if (err) {
-        params.errors = err;
-        self.transfer('add');
-      } else {
-        self.redirect({controller: self.name});
-      }
-    });
+    geddy.model.Activity.create(params, 
+      function addCallBack(result){
+        self.respond(result);
+      });
   };
 /*
   this.show = function (req, resp, params) {

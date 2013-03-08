@@ -9,11 +9,16 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 3:</b>
+	//errCode
+	<p>7 - Backend Error</p>
+
 <b>Changelog Entry 2:</b>
 	//ActivityModel Fields
 	<ul>
 		<li>Category: string</li>
 	</ul>
+
 <b>Changelog Entry 1:</b>
 	//required fields that the client checks is valid
 	<ul>
@@ -60,6 +65,7 @@ CS169GAP
 		<li>4 - Password Too Long / Empty (for Create User)</li>
 		<li>5 - Auth Failed (for Login)</li>
 		<li>6 - Missing Required Parameter (for Create/Find Activity)</li>
+		<li>7 - Backend Error - Probably retry</li>
 	</ul>
 
 <h2>CREATE ACTIVITY:</h2>
@@ -70,11 +76,11 @@ CS169GAP
 	{
 		<li>'name': [string, required],</li>
 		<li>'description': [string],</li>
-		<li>'time1': [time, required-IF flag=='start_end' || flag=='open_close'],</li>
-		<li>'time2': [time, required-IF flag=='start_end' || flag=='open_close'],</li>
+		<li>'time1': [int milliseconds since midnight, required-IF flag=='start_end' || flag=='open_close'],</li>
+		<li>'time2': [int, milliseconds since midnight, required-IF flag=='start_end' || flag=='open_close'],</li>
 		<li>'flag': [string subset of: {'start_end', 'open_close', 'any_time', 'day_time', 'night_time'}, required],</li>
-		<li>'begin_date': [date],</li>
-		<li>'end_date': [date],</li>
+		<li>'begin_date': [milliseconds since epoch, int],</li>
+		<li>'end_date': [milliseconds since epoch, int],</li>
 		<li>'low_price': [int, required],</li>
 		<li>'high_price': [int, required],</li>
 		<li>'low_num_participants': [int],</li>
