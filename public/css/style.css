@@ -109,7 +109,8 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   }
 
   #find_activity {
-    margin: 0px 250px;
+    margin:0 auto;
+    width: 70%;
     padding-top: 100px;
   }
 }
