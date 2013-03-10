@@ -91,8 +91,7 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     float:none; 
   }
 }
-
-@media (min-width: 450px) {
+@media only screen and (min-width: 600px){
   .my-breakpoint.ui-grid-c .ui-block-a,
   .my-breakpoint.ui-grid-c .ui-block-c { width: 9.95%; }
   .my-breakpoint.ui-grid-c .ui-block-b, 
