@@ -1,4 +1,4 @@
-[Sun, 10 Mar 2013 04:33:17 GMT] INFO Server starting with config: {
+[Sun, 10 Mar 2013 09:08:12 GMT] INFO Server starting with config: {
   "environment": "development",
   "workers": 1,
   "port": 4000,
@@ -8,11 +8,11 @@
   "rotateWorkers": false,
   "rotationWindow": 7200000,
   "rotationTimeout": 300000,
-  "logDir": "/Users/elayman/Documents/CS169/GAP Project/herokuApp/GAP/log",
+  "logDir": "/home/brandon/Documents/CS169/Iteration1/CS169GAP/log",
   "gracefulShutdownTimeout": 30000,
   "heartbeatInterval": 5000,
   "heartbeatWindow": 20000,
-  "staticFilePath": "/Users/elayman/Documents/CS169/GAP Project/herokuApp/GAP/public",
+  "staticFilePath": "/home/brandon/Documents/CS169/Iteration1/CS169GAP/public",
   "sessions": {
     "store": "memory",
     "key": "sid",
@@ -23,7 +23,7 @@
   "i18n": {
     "defaultLocale": "en-us",
     "loadPaths": [
-      "/Users/elayman/Documents/CS169/GAP Project/herokuApp/GAP/config/locales"
+      "/home/brandon/Documents/CS169/Iteration1/CS169GAP/config/locales"
     ]
   },
   "hostname": "localhost",
@@ -43,7 +43,7 @@
   },
   "secret": "FfsFJsEzHchNYMP2HyLH7yHL0CZe3LfVeBeG4QuIGdKdTN5FPQLSdsHUPvbBvEAPdFvhvLn0vcoEV9Qm97M6bNrRxvKVeeQeM5dCQvRxXjIHyw1QYQW12IIJtiVRCkIk"
 }
-[Sun, 10 Mar 2013 04:33:17 GMT] INFO Creating 1 worker process.
-[Sun, 10 Mar 2013 04:33:17 GMT] INFO Server worker running in development on port 4000 with a PID of: 5258
-[Sun, 10 Mar 2013 04:33:17 GMT] DEBUG LOGGING STARTED ============================================
-[Sun, 10 Mar 2013 04:33:17 GMT] DEBUG ============================================================
+[Sun, 10 Mar 2013 09:08:12 GMT] INFO Creating 1 worker process.
+[Sun, 10 Mar 2013 09:08:13 GMT] INFO Server worker running in development on port 4000 with a PID of: 13493
+[Sun, 10 Mar 2013 09:08:13 GMT] DEBUG LOGGING STARTED ============================================
+[Sun, 10 Mar 2013 09:08:13 GMT] DEBUG ============================================================
