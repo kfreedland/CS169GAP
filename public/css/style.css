@@ -68,7 +68,7 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   width: 100%;
 }
 
-@media (max-width:480px) {
+@media (max-width: 480px) {
   .hero-unit .pull-right {
     float: none;
     margin-top: 10px;
@@ -85,12 +85,12 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     float:none; 
   }
 }
-@media only screen and (min-width: 600px){
+
+@media only screen and (min-width: 600px) {
   .my-breakpoint.ui-grid-c .ui-block-a,
   .my-breakpoint.ui-grid-c .ui-block-c { width: 9.95%; }
   .my-breakpoint.ui-grid-c .ui-block-b, 
   .my-breakpoint.ui-grid-c .ui-block-d { width: 39.925%; }
-  }
 
   .ui-field-contain label.ui-input-text,
   .ui-field-contain label.ui-select {
@@ -107,8 +107,9 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     padding-right: 10px;
     padding-top: 14px;
   }
-  
+
   #find_activity {
+    margin: 0px 250px;
     padding-top: 100px;
   }
 }
