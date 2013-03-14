@@ -15,14 +15,23 @@
     <%- scriptLink('/js/jquery.min.js', {type:'text/javascript'}) %>
     <%- scriptLink('/js/bootstrap.min.js', {type:'text/javascript'}) %>
     <%- scriptLink('/js/core/core.js', {type: 'text/javascript'}) %>
+    <%- scriptLink('http://maps.google.com/maps/api/js?sensor=true', {type: 'text/javascript'}) %>
+    <%- scriptLink('http://www.swineworld.org/articles/address-min.js', {type: 'text/javascript'}) %>
     <%- scriptLink('http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js', {type: 'text/javascript'}) %>
     <!-- <%- scriptLink('/js/models/your_model.js', {type:'text/javascript'}) %> -->
     <%- scriptLink('/js/config/init.js', {type: 'text/javascript'}) %>
+    <%- scriptLink('http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js', {type: 'text/javascript'}) %>
+    <%- scriptLink('http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.calbox.min.js', {type: 'text/javascript'}) %>
+    <%- scriptLink('http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.flipbox.min.js', {type: 'text/javascript'}) %>
+    <%- scriptLink('http://dev.jtsage.com/cdn/datebox/i18n/jquery.mobile.datebox.i18n.en_US.utf8.js', {type: 'text/javascript'}) %>
+    <%- scriptLink('/js/main.js', {type:'text/javascript'}) %>
+    
 
     <%- styleLink('/css/bootstrap.min.css', {rel:'stylesheet'}) %>
-    <%- styleLink('/css/style.css', {rel:'stylesheet'}) %>
     <%- styleLink('/css/bootstrap.responsive.min.css', {rel:'stylesheet'}) %>
     <%- styleLink('http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css', {rel:'stylesheet'}) %>
+    <%- styleLink('http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.min.css', {rel:'stylesheet'}) %>
+    <%- styleLink('/css/style.css', {rel:'stylesheet'}) %>
 
     <!-- The fav and touch icons -->
     <link rel="shortcut icon" href="/images/favicon.ico">
@@ -31,21 +40,26 @@
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
   </head>
   <body>
+    <!--
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
+        
         <div class="container">
+          
           <div data-role="header">
             <h1>
               Group Activity Planner
             </h1>
             <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
-              <input id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a">
-              <input id="sign_up_button" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a">
+              <a href="/login" id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
+              <a href="/users/add" id="sign_up_button" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
             </div>
           </div>
         </div>
       </div>
+      </div>
     </div>
+    -->
     <div class="container">
       <%- yield(); %>
     </div>

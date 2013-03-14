@@ -62,45 +62,57 @@ var Activity = function () {
 
     //make sure required fields are non-null
     if (parameterDict.name == null){
+
       callback({"errCode": 6, "message": "null name"}); 
 
     } else if (parameterDict.flag == null){
+
       callback({"errCode": 6, "message": "null flag"});  
 
     } else if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
       if(parameterDict.time1 == null){
+
         callback({"errCode": 6, "message": "null time2"});    
       }
       if(parameterDict.time2 == null){
+
         callback({"errCode": 6, "message": "null time2"});    
       }
 
     } else if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
-           && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && parameterDict.flag != 'night_time'){
-      callback({"errCode": 6, "message": "invalid flag"});    
+           && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && 
+           parameterDict.flag != 'night_time'){
+
+      callback({"errCode": 6, "message": "invalid flag"});   
 
     } else if (parameterDict.low_price == null){
+
       callback({"errCode": 6, "message": "null low_price"});   
 
     } else if (parameterDict.high_price == null){
+
       callback({"errCode": 6, "message": "null high_price"});   
 
     } else if(parameterDict.low_price != null && parameterDict.high_price != null){
 
       if (parameterDict.low_price > parameterDict.high_price){
+
         callback({"errCode": 6, "message": "invalid prices"});  
       }
 
     } else if(parameterDict.low_num_participants != null && parameterDict.high_num_participants != null){
 
       if (parameterDict.low_num_participants > parameterDict.high_num_participants){
+
         callback({"errCode": 6, "message": "invalid participants"});  
       } 
 
     } else if(parameterDict.category == null){
+
       callback({"errCode": 6, "message": "null category"});  
 
     } else if(acceptedCategories.indexOf(parameterDict.category) == -1){
+
       callback({"errCode": 6, "message": "invalid category"});  
 
     } else {
@@ -116,8 +128,9 @@ var Activity = function () {
             callback ({"errCode": 1});
           }
         });
-    }      
+    }     
   };
+};
 
 
 var geoSearchHelper = function(records, lat, long, callback)
@@ -144,7 +157,8 @@ var geoSearchHelper = function(records, lat, long, callback)
   }
   returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
   callback(returnRecords, count);
-}
+};
+
 Activity.search = function search(params, myLat, myLong, callback)
 {
   /** data is of the following form
@@ -189,42 +203,6 @@ Activity.search = function search(params, myLat, myLong, callback)
       callback(activities);
     }
   });
-}        
-  /*
-  this.property('login', 'string', {required: true});
-  this.property('password', 'string', {required: true});
-  this.property('lastName', 'string');
-  this.property('firstName', 'string');
-
-  this.validatesPresent('login');
-  this.validatesFormat('login', /[a-z]+/, {message: 'Subdivisions!'});
-  this.validatesLength('login', {min: 3});
-  // Use with the name of the other parameter to compare with
-  this.validatesConfirmed('password', 'confirmPassword');
-  // Use with any function that returns a Boolean
-  this.validatesWithFunction('password', function (s) {
-      return s.length > 0;
-  });
-
-  // Can define methods for instances like this
-  this.someMethod = function () {
-    // Do some stuff
-  };
-  */
-
-};
-
-/*
-// Can also define them on the prototype
-Activity.prototype.someOtherMethod = function () {
-  // Do some other stuff
-};
-// Can also define static methods and properties
-Activity.someStaticMethod = function () {
-  // Do some other stuff
-};
-Activity.someStaticProperty = 'YYZ';
-*/
+};       
 
 Activity = geddy.model.register('Activity', Activity);
-
