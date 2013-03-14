@@ -147,8 +147,10 @@ var Activity = function () {
     }
 
     //all checks pass
-    var newActivity = geddy.model.Activity.create(parameterDict);
-    geddy.model.Activity.save(newActivity, 
+
+    console.dir(paramerterDict);
+
+    geddy.model.Activity.save(parameterDict, 
       function (err, result){
 
         if(err){
