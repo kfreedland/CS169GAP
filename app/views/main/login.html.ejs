@@ -25,13 +25,13 @@
       <fieldset>
          <legend>Log In</legend>
          <div class="control-group">
-            <label for="username" class="control-label">username</label>
+            <label for="username" class="control-label">Username</label>
             <div class="controls">
                <%- contentTag('input', params.username, {type:'text', class:'span6', name:'username'}) %>
             </div>
          </div>
          <div class="control-group">
-            <label for="password" class="control-label">password</label>
+            <label for="password" class="control-label">Password</label>
             <div class="controls">
                <%- contentTag('input', params.password, {type:'password', class:'span6', name:'password'}) %>
             </div>
@@ -49,7 +49,7 @@
          </a>
          &nbsp; -->
          <!-- href="<%= geddy.config.fullHostname %>/auth/facebook">  -->
-      <a class="btn-auth btn-facebook large"
+      <a class="btn-auth btn-facebook large
          href="/auth/facebook" data-role="none" onClick="facebookClicked(event);">
          Log in with Facebook
       </a>
