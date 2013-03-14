@@ -79,7 +79,7 @@ function geocodeAddress(address, callback) {
       }
       callback(latlng);
     });
-};
+}
 
 /*
   Validate that the data in the dictionary. Convert the string values to integers for specific fields.
@@ -139,7 +139,7 @@ function validateData(data, callback) {
 	}
 	data.errMsg = errMsg;
 	callback(data);
-};
+}
 
 /*********************************************
 	Helper Time Functions
@@ -155,7 +155,7 @@ function convertDateToEpoch(date) {
 	var newDate = new Date(date);
 	var epoch = newDate.getTime();
 	return epoch;
-};
+}
 
 /*
   Convert a time string to milliseconds passed since midnight
@@ -196,7 +196,7 @@ function findMsFromMidnight(time) {
 		totalTime = totalTime * 1000;
 	}
 	return totalTime;
-};
+}
 
 /*
   Convert the time in milliseconds to a time string
@@ -229,4 +229,4 @@ function convertMsToString(time) {
 	// Create the string in the proper format HH:MM(AM/PM)
 	var dateString = hoursStr + ':' + minutesStr + am_pm;
 	return dateString;
-};
+}

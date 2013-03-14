@@ -96,4 +96,4 @@ function handleFindActivityResponse(jsonResp) {
 			$("#activity-address-" + index).append('<span class="row-address-name">' + address + '</span>');
 		});
 	});
-};
+}

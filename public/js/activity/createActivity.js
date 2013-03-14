@@ -54,7 +54,7 @@ $(document).ready(function() {
 */
 function handleCreateActivityResponse(status) {
 	window.location = '/';
-};
+}
 
 /*
   Fix the price range html if necessary
@@ -72,7 +72,7 @@ function fixPriceRange(lowPrice, highPrice, priceDivId) {
 	} else if (lowPrice === highPrice) {
 		$('#' + priceDivId).html('Price Range: $' + lowPrice);
 	}
-};
+}
 
 /*
   Fix the number of participants html if necessary
@@ -90,7 +90,7 @@ function fixParticipantsRange(lowNumParticipants, highNumParticipants, participa
 	} else if (lowNumParticipants === highNumParticipants) {
 		$('#' + participantsDivId).html('For ' + lowNumParticipants + ' people');
 	}
-};
+}
 
 /*
   Add the time range values to the proper html div
@@ -117,4 +117,4 @@ function addTimeRange(flag, time1, time2, timeDivId) {
 	} else if (flag === "nightTime") {
 		$('#' + timeDivId).html('Suggested Time: Night Time');
 	}
-};
+}
