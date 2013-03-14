@@ -9,12 +9,12 @@ var Activity = function () {
     time1: {type: '1'},
     time2: {type: '2'},
     flag: {type: 'string'},
-    beginDate: {type: '_date'},
-    endDate: {type: '_date'},
-    lowPrice: {type: '_price'},
-    highPrice: {type: '_price'},
-    lowNumParticipants: {type: '_num_participants'},
-    highNumParticipants: {type: '_num_participants'},
+    begin_date: {type: '_date'},
+    end_date: {type: '_date'},
+    low_price: {type: '_price'},
+    high_price: {type: '_price'},
+    low_num_participants: {type: '_num_participants'},
+    high_num_participants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
     duration:{type: 'number'}
@@ -65,7 +65,7 @@ var Activity = function () {
     }
 
     //make sure required fields are non-null
-    if (parameterDict.name == null){
+    if (!parameterDict.name){
 
       callback({"errCode": 6, "message": "null name"});
       return;
@@ -91,6 +91,7 @@ var Activity = function () {
       }
 
     } 
+
     if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
            && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && 
            parameterDict.flag != 'night_time'){
@@ -149,27 +150,56 @@ var Activity = function () {
 
     }
 
-    //all checks pass
     var activityDict = {};
     activityDict.name = parameterDict.name;
-    activityDict.description = parameterDict.description;
     activityDict.category = parameterDict.category;
-    activityDict.time1 = parameterDict.time1;
-    activityDict.time2 = parameterDict.time2;
     activityDict.flag = parameterDict.flag;
-    activityDict.beginDate = parameterDict.begin_date;
-    activityDict.endDate = parameterDict.end_date;
-    activityDict.lowPrice = parameterDict.low_price;
-    activityDict.highPrice = parameterDict.high_price;
-    activityDict.lowNumParticipants = parameterDict.low_num_participants;
-    activityDict.highNumParticipants = parameterDict.high_num_participants;
-    activityDict.latitude = parameterDict.latitude;
-    activityDict.longitude = parameterDict.longitude;
-    activityDict.duration = parameterDict.duration;
 
+
+    if(parameterDict.description){
+      activityDict.description = parameterDict.description;
+    }
+    if(parameterDict.time1){
+      activityDict.time1 = parameterDict.time1;
+    }
+    if(parameterDict.time2){
+      activityDict.time2 = parameterDict.time2;
+    }
+    if(parameterDict.begin_date){
+      activityDict.begin_date = parameterDict.begin_date;
+    }
+    if(parameterDict.end_date){
+      activityDict.end_date = parameterDict.end_date;
+    }
+    if(parameterDict.low_price){
+      activityDict.low_price = parameterDict.low_price;
+    }  
+    if(parameterDict.high_price){
+      activityDict.high_price = parameterDict.high_price;
+    }   
+    if(parameterDict.low_num_participants){
+      activityDict.lowNum_participants = parameterDict.low_num_participants;
+    } 
+    if(parameterDict.high_num_participants){
+      activityDict.highNum_participants = parameterDict.high_num_participants;
+    } 
+    if(parameterDict.latitude){
+      activityDict.latitude = parameterDict.latitude;
+    } 
+    if(parameterDict.longitude){
+      activityDict.longitude = parameterDict.longitude;
+    } 
+    if(parameterDict.duration){
+      activityDict.duration = parameterDict.duration;
+    }
+
+
+    //all checks pass
     console.dir(activityDict);
 
     var activityRecord = geddy.model.Activity.create(activityDict);
+
+    console.dir(activityRecord);
 
     geddy.model.Activity.save(activityRecord, 
       function (err, result){
