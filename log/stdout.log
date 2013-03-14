@@ -1,4 +1,4 @@
-[Sun, 10 Mar 2013 10:32:40 GMT] INFO Server starting with config: {
+[Thu, 14 Mar 2013 00:44:01 GMT] INFO Server starting with config: {
   "environment": "development",
   "workers": 1,
   "port": 4000,
@@ -8,11 +8,11 @@
   "rotateWorkers": false,
   "rotationWindow": 7200000,
   "rotationTimeout": 300000,
-  "logDir": "/home/brandon/Documents/CS169/Iteration1/CS169GAP/log",
+  "logDir": "/home/joshuaahn/cs169/CS169GAP/log",
   "gracefulShutdownTimeout": 30000,
   "heartbeatInterval": 5000,
   "heartbeatWindow": 20000,
-  "staticFilePath": "/home/brandon/Documents/CS169/Iteration1/CS169GAP/public",
+  "staticFilePath": "/home/joshuaahn/cs169/CS169GAP/public",
   "sessions": {
     "store": "memory",
     "key": "sid",
@@ -23,7 +23,7 @@
   "i18n": {
     "defaultLocale": "en-us",
     "loadPaths": [
-      "/home/brandon/Documents/CS169/Iteration1/CS169GAP/config/locales"
+      "/home/joshuaahn/cs169/CS169GAP/config/locales"
     ]
   },
   "hostname": "localhost",
@@ -43,7 +43,7 @@
   },
   "secret": "FfsFJsEzHchNYMP2HyLH7yHL0CZe3LfVeBeG4QuIGdKdTN5FPQLSdsHUPvbBvEAPdFvhvLn0vcoEV9Qm97M6bNrRxvKVeeQeM5dCQvRxXjIHyw1QYQW12IIJtiVRCkIk"
 }
-[Sun, 10 Mar 2013 10:32:40 GMT] INFO Creating 1 worker process.
-[Sun, 10 Mar 2013 10:32:41 GMT] INFO Server worker running in development on port 4000 with a PID of: 15240
-[Sun, 10 Mar 2013 10:32:41 GMT] DEBUG LOGGING STARTED ============================================
-[Sun, 10 Mar 2013 10:32:41 GMT] DEBUG ============================================================
+[Thu, 14 Mar 2013 00:44:01 GMT] INFO Creating 1 worker process.
+[Thu, 14 Mar 2013 00:44:02 GMT] INFO Server worker running in development on port 4000 with a PID of: 15541
+[Thu, 14 Mar 2013 00:44:02 GMT] DEBUG LOGGING STARTED ============================================
+[Thu, 14 Mar 2013 00:44:02 GMT] DEBUG ============================================================
