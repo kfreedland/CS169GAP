@@ -53,6 +53,7 @@ Activity.add = function(parameterDict, callback){
     var self = this;
 
     console.log("reached model create");
+    console.dir(parameterDict);
 
     var validCategories = new Array("sports", "entertainment", "concert");
 
