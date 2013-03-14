@@ -150,22 +150,6 @@ var Activity = function () {
 
     console.dir(parameterDict);
 
-description: {type: 'string'},
-    category:{type: 'string'},
-    time1: {type: '1'},
-    time2: {type: '2'},
-    flag: {type: 'string'},
-    beginDate: {type: '_date'},
-    endDate: {type: '_date'},
-    lowPrice: {type: '_price'},
-    highPrice: {type: '_price'},
-    lowNumParticipants: {type: '_num_participants'},
-    highNumParticipants: {type: '_num_participants'},
-    latitude: {type: 'number'},
-    longitude: {type: 'number'},
-    duration:{type: 'number'},
-
-
     var ActivityDict = {};
     activityDict.name = parameterDict.name;
     activityDict.description = parameterDict.description;
