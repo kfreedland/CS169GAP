@@ -24,6 +24,8 @@ var Activity = function () {
 
     var self = this;
 
+    console.log("reached model create");
+
     var validCategories = new Array("sports", "entertainment", "concert");
 
 
@@ -62,71 +64,99 @@ var Activity = function () {
     //make sure required fields are non-null
     if (parameterDict.name == null){
 
-      callback({"errCode": 6, "message": "null name"}); 
+      callback({"errCode": 6, "message": "null name"});
+      return;
 
-    } else if (parameterDict.flag == null){
+    } 
+    if (parameterDict.flag == null){
 
-      callback({"errCode": 6, "message": "null flag"});  
+      callback({"errCode": 6, "message": "null flag"}); 
+      return; 
 
-    } else if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
+    } 
+    if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
+      
       if(parameterDict.time1 == null){
 
-        callback({"errCode": 6, "message": "null time2"});    
+        callback({"errCode": 6, "message": "null time2"});
+        return;
       }
       if(parameterDict.time2 == null){
 
-        callback({"errCode": 6, "message": "null time2"});    
+        callback({"errCode": 6, "message": "null time2"}); 
+        return;
       }
 
-    } else if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
+    } 
+    if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
            && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && 
            parameterDict.flag != 'night_time'){
 
-      callback({"errCode": 6, "message": "invalid flag"});   
+      callback({"errCode": 6, "message": "invalid flag"});  
+      return; 
 
-    } else if (parameterDict.low_price == null){
+    } 
+
+    if (parameterDict.low_price == null){
 
       callback({"errCode": 6, "message": "null low_price"});   
+      return;
 
-    } else if (parameterDict.high_price == null){
+    } 
 
-      callback({"errCode": 6, "message": "null high_price"});   
+    if (parameterDict.high_price == null){
 
-    } else if(parameterDict.low_price != null && parameterDict.high_price != null){
+      callback({"errCode": 6, "message": "null high_price"});  
+      return; 
+
+    } 
+
+    if(parameterDict.low_price != null && parameterDict.high_price != null){
 
       if (parameterDict.low_price > parameterDict.high_price){
 
-        callback({"errCode": 6, "message": "invalid prices"});  
+        callback({"errCode": 6, "message": "invalid prices"}); 
+        return;
+
       }
 
-    } else if(parameterDict.low_num_participants != null && parameterDict.high_num_participants != null){
+    }
+    
+    if(parameterDict.low_num_participants != null && parameterDict.high_num_participants != null){
 
       if (parameterDict.low_num_participants > parameterDict.high_num_participants){
 
         callback({"errCode": 6, "message": "invalid participants"});  
+        return;
       } 
 
-    } else if(parameterDict.category == null){
+    }
+
+    if(parameterDict.category == null){
 
       callback({"errCode": 6, "message": "null category"});  
+      return;
 
-    } else if(acceptedCategories.indexOf(parameterDict.category) == -1){
+    }
 
-      callback({"errCode": 6, "message": "invalid category"});  
+    if(acceptedCategories.indexOf(parameterDict.category) == -1){
 
-    } else {
+      callback({"errCode": 6, "message": "invalid category"}); 
+      return; 
 
-      //all checks pass
-      var newActivity = geddy.model.Activity.create(parameterDict);
-      geddy.model.Activity.save(newActivity, 
-        function (err, result){
+    }
 
-          if(err){
-            callback({"errCode":7});
-          } else {
-            callback ({"errCode": 1});
-          }
-        });
+    //all checks pass
+    var newActivity = geddy.model.Activity.create(parameterDict);
+    geddy.model.Activity.save(newActivity, 
+      function (err, result){
+
+        if(err){
+          callback({"errCode":7});
+        } else {
+          callback ({"errCode": 1});
+        }
+      });
     }     
   };
 };
