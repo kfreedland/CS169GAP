@@ -136,7 +136,6 @@ Activity.add = function(parameterDict, callback){
       return;
 
     } 
-
     if (parameterDict.high_price == undefined){
 
       callback({"errCode": 6, "message": "null high_price"});  
@@ -183,7 +182,6 @@ Activity.add = function(parameterDict, callback){
     activityDict.name = parameterDict.name;
     activityDict.category = parameterDict.category;
     activityDict.flag = parameterDict.flag;
-
 
     if(parameterDict.description != undefined){
       activityDict.description = parameterDict.description;

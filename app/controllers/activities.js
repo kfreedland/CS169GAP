@@ -28,7 +28,7 @@ var Activities = function () {
       geddy.model.Activity.search(queryInfo, function(responseDict)
       {
         console.log("RESP IS: " + responseDict);
-        self.respond(responsedict, {format: 'json'});
+        self.respond(responseDict, {format: 'json'});
       });
     }
     else

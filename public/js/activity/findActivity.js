@@ -20,8 +20,54 @@ $(document).ready(function() {
 			        success: function(respData) {
 			        	console.log('Successful Find Activity Call');
 			        	console.log(respData);
-			        	
+			        	/*
 			        	handleFindActivityResponse(respData);
+			        	*/
+			        	resp = {
+			        		0: {
+			        			name: 'Activity1',
+			        			description: 'Activity1 Description located here.',
+			        			time1: '',
+			        			time2: '',
+			        			flag: 'dayTime',
+			        			low_price: '30',
+			        			high_price: '50',
+			        			low_num_participants: '5',
+			        			high_num_participants: '10',
+			        			latitude: '37.867417',
+			        			longitude: '-122.260408',
+			        			category: 'Sports'
+			        		},
+			        		1: {
+			        			name: 'Activity2',
+			        			description: 'Activity2 Description located here.',
+			        			time1: '',
+			        			time2: '',
+			        			flag: 'nightTime',
+			        			low_price: '0',
+			        			high_price: '0',
+			        			low_num_participants: '1',
+			        			high_num_participants: '4',
+			        			latitude: '37.867417',
+			        			longitude: '-122.260408',
+			        			category: 'Sports'
+			        		},
+			        		2: {
+			        			name: 'Activity3',
+			        			description: 'Activity3 Description located here.',
+			        			time1: '43200000',
+			        			time2: '46800000',
+			        			flag: 'startEnd',
+			        			low_price: '5',
+			        			high_price: '5',
+			        			low_num_participants: '3',
+			        			high_num_participants: '3',
+			        			latitude: '37.867417',
+			        			longitude: '-122.260408',
+			        			category: 'Food'
+			        		}
+			        	};
+			        	handleFindActivityResponse(resp);
 			        },
 			        failure: function(err) {
 			        	console.log('Failure');

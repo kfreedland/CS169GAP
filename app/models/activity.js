@@ -12,8 +12,8 @@ var Activity = function () {
     flag: {type: 'string', required: true},
     begin_date: {type: 'int'},
     end_date: {type: 'int'},
-    low_price: {type: 'number', required: true},
-    high_price: {type: 'number', required: true},
+    low_price: {type: 'int', required: true},
+    high_price: {type: 'int', required: true},
     low_num_participants: {type: 'int'},
     high_num_participants: {type: 'int'},
     latitude: {type: 'number'},
@@ -59,37 +59,37 @@ Activity.add = function(parameterDict, callback){
 
     //Parse strings to Ints
     if(parameterDict.time1 != undefined){
-      parameterDict.time1 = parseInt(parameterDict.time1,10)
+      parameterDict.time1 = parseInt(parameterDict.time1,10);
     } 
     if(parameterDict.time2 != undefined){
-      parameterDict.time2 = parseInt(parameterDict.time2,10)
+      parameterDict.time2 = parseInt(parameterDict.time2,10);
     } 
     if(parameterDict.begin_date != undefined){
-      parameterDict.begin_date = parseInt(parameterDict.begin_date,10)
+      parameterDict.begin_date = parseInt(parameterDict.begin_date,10);
     } 
     if(parameterDict.end_date != undefined){
-      parameterDict.end_date = parseInt(parameterDict.end_date,10)
+      parameterDict.end_date = parseInt(parameterDict.end_date,10);
     } 
     if(parameterDict.low_price != undefined){
-      parameterDict.low_price = parseFloat(parameterDict.low_price,10)
+      parameterDict.low_price = parseInt(parameterDict.low_price,10);
     }
     if(parameterDict.high_price != undefined){
-      parameterDict.high_price = parseFloat(parameterDict.high_price,10)
+      parameterDict.high_price = parseInt(parameterDict.high_price,10);
     }
     if(parameterDict.low_num_participants != undefined){
-      parameterDict.low_num_participants = parseInt(parameterDict.low_num_participants,10)
+      parameterDict.low_num_participants = parseInt(parameterDict.low_num_participants,10);
     }
     if(parameterDict.high_num_participants != undefined){
-      parameterDict.high_num_participants = parseInt(parameterDict.high_num_participants,10)
+      parameterDict.high_num_participants = parseInt(parameterDict.high_num_participants,10);
     }
     if(parameterDict.latitude != undefined){
-      parameterDict.latitude = parseFloat(parameterDict.latitude)
+      parameterDict.latitude = parseFloat(parameterDict.latitude);
     }
     if(parameterDict.longitude != undefined){
-      parameterDict.longitude = parseFloat(parameterDict.longitude)
+      parameterDict.longitude = parseFloat(parameterDict.longitude);
     }
     if(parameterDict.duration != undefined){
-      parameterDict.longitude = parseFloat(parameterDict.duration)
+      parameterDict.longitude = parseFloat(parameterDict.duration);
     }
 
     //make sure required fields are defineed
