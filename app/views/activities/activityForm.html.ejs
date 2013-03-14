@@ -7,20 +7,20 @@
   <div data-role="page" id="create_activity_page">
 <% } %>
 
-<!--Navigation Bar-->
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div data-role="header">
-      <h1>
-        Group Activity Planner
-      </h1>
-      <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
-        <a href="/login" id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
-        <a href="/users/add" id="sign_up_button" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+  <!--Navigation Bar-->
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div data-role="header">
+        <h1>
+          Group Activity Planner
+        </h1>
+        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
+          <a href="/login" id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
+          <a href="/users/add" id="sign_up_button" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 <% if(form.type === "find") { %>
   <div id="find_activity" class="box" data-role="content">
@@ -29,34 +29,34 @@
   <div id="create_activity" class="box" data-role="content">
 <% } %>
     <div id="message_box" class="message"></div>
-      <form>
-        <div>
-          <center>
-            <div data-role="controlgroup" data-type="horizontal">
-              <!--Find Activity Button-->
-              <% if(form.type === "find") { %>
-                <a href="#find_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
-              <% } else { %>
-                <a href="#find_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
-              <% } %>
-                <span class="ui-btn-inner ui-btn-corner-all">
-                  <span class="ui-btn-text">Find Activity</span>
-                </span>
-              </a>
-              <!--Create Activity Button-->
-              <% if(form.type === "find") { %>
-                <a href="#create_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
-              <% } else { %>
-                <a href="#create_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
-              <% } %>
-                <span class="ui-btn-inner ui-btn-corner-all">
-                  <span class="ui-btn-text">Create Activity</span>
-                </span>
-              </a>
-            </div>
-          </center>
-        </div>
-  <% if(form.type === "create") { %>
+    <form>
+      <div>
+        <center>
+          <div data-role="controlgroup" data-type="horizontal">
+            <!--Find Activity Button-->
+            <% if(form.type === "find") { %>
+              <a href="#find_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
+            <% } else { %>
+              <a href="#find_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
+            <% } %>
+              <span class="ui-btn-inner ui-btn-corner-all">
+                <span class="ui-btn-text">Find Activity</span>
+              </span>
+            </a>
+            <!--Create Activity Button-->
+            <% if(form.type === "find") { %>
+              <a href="#create_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
+            <% } else { %>
+              <a href="#create_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
+            <% } %>
+              <span class="ui-btn-inner ui-btn-corner-all">
+                <span class="ui-btn-text">Create Activity</span>
+              </span>
+            </a>
+          </div>
+        </center>
+      </div>
+      <% if(form.type === "create") { %>
         <!--Activity Name-->
         <div data-role="fieldcontain">
             <label for="activity_name">Activity Name: </label>
@@ -65,8 +65,8 @@
 
         <!--Activity Description-->
         <label for="textarea-a">Activity Description: </label>
-          <textarea name="textarea" id="activity_description" placeholder="Write a description of the activity you are thinking of..."></textarea>
-  <% } %>
+        <textarea name="textarea" id="activity_description" placeholder="Write a description of the activity you are thinking of..."></textarea>
+      <% } %>
 
       <!-- Number of People -->
       <label>Number of Participants: </label>
@@ -173,5 +173,5 @@
         <input id="create_activity_button" type="submit" value="Create Activity" data-role="button" data-icon="home" data-theme="b">
       <% } %>
     </form>
-  </div>
-  </div><!-- /page -->
+  </div> <!-- End Content -->
+</div><!-- End Page -->

@@ -1,5 +1,10 @@
-function pullAndReturnData(type, callback) {
+function pullAndReturnData(type, callback) {	
 	// Get the values from the form inputs
+	// Check for name and description if type is 'create'
+	if (type === 'create') {
+		var name = $('activity_name').val();
+		var description = $('activity_description').val();
+	}
 	var minPeople = $('#low_num_participants_' + type).val();
 	var maxPeople = $('#high_num_participants_' + type).val();
 	var minPrice = $('#min_price_' + type).val();
@@ -50,8 +55,11 @@ function pullAndReturnData(type, callback) {
 			category: category,
 			errStatus: null
 		};
-		if (type === "find") {
+		if (type === 'find') {
 			data.duration = duration;
+		} else if (type === 'create') {
+			data.name = name;
+			data.description = description;
 		}
 		callback(data);
 	});
