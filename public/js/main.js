@@ -1,6 +1,7 @@
 
 
 $(document).ready(function() {
+	$('#list_activities_container').hide();
 	/*
 	  When the Find Activities button is clicked, send an ajax call to /activities/search with the form data
 	*/
@@ -67,6 +68,8 @@ $(document).ready(function() {
 			        success: function(respData) {
 			        	console.log('Success');
 			        	console.log(respData);
+			        	
+			        	handleFindActivityResponse(respData);
 			        },
 			        failure: function(err) {
 			        	console.log('Failure');
@@ -91,57 +94,6 @@ $(document).ready(function() {
 });
 
 /*
-  Convert a date string to epoch time in milliseconds
-
-  @param String date - String of the date to be converted
-  @return int epoch - Integer value of the epoch time in milliseconds
-*/
-function convertDateToEpoch(date) {
-	var newDate = new Date(date);
-	var epoch = newDate.getTime();
-	return epoch;
-};
-
-/*
-  Convert a time string to milliseconds passed since midnight
-
-  @param String time - String of the time to be converted
-  @return int totalTime - Integer value of the milliseconds passed since midnight
-*/
-function findMsFromMidnight(time) {
-	// Variable for the total amount of time from midnight
-	var totalTime = 0;
-	// Check that the time is not null
-	if (time !== '') {
-		// Time should be in HH:MM AM/PM format
-		// splitTime will split it into [HH, MM AM/PM]
-		var splitTime = time.split(':');
-		// Add on the amount of seconds from the hour
-		totalTime += parseInt(splitTime[0]) * 3600;
-		// Split the time into [MM, AM/PM]
-		var splitMinute = splitTime[1].split(' ');
-		// Add on the amount of seconds from the minute
-		totalTime += parseInt(splitMinute[0]) * 60;
-		// Check if the time is in PM
-		if (splitMinute[1] === "PM") {
-			// Check that it is not 12 PM
-			if (splitTime[0] !== "12") {
-				// Add on 12 hours in seconds = 43200 seconds
-				totalTime += 43200;
-			}
-		} else {
-			// Check for 12 AM
-			if (splitTime[0] === "12") {
-				// Remove the 12 hours in seconds added on in the beginning
-				totalTime -= 43200;
-			}
-		}
-	}
-	// Convert seconds to milliseconds and return
-	return totalTime * 1000;
-};
-
-/*
   Find the longitude and latitude given an address
 
   @param String address - String of the address to have its latitude and longitude calculated
@@ -152,7 +104,6 @@ function geocodeAddress(address, callback) {
 	var latlng;
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-      	console.log("yay");
       	// Calculate the latitude and longitude
       	lat = results[0].geometry.location.lat();
       	lng = results[0].geometry.location.lng();
@@ -224,4 +175,211 @@ function validateData(data, callback) {
 	}
 	data.errMsg = errMsg;
 	callback(data);
+};
+
+/*
+  Function to handle the response from clicking on the 'Find Activities' button
+
+  Take the JSON object from the AJAX response and populate the html with the list of suggested activities.
+
+  @param Dict jsonResp - The JSON object returned from the AJAX call to Find Activities
+*/
+function handleFindActivityResponse(jsonResp) {
+	// Hide the find activities form and show the suggested activities list
+	$('#find_activity').hide();
+	$('#list_activities_container').show();
+
+	var geocoder = new google.maps.Geocoder();
+
+	// Loop through each activities entry in the dictionary
+	$.each(jsonResp, function(index, data) {
+		// Create variables for dynamic ids of certain divs
+		var activityID = "activity-" + index;
+		var activityPrice = 'activity-price-' + index;
+		var activityParticipants = 'activity-participants-' + index;
+		var activityTime = 'activity-time-' + index;
+
+		// Append the html to the list_activities div
+		$("#list_activities").append(
+			'<div class="list-item" id="' + activityID + '">' +
+			'<div class="row-title">' + index + '. ' + data.name + '</div>' +
+			'<div class="row-category">' + data.category + '</div>' +
+			'<div class="row-address" id="activity-address-' + index + '"></div>' +
+			'<div class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.low_price + ' to $' + data.high_price + '</div>' +
+			'<div class="row-num-participants" id="' + activityParticipants + '">For ' + data.low_num_participants + ' to ' + data.high_num_participants + ' people</div>' +
+			'<div class="row-time-range" id="' + activityTime + '"></div>' +
+			'<div class="row-description">' + data.description + '</div>' +
+			'</div>'
+		);
+
+		// Do some additional fixing of the activity details
+		fixPriceRange(parseInt(data.low_price), parseInt(data.high_price), activityPrice);
+		fixParticipantsRange(parseInt(data.low_num_participants), parseInt(data.high_num_participants), activityParticipants);
+		addTimeRange(data.flag, data.time1, data.time2, activityTime);
+
+		// Calculate the address from the provided latitude and longitude, and insert it into the html
+		var latlng = new google.maps.LatLng(data.latitude, data.longitude);
+		geocoder.geocode({
+			"latLng": latlng
+		}, function (results, status) {
+			var address = '';
+			if (status == google.maps.GeocoderStatus.OK) {
+				address = results[0].formatted_address;
+			}
+			$("#activity-address-" + index).append('<span class="row-address-name">' + address + '</span>');
+		});
+	});
+};
+
+/*
+  Fix the price range html if necessary
+
+  If the low number and high number are both 0, then change the price range to say that it's free.
+  If they are the same, change the range to just one number. (Ex: "Price Range: $3 to $3" to "Price Range: $3")
+
+  @param int lowPrice - The lower bound of the price range
+  @param int highPrice - The higher bound of the price range
+  @param String priceDivId - The id of the div containing the price range
+*/
+function fixPriceRange(lowPrice, highPrice, priceDivId) {
+	if (lowPrice === 0 && highPrice === 0) {
+		$('#' + priceDivId).html('Price Range: Free');
+	} else if (lowPrice === highPrice) {
+		$('#' + priceDivId).html('Price Range: $' + lowPrice);
+	}
+};
+
+/*
+  Fix the number of participants html if necessary
+
+  If the number of participants is only 1, change people to person. If the low number and high number
+  are the same, change the range to just one number. (Ex: "For 2 to 2 people" to "For 2 people")
+
+  @param int lowNumParticipants - The lower bound of number of partcipants
+  @param int highNumParticipants - The higher bound of number of partcipants
+  @param String participantsDivId - The id of the div containing the range of participants
+*/
+function fixParticipantsRange(lowNumParticipants, highNumParticipants, participantsDivId) {
+	if (lowNumParticipants === 1 && highNumParticipants === 1) {
+		$('#' + participantsDivId).html('For 1 person');
+	} else if (lowNumParticipants === highNumParticipants) {
+		$('#' + participantsDivId).html('For ' + lowNumParticipants + ' people');
+	}
+};
+
+/*
+  Add the time range values to the proper html div
+
+  @param String flag - Flag that signifies what form the times will be in.
+  					   Flag values: startEnd, openClose, anyTime, dayTime, nightTime
+  @param int time1 - Starting time in ms from midnight, only required if flag = 'startEnd' or 'openClose'
+  @param int time2 - Ending time in ms from midnight, only required if flag = 'startEnd' or 'openClose'
+  @param String timeDivId - The id of the div to insert the html of the time range values into
+*/
+function addTimeRange(flag, time1, time2, timeDivId) {
+	if (flag === "startEnd") {
+		var t1Str = convertMsToString(time1);
+		var t2Str = convertMsToString(time2);
+		$('#' + timeDivId).html('Suggested Time: ' + t1Str + ' to ' + t2Str);
+	} else if (flag === "openClose") {
+		var t1Str = convertMsToString(time1);
+		var t2Str = convertMsToString(time2);
+		$('#' + timeDivId).html('Opens: ' + t1Str + '   Closes: ' + t2Str);
+	} else if (flag === "anyTime") {
+		$('#' + timeDivId).html('Suggested Time: Any Time');
+	} else if (flag === "dayTime") {
+		$('#' + timeDivId).html('Suggested Time: Day Time');
+	} else if (flag === "nightTime") {
+		$('#' + timeDivId).html('Suggested Time: Night Time');
+	}
+};
+
+/*********************************************
+	Helper Time Functions
+*********************************************/
+
+/*
+  Convert a date string to epoch time in milliseconds
+
+  @param String date - String of the date to be converted
+  @return int epoch - Integer value of the epoch time in milliseconds
+*/
+function convertDateToEpoch(date) {
+	var newDate = new Date(date);
+	var epoch = newDate.getTime();
+	return epoch;
+};
+
+/*
+  Convert a time string to milliseconds passed since midnight
+
+  @param String time - String of the time to be converted
+  @return int totalTime - Integer value of the milliseconds passed since midnight
+*/
+function findMsFromMidnight(time) {
+	// Variable for the total amount of time from midnight
+	var totalTime;
+	// Check that the time is not null
+	if (time && time !== '') {
+		totalTime = 0;
+		// Time should be in HH:MM AM/PM format
+		// splitTime will split it into [HH, MM AM/PM]
+		var splitTime = time.split(':');
+		// Add on the amount of seconds from the hour
+		totalTime += parseInt(splitTime[0]) * 3600;
+		// Split the time into [MM, AM/PM]
+		var splitMinute = splitTime[1].split(' ');
+		// Add on the amount of seconds from the minute
+		totalTime += parseInt(splitMinute[0]) * 60;
+		// Check if the time is in PM
+		if (splitMinute[1] === "PM") {
+			// Check that it is not 12 PM
+			if (splitTime[0] !== "12") {
+				// Add on 12 hours in seconds = 43200 seconds
+				totalTime += 43200;
+			}
+		} else {
+			// Check for 12 AM
+			if (splitTime[0] === "12") {
+				// Remove the 12 hours in seconds added on in the beginning
+				totalTime -= 43200;
+			}
+		}
+		// Convert seconds to milliseconds
+		totalTime = totalTime * 1000;
+	}
+	return totalTime;
+};
+
+/*
+  Convert the time in milliseconds to a time string
+
+  @param int time - Time in milliseconds from midnight to be converted to a string
+  @return String dateString - String value of the time in milliseconds, format is HH:MM(AM/PM)
+*/
+function convertMsToString(time) {
+	// Create a Date object with that time as the milliseconds
+	var d = new Date(0,0,0,0,0,0,time);
+	var hours = d.getHours();
+	var hoursStr = hours.toString();
+	var minutes = d.getMinutes();
+	var minutesStr = minutes.toString();
+	var am_pm = 'AM';
+
+	// Change from 24-hr clock time to 12-hr clock time
+	if (hours === 12) {
+		am_pm = 'PM';
+	} else if (hours > 12) {
+		hours = hours % 12;
+		am_pm = 'PM';
+		hoursStr = hours.toString();
+	}
+	// Add the '0' before the minutes if less than 10 minutes
+	if (minutes < 10) {
+		minutesStr = '0' + minutesStr;
+	}
+
+	// Create the string in the proper format HH:MM(AM/PM)
+	var dateString = hoursStr + ':' + minutesStr + am_pm;
+	return dateString;
 };
