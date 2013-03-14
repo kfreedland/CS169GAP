@@ -99,12 +99,12 @@ var Activities = function () {
     this.respond({params: params});
   };
 */
-  this.create = function (req, resp, params) {
+  this.createActivity = function (req, resp, params) {
 
     var self = this;
     console.log("activites.create reached")
 
-    geddy.model.Activity.create(params, 
+    geddy.model.Activity.createActivity(params, 
       function createCallBack(result){
         self.respond(result);
       });

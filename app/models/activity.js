@@ -20,7 +20,7 @@ var Activity = function () {
     duration:{type: 'number'},
   });
 
-  this.create = function(parameterDict, callback){
+  this.createActivity = function(parameterDict, callback){
 
     var self = this;
 
