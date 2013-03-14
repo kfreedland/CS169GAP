@@ -60,6 +60,9 @@ var Activity = function () {
     if(parameterDict.longitude){
       parameterDict.longitude = parseFloat(parameterDict.longitude)
     }
+    if(parameterDict.duration){
+      parameterDict.longitude = parseFloat(parameterDict.duration)
+    }
 
     //make sure required fields are non-null
     if (parameterDict.name == null){
@@ -166,9 +169,9 @@ var Activity = function () {
 
     console.dir(activityDict);
 
+    var activityRecord = geddy.model.Activity.create(activityDict);
 
-
-    geddy.model.Activity.save(activityDict, 
+    geddy.model.Activity.save(activityRecord, 
       function (err, result){
 
         if(err){
