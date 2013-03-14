@@ -20,7 +20,33 @@ var Activity = function () {
     duration:{type: 'number'}
   });
 
-  this.createActivity = function(parameterDict, callback){
+};
+
+var geoSearchHelper = function(records, lat, long, callback)
+{
+  var consDist = 69.1;
+  var consAng = 57.3;
+  returnRecords = {};
+  count = 0;
+  for (var idx in records)
+  {
+    var record = records[idx];
+    console.log("RECORD: "+record);
+    //using a geo dist equation
+    var dist = Math.sqrt(Math.pow(record.latitude-lat, 2) + Math.pow((record.longitude-long) * Math.cos(lat/57.3), 2))
+    record.distance = distance;
+    returnRecords[count] = record;
+    count++;
+    if(count == MAX_RETURNED)
+    {
+      break;
+    }
+  }
+  returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
+  callback(returnRecords, count);
+};
+
+Activity.add = function(parameterDict, callback){
 
     var self = this;
 
@@ -211,31 +237,6 @@ var Activity = function () {
         }
       });   
   };
-};
-
-
-var geoSearchHelper = function(records, lat, long, callback)
-{
-  var consDist = 69.1;
-  var consAng = 57.3;
-  returnRecords = {};
-  count = 0;
-  for (var idx in records)
-  {
-    var record = records[idx];
-    console.log("RECORD: "+record);
-    //using a geo dist equation
-    var dist = Math.sqrt(Math.pow(record.latitude-lat, 2) + Math.pow((record.longitude-long) * Math.cos(lat/57.3), 2))
-    record.distance = distance;
-    returnRecords[count] = record;
-    count++;
-    if(count == MAX_RETURNED)
-    {
-      break;
-    }
-  }
-  returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
-  callback(returnRecords, count);
 };
 
 Activity.search = function search(params, myLat, myLong, callback)

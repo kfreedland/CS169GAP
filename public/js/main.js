@@ -1,7 +1,6 @@
 
 
 $(document).ready(function() {
-	$('.btn-facebook').removeClass('ui-link');
 
 	$('#list_activities_container').hide();
 	/*
@@ -384,4 +383,14 @@ function convertMsToString(time) {
 	// Create the string in the proper format HH:MM(AM/PM)
 	var dateString = hoursStr + ':' + minutesStr + am_pm;
 	return dateString;
-};
+}
+
+//Login Page
+function facebookClicked(event) {
+  	event.preventDefault();
+	//var url = document.location.protocol + window.location.host + $('.btn-facebook').attr('href');
+	var url = $('.btn-facebook').attr('href');
+	$(location).attr('href', url);
+	// $(href + $('.btn-facebook').attr('href') ).show();
+    return false;
+}

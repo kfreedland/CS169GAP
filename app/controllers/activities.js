@@ -21,13 +21,13 @@ var Activities = function () {
     var hour = 3600000;
     //We want to assure ourselves that the model only gets the relevant params and not anything extra
     //I use default values for fields that are left blank to make for easier queries in the model
-    queryInfo = {};
+    var queryInfo = {};
     if(params.name && (typeof params.name == 'string'))
     {
-      queryInfo.name = {'like': name};
+      queryInfo.name = {'like': params.name};
       geddy.model.Activity.search(queryInfo, function(responseDict)
       {
-        console.log("RESP IS: "+responseDict);
+        console.log("RESP IS: " + responseDict);
         self.respond(responsedict, {format: 'json'});
       });
     }
@@ -35,12 +35,12 @@ var Activities = function () {
     {
       if(params.time1 && (typeof params.time1 == 'number'))
       {
-        queryInfo.time1 = {gt: Math.max(params.time1-hour,0)};
+        queryInfo.time1 = {gt: Math.max(params.time1 - hour,0)};
       }
 
       if(params.time2 && (typeof params.time2 == 'number'))
       {
-        queryInfo.time2 = {lt: Math.max(params.time2+hour)};
+        queryInfo.time2 = {lt: Math.max(params.time2 + hour)};
       }
 
       if(params.begin_date && (typeof params.begin_date == 'number'))
@@ -60,22 +60,22 @@ var Activities = function () {
 
       if(params.low_price && (typeof params.low_price == 'number'))
       {
-        queryInfo.low_price = {gt: Math.floor(params.low_price*.75)};
+        queryInfo.low_price = {gt: Math.floor(params.low_price * 0.75)};
       }
 
       if(params.high_price && (typeof params.high_price == 'number'))
       {
-        queryInfo.high_price = {lt: Math.ceil(params.high_price*1.25)};
+        queryInfo.high_price = {lt: Math.ceil(params.high_price * 1.25)};
       }
 
       if(params.low_num_participants && (typeof params.low_num_participants == 'number'))
       {
-        queryInfo.low_num_participants = {gt: Math.floor(params.low_num_participants*.90)};
+        queryInfo.low_num_participants = {gt: Math.floor(params.low_num_participants * 0.90)};
       }
 
       if(params.high_num_participants && (typeof params.high_num_participants == 'number'))
       {
-        queryInfo.high_num_participants = {lt: Math.ceil(params.high_num_participants*1.1)}
+        queryInfo.high_num_participants = {lt: Math.ceil(params.high_num_participants * 1.1)}
       }
 
       geddy.model.Activity.search(queryInfo, params.latitude, params.longitude, function(responseDict)
@@ -99,12 +99,13 @@ var Activities = function () {
     this.respond({params: params});
   };
 */
-  Activities.createActvity = function (req, resp, params) {
+
+  this.create = function (req, resp, params) {
 
     var self = this;
     console.log("activites.create reached")
 
-    geddy.model.Activity.create(params, 
+    geddy.model.Activity.add(params, 
       function createCallBack(result){
         self.respond(result);
       });

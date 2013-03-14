@@ -1,36 +1,4 @@
 (function () {
-var Passport = function () {
-  this.property('authType', 'string');
-  this.property('key', 'string');
-
-  this.belongsTo('User');
-};
-
-Passport = geddy.model.register('Passport', Passport);
-
-}());
-
-(function () {
-var User = function () {
-
-  this.property('username', 'string', {required: true});
-  this.property('password', 'string', {required: true});
-  this.property('familyName', 'string', {required: true});
-  this.property('givenName', 'string', {required: true});
-  this.property('email', 'string', {required: true});
-
-  this.validatesLength('username', {min: 3});
-  this.validatesLength('password', {min: 8});
-  this.validatesConfirmed('password', 'confirmPassword');
-
-  this.hasMany('Passports');
-};
-
-User = geddy.model.register('User', User);
-
-}());
-
-(function () {
 const MIN_RETURNED = 1;
 const MAX_RETURNED = 2;
 var Activity = function () {
@@ -50,13 +18,14 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
-    duration:{type: 'number'},
-    category: {type: 'string'}
+    duration:{type: 'number'}
   });
 
-  this.create = function(parameterDict, callback){
+  this.createActivity = function(parameterDict, callback){
 
     var self = this;
+
+    console.log("reached model create");
 
     var validCategories = new Array("sports", "entertainment", "concert");
 
@@ -92,78 +61,129 @@ var Activity = function () {
     if(parameterDict.longitude){
       parameterDict.longitude = parseFloat(parameterDict.longitude)
     }
+    if(parameterDict.duration){
+      parameterDict.longitude = parseFloat(parameterDict.duration)
+    }
 
     //make sure required fields are non-null
     if (parameterDict.name == null){
 
-      callback({"errCode": 6, "message": "null name"}); 
+      callback({"errCode": 6, "message": "null name"});
+      return;
 
-    } else if (parameterDict.flag == null){
+    } 
+    if (parameterDict.flag == null){
 
-      callback({"errCode": 6, "message": "null flag"});  
+      callback({"errCode": 6, "message": "null flag"}); 
+      return; 
 
-    } else if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
+    } 
+    if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
+      
       if(parameterDict.time1 == null){
 
-        callback({"errCode": 6, "message": "null time2"});    
+        callback({"errCode": 6, "message": "null time2"});
+        return;
       }
       if(parameterDict.time2 == null){
 
-        callback({"errCode": 6, "message": "null time2"});    
+        callback({"errCode": 6, "message": "null time2"}); 
+        return;
       }
 
-    } else if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
+    } 
+    if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
            && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && 
            parameterDict.flag != 'night_time'){
 
-      callback({"errCode": 6, "message": "invalid flag"});   
+      callback({"errCode": 6, "message": "invalid flag"});  
+      return; 
 
-    } else if (parameterDict.low_price == null){
+    } 
+
+    if (parameterDict.low_price == null){
 
       callback({"errCode": 6, "message": "null low_price"});   
+      return;
 
-    } else if (parameterDict.high_price == null){
+    } 
 
-      callback({"errCode": 6, "message": "null high_price"});   
+    if (parameterDict.high_price == null){
 
-    } else if(parameterDict.low_price != null && parameterDict.high_price != null){
+      callback({"errCode": 6, "message": "null high_price"});  
+      return; 
+
+    } 
+
+    if(parameterDict.low_price != null && parameterDict.high_price != null){
 
       if (parameterDict.low_price > parameterDict.high_price){
 
-        callback({"errCode": 6, "message": "invalid prices"});  
+        callback({"errCode": 6, "message": "invalid prices"}); 
+        return;
+
       }
 
-    } else if(parameterDict.low_num_participants != null && parameterDict.high_num_participants != null){
+    }
+    
+    if(parameterDict.low_num_participants != null && parameterDict.high_num_participants != null){
 
       if (parameterDict.low_num_participants > parameterDict.high_num_participants){
 
         callback({"errCode": 6, "message": "invalid participants"});  
+        return;
       } 
 
-    } else if(parameterDict.category == null){
+    }
+
+    if(parameterDict.category == null){
 
       callback({"errCode": 6, "message": "null category"});  
+      return;
 
-    } else if(acceptedCategories.indexOf(parameterDict.category) == -1){
+    }
 
-      callback({"errCode": 6, "message": "invalid category"});  
+    if(validCategories.indexOf(parameterDict.category) == -1){
 
-    } else {
+      callback({"errCode": 6, "message": "invalid category"}); 
+      return; 
 
-      //all checks pass
-      var newActivity = geddy.model.Activity.create(parameterDict);
-      geddy.model.Activity.save(newActivity, 
-        function (err, result){
+    }
 
-          if(err){
-            callback({"errCode":7});
-          } else {
-            callback ({"errCode": 1});
-          }
-        });
-    }     
+    //all checks pass
+    var activityDict = {};
+    activityDict.name = parameterDict.name;
+    activityDict.description = parameterDict.description;
+    activityDict.category = parameterDict.category;
+    activityDict.time1 = parameterDict.time1;
+    activityDict.time2 = parameterDict.time2;
+    activityDict.flag = parameterDict.flag;
+    activityDict.beginDate = parameterDict.begin_date;
+    activityDict.endDate = parameterDict.end_date;
+    activityDict.lowPrice = parameterDict.low_price;
+    activityDict.highPrice = parameterDict.high_price;
+    activityDict.lowNumParticipants = parameterDict.low_num_participants;
+    activityDict.highNumParticipants = parameterDict.high_num_participants;
+    activityDict.latitude = parameterDict.latitude;
+    activityDict.longitude = parameterDict.longitude;
+    activityDict.duration = parameterDict.duration;
+
+    console.dir(activityDict);
+
+    var activityRecord = geddy.model.Activity.create(activityDict);
+
+    geddy.model.Activity.save(activityRecord, 
+      function (err, result){
+
+        if(err){
+          callback({"errCode":7});
+        } else {
+          callback ({"errCode": 1});
+        }
+      });   
   };
 };
+
 
 var geoSearchHelper = function(records, lat, long, callback)
 {
@@ -177,14 +197,12 @@ var geoSearchHelper = function(records, lat, long, callback)
     console.log("RECORD: "+record);
     //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude-lat, 2) + Math.pow((record.longitude-long) * Math.cos(lat/57.3), 2))
-    record.dist = dist
+    record.distance = distance;
     returnRecords[count] = record;
     count++;
     if(count == MAX_RETURNED)
     {
-      returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
-      callback(returnRecords, count);
-      return;
+      break;
     }
   }
   returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
@@ -228,7 +246,6 @@ Activity.search = function search(params, myLat, myLong, callback)
       {
         callback(returnRecords);
       });
-      callback(activities);
     }
     else
     {
@@ -238,4 +255,36 @@ Activity.search = function search(params, myLat, myLong, callback)
 };       
 
 Activity = geddy.model.register('Activity', Activity);
+}());
+
+(function () {
+var Passport = function () {
+  this.property('authType', 'string');
+  this.property('key', 'string');
+
+  this.belongsTo('User');
+};
+
+Passport = geddy.model.register('Passport', Passport);
+
+}());
+
+(function () {
+var User = function () {
+
+  this.property('username', 'string', {required: true});
+  this.property('password', 'string', {required: true});
+  this.property('familyName', 'string', {required: true});
+  this.property('givenName', 'string', {required: true});
+  this.property('email', 'string', {required: true});
+
+  this.validatesLength('username', {min: 3});
+  this.validatesLength('password', {min: 8});
+  this.validatesConfirmed('password', 'confirmPassword');
+
+  this.hasMany('Passports');
+};
+
+User = geddy.model.register('User', User);
+
 }());
