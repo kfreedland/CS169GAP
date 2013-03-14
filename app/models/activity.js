@@ -17,7 +17,7 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
-    duration:{type: 'number'},
+    duration:{type: 'number'}
   });
 
   this.createActivity = function(parameterDict, callback){
@@ -150,7 +150,42 @@ var Activity = function () {
 
     console.dir(parameterDict);
 
-    geddy.model.Activity.save(parameterDict, 
+description: {type: 'string'},
+    category:{type: 'string'},
+    time1: {type: '1'},
+    time2: {type: '2'},
+    flag: {type: 'string'},
+    beginDate: {type: '_date'},
+    endDate: {type: '_date'},
+    lowPrice: {type: '_price'},
+    highPrice: {type: '_price'},
+    lowNumParticipants: {type: '_num_participants'},
+    highNumParticipants: {type: '_num_participants'},
+    latitude: {type: 'number'},
+    longitude: {type: 'number'},
+    duration:{type: 'number'},
+
+
+    var ActivityDict = {};
+    activityDict.name = parameterDict.name;
+    activityDict.description = parameterDict.description;
+    activityDict.category = parameterDict.category;
+    activityDict.time1 = parameterDict.time1;
+    activityDict.time2 = parameterDict.time2;
+    activityDict.flag = parameterDict.flag;
+    activityDict.beginDate = parameterDict.begin_date;
+    activityDict.endDate = parameterDict.end_date;
+    activityDict.lowPrice = parameterDict.low_price;
+    activityDict.highPrice = parameterDict.high_price;
+    activityDict.lowNumParticipants = parameterDict.low_num_participants;
+    activityDict.highNumParticipants = parameterDict.high_num_participants;
+    activityDict.latitude = parameterDict.latitude;
+    activityDict.longitude = parameterDict.longitude;
+    activityDict.duration = parameterDict.duration;
+
+
+
+    geddy.model.Activity.save(activityDict, 
       function (err, result){
 
         if(err){
