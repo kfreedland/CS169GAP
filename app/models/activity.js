@@ -70,10 +70,10 @@ Activity.add = function(parameterDict, callback){
       parameterDict.end_date = parseInt(parameterDict.end_date,10)
     } 
     if(parameterDict.low_price != undefined){
-      parameterDict.low_price = parseInt(parameterDict.low_price,10)
+      parameterDict.low_price = parseFloat(parameterDict.low_price,10)
     }
     if(parameterDict.high_price != undefined){
-      parameterDict.high_price = parseInt(parameterDict.high_price,10)
+      parameterDict.high_price = parseFloat(parameterDict.high_price,10)
     }
     if(parameterDict.low_num_participants != undefined){
       parameterDict.low_num_participants = parseInt(parameterDict.low_num_participants,10)
