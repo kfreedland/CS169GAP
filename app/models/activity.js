@@ -156,8 +156,7 @@ var Activity = function () {
         } else {
           callback ({"errCode": 1});
         }
-      });
-    }     
+      });   
   };
 };
 
