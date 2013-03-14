@@ -9,11 +9,11 @@ var Activity = function () {
     category: {type: 'string'},
     time1: {type: 'int'},
     time2: {type: 'int'},
-    flag: {type: 'string'},
+    flag: {type: 'string', required: true},
     begin_date: {type: 'int'},
     end_date: {type: 'int'},
-    low_price: {type: 'number'},
-    high_price: {type: 'number'},
+    low_price: {type: 'int', required: true},
+    high_price: {type: 'int', required: true},
     low_num_participants: {type: 'int'},
     high_num_participants: {type: 'int'},
     latitude: {type: 'number'},
@@ -52,53 +52,54 @@ Activity.add = function(parameterDict, callback){
     var self = this;
 
     console.log("reached model create");
+    console.dir(parameterDict);
 
     var validCategories = new Array("sports", "entertainment", "concert");
 
 
     //Parse strings to Ints
-    if(parameterDict.time1){
-      parameterDict.time1 = parseInt(parameterDict.time1,10)
+    if(parameterDict.time1 != undefined){
+      parameterDict.time1 = parseInt(parameterDict.time1,10);
     } 
-    if(parameterDict.time2){
-      parameterDict.time2 = parseInt(parameterDict.time2,10)
+    if(parameterDict.time2 != undefined){
+      parameterDict.time2 = parseInt(parameterDict.time2,10);
     } 
-    if(parameterDict.begin_date){
-      parameterDict.begin_date = parseInt(parameterDict.begin_date,10)
+    if(parameterDict.begin_date != undefined){
+      parameterDict.begin_date = parseInt(parameterDict.begin_date,10);
     } 
-    if(parameterDict.end_date){
-      parameterDict.end_date = parseInt(parameterDict.end_date,10)
+    if(parameterDict.end_date != undefined){
+      parameterDict.end_date = parseInt(parameterDict.end_date,10);
     } 
-    if(parameterDict.low_price){
-      parameterDict.low_price = parseInt(parameterDict.low_price,10)
+    if(parameterDict.low_price != undefined){
+      parameterDict.low_price = parseInt(parameterDict.low_price,10);
     }
-    if(parameterDict.high_price){
-      parameterDict.high_price = parseInt(parameterDict.high_price,10)
+    if(parameterDict.high_price != undefined){
+      parameterDict.high_price = parseInt(parameterDict.high_price,10);
     }
-    if(parameterDict.low_num_participants){
-      parameterDict.low_num_participants = parseInt(parameterDict.low_num_participants,10)
+    if(parameterDict.low_num_participants != undefined){
+      parameterDict.low_num_participants = parseInt(parameterDict.low_num_participants,10);
     }
-    if(parameterDict.high_num_participants){
-      parameterDict.high_num_participants = parseInt(parameterDict.high_num_participants,10)
+    if(parameterDict.high_num_participants != undefined){
+      parameterDict.high_num_participants = parseInt(parameterDict.high_num_participants,10);
     }
-    if(parameterDict.latitude){
-      parameterDict.latitude = parseFloat(parameterDict.latitude)
+    if(parameterDict.latitude != undefined){
+      parameterDict.latitude = parseFloat(parameterDict.latitude);
     }
-    if(parameterDict.longitude){
-      parameterDict.longitude = parseFloat(parameterDict.longitude)
+    if(parameterDict.longitude != undefined){
+      parameterDict.longitude = parseFloat(parameterDict.longitude);
     }
-    if(parameterDict.duration){
-      parameterDict.longitude = parseFloat(parameterDict.duration)
+    if(parameterDict.duration != undefined){
+      parameterDict.longitude = parseFloat(parameterDict.duration);
     }
 
-    //make sure required fields are non-null
-    if (!parameterDict.name){
+    //make sure required fields are defineed
+    if (parameterDict.name == undefined){
 
       callback({"errCode": 6, "message": "null name"});
       return;
 
     } 
-    if (!parameterDict.flag){
+    if (parameterDict.flag == undefined){
 
       callback({"errCode": 6, "message": "null flag"}); 
       return; 
@@ -106,12 +107,12 @@ Activity.add = function(parameterDict, callback){
     } 
     if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
       
-      if(!parameterDict.time1){
+      if(parameterDict.time1 == undefined){
 
         callback({"errCode": 6, "message": "null time2"});
         return;
       }
-      if(!parameterDict.time2){
+      if(parameterDict.time2 == undefined){
 
         callback({"errCode": 6, "message": "null time2"}); 
         return;
@@ -128,14 +129,14 @@ Activity.add = function(parameterDict, callback){
 
     } 
 
-    if (!parameterDict.low_price){
+    if (parameterDict.low_price == undefined){
 
       callback({"errCode": 6, "message": "null low_price"});   
       return;
 
     } 
 
-    if (!parameterDict.high_price){
+    if (parameterDict.high_price == undefined){
 
       callback({"errCode": 6, "message": "null high_price"});  
       return; 
@@ -163,7 +164,7 @@ Activity.add = function(parameterDict, callback){
 
     }
 
-    if(!parameterDict.category){
+    if(parameterDict.category == undefined){
 
       callback({"errCode": 6, "message": "null category"});  
       return;
@@ -183,40 +184,40 @@ Activity.add = function(parameterDict, callback){
     activityDict.flag = parameterDict.flag;
 
 
-    if(parameterDict.description){
+    if(parameterDict.description != undefined){
       activityDict.description = parameterDict.description;
     }
-    if(parameterDict.time1){
+    if(parameterDict.time1 != undefined){
       activityDict.time1 = parameterDict.time1;
     }
-    if(parameterDict.time2){
+    if(parameterDict.time2 != undefined){
       activityDict.time2 = parameterDict.time2;
     }
-    if(parameterDict.begin_date){
+    if(parameterDict.begin_date != undefined){
       activityDict.begin_date = parameterDict.begin_date;
     }
-    if(parameterDict.end_date){
+    if(parameterDict.end_date != undefined){
       activityDict.end_date = parameterDict.end_date;
     }
-    if(parameterDict.low_price){
+    if(parameterDict.low_price != undefined){
       activityDict.low_price = parameterDict.low_price;
     }  
-    if(parameterDict.high_price){
+    if(parameterDict.high_price != undefined){
       activityDict.high_price = parameterDict.high_price;
     }   
-    if(parameterDict.low_num_participants){
+    if(parameterDict.low_num_participants != undefined){
       activityDict.low_num_participants = parameterDict.low_num_participants;
     } 
-    if(parameterDict.high_num_participants){
+    if(parameterDict.high_num_participants != undefined){
       activityDict.high_num_participants = parameterDict.high_num_participants;
     } 
-    if(parameterDict.latitude){
+    if(parameterDict.latitude != undefined){
       activityDict.latitude = parameterDict.latitude;
     } 
-    if(parameterDict.longitude){
+    if(parameterDict.longitude != undefined){
       activityDict.longitude = parameterDict.longitude;
     } 
-    if(parameterDict.duration){
+    if(parameterDict.duration != undefined){
       activityDict.duration = parameterDict.duration;
     }
 
