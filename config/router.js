@@ -39,7 +39,7 @@ router.get('/').to('Main.index');
 //   this.get('/print(.:format)').to('Hemispheres.print');
 // });
 
-router.get('/activities/search').to('activities.search');
+router.get('/activities/search').to('Activities.search');
 router.get('/login').to('Main.login');
 router.get('/logout').to('Main.logout');
 router.post('/auth/local').to('Auth.local');
