@@ -44,6 +44,7 @@ router.get('/login').to('Main.login');
 router.get('/logout').to('Main.logout');
 router.post('/auth/local').to('Auth.local');
 router.post('/createActivity').to('Activities.create');
+router.post('/testCreateActivity').to('Activities.testCreateActivity');
 
 // router.get('/auth/twitter').to('Auth.twitter');
 // router.get('/auth/twitter/callback').to('Auth.twitterCallback');

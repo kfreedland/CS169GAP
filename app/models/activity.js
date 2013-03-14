@@ -119,6 +119,7 @@ var Activity = function () {
     }      
   };
 
+
 var geoSearchHelper = function(records, lat, long, callback)
 {
   var consDist = 69.1;
