@@ -150,7 +150,7 @@ var Activity = function () {
 
     console.dir(parameterDict);
 
-    var ActivityDict = {};
+    var activityDict = {};
     activityDict.name = parameterDict.name;
     activityDict.description = parameterDict.description;
     activityDict.category = parameterDict.category;
