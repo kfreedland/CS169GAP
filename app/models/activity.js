@@ -148,7 +148,7 @@ var Activity = function () {
 
     //all checks pass
 
-    console.dir(paramerterDict);
+    console.dir(parameterDict);
 
     geddy.model.Activity.save(parameterDict, 
       function (err, result){
