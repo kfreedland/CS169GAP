@@ -54,6 +54,7 @@ $(document).ready(function() {
 function handleFindActivityResponse(jsonResp) {
 	// Hide the find activities form and show the suggested activities list
 	$('#find_activity').hide();
+	window.scrollTo(0, 0);
 	$('#list_activities_container').show();
 
 	var geocoder = new google.maps.Geocoder();
