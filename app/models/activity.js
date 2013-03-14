@@ -98,7 +98,7 @@ Activity.add = function(parameterDict, callback){
       return;
 
     } 
-    if (parameterDict.flag == null){
+    if (!parameterDict.flag){
 
       callback({"errCode": 6, "message": "null flag"}); 
       return; 
@@ -106,12 +106,12 @@ Activity.add = function(parameterDict, callback){
     } 
     if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
       
-      if(parameterDict.time1 == null){
+      if(!parameterDict.time1){
 
         callback({"errCode": 6, "message": "null time2"});
         return;
       }
-      if(parameterDict.time2 == null){
+      if(!parameterDict.time2){
 
         callback({"errCode": 6, "message": "null time2"}); 
         return;
@@ -128,21 +128,21 @@ Activity.add = function(parameterDict, callback){
 
     } 
 
-    if (parameterDict.low_price == null){
+    if (!parameterDict.low_price){
 
       callback({"errCode": 6, "message": "null low_price"});   
       return;
 
     } 
 
-    if (parameterDict.high_price == null){
+    if (!parameterDict.high_price){
 
       callback({"errCode": 6, "message": "null high_price"});  
       return; 
 
     } 
 
-    if(parameterDict.low_price != null && parameterDict.high_price != null){
+    if(parameterDict.low_price && parameterDict.high_price){
 
       if (parameterDict.low_price > parameterDict.high_price){
 
@@ -153,7 +153,7 @@ Activity.add = function(parameterDict, callback){
 
     }
     
-    if(parameterDict.low_num_participants != null && parameterDict.high_num_participants != null){
+    if(parameterDict.low_num_participants && parameterDict.high_num_participants){
 
       if (parameterDict.low_num_participants > parameterDict.high_num_participants){
 
@@ -163,7 +163,7 @@ Activity.add = function(parameterDict, callback){
 
     }
 
-    if(parameterDict.category == null){
+    if(!parameterDict.category){
 
       callback({"errCode": 6, "message": "null category"});  
       return;
