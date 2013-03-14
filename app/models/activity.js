@@ -147,9 +147,6 @@ var Activity = function () {
     }
 
     //all checks pass
-
-    console.dir(parameterDict);
-
     var activityDict = {};
     activityDict.name = parameterDict.name;
     activityDict.description = parameterDict.description;
@@ -166,6 +163,8 @@ var Activity = function () {
     activityDict.latitude = parameterDict.latitude;
     activityDict.longitude = parameterDict.longitude;
     activityDict.duration = parameterDict.duration;
+
+    console.dir(activityDict);
 
 
 
