@@ -1,27 +1,54 @@
 (function () {
 const MIN_RETURNED = 1;
 const MAX_RETURNED = 2;
+
 var Activity = function () {
 
   this.defineProperties({
     name: {type: 'string', required: true},
     description: {type: 'string'},
-    category:{type: 'string'},
-    time1: {type: '1'},
-    time2: {type: '2'},
+    category: {type: 'string'},
+    time1: {type: 'int'},
+    time2: {type: 'int'},
     flag: {type: 'string'},
-    beginDate: {type: '_date'},
-    endDate: {type: '_date'},
-    lowPrice: {type: '_price'},
-    highPrice: {type: '_price'},
-    lowNumParticipants: {type: '_num_participants'},
-    highNumParticipants: {type: '_num_participants'},
+    begin_date: {type: 'int'},
+    end_date: {type: 'int'},
+    low_price: {type: 'number'},
+    high_price: {type: 'number'},
+    low_num_participants: {type: 'int'},
+    high_num_participants: {type: 'int'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
-    duration:{type: 'number'}
+    duration: {type: 'number'}
   });
 
-  this.createActivity = function(parameterDict, callback){
+};
+
+var geoSearchHelper = function(records, lat, long, callback)
+{
+  var consDist = 69.1
+  var consAng = 57.3;
+  var returnRecords = {};
+  var count = 0;
+  for (var idx in records)
+  {
+    var record = records[idx];
+    console.log("RECORD: "+record);
+    //using a geo dist equation
+    var dist = Math.sqrt(Math.pow(record.latitude-lat, 2) + Math.pow((record.longitude-long) * Math.cos(lat/57.3), 2))
+    record.distance = distance;
+    returnRecords[count] = record;
+    count++;
+    if(count == MAX_RETURNED)
+    {
+      break;
+    }
+  }
+  returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
+  callback(returnRecords, count);
+};
+
+Activity.add = function(parameterDict, callback){
 
     var self = this;
 
@@ -66,13 +93,13 @@ var Activity = function () {
     }
 
     //make sure required fields are non-null
-    if (parameterDict.name == null){
+    if (!parameterDict.name){
 
       callback({"errCode": 6, "message": "null name"});
       return;
 
     } 
-    if (parameterDict.flag == null){
+    if (!parameterDict.flag){
 
       callback({"errCode": 6, "message": "null flag"}); 
       return; 
@@ -80,18 +107,19 @@ var Activity = function () {
     } 
     if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
       
-      if(parameterDict.time1 == null){
+      if(!parameterDict.time1){
 
         callback({"errCode": 6, "message": "null time2"});
         return;
       }
-      if(parameterDict.time2 == null){
+      if(!parameterDict.time2){
 
         callback({"errCode": 6, "message": "null time2"}); 
         return;
       }
 
     } 
+
     if (parameterDict.flag != 'start_end' && parameterDict.flag != 'open_close' 
            && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && 
            parameterDict.flag != 'night_time'){
@@ -101,21 +129,21 @@ var Activity = function () {
 
     } 
 
-    if (parameterDict.low_price == null){
+    if (!parameterDict.low_price){
 
       callback({"errCode": 6, "message": "null low_price"});   
       return;
 
     } 
 
-    if (parameterDict.high_price == null){
+    if (!parameterDict.high_price){
 
       callback({"errCode": 6, "message": "null high_price"});  
       return; 
 
     } 
 
-    if(parameterDict.low_price != null && parameterDict.high_price != null){
+    if(parameterDict.low_price && parameterDict.high_price){
 
       if (parameterDict.low_price > parameterDict.high_price){
 
@@ -126,7 +154,7 @@ var Activity = function () {
 
     }
     
-    if(parameterDict.low_num_participants != null && parameterDict.high_num_participants != null){
+    if(parameterDict.low_num_participants && parameterDict.high_num_participants){
 
       if (parameterDict.low_num_participants > parameterDict.high_num_participants){
 
@@ -136,7 +164,7 @@ var Activity = function () {
 
     }
 
-    if(parameterDict.category == null){
+    if(!parameterDict.category){
 
       callback({"errCode": 6, "message": "null category"});  
       return;
@@ -150,27 +178,56 @@ var Activity = function () {
 
     }
 
-    //all checks pass
     var activityDict = {};
     activityDict.name = parameterDict.name;
-    activityDict.description = parameterDict.description;
     activityDict.category = parameterDict.category;
-    activityDict.time1 = parameterDict.time1;
-    activityDict.time2 = parameterDict.time2;
     activityDict.flag = parameterDict.flag;
-    activityDict.beginDate = parameterDict.begin_date;
-    activityDict.endDate = parameterDict.end_date;
-    activityDict.lowPrice = parameterDict.low_price;
-    activityDict.highPrice = parameterDict.high_price;
-    activityDict.lowNumParticipants = parameterDict.low_num_participants;
-    activityDict.highNumParticipants = parameterDict.high_num_participants;
-    activityDict.latitude = parameterDict.latitude;
-    activityDict.longitude = parameterDict.longitude;
-    activityDict.duration = parameterDict.duration;
 
+
+    if(parameterDict.description){
+      activityDict.description = parameterDict.description;
+    }
+    if(parameterDict.time1){
+      activityDict.time1 = parameterDict.time1;
+    }
+    if(parameterDict.time2){
+      activityDict.time2 = parameterDict.time2;
+    }
+    if(parameterDict.begin_date){
+      activityDict.begin_date = parameterDict.begin_date;
+    }
+    if(parameterDict.end_date){
+      activityDict.end_date = parameterDict.end_date;
+    }
+    if(parameterDict.low_price){
+      activityDict.low_price = parameterDict.low_price;
+    }  
+    if(parameterDict.high_price){
+      activityDict.high_price = parameterDict.high_price;
+    }   
+    if(parameterDict.low_num_participants){
+      activityDict.low_num_participants = parameterDict.low_num_participants;
+    } 
+    if(parameterDict.high_num_participants){
+      activityDict.high_num_participants = parameterDict.high_num_participants;
+    } 
+    if(parameterDict.latitude){
+      activityDict.latitude = parameterDict.latitude;
+    } 
+    if(parameterDict.longitude){
+      activityDict.longitude = parameterDict.longitude;
+    } 
+    if(parameterDict.duration){
+      activityDict.duration = parameterDict.duration;
+    }
+
+
+    //all checks pass
     console.dir(activityDict);
 
     var activityRecord = geddy.model.Activity.create(activityDict);
+
+    console.dir(activityRecord);
 
     geddy.model.Activity.save(activityRecord, 
       function (err, result){
@@ -181,32 +238,6 @@ var Activity = function () {
           callback ({"errCode": 1});
         }
       });   
-  };
-};
-
-
-var geoSearchHelper = function(records, lat, long, callback)
-{
-  var consDist = 69.1;
-  var consAng = 57.3;
-  returnRecords = {};
-  count = 0;
-  for (var idx in records)
-  {
-    var record = records[idx];
-    console.log("RECORD: "+record);
-    //using a geo dist equation
-    var dist = Math.sqrt(Math.pow(record.latitude-lat, 2) + Math.pow((record.longitude-long) * Math.cos(lat/57.3), 2))
-    record.distance = distance;
-    returnRecords[count] = record;
-    count++;
-    if(count == MAX_RETURNED)
-    {
-      break;
-    }
-  }
-  returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
-  callback(returnRecords, count);
 };
 
 Activity.search = function search(params, myLat, myLong, callback)

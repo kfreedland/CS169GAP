@@ -127,6 +127,7 @@ var actions = new (function () {
   this.local = function (req, resp, params) {
     var self = this
       , handler = function (badCredsError, user, noCredsError) {
+          var responseDict = {};
           if (badCredsError || noCredsError) {
             //Error errCode = 5
             responseDict['errCode'] = 5;
