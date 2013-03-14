@@ -144,14 +144,12 @@ var geoSearchHelper = function(records, lat, long, callback)
     console.log("RECORD: "+record);
     //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude-lat, 2) + Math.pow((record.longitude-long) * Math.cos(lat/57.3), 2))
-    record.dist = dist
+    record.distance = distance;
     returnRecords[count] = record;
     count++;
     if(count == MAX_RETURNED)
     {
-      returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
-      callback(returnRecords, count);
-      return;
+      break;
     }
   }
   returnRecords.sort(function(recA, recB){return recA.dist-recB.dist});
@@ -195,7 +193,6 @@ Activity.search = function search(params, myLat, myLong, callback)
       {
         callback(returnRecords);
       });
-      callback(activities);
     }
     else
     {
