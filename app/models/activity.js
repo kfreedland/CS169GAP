@@ -1,5 +1,5 @@
-var MIN_RETURNED = 1;
-var MAX_RETURNED = 2;
+const MIN_RETURNED = 1;
+const MAX_RETURNED = 2;
 
 var Activity = function () {
 
@@ -7,15 +7,15 @@ var Activity = function () {
     name: {type: 'string', required: true},
     description: {type: 'string'},
     category: {type: 'string'},
-    time1: {type: '1'},
-    time2: {type: '2'},
+    time1: {type: 'int'},
+    time2: {type: 'int'},
     flag: {type: 'string'},
-    begin_date: {type: '_date'},
-    end_date: {type: '_date'},
-    low_price: {type: '_price'},
-    high_price: {type: '_price'},
-    low_num_participants: {type: '_num_participants'},
-    high_num_participants: {type: '_num_participants'},
+    begin_date: {type: 'int'},
+    end_date: {type: 'int'},
+    low_price: {type: 'number'},
+    high_price: {type: 'number'},
+    low_num_participants: {type: 'int'},
+    high_num_participants: {type: 'int'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
     duration: {type: 'number'}
