@@ -90,3 +90,5 @@ CS169GAP
 		<li>'category': [string]</li>
 	}
 </ul>
+
+<ul> Response Message:
