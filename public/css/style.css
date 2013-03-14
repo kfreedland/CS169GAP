@@ -108,9 +108,28 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     padding-top: 14px;
   }
 
+
   #find_activity {
     margin:0 auto;
-    width: 70%;
+    width: 50%;
     padding-top: 100px;
   }
+
+  #create_activity {
+    margin:0 auto;
+    width: 50%;
+    padding-top: 100px;
+  }
+
+  .hero-unit {
+    margin:0 auto;
+    width: 50%;
+    padding-top: 100px;
+  }
+
+  div{
+    display: block;
+  }
+
 }
+

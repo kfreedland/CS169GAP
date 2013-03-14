@@ -40,21 +40,26 @@
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
   </head>
   <body>
+    <!--
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
+        
         <div class="container">
+          
           <div data-role="header">
             <h1>
               Group Activity Planner
             </h1>
             <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
-              <input id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a">
-              <input id="sign_up_button" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a">
+              <a href="/login" id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
+              <a href="/users/add" id="sign_up_button" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
             </div>
           </div>
         </div>
       </div>
+      </div>
     </div>
+    -->
     <div class="container">
       <%- yield(); %>
     </div>
