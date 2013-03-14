@@ -102,6 +102,7 @@ var Activities = function () {
   this.create = function (req, resp, params) {
 
     var self = this;
+    console.log("activites.create reached")
 
     geddy.model.Activity.create(params, 
       function createCallBack(result){
