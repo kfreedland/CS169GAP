@@ -9,12 +9,12 @@ var Activity = function () {
     time1: {type: '1'},
     time2: {type: '2'},
     flag: {type: 'string'},
-    beginDate: {type: '_date'},
-    endDate: {type: '_date'},
-    lowPrice: {type: '_price'},
-    highPrice: {type: '_price'},
-    lowNumParticipants: {type: '_num_participants'},
-    highNumParticipants: {type: '_num_participants'},
+    begin_date: {type: '_date'},
+    end_date: {type: '_date'},
+    low_price: {type: '_price'},
+    high_price: {type: '_price'},
+    low_num_participants: {type: '_num_participants'},
+    high_num_participants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
     duration:{type: 'number'}
@@ -166,22 +166,22 @@ var Activity = function () {
       activityDict.time2 = parameterDict.time2;
     }
     if(parameterDict.begin_date){
-      activityDict.beginDate = parameterDict.begin_date;
+      activityDict.begin_date = parameterDict.begin_date;
     }
     if(parameterDict.end_date){
-      activityDict.endDate = parameterDict.end_date;
+      activityDict.end_date = parameterDict.end_date;
     }
     if(parameterDict.low_price){
-      activityDict.lowPrice = parameterDict.lowPrice;
+      activityDict.low_price = parameterDict.low_price;
     }  
     if(parameterDict.high_price){
-      activityDict.highPrice = parameterDict.highPrice;
+      activityDict.high_price = parameterDict.high_price;
     }   
     if(parameterDict.low_num_participants){
-      activityDict.lowNumParticipants = parameterDict.low_num_participants;
+      activityDict.lowNum_participants = parameterDict.low_num_participants;
     } 
     if(parameterDict.high_num_participants){
-      activityDict.highNumParticipants = parameterDict.high_num_participants;
+      activityDict.highNum_participants = parameterDict.high_num_participants;
     } 
     if(parameterDict.latitude){
       activityDict.latitude = parameterDict.latitude;
