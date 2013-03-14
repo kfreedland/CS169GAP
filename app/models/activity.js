@@ -199,6 +199,8 @@ var Activity = function () {
 
     var activityRecord = geddy.model.Activity.create(activityDict);
 
+    console.dir(activityRecord);
+
     geddy.model.Activity.save(activityRecord, 
       function (err, result){
 
