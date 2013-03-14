@@ -109,7 +109,7 @@ var Activities = function () {
       function createCallBack(result){
         console.log("EXECUTING CREATE ACTIVITY CALLBACK");
         console.dir(result);
-        self.respond(result);
+        self.respond(result, {format: 'json'});
       });
   };
 /*
