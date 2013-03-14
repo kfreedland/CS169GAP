@@ -51,6 +51,8 @@ Activity.add = function(parameterDict, callback){
 
     var self = this;
 
+    var respDict = {format: 'json'};
+
     console.log("reached model create");
     console.dir(parameterDict);
 
@@ -95,13 +97,18 @@ Activity.add = function(parameterDict, callback){
     //make sure required fields are defineed
     if (parameterDict.name == undefined){
 
-      callback({"errCode": 6, "message": "null name"});
+      respDict.errCode = 6;
+      respDict.message = "null name";
+      callback(respDict);
       return;
 
     } 
     if (parameterDict.flag == undefined){
 
-      callback({"errCode": 6, "message": "null flag"}); 
+
+      respDict.errCode = 6;
+      respDict.message = "null flag";
+      callback(respDict);
       return; 
 
     } 
@@ -109,12 +116,17 @@ Activity.add = function(parameterDict, callback){
       
       if(parameterDict.time1 == undefined){
 
-        callback({"errCode": 6, "message": "null time2"});
+
+        respDict.errCode = 6;
+        respDict.message = "null time1";
+        callback(respDict);
         return;
       }
       if(parameterDict.time2 == undefined){
 
-        callback({"errCode": 6, "message": "null time2"}); 
+        respDict.errCode = 6;
+        respDict.message = "null time2";
+        callback(respDict);
         return;
       }
 
@@ -124,21 +136,31 @@ Activity.add = function(parameterDict, callback){
            && parameterDict.flag != 'any_time' &&  parameterDict.flag != 'day_time' && 
            parameterDict.flag != 'night_time'){
 
-      callback({"errCode": 6, "message": "invalid flag"});  
+
+
+      respDict.errCode = 6;
+      respDict.message = "invalid flag";
+      callback(respDict);
       return; 
 
     } 
 
     if (parameterDict.low_price == undefined){
 
-      callback({"errCode": 6, "message": "null low_price"});   
+
+      respDict.errCode = 6;
+      respDict.message = "null low_price";
+      callback(respDict);
       return;
 
     } 
 
     if (parameterDict.high_price == undefined){
 
-      callback({"errCode": 6, "message": "null high_price"});  
+
+      respDict.errCode = 6;
+      respDict.message = "null high_price";
+      callback(respDict);
       return; 
 
     } 
@@ -147,7 +169,9 @@ Activity.add = function(parameterDict, callback){
 
       if (parameterDict.low_price > parameterDict.high_price){
 
-        callback({"errCode": 6, "message": "invalid prices"}); 
+        respDict.errCode = 6;
+        respDict.message = "invalid prices";
+        callback(respDict);
         return;
 
       }
@@ -158,7 +182,10 @@ Activity.add = function(parameterDict, callback){
 
       if (parameterDict.low_num_participants > parameterDict.high_num_participants){
 
-        callback({"errCode": 6, "message": "invalid participants"});  
+
+        respDict.errCode = 6;
+        respDict.message = "invalid participants";
+        callback(respDict);
         return;
       } 
 
@@ -166,14 +193,20 @@ Activity.add = function(parameterDict, callback){
 
     if(parameterDict.category == undefined){
 
-      callback({"errCode": 6, "message": "null category"});  
+
+      respDict.errCode = 6;
+      respDict.message = "null category";
+      callback(respDict);
       return;
 
     }
 
     if(validCategories.indexOf(parameterDict.category) == -1){
 
-      callback({"errCode": 6, "message": "invalid category"}); 
+
+      respDict.errCode = 6;
+      respDict.message = "invalid category";
+      callback(respDict);
       return; 
 
     }
@@ -233,9 +266,15 @@ Activity.add = function(parameterDict, callback){
       function (err, result){
 
         if(err){
-          callback({"errCode":7});
+
+          respDict.errCode = 7;
+          respDict.message = "database error";
+          callback(respDict);
         } else {
-          callback ({"errCode": 1});
+
+
+          respDict.errCode = 1;
+          callback(respDict);
         }
       });   
 };

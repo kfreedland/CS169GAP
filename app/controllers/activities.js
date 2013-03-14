@@ -107,6 +107,7 @@ var Activities = function () {
 
     geddy.model.Activity.add(params, 
       function createCallBack(result){
+        console.log("EXECUTING CREATE ACTIVITY CALLBACK");
         console.dir(result);
         self.respond(result);
       });
