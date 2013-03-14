@@ -99,7 +99,7 @@ var Activities = function () {
     this.respond({params: params});
   };
 */
-  this.create = function (req, resp, params) {
+  Activities.create = function (req, resp, params) {
 
     var self = this;
     console.log("activites.create reached")
