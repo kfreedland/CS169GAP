@@ -9,11 +9,11 @@ var Activity = function () {
     category: {type: 'string'},
     time1: {type: 'int'},
     time2: {type: 'int'},
-    flag: {type: 'string'},
+    flag: {type: 'string', required: true},
     begin_date: {type: 'int'},
     end_date: {type: 'int'},
-    low_price: {type: 'number'},
-    high_price: {type: 'number'},
+    low_price: {type: 'number', required: true},
+    high_price: {type: 'number', required: true},
     low_num_participants: {type: 'int'},
     high_num_participants: {type: 'int'},
     latitude: {type: 'number'},
@@ -92,13 +92,13 @@ Activity.add = function(parameterDict, callback){
     }
 
     //make sure required fields are non-null
-    if (!parameterDict.name){
+    if (parameterDict.name == undefined){
 
       callback({"errCode": 6, "message": "null name"});
       return;
 
     } 
-    if (!parameterDict.flag){
+    if (parameterDict.flag == undefined){
 
       callback({"errCode": 6, "message": "null flag"}); 
       return; 
@@ -106,12 +106,12 @@ Activity.add = function(parameterDict, callback){
     } 
     if (parameterDict.flag == 'start_end' || paramaterDict.flag == 'open_close'){
       
-      if(!parameterDict.time1){
+      if(parameterDict.time1 == undefined){
 
         callback({"errCode": 6, "message": "null time2"});
         return;
       }
-      if(!parameterDict.time2){
+      if(parameterDict.time2 == undefined){
 
         callback({"errCode": 6, "message": "null time2"}); 
         return;
@@ -128,14 +128,14 @@ Activity.add = function(parameterDict, callback){
 
     } 
 
-    if (!parameterDict.low_price){
+    if (parameterDict.low_price == undefined){
 
       callback({"errCode": 6, "message": "null low_price"});   
       return;
 
     } 
 
-    if (!parameterDict.high_price){
+    if (parameterDict.high_price == undefined){
 
       callback({"errCode": 6, "message": "null high_price"});  
       return; 
@@ -163,7 +163,7 @@ Activity.add = function(parameterDict, callback){
 
     }
 
-    if(!parameterDict.category){
+    if(parameterDict.category == undefined){
 
       callback({"errCode": 6, "message": "null category"});  
       return;
