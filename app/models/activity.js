@@ -205,10 +205,10 @@ Activity.add = function(parameterDict, callback){
       activityDict.high_price = parameterDict.high_price;
     }   
     if(parameterDict.low_num_participants){
-      activityDict.lowNum_participants = parameterDict.low_num_participants;
+      activityDict.low_num_participants = parameterDict.low_num_participants;
     } 
     if(parameterDict.high_num_participants){
-      activityDict.highNum_participants = parameterDict.high_num_participants;
+      activityDict.high_num_participants = parameterDict.high_num_participants;
     } 
     if(parameterDict.latitude){
       activityDict.latitude = parameterDict.latitude;
