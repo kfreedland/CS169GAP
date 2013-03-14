@@ -17,8 +17,7 @@ var Activity = function () {
     highNumParticipants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
-    duration:{type: 'number'},
-    category: {type: 'string'}
+    duration:{type: 'number'}
   });
 
   this.create = function(parameterDict, callback){
