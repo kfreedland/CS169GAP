@@ -13,27 +13,6 @@ label {
   border-bottom: 1px solid #999;
 }
 
-.geddy-welcome-box {
-  text-align: center;
-  background-color: rgba(200, 200, 200, .5);
-  box-shadow: 0px 0px 3px #bababa;
-  border: 1px solid #EDEDED;
-}
-
-.geddy-welcome-box h1 {
-  line-height: 1.25;
-  margin-bottom: 20px;
-}
-
-.geddy-welcome-box p {
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-.geddy-welcome-box .btn-large {
-  margin-top: 20px;
-}
-
 .list-item {
   margin-bottom: 20px;
 }
@@ -112,14 +91,9 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     padding-top: 14px;
   }
 
-
-  #find_activity {
-    margin:0 auto;
-    width: 50%;
-    padding-top: 100px;
-  }
-
-  #create_activity {
+  #find_activity,
+  #create_activity,
+  #suggested_activities {
     margin:0 auto;
     width: 50%;
     padding-top: 100px;
