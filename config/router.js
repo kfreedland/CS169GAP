@@ -39,11 +39,12 @@ router.get('/').to('Main.index');
 //   this.get('/print(.:format)').to('Hemispheres.print');
 // });
 
-router.get('/activities/search').to('Activities.search');
 router.get('/login').to('Main.login');
 router.get('/logout').to('Main.logout');
 router.post('/auth/local').to('Auth.local');
+
 router.post('/activities/create').to('Activities.create');
+router.get('/activities/search').to('Activities.search');
 
 // router.get('/auth/twitter').to('Auth.twitter');
 // router.get('/auth/twitter/callback').to('Auth.twitterCallback');
@@ -52,5 +53,5 @@ router.get('/auth/facebook/callback').to('Auth.facebookCallback');
 // router.get('/auth/yammer').to('Auth.yammer');
 // router.get('/auth/yammer/callback').to('Auth.yammerCallback');
 router.resource('users');
-router.resource('activities');
+// router.resource('activities');
 exports.router = router;

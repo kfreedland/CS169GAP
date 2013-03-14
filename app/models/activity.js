@@ -1,11 +1,12 @@
-const MIN_RETURNED = 1;
-const MAX_RETURNED = 2;
+var MIN_RETURNED = 1;
+var MAX_RETURNED = 2;
+
 var Activity = function () {
 
   this.defineProperties({
     name: {type: 'string', required: true},
     description: {type: 'string'},
-    category:{type: 'string'},
+    category: {type: 'string'},
     time1: {type: '1'},
     time2: {type: '2'},
     flag: {type: 'string'},
@@ -17,17 +18,17 @@ var Activity = function () {
     high_num_participants: {type: '_num_participants'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
-    duration:{type: 'number'}
+    duration: {type: 'number'}
   });
 
 };
 
 var geoSearchHelper = function(records, lat, long, callback)
 {
-  var consDist = 69.1;
+  var consDist = 69.1
   var consAng = 57.3;
-  returnRecords = {};
-  count = 0;
+  var returnRecords = {};
+  var count = 0;
   for (var idx in records)
   {
     var record = records[idx];
@@ -236,7 +237,6 @@ Activity.add = function(parameterDict, callback){
           callback ({"errCode": 1});
         }
       });   
-  };
 };
 
 Activity.search = function search(params, myLat, myLong, callback)
