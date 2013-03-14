@@ -1,6 +1,8 @@
 
 
 $(document).ready(function() {
+	$('.btn-facebook').removeClass('ui-link');
+
 	$('#list_activities_container').hide();
 	/*
 	  When the Find Activities button is clicked, send an ajax call to /activities/search with the form data
