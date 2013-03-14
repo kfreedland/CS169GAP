@@ -139,7 +139,7 @@ var Activity = function () {
 
     }
 
-    if(acceptedCategories.indexOf(parameterDict.category) == -1){
+    if(validCategories.indexOf(parameterDict.category) == -1){
 
       callback({"errCode": 6, "message": "invalid category"}); 
       return; 
