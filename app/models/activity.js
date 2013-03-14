@@ -12,8 +12,8 @@ var Activity = function () {
     flag: {type: 'string', required: true},
     begin_date: {type: 'int'},
     end_date: {type: 'int'},
-    low_price: {type: 'number', required: true},
-    high_price: {type: 'number', required: true},
+    low_price: {type: 'int', required: true},
+    high_price: {type: 'int', required: true},
     low_num_participants: {type: 'int'},
     high_num_participants: {type: 'int'},
     latitude: {type: 'number'},
@@ -71,10 +71,10 @@ Activity.add = function(parameterDict, callback){
       parameterDict.end_date = parseInt(parameterDict.end_date,10);
     } 
     if(parameterDict.low_price != undefined){
-      parameterDict.low_price = parseFloat(parameterDict.low_price);
+      parameterDict.low_price = parseInt(parameterDict.low_price,10);
     }
     if(parameterDict.high_price != undefined){
-      parameterDict.high_price = parseFloat(parameterDict.high_price);
+      parameterDict.high_price = parseInt(parameterDict.high_price,10);
     }
     if(parameterDict.low_num_participants != undefined){
       parameterDict.low_num_participants = parseInt(parameterDict.low_num_participants,10);
