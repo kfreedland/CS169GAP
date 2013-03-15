@@ -2,8 +2,8 @@ function pullAndReturnData(type, callback) {
 	// Get the values from the form inputs
 	// Check for name and description if type is 'create'
 	if (type === 'create') {
-		var name = $('activity_name').val();
-		var description = $('activity_description').val();
+		var name = $('#activity_name').val();
+		var description = $('#activity_description').val();
 	}
 	var minPeople = $('#low_num_participants_' + type).val();
 	var maxPeople = $('#high_num_participants_' + type).val();
