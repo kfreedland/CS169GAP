@@ -187,9 +187,6 @@ User = geddy.model.register('User', User);}());
 /*jslint white: false */
 /*jslint indent: 2 */
 
- const MIN_RETURNED = 1;
- const MAX_RETURNED = 2;
-
 var Activity = function () {
 
   this.defineProperties({
@@ -214,6 +211,7 @@ var Activity = function () {
 
 var geoSearchHelper = function (records, lat, long, callback)
 {
+  var MAX_RETURNED = 2;
   var consDist = 69.1
     , consAng = 57.3
     , returnRecords = {}
@@ -489,6 +487,7 @@ Activity.add = function (parameterDict, callback){
 
 Activity.search = function search(params, myLat, myLong, callback)
 {
+  console.log("Lat Long: " +myLat+" "+myLong);
   /** data is of the following form
   Name: string
   time1: time

@@ -33,24 +33,24 @@ var Activities = function () {
     }
     else
     {
-      if (params.time1 && (typeof params.time1 == 'number'))
+      if (params.time1)
       {
-        queryInfo.time1 = {gt: Math.max(params.time1 - hour,0)};
+        queryInfo.time1 = {gt: Math.max(parseFloat(params.time1) - hour,0)};
       }
 
-      if (params.time2 && (typeof params.time2 == 'number'))
+      if (params.time2)
       {
-        queryInfo.time2 = {lt: Math.max(params.time2 + hour)};
+        queryInfo.time2 = {lt: Math.max(parseFloat(params.time2) + hour)};
       }
 
-      if (params.beginDate && (typeof params.beginDate == 'number'))
+      if (params.beginDate)
       {
-        queryInfo.beginDate = {gt: params.beginDate};
+        queryInfo.beginDate = {gt: parseFloat(params.beginDate)};
       }
 
-      if (params.endDate && (typeof params.endDate == 'number'))
+      if (params.endDate)
       {
-        queryInfo.endDate = {lt: params.beginDate};
+        queryInfo.endDate = {lt: parseFloat(params.beginDate)};
       }
 
       if (params.flag && (typeof params.time1 == 'string'))
@@ -58,24 +58,24 @@ var Activities = function () {
         queryInfo.flag = params.flag;
       }
 
-      if (params.lowPrice && (typeof params.lowPrice == 'number'))
+      if (params.lowPrice)
       {
-        queryInfo.lowPrice = {gt: Math.floor(params.lowPrice * 0.75)};
+        queryInfo.lowPrice = {gt: Math.floor(parseFloat(params.lowPrice) * 0.75)};
       }
 
-      if (params.highPrice && (typeof params.highPrice == 'number'))
+      if (params.highPrice)
       {
-        queryInfo.highPrice = {lt: Math.ceil(params.highPrice * 1.25)};
+        queryInfo.highPrice = {lt: Math.ceil(parseFloat(params.highPrice) * 1.25)};
       }
 
-      if (params.lowNumParticipants && (typeof params.lowNumParticipants == 'number'))
+      if (params.lowNumParticipants)
       {
-        queryInfo.lowNumParticipants = {gt: Math.floor(params.lowNumParticipants * 0.90)};
+        queryInfo.lowNumParticipants = {gt: Math.floor(parseFloat(params.lowNumParticipants) * 0.90)};
       }
 
-      if (params.highNumParticipants && (typeof params.highNumParticipants == 'number'))
+      if (params.highNumParticipants)
       {
-        queryInfo.highNumParticipants = {lt: Math.ceil(params.highNumParticipants * 1.1)}
+        queryInfo.highNumParticipants = {lt: Math.ceil(parseFloat(params.highNumParticipants) * 1.1)}
       }
 
       if (params.category && (typeof params.category == 'string'))
@@ -84,8 +84,22 @@ var Activities = function () {
       }
       console.dir(queryInfo+" IS BEING SENT TO QUERY");
 
-      geddy.model.Activity.search(queryInfo, params.latitude, params.longitude, function(responseDict)
+      geddy.model.Activity.search(queryInfo, parseFloat(params.latitude), parseFloat(params.longitude), function(responseDict)
       {
+        //this is because 0 is represented as null in the db and we want to return free items as having cost 0 not cost null!
+        for(var key in responseDict)
+        {
+          var record = responseDict[key];
+          if(!record.highprice)
+          {
+            record.highprice = '0';
+          }
+          if(!record.lowprice)
+          {
+            record.lowprice = '0';
+          }
+
+        }
         console.log("RESP IS: "+responseDict);
         self.respond(responseDict, {format: 'json'});
       });
