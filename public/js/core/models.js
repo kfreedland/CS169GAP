@@ -8,27 +8,22 @@
 var Activity = function () {
 
   this.defineProperties({
-    name: {type: 'string'},
+    name: {type: 'string', required: 'true'},
     description: {type: 'string'},
     category: {type: 'string'},
     time1: {type: 'number'},
     time2: {type: 'number'},
-    flag: {type: 'string'},
+    flag: {type: 'string', required: 'true'},
     begin_date: {type: 'number'},
     end_date: {type: 'number'},
-    low_price: {type: 'number'},
-    high_price: {type: 'number'},
+    low_price: {type: 'number', required: 'true'},
+    high_price: {type: 'number', required: 'true'},
     low_num_participants: {type: 'number'},
     high_num_participants: {type: 'number'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
     duration: {type: 'number'}
   });
-
-  this.validatesPresent('name');
-  this.validatesPresent('flag');
-  this.validatesPresent('low_price');
-  this.validatesPresent('high_price');
 
 };
 
