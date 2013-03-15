@@ -70,11 +70,15 @@ Activity.add = function (parameterDict, callback){
     if (parameterDict.time2 !== undefined) {
       parameterDict.time2 = parseFloat(parameterDict.time2);
     } 
+    console.log("begindate = " + parameterDict.begindate);
     if (parameterDict.begindate !== undefined) {
       parameterDict.begindate = parseFloat(parameterDict.begindate);
+      console.log("begindate after parseFloat = " + parameterDict.begindate);
     } 
+    console.log("enddate = " + parameterDict.enddate);
     if (parameterDict.enddate !== undefined) {
       parameterDict.enddate = parseFloat(parameterDict.enddate);
+      console.log("enddate after parseFloat = " + parameterDict.enddate);
     } 
     if (parameterDict.lowprice !== undefined) {
       parameterDict.lowprice = parseFloat(parameterDict.lowprice);
@@ -264,7 +268,9 @@ Activity.add = function (parameterDict, callback){
     //Make sure does not exist
     geddy.model.Activity.first(activityDict, 
       function (err, result) {
-        if (result){
+        if (err){
+          console.log("GOT ERROR IN First " + err);
+        } else if (result){
           respDict.errCode = 10;
           respDict.message = "That Activity already exists.";
           callback(respDict);

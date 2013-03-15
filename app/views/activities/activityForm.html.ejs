@@ -15,11 +15,11 @@
           Group Activity Planner
         </h1>
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
-          <% if (user) {%>
-            <a href="/logout" id="logout_button" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+          <% if (params.user) {%>
+            <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
           <% } else { %>
-            <a href="/login" id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
-            <a href="/users/add" id="sign_up_button" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+            <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
+            <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
           <% } %>
         </div>
       </div>
@@ -39,6 +39,14 @@
           <div data-role="controlgroup" data-type="horizontal">
             <!--Find Activity Button-->
             <% if(form.type === "find") { %>
+              <!-- display activity created successfully when redirected -->
+              <% if (params.errCode){ %>
+                <div class="errorMessage" >
+                <% if (params.errCode == 1 && params.methodType == 'createActivity'){ %>
+                   <p> Activity successfully created. </p>
+                <% } %>
+                </div>
+              <% } %>
               <a href="#find_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
             <% } else { %>
               <a href="#find_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">

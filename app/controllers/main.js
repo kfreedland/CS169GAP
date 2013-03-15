@@ -16,7 +16,8 @@
  *
 */
 var strategies = require('../helpers/passport/strategies')
-  , authTypes = geddy.mixin(strategies, {local: {name: 'local account'}});;
+  , authTypes = geddy.mixin(strategies, {local: {name: 'local account'}});
+var runTests = require('../../test/runTests.js');
 
 var Main = function () {
 
@@ -24,15 +25,19 @@ var Main = function () {
     var self = this
       , User = geddy.model.User;
 
-    if (!params.errCode){
-      params.errCode = 0;
+    var localParams = params;
+    if (!localParams.errCode){
+      localParams.errCode = 0;
     }
+    if (!localParams.methodType){
+      localParams.methodType = 0;
+    }
+    console.log("params.methodType =" + params.methodType + " and params.errCode =" + params.errCode);
     console.log("this.session.get('userId') = " + this.session.get('userId'));
     User.first({id: this.session.get('userId')}, function (err, data) {
-      var params = {
-        user: null
-      , authType: null
-      };
+      localParams.user = null;
+      localParams.authType = null;
+      var params = localParams;
       if (data) {
         params.user = data;
         params.authType = authTypes[self.session.get('authType')].name;
@@ -52,7 +57,7 @@ var Main = function () {
       params.errCode = 0;
     }
     //If errCode = 1, this means we successfully created an account
-    
+
     this.respond(params, {
       format: 'html'
     , template: 'app/views/main/login'
@@ -66,6 +71,12 @@ var Main = function () {
       format: 'html'
     , template: 'app/views/main/logout'
     });
+  };
+
+
+  this.unitTests = function (req, resp, params) {
+    var self = this;
+      runTests();
   };
 
 };

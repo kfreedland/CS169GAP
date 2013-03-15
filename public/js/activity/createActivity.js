@@ -22,7 +22,7 @@ $(document).ready(function() {
 			        	console.log('Successful Create Activity Call');
 			        	console.log(respData);
 			        	
-			        	handleCreateActivityResponse('Success!');
+			        	handleCreateActivityResponse(respData);
 			        },
 			        failure: function(err) {
 			        	console.log('Failure');
@@ -62,5 +62,11 @@ $(document).ready(function() {
   @param String status - The status message to be shown to the user
 */
 function handleCreateActivityResponse(status) {
-	window.location = '/';
+	if (status.errCode === 1){
+      window.location = '/?methodType=createActivity&errCode=' + status.errCode;
+    } else if (status.errCode === 6){
+      //missing required parameter
+      window.location = '/#create_activity_page?errCode=' + status.errCode;
+    }
+	// window.location = '/';
 }
