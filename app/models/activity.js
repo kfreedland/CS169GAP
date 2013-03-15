@@ -336,6 +336,8 @@ Activity.search = function search(params, myLat, myLong, callback)
     {
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
       {
+        console.log("YO THESE ARE THE RECORDS");
+        console.dir(returnRecords);
         callback(returnRecords);
       });
     }
