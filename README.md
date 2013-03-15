@@ -11,7 +11,7 @@ CS169GAP
 
 <b>Changelog Entry 5:</b> 
 	//Added information on how to test locally
-	
+
 <b>Changelog Entry 4:</b>
 	//Changing all Activities parameters to No Camel Case
 	//Flag is camelCase
@@ -83,9 +83,9 @@ CS169GAP
 	{
 		<li>'name': [string, required],</li>
 		<li>'description': [string],</li>
-		<li>'time1': [int milliseconds since midnight, required-IF flag=='start_end' || flag=='open_close'],</li>
-		<li>'time2': [int, milliseconds since midnight, required-IF flag=='start_end' || flag=='open_close'],</li>
-		<li>'flag': [string subset of: {'start_end', 'open_close', 'any_time', 'day_time', 'night_time'}, required],</li>
+		<li>'time1': [int milliseconds since midnight, required-IF flag=='startEnd' || flag=='openClose'],</li>
+		<li>'time2': [int, milliseconds since midnight, required-IF flag=='startEnd' || flag=='openClose'],</li>
+		<li>'flag': [string subset of: {'startEnd', 'openClose', 'anyTime', 'dayTime', 'nightTime'}, required],</li>
 		<li>'begin_date': [milliseconds since epoch, int],</li>
 		<li>'end_date': [milliseconds since epoch, int],</li>
 		<li>'low_price': [int, required],</li>

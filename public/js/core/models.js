@@ -308,7 +308,7 @@ Activity.search = function search(params, myLat, myLong, callback)
   Name: string
   time1: time
   time2: time
-  flag: string start_end, open_close, any_time, day_time, night_time
+  flag: string startEnd, openClose, anyTime, dayTime, nightTime
   begin_date: date
   end_date: date
   low_price: int
