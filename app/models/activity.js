@@ -53,8 +53,9 @@ var geoSearchHelper = function (records, lat, long, callback)
 
 Activity.add = function (parameterDict, callback){
 
-    var self = this
-      , respDict = {format: 'json'};
+  var self = this;
+
+    var respDict = {};
 
     console.log("reached model create");
     console.dir(parameterDict);
@@ -93,8 +94,8 @@ Activity.add = function (parameterDict, callback){
     if (parameterDict.longitude !== undefined) {
       parameterDict.longitude = parseFloat(parameterDict.longitude);
     }
-    if (parameterDict.duration !== undefined) {
-      parameterDict.longitude = parseFloat(parameterDict.duration);
+    if(parameterDict.duration != undefined){
+      parameterDict.duration = parseFloat(parameterDict.duration);
     }
 
     //make sure required fields are defineed

@@ -33,47 +33,47 @@ var Activities = function () {
     }
     else
     {
-      if(params.time1 && (typeof params.time1 == 'number'))
+      if (params.time1 && (typeof params.time1 == 'number'))
       {
         queryInfo.time1 = {gt: Math.max(params.time1 - hour,0)};
       }
 
-      if(params.time2 && (typeof params.time2 == 'number'))
+      if (params.time2 && (typeof params.time2 == 'number'))
       {
         queryInfo.time2 = {lt: Math.max(params.time2 + hour)};
       }
 
-      if(params.begin_date && (typeof params.begin_date == 'number'))
+      if (params.begin_date && (typeof params.begin_date == 'number'))
       {
         queryInfo.begin_date = {gt: params.begin_date};
       }
 
-      if(params.end_date && (typeof params.end_date == 'number'))
+      if (params.end_date && (typeof params.end_date == 'number'))
       {
         queryInfo.end_date = {lt: params.begin_date};
       }
 
-      if(params.flag && (typeof params.time1 == 'string'))
+      if (params.flag && (typeof params.time1 == 'string'))
       {
         queryInfo.flag = params.flag;
       }
 
-      if(params.low_price && (typeof params.low_price == 'number'))
+      if (params.low_price && (typeof params.low_price == 'number'))
       {
         queryInfo.low_price = {gt: Math.floor(params.low_price * 0.75)};
       }
 
-      if(params.high_price && (typeof params.high_price == 'number'))
+      if (params.high_price && (typeof params.high_price == 'number'))
       {
         queryInfo.high_price = {lt: Math.ceil(params.high_price * 1.25)};
       }
 
-      if(params.low_num_participants && (typeof params.low_num_participants == 'number'))
+      if (params.low_num_participants && (typeof params.low_num_participants == 'number'))
       {
         queryInfo.low_num_participants = {gt: Math.floor(params.low_num_participants * 0.90)};
       }
 
-      if(params.high_num_participants && (typeof params.high_num_participants == 'number'))
+      if (params.high_num_participants && (typeof params.high_num_participants == 'number'))
       {
         queryInfo.high_num_participants = {lt: Math.ceil(params.high_num_participants * 1.1)}
       }
