@@ -368,8 +368,6 @@ var passport = require('passport')
   , cryptPass = passportHelper.cryptPass;
 
 var User = function () {
-
-
 	this.property('username', 'string', {required: true});
     this.property('password', 'string', {required: true});
     this.property('familyName', 'string');
@@ -389,18 +387,18 @@ User.add = function(user, callback){
       var responseDict = {};
     if (data) {
       //Username Exists errCode=2
-          responseDict['errCode'] = 2;
+          responseDict.errCode = 2;
       callback(responseDict);
       //self.transfer('add');
     }
     else {
-      if (!user.username || user.username.length == 0 || user.username.length > 128) {
+      if (!user.username || user.username.length === 0 || user.username.length > 128) {
         console.log("bad username block");
         responseDict.errCode = 3; //"ERR_BAD_USERNAME"
         callback(responseDict);
-      } else if (!user.password || user.password.length == 0 || user.password.length > 128
+      } else if (!user.password || user.password.length === 0 || user.password.length > 128
         || user.confirmPassword != user.password){
-        console.log("bad password block");
+        console.log("bad password block with confirmPassword: " + user.confirmPassword);
         //Check if password is not empty and <128 chars
         responseDict.errCode = 4; //"ERR_BAD_PASSWORD"
         callback(responseDict);
@@ -418,15 +416,13 @@ User.add = function(user, callback){
             for (var item in err){
               console.log(item + ":" + err[item] + "\n");
             }
-            var responseDict = {};
-                responseDict['errCode'] = 7;
+            responseDict.errCode = 7;
             callback(responseDict);
             // self.transfer('add');
           }
           else {
             //Success errCode=1
-            var responseDict = {};
-                responseDict['errCode'] = 1;
+            responseDict.errCode = 1;
             callback(responseDict);
               // self.redirect({controller: self.name});
           }
@@ -439,16 +435,15 @@ User.add = function(user, callback){
 
 User.login = function(params, callback){
   var handler = function (badCredsError, user, noCredsError) {
+      var responseDict = {};
       if (badCredsError || noCredsError) {
         //Error errCode = 5
-        var responseDict = {};
-        responseDict['errCode'] = 5;
+        responseDict.errCode = 5;
         callback(responseDict);
       }
       else {
         //Success errCode = 1
-        var responseDict = {};
-        responseDict['errCode'] = 1;
+        responseDict.errCode = 1;
         callback(responseDict);
       }
     };
@@ -471,7 +466,7 @@ User.TESTAPI_resetFixture = function (callback) {
       geddy.model.User.remove(result[userModel].id);
     }
     var responseDict = {};
-  responseDict['errCode'] = 1;
+  responseDict.errCode = 1;
     callback(responseDict); //"SUCCESS"
   });
 };
@@ -498,7 +493,7 @@ User.TESTAPI_unitTests = function (callback) {
       var responseDict = {};
       responseDict.totalTests = successCount + failCount;
       responseDict.nrFailed = failCount;
-      if (failCount == 0){
+      if (failCount === 0){
         responseDict.output = "All tests passed";
       } else {
         responseDict.output = testResults;
@@ -536,8 +531,6 @@ User.TESTAPI_unitTests = function (callback) {
     console.log("Running tests");
     runTests();
   });
+};
 
-
-User = geddy.model.register('User', User);
-
-}());
+User = geddy.model.register('User', User);}());
