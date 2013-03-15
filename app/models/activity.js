@@ -250,6 +250,7 @@ Activity.add = function (parameterDict, callback){
       activityDict.duration = parameterDict.duration;
     }
 
+    console.dir(activityDict);
 
     //Make sure does not exist
     geddy.model.Activity.load(activityDict, 
