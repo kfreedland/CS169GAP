@@ -37,7 +37,7 @@ var geoSearchHelper = function (records, lat, long, callback)
     console.log("RECORD: " + record);
     //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - long) * Math.cos(lat / 57.3), 2));
-    record.distance = dist;
+    record.distance = dist*100;
     returnRecords[count] = record;
     count = count + 1;
     if (count === MAX_RETURNED)
