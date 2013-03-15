@@ -14,7 +14,7 @@ $(document).ready(function() {
 				$.ajax({
 			        type: 'GET',
 			        url: '/activities/search',
-			        data: JSON.stringify(dataResp),
+			        data: dataResp,
 			        contentType: "application/json",
 			        dataType: "json",
 			        success: function(respData) {
