@@ -39,7 +39,7 @@ tests = [
 	    		{
 	    			callBack('search activity anyTime', false);
 	    		}
-	    	}
+	    	});
 	    });
 	},
 
@@ -84,7 +84,7 @@ tests = [
 	    		{
 	    			callBack('search activity specific date/time', false);
 	    		}
-	    	}
+	    	});
 	    });
 	},
 
@@ -129,7 +129,7 @@ tests = [
 	    		{
 	    			callBack('search activity nodesc', false);
 	    		}
-	    	}
+	    	});
 	    });
 	}
 
