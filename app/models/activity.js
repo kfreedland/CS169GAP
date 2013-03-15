@@ -1,33 +1,28 @@
 /*jslint white: false */
 /*jslint indent: 2 */
 
-// const MIN_RETURNED = 1;
-// const MAX_RETURNED = 2;
+ const MIN_RETURNED = 1;
+ const MAX_RETURNED = 2;
 
 var Activity = function () {
 
   this.defineProperties({
-    name: {type: 'string'},
+    name: {type: 'string', required: 'true'},
     description: {type: 'string'},
     category: {type: 'string'},
     time1: {type: 'number'},
     time2: {type: 'number'},
-    flag: {type: 'string'},
-    begin_date: {type: 'number'},
-    end_date: {type: 'number'},
-    low_price: {type: 'number'},
-    high_price: {type: 'number'},
-    low_num_participants: {type: 'number'},
-    high_num_participants: {type: 'number'},
+    flag: {type: 'string', required: 'true'},
+    begindate: {type: 'number'},
+    enddate: {type: 'number'},
+    lowprice: {type: 'number', required: 'true'},
+    highprice: {type: 'number', required: 'true'},
+    lownumparticipants: {type: 'number'},
+    highnumparticipants: {type: 'number'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
     duration: {type: 'number'}
   });
-
-  this.validatesPresent('name');
-  this.validatesPresent('flag');
-  this.validatesPresent('low_price');
-  this.validatesPresent('high_price');
 
 };
 
@@ -58,8 +53,9 @@ var geoSearchHelper = function (records, lat, long, callback)
 
 Activity.add = function (parameterDict, callback){
 
-    var self = this
-      , respDict = {format: 'json'};
+  var self = this;
+
+    var respDict = {};
 
     console.log("reached model create");
     console.dir(parameterDict);
@@ -69,28 +65,28 @@ Activity.add = function (parameterDict, callback){
 
     //Parse strings to Ints
     if (parameterDict.time1 !== undefined) {
-      parameterDict.time1 = parseInt(parameterDict.time1, 10);
+      parameterDict.time1 = parseFloat(parameterDict.time1);
     } 
     if (parameterDict.time2 !== undefined) {
-      parameterDict.time2 = parseInt(parameterDict.time2, 10);
+      parameterDict.time2 = parseFloat(parameterDict.time2);
     } 
-    if (parameterDict.begin_date !== undefined) {
-      parameterDict.begin_date = parseInt(parameterDict.begin_date, 10);
+    if (parameterDict.beginDate !== undefined) {
+      parameterDict.begindate = parseFloat(parameterDict.begindate);
     } 
-    if (parameterDict.end_date !== undefined) {
-      parameterDict.end_date = parseInt(parameterDict.end_date, 10);
+    if (parameterDict.endDate !== undefined) {
+      parameterDict.enddate = parseFloat(parameterDict.enddate);
     } 
-    if (parameterDict.low_price !== undefined) {
-      parameterDict.low_price = parseInt(parameterDict.low_price, 10);
+    if (parameterDict.lowPrice !== undefined) {
+      parameterDict.lowprice = parseFloat(parameterDict.lowprice);
     }
-    if (parameterDict.high_price !== undefined) {
-      parameterDict.high_price = parseInt(parameterDict.high_price, 10);
+    if (parameterDict.highPrice !== undefined) {
+      parameterDict.highprice = parseFloat(parameterDict.highprice);
     }
-    if (parameterDict.low_num_participants !== undefined) {
-      parameterDict.low_num_participants = parseInt(parameterDict.low_num_participants, 10);
+    if (parameterDict.lowNumParticipants !== undefined) {
+      parameterDict.lownumparticipants = parseFloat(parameterDict.lownumparticipants);
     }
-    if (parameterDict.high_num_participants !== undefined) {
-      parameterDict.high_num_participants = parseInt(parameterDict.high_num_participants, 10);
+    if (parameterDict.highNumParticipants !== undefined) {
+      parameterDict.highnumparticipants = parseFloat(parameterDict.highnumparticipants);
     }
     if (parameterDict.latitude !== undefined) {
       parameterDict.latitude = parseFloat(parameterDict.latitude);
@@ -98,8 +94,8 @@ Activity.add = function (parameterDict, callback){
     if (parameterDict.longitude !== undefined) {
       parameterDict.longitude = parseFloat(parameterDict.longitude);
     }
-    if (parameterDict.duration !== undefined) {
-      parameterDict.longitude = parseFloat(parameterDict.duration);
+    if(parameterDict.duration !== undefined){
+      parameterDict.duration = parseFloat(parameterDict.duration);
     }
 
     //make sure required fields are defineed
@@ -117,7 +113,7 @@ Activity.add = function (parameterDict, callback){
       return;
 
     }
-    if (parameterDict.flag === 'start_end' || parameterDict.flag === 'open_close') {
+    if (parameterDict.flag === 'startEnd' || parameterDict.flag === 'openClose') {
       
       if(parameterDict.time1 === undefined) {
         respDict.errCode = 6;
@@ -135,9 +131,9 @@ Activity.add = function (parameterDict, callback){
 
     } 
 
-    if (parameterDict.flag !== 'start_end' && parameterDict.flag !== 'open_close' 
-           && parameterDict.flag !== 'any_time' &&  parameterDict.flag !== 'day_time' && 
-           parameterDict.flag !== 'night_time') {
+    if (parameterDict.flag !== 'startEnd' && parameterDict.flag !== 'openClose' 
+           && parameterDict.flag !== 'anyTime' &&  parameterDict.flag !== 'dayTime' && 
+           parameterDict.flag !== 'nightTime') {
 
       respDict.errCode = 6;
       respDict.message = "invalid flag";
@@ -146,25 +142,25 @@ Activity.add = function (parameterDict, callback){
 
     } 
 
-    if (parameterDict.low_price === undefined) {
+    if (parameterDict.lowprice === undefined) {
       respDict.errCode = 6;
-      respDict.message = "null low_price";
+      respDict.message = "null lowPrice";
       callback(respDict);
       return;
 
     } 
 
-    if (parameterDict.high_price === undefined) {
+    if (parameterDict.highprice === undefined) {
       respDict.errCode = 6;
-      respDict.message = "null high_price";
+      respDict.message = "null highPrice";
       callback(respDict);
       return; 
 
     } 
 
-    if(parameterDict.low_price && parameterDict.high_price) {
+    if(parameterDict.lowprice && parameterDict.highprice) {
 
-      if (parameterDict.low_price > parameterDict.high_price) {
+      if (parameterDict.lowprice > parameterDict.highprice) {
 
         respDict.errCode = 6;
         respDict.message = "invalid prices";
@@ -175,9 +171,9 @@ Activity.add = function (parameterDict, callback){
 
     }
     
-    if(parameterDict.low_num_participants && parameterDict.high_num_participants) {
+    if(parameterDict.lownumparticipants && parameterDict.highnumparticipants) {
 
-      if (parameterDict.low_num_participants > parameterDict.high_num_participants) {
+      if (parameterDict.lownumparticipants > parameterDict.highnumparticipants) {
         respDict.errCode = 6;
         respDict.message = "invalid participants";
         callback(respDict);
@@ -217,27 +213,27 @@ Activity.add = function (parameterDict, callback){
     if(parameterDict.time2 !== undefined){
       activityDict.time2 = parameterDict.time2;
     }
-    if(parameterDict.begin_date !== undefined){
-      activityDict.begin_date = parameterDict.begin_date;
+    if(parameterDict.begindate !== undefined){
+      activityDict.begindate = parameterDict.begindate;
     }
-    if(parameterDict.end_date !== undefined){
-      activityDict.end_date = parameterDict.end_date;
+    if(parameterDict.enddate !== undefined){
+      activityDict.enddate = parameterDict.enddate;
     }
-    console.log("parameterDict.low_price = " + parameterDict.low_price);
-    if(parameterDict.low_price !== undefined){
-      console.log("low_price is NOT undefined!!");
-      activityDict.low_price = parameterDict.low_price;
+    console.log("parameterDict.lowPrice = " + parameterDict.lowprice);
+    if(parameterDict.lowprice !== undefined){
+      console.log("lowPrice is NOT undefined!!");
+      activityDict.lowprice = parameterDict.lowprice;
     }
-    console.log("parameterDict.high_price = " + parameterDict.high_price); 
-    if(parameterDict.high_price !== undefined){
-      console.log("high_price is NOT undefined!!");
-      activityDict.high_price = parameterDict.high_price;
+    console.log("parameterDict.highPrice = " + parameterDict.highprice); 
+    if(parameterDict.highprice !== undefined){
+      console.log("highPrice is NOT undefined!!");
+      activityDict.highprice = parameterDict.highprice;
     }  
-    if(parameterDict.low_num_participants !== undefined){
-      activityDict.low_num_participants = parameterDict.low_num_participants;
+    if(parameterDict.lownumparticipants !== undefined){
+      activityDict.lownumparticipants = parameterDict.lownumparticipants;
     }
-    if(parameterDict.high_num_participants !== undefined){
-      activityDict.high_num_participants = parameterDict.high_num_participants;
+    if(parameterDict.highnumparticipants !== undefined){
+      activityDict.highnumparticipants = parameterDict.highnumparticipants;
     }
     if(parameterDict.latitude !== undefined){
       activityDict.latitude = parameterDict.latitude;
@@ -250,8 +246,24 @@ Activity.add = function (parameterDict, callback){
     }
 
 
+    // activityDict = {name :'name1',
+    //                 description : 'description YO',
+    //                 category : 'sports',
+    //                 time1 : 123,
+    //                 time2 : 234,
+    //                 flag : 'startEnd',
+    //                 begindate : 2323,
+    //                 enddate : 23444,
+    //                 lowprice : 1,
+    //                 highprice : 3,
+    //                 lownumparticipants : 1,
+    //                 highnumparticipants : 10,
+    //                 latitude : 37.87,
+    //                 longitude : -122.25,
+    //                 duration : 2344-2323};
+
     //Make sure does not exist
-    geddy.model.Activity.load(activityDict, 
+    geddy.model.Activity.first(activityDict, 
       function (err, result) {
         if (result){
           respDict.errCode = 10;
@@ -287,10 +299,7 @@ Activity.add = function (parameterDict, callback){
               }
             });
         }
-
-    });
-
-       
+    });  
 };
 
 Activity.search = function search(params, myLat, myLong, callback)
@@ -299,7 +308,7 @@ Activity.search = function search(params, myLat, myLong, callback)
   Name: string
   time1: time
   time2: time
-  flag: string startEnd, openClose, anyTime, dayTime, nightTime
+  flag: string start_end, open_close, any_time, day_time, night_time
   begin_date: date
   end_date: date
   low_price: int
