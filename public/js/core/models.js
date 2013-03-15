@@ -151,7 +151,6 @@ Activity.add = function (parameterDict, callback){
       return;
 
     } 
-
     if (parameterDict.high_price === undefined) {
       respDict.errCode = 6;
       respDict.message = "null high_price";
