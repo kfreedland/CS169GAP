@@ -55,232 +55,275 @@ Activity.add = function (parameterDict, callback){
 
   var self = this;
 
-    var respDict = {};
+  var respDict = {};
 
-    console.log("reached model create");
-    console.dir(parameterDict);
+  console.log("reached model create");
+  console.dir(parameterDict);
 
 
-    var validCategories = ["Sports", "Entertainment", "Food", "Arts", "Nature"];
+  var validCategories = ["Sports", "Entertainment", "Food", "Arts", "Nature"];
 
-    var activityDict = {};
+  var activityDict = {};
 
-    //make sure required fields are defineed
+  //make sure required fields are defineed
 
-    //NAME
-    if (!parameterDict.name) {
+  //NAME
+  if (!parameterDict.name) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null name";
+    callback(respDict);
+    return;
+  } 
+  else 
+  {
+    activityDict.name = parameterDict.name;
+  } 
+
+
+  //DESCRIPTION
+  if(parameterDict.description)
+  {
+    activityDict.description = parameterDict.description;
+  }
+
+
+  //CATEGORY
+  if(!parameterDict.category) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null category";
+    callback(respDict);
+    return;
+  } 
+  else if (validCategories.indexOf(parameterDict.category) === -1) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "invalid category";
+    callback(respDict);
+    return; 
+  } 
+  else 
+  {
+    activityDict.category = parameterDict.category;
+  }
+
+
+  //FLAG
+  if (!parameterDict.flag) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null flag";
+    callback(respDict);
+    return;
+  } 
+  else if (parameterDict.flag !== 'startEnd' && parameterDict.flag !== 'openClose' 
+      && parameterDict.flag !== 'anyTime' &&  parameterDict.flag !== 'dayTime' && 
+      parameterDict.flag !== 'nightTime') 
+  {
+    respDict.errCode = 6;
+    respDict.message = "invalid flag";
+    callback(respDict);
+    return;
+
+  } 
+  else 
+  {
+    activityDict.flag = parameterDict.flag;
+  }
+
+
+  //TIME 1 TIME 2
+  if (parameterDict.flag === 'startEnd' || parameterDict.flag === 'openClose') 
+  {
+    
+    if(!parameterDict.time1) 
+    {
       respDict.errCode = 6;
-      respDict.message = "null name";
+      respDict.message = "null time1";
       callback(respDict);
       return;
-    } else {
-      activityDict.name = parameterDict.name;
+
     } 
-
-
-    //DESCRIPTION
-    if(parameterDict.description){
-      activityDict.description = parameterDict.description;
-    }
-
-
-    //CATEGORY
-    if(!parameterDict.category) {
+    else if(!parameterDict.time2) 
+    {
       respDict.errCode = 6;
-      respDict.message = "null category";
+      respDict.message = "null time2";
       callback(respDict);
       return;
-    } else if (validCategories.indexOf(parameterDict.category) === -1) {
-      respDict.errCode = 6;
-      respDict.message = "invalid category";
-      callback(respDict);
-      return; 
-    } else {
-      activityDict.category = parameterDict.category;
+    
+    } 
+    else 
+    {
+      activityDict.time1 = parseFloat(parameterDict.time1);
+      activityDict.time2 = parseFloat(parameterDict.time2);
+
+      if(activityDict.time1 > activityDict.time2)
+      {
+        respDict.errCode = 6;
+        respDict.message = "invalid times";
+        callback(respDict);
+        return;
+      }
     }
+  } 
 
 
-    //FLAG
-    if (!parameterDict.flag) {
+  //BEGIN DATE AND END DATE
+  if (parameterDict.begindate) 
+  {
+    parameterDict.begindate = parseFloat(parameterDict.begindate);
+  } 
+  if (parameterDict.enddate) 
+  {
+    parameterDict.enddate = parseFloat(parameterDict.enddate);
+  } 
+
+  if(parameterDict.begindate && parameterDict.enddate) 
+  {
+
+    if (parameterDict.begindate > parameterDict.enddate) 
+    {
       respDict.errCode = 6;
-      respDict.message = "null flag";
+      respDict.message = "invalid dates";
       callback(respDict);
       return;
-    } else if (parameterDict.flag !== 'startEnd' && parameterDict.flag !== 'openClose' 
-        && parameterDict.flag !== 'anyTime' &&  parameterDict.flag !== 'dayTime' && 
-        parameterDict.flag !== 'nightTime') {
-
-        respDict.errCode = 6;
-        respDict.message = "invalid flag";
-        callback(respDict);
-        return; 
-    } else {
-      activityDict.flag = parameterDict.flag;
     }
+  }
 
 
-    //TIME 1 TIME 2
-    if (parameterDict.flag === 'startEnd' || parameterDict.flag === 'openClose') {
-      
-      if(!parameterDict.time1) {
-        respDict.errCode = 6;
-        respDict.message = "null time1";
+  //PRICES
+  if (!parameterDict.lowprice) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null lowPrice";
+    callback(respDict);
+    return;
+
+  } 
+  else 
+  {
+    activityDict.lowprice = parseFloat(parameterDict.lowprice);
+  }
+  if (!parameterDict.highprice) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null highPrice";
+    callback(respDict);
+    return; 
+
+  } 
+  else 
+  {
+    activityDict.highprice = parseFloat(parameterDict.highprice);
+  }
+
+  if (activityDict.lowprice > activityDict.highprice) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "invalid prices";
+    callback(respDict);
+    return;
+  }
+
+
+  //NUMBER OF PARTICIPANTS
+  if (parameterDict.lownumparticipants) 
+  {
+    activityDict.lownumparticipants = parseFloat(parameterDict.lownumparticipants);
+    if(activityDict.lownumparticipants <= 0 )
+    {
+      respDict.errCode = 6;
+      respDict.message = "invalid participants";
+      callback(respDict);
+      return;
+    }
+  }
+
+  if (parameterDict.highnumparticipants)
+   {
+    
+    activityDict.highnumparticipants = parseFloat(parameterDict.highnumparticipants);
+    
+    if(activityDict.highnumparticipants <= 0 )
+    {
+      respDict.errCode = 6;
+      respDict.message = "invalid participants";
+      callback(respDict);
+      return;
+    }
+  }
+
+  if (parameterDict.lownumparticipants && parameterDict.highnumparticipants) 
+  {
+    if(activityDict.lownumparticipants < activityDict.highnumparticipants)
+    {
+      respDict.errCode = 6;
+      respDict.message = "invalid participants";
+      callback(respDict);
+      return;
+    }
+  } 
+
+
+  //LATTITUDE LONGITUDE
+  if (parameterDict.latitude) {
+    activityDict.latitude = parseFloat(parameterDict.latitude);
+  }
+  if (parameterDict.longitude) {
+    activityDict.longitude = parseFloat(parameterDict.longitude);
+  }
+
+
+  //DURATION
+  if(parameterDict.duration){
+    activityDict.duration = parseFloat(parameterDict.duration);
+    if(activityDict.duration < 0 ){
+      respDict.errCode = 6;
+      respDict.message = "invalid duration";
+      callback(respDict);
+      return;
+    }
+  }
+
+  //Make sure does not exist
+  geddy.model.Activity.first(activityDict, 
+    function (err, result) {
+      if (result){
+        respDict.errCode = 10;
+        respDict.message = "That Activity already exists.";
         callback(respDict);
-        return;
-
-      } else if(!parameterDict.time2) {
-        respDict.errCode = 6;
-        respDict.message = "null time2";
-        callback(respDict);
-        return;
-      
       } else {
-        activityDict.time1 = parseFloat(parameterDict.time1);
-        activityDict.time2 = parseFloat(parameterDict.time2);
+        console.log("activity does not exists yet, so we continue to create it");
+        //all checks pass
+        console.log("ACTIVITY DICT: ");
+        console.dir(activityDict);
 
-        if(activityDict.time1 > activityDict.time2){
-          respDict.errCode = 6;
-          respDict.message = "invalid times";
-          callback(respDict);
-          return;
-        }
-      }
-    } 
+        var activityRecord = geddy.model.Activity.create(activityDict);
 
+        console.log("ACTIVITY RECORD: ");
+        console.dir(activityRecord);
 
-    //BEGIN DATE AND END DATE
-    if (parameterDict.begindate) {
-      parameterDict.begindate = parseFloat(parameterDict.begindate);
-    } 
-    if (parameterDict.enddate) {
-      parameterDict.enddate = parseFloat(parameterDict.enddate);
-    } 
+        geddy.model.Activity.save(activityRecord, 
+          function (err, result){
 
-    if(parameterDict.begindate && parameterDict.enddate) {
-
-      if (parameterDict.begindate > parameterDict.enddate) {
-        respDict.errCode = 6;
-        respDict.message = "invalid dates";
-        callback(respDict);
-        return;
-      }
-    }
-
-
-    //PRICES
-    if (!parameterDict.lowprice) {
-      respDict.errCode = 6;
-      respDict.message = "null lowPrice";
-      callback(respDict);
-      return;
-    } else {
-      activityDict.lowprice = parseFloat(parameterDict.lowprice);
-    }
-    if (!parameterDict.highprice) {
-      respDict.errCode = 6;
-      respDict.message = "null highPrice";
-      callback(respDict);
-      return; 
-    } else {
-      activityDict.highprice = parseFloat(parameterDict.highprice);
-    }
-    if (activityDict.lowprice > activityDict.highprice) {
-      respDict.errCode = 6;
-      respDict.message = "invalid prices";
-      callback(respDict);
-      return;
-    }
-
-
-    //NUMBER OF PARTICIPANTS
-    if (parameterDict.lownumparticipants) {
-      activityDict.lownumparticipants = parseFloat(parameterDict.lownumparticipants);
-      if(activityDict.lownumparticipants <= 0 ){
-        respDict.errCode = 6;
-        respDict.message = "invalid participants";
-        callback(respDict);
-        return;
-      }
-    }
-
-    if (parameterDict.highnumparticipants) {
-      activityDict.highnumparticipants = parseFloat(parameterDict.highnumparticipants);
-      if(activityDict.highnumparticipants <= 0 ){
-        respDict.errCode = 6;
-        respDict.message = "invalid participants";
-        callback(respDict);
-        return;
-      }
-    }
-
-    if (parameterDict.lownumparticipants && parameterDict.highnumparticipants) {
-      if(activityDict.lownumparticipants < activityDict.highnumparticipants)
-        respDict.errCode = 6;
-        respDict.message = "invalid participants";
-        callback(respDict);
-        return;
-      }
-    } 
-
-
-    //LATTITUDE LONGITUDE
-    if (parameterDict.latitude) {
-      activityDict.latitude = parseFloat(parameterDict.latitude);
-    }
-    if (parameterDict.longitude) {
-      activityDict.longitude = parseFloat(parameterDict.longitude);
-    }
-
-
-    //DURATION
-    if(parameterDict.duration){
-      activityDict.duration = parseFloat(parameterDict.duration);
-      if(activityDict.duration < 0 ){
-        respDict.errCode = 6;
-        respDict.message = "invalid duration";
-        callback(respDict);
-        return;
-      }
-    }
-
-    //Make sure does not exist
-    geddy.model.Activity.first(activityDict, 
-      function (err, result) {
-        if (result){
-          respDict.errCode = 10;
-          respDict.message = "That Activity already exists.";
-          callback(respDict);
-        } else {
-          console.log("activity does not exists yet, so we continue to create it");
-          //all checks pass
-          console.log("ACTIVITY DICT: ");
-          console.dir(activityDict);
-
-          var activityRecord = geddy.model.Activity.create(activityDict);
-
-          console.log("ACTIVITY RECORD: ");
-          console.dir(activityRecord);
-
-          geddy.model.Activity.save(activityRecord, 
-            function (err, result){
-
-              if(err){
-                console.log("ERROR in Activity SAVE");
-                for (var item in err){
-                  console.log(item + " : " + err.item);
-                }
-                respDict.errCode = 7;
-                respDict.message = "database error";
-                callback(respDict);
-              } else {
-
-
-                respDict.errCode = 1;
-                callback(respDict);
+            if(err){
+              console.log("ERROR in Activity SAVE");
+              for (var item in err){
+                console.log(item + " : " + err.item);
               }
-            });
-        }
-    });  
+              respDict.errCode = 7;
+              respDict.message = "database error";
+              callback(respDict);
+            } else {
+
+
+              respDict.errCode = 1;
+              callback(respDict);
+            }
+          });
+      }
+  });  
 };
 
 Activity.search = function search(params, myLat, myLong, callback)
