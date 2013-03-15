@@ -78,6 +78,8 @@ var Activities = function () {
         queryInfo.highNumParticipants = {lt: Math.ceil(params.highNumParticipants * 1.1)}
       }
 
+      console.dir(queryInfo+" IS BEING SENT TO QUERY");
+
       geddy.model.Activity.search(queryInfo, params.latitude, params.longitude, function(responseDict)
       {
         console.log("RESP IS: "+responseDict);
