@@ -51,7 +51,7 @@ Activity.add = function(parameterDict, callback){
 
     var self = this;
 
-    var respDict = {format: 'json'};
+    var respDict = {};
 
     console.log("reached model create");
     console.dir(parameterDict);
@@ -91,7 +91,7 @@ Activity.add = function(parameterDict, callback){
       parameterDict.longitude = parseFloat(parameterDict.longitude);
     }
     if(parameterDict.duration != undefined){
-      parameterDict.longitude = parseFloat(parameterDict.duration);
+      parameterDict.duration = parseFloat(parameterDict.duration);
     }
 
     //make sure required fields are defineed
