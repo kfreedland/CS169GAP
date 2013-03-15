@@ -129,6 +129,7 @@ CREATE TABLE activities (
 	endDate float8,
 	lowNumParticipants float8,
 	highNumParticipants float8,
+	duration float8,
 	latitude float8,
 	longitude float8,
 	category text,
