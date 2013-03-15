@@ -92,8 +92,14 @@ var Activities = function () {
       geddy.model.Activity.search(queryInfo, parseFloat(params.latitude), parseFloat(params.longitude), function(responseDict)
       {
         //this is because 0 is represented as null in the db and we want to return free items as having cost 0 not cost null!
+        var max_returned = 3;
+        var count = 0;
         for(var key in responseDict)
         {
+          if(count >= max_returned)
+          {
+            break;
+          }
           var record = responseDict[key];
           if(!record.highprice)
           {
@@ -103,6 +109,7 @@ var Activities = function () {
           {
             record.lowprice = '0';
           }
+          count+=1;
 
         }
         self.respond(responseDict, {format: 'json'});
