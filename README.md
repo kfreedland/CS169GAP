@@ -9,6 +9,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 5:</b> 
+	//Added information on how to test locally
+	
 <b>Changelog Entry 4:</b>
 	//Changing all Activities parameters to No Camel Case
 	//Flag is camelCase
@@ -96,6 +99,16 @@ CS169GAP
 </ul>
 
 <ul> Response Message: </ul>
+
+<h2> Testing Locally </h2>
+Create a Postgres database locally on your machine with the following parameters:
+   user: 'testing'
+   database name: 'postgres'
+   password: 'gap169'
+   host: 'localhost'
+   port: 5432
+
+Then use the following to costruct the tables required to run GAP:
 
 <h2> Queries for Database Setup </h2>
 CREATE TABLE users (
