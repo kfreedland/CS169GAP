@@ -2,8 +2,8 @@ function pullAndReturnData(type, callback) {
 	// Get the values from the form inputs
 	// Check for name and description if type is 'create'
 	if (type === 'create') {
-		var name = $('activity_name').val();
-		var description = $('activity_description').val();
+		var name = $('#activity_name').val();
+		var description = $('#activity_description').val();
 	}
 	var minPeople = $('#low_num_participants_' + type).val();
 	var maxPeople = $('#high_num_participants_' + type).val();
@@ -87,6 +87,67 @@ function geocodeAddress(address, callback) {
       }
       callback(latlng);
     });
+}
+
+/*
+  Find the address given longitude and latitude
+
+  @param double lat - The latitude of the location
+  @param double lng - The longitude of the location
+  @param fn callback - Callback fn to be called with the found address
+*/
+function reverseGeocodeAddress(lat, lng, callback) {
+	var geocoder = new google.maps.Geocoder();
+	var latlng = new google.maps.LatLng(lat, lng);
+	geocoder.geocode({
+		"latLng": latlng
+	}, function (results, status) {
+		var address = '';
+		if (status == google.maps.GeocoderStatus.OK) {
+			address = results[0].formatted_address;
+		}
+		callback(address);
+	});
+}
+
+/*
+  Fill in the UI elements with new location data
+
+  @param String address - The address of the location
+  @param String addressDivId - The id of the div containing the form input to be updated
+*/
+function update_ui(address, addressDivId) {
+  $(addressDivId).autocomplete("close");
+  $(addressDivId).val(address);
+}
+
+/*
+  Add the autocomplete feature to the location form input
+
+  @param String type - The type of the location form input, whether it's for Find Activities or Create Activity
+					   type vals - 'find' or 'create'  
+*/
+function autocomplete_init(type) {
+	var input = document.getElementById('location_input_' + type);
+    var autocomplete = new google.maps.places.Autocomplete(input);
+}
+
+/*
+  Find the user's current position
+
+  @param fn callback - Callback fn to be called with the found position
+*/
+function getCurrentPosition(callback) {
+	var currentposition = new google.maps.LatLng(0.0, 0.0);
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition (function(pos) {
+			reverseGeocodeAddress(pos.coords.latitude, pos.coords.longitude, function(address) {
+				callback(address);
+			});
+		});
+	} else {
+		callback(currentposition);
+	}
 }
 
 /*

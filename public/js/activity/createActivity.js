@@ -8,6 +8,7 @@ $(document).ready(function() {
 	$('#create_activity_button').click(function() {
 		// Get the values from the form inputs
 		pullAndReturnData('create', function(dataResp) {
+			console.dir('DATA RESPONSE IS:' + JSON.stringify(dataResp));
 			// Validate the dictionary object before sending it
 			// TODO: Write the success and failure functions
 			validateData(dataResp, function(validData) {
@@ -41,6 +42,14 @@ $(document).ready(function() {
         } else {
         	$('#start_end_range_create').hide();
         }
+	});
+
+	autocomplete_init('create');
+
+	var currentPosition = getCurrentPosition(function(pos) {
+		$("#loc_link_create").click(function() {
+			$("#location_input_create").val(pos);
+		});
 	});
 });
 

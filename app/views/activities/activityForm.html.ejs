@@ -15,8 +15,14 @@
           Group Activity Planner
         </h1>
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
+          <% if (errCode && errCode == 1){ %>
+            <p> errCode = <%=errCode%> </p>
+            <a href="/logout" id="logout_button" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+          <% } else { %>
+
           <a href="/login" id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
           <a href="/users/add" id="sign_up_button" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+          <% } %>
         </div>
       </div>
     </div>
@@ -143,7 +149,8 @@
       <!-- Location -->
       <div data-role="fieldcontain">
         <label for="location_input_<%= form.type; %>">Location: </label>
-        <input id="location_input_<%= form.type; %>" name="location_input" type="address" placeholder="Starting Location" />
+        <input id="location_input_<%= form.type; %>" name="location_input" type="text" placeholder="Starting Location" />
+        <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="grid" data-iconpos="notext" title="Get Current Location">Current Location</a>
       </div>
       <!-- Distance is only in the find activity view -->
       <% if(form.type === "find") { %>
