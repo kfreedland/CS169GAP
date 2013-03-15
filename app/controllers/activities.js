@@ -19,7 +19,7 @@ var Activities = function () {
     console.log("inSearch");
     for(var key in params)
     {
-      console.log("KEY IS: "key+" AND VAL IS: "+params[key]);
+      console.log("KEY IS: "+key+" AND VAL IS: "+params[key]);
     }
     var self = this;
     console.log("Activities controller");
