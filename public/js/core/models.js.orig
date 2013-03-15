@@ -61,7 +61,7 @@ Activity.add = function (parameterDict, callback){
     console.log("reached model create");
     console.dir(parameterDict);
 
-    var validCategories = ["Sports", "Entertainment", "Food", "Arts", "Nature"];
+    var validCategories = ["sports", "entertainment", "concert"];
 
 
     //Parse strings to Ints
@@ -71,22 +71,22 @@ Activity.add = function (parameterDict, callback){
     if (parameterDict.time2 !== undefined) {
       parameterDict.time2 = parseFloat(parameterDict.time2);
     } 
-    if (parameterDict.begindate !== undefined) {
+    if (parameterDict.beginDate !== undefined) {
       parameterDict.begindate = parseFloat(parameterDict.begindate);
     } 
-    if (parameterDict.enddate !== undefined) {
+    if (parameterDict.endDate !== undefined) {
       parameterDict.enddate = parseFloat(parameterDict.enddate);
     } 
-    if (parameterDict.lowprice !== undefined) {
+    if (parameterDict.lowPrice !== undefined) {
       parameterDict.lowprice = parseFloat(parameterDict.lowprice);
     }
-    if (parameterDict.highprice !== undefined) {
+    if (parameterDict.highPrice !== undefined) {
       parameterDict.highprice = parseFloat(parameterDict.highprice);
     }
-    if (parameterDict.lownumparticipants !== undefined) {
+    if (parameterDict.lowNumParticipants !== undefined) {
       parameterDict.lownumparticipants = parseFloat(parameterDict.lownumparticipants);
     }
-    if (parameterDict.highnumparticipants !== undefined) {
+    if (parameterDict.highNumParticipants !== undefined) {
       parameterDict.highnumparticipants = parseFloat(parameterDict.highnumparticipants);
     }
     if (parameterDict.latitude !== undefined) {
@@ -162,6 +162,7 @@ Activity.add = function (parameterDict, callback){
     if(parameterDict.lowprice && parameterDict.highprice) {
 
       if (parameterDict.lowprice > parameterDict.highprice) {
+
         respDict.errCode = 6;
         respDict.message = "invalid prices";
         callback(respDict);
@@ -219,6 +220,17 @@ Activity.add = function (parameterDict, callback){
     if(parameterDict.enddate !== undefined){
       activityDict.enddate = parameterDict.enddate;
     }
+<<<<<<< HEAD
+    console.log("parameterDict.low_price = " + parameterDict.low_price);
+    if(parameterDict.low_price !== undefined){
+      console.log("low_price is NOT undefined!!");
+      activityDict.low_price = parameterDict.low_price;
+    }
+    console.log("parameterDict.high_price = " + parameterDict.high_price); 
+    if(parameterDict.high_price !== undefined){
+      console.log("high_price is NOT undefined!!");
+      activityDict.high_price = parameterDict.high_price;
+=======
     console.log("parameterDict.lowPrice = " + parameterDict.lowprice);
     if(parameterDict.lowprice !== undefined){
       console.log("lowPrice is NOT undefined!!");
@@ -228,6 +240,7 @@ Activity.add = function (parameterDict, callback){
     if(parameterDict.highprice !== undefined){
       console.log("highPrice is NOT undefined!!");
       activityDict.highprice = parameterDict.highprice;
+>>>>>>> c57ffafbbee9fbf4b1117d90cdbd68f32a7f860d
     }  
     if(parameterDict.lownumparticipants !== undefined){
       activityDict.lownumparticipants = parameterDict.lownumparticipants;
@@ -246,6 +259,8 @@ Activity.add = function (parameterDict, callback){
     }
 
 
+<<<<<<< HEAD
+=======
     // activityDict = {name :'name1',
     //                 description : 'description YO',
     //                 category : 'sports',
@@ -262,6 +277,7 @@ Activity.add = function (parameterDict, callback){
     //                 longitude : -122.25,
     //                 duration : 2344-2323};
 
+>>>>>>> c57ffafbbee9fbf4b1117d90cdbd68f32a7f860d
     //Make sure does not exist
     geddy.model.Activity.first(activityDict, 
       function (err, result) {
@@ -272,7 +288,7 @@ Activity.add = function (parameterDict, callback){
         } else {
           console.log("activity does not exists yet, so we continue to create it");
           //all checks pass
-          console.log("ACTIVITY DICT: ");
+          console.log("ACTIVIT DICT: ");
           console.dir(activityDict);
 
           var activityRecord = geddy.model.Activity.create(activityDict);

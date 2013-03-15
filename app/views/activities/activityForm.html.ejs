@@ -15,6 +15,7 @@
           Group Activity Planner
         </h1>
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
+
           <a href="/login" id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
           <a href="/users/add" id="sign_up_button" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
         </div>
@@ -98,13 +99,13 @@
       <!-- Time Range -->
       <center>
       <fieldset data-role="controlgroup" data-type="horizontal">
-        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-a-<%= form.type; %>" value="start_end" checked="checked" />
+        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-a-<%= form.type; %>" value="startEnd" checked="checked" />
         <label for="radio-view-a-<%= form.type; %>">Set Time</label>
-        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-b-<%= form.type; %>" value="day_time" />
+        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-b-<%= form.type; %>" value="dayTime" />
         <label for="radio-view-b-<%= form.type; %>">Day Time</label>
-        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-c-<%= form.type; %>" value="night_time" />
+        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-c-<%= form.type; %>" value="nightTime" />
         <label for="radio-view-c-<%= form.type; %>">Night Time</label>
-        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-d-<%= form.type; %>" value="any_time" />
+        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-d-<%= form.type; %>" value="anyTime" />
         <label for="radio-view-d-<%= form.type; %>">Any Time</label>
       </fieldset>
       </center>
@@ -144,6 +145,7 @@
       <div data-role="fieldcontain">
         <label for="location_input_<%= form.type; %>">Location: </label>
         <input id="location_input_<%= form.type; %>" name="location_input" type="text" placeholder="Starting Location" />
+        <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="grid" data-iconpos="notext" title="Get Current Location">Current Location</a>
       </div>
       <!-- Distance is only in the find activity view -->
       <% if(form.type === "find") { %>
@@ -157,11 +159,11 @@
       <div data-role="fieldcontain">
         <label for="category_<%= form.type; %>" class="select">Category: </label>
         <select name="category" id="category_<%= form.type; %>">
-           <option value="sports">Sports</option>
-           <option value="food">Food</option>
-           <option value="entertainment">Entertainment</option>
-           <option value="arts">Arts</option>
-           <option value="nature">Nature</option>
+           <option value="Sports">Sports</option>
+           <option value="Food">Food</option>
+           <option value="Entertainment">Entertainment</option>
+           <option value="Arts">Arts</option>
+           <option value="Nature">Nature</option>
         </select>
       </div>
 

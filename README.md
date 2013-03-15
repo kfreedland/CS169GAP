@@ -9,6 +9,10 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 4:</b>
+	//Changing all Activities parameters to No Camel Case
+	//Flag is camelCase
+
 <b>Changelog Entry 3:</b>
 	//errCode
 	<p>7 - Backend Error</p>
@@ -91,4 +95,47 @@ CS169GAP
 	}
 </ul>
 
-<ul> Response Message:
+<ul> Response Message: </ul>
+
+<h2> Queries for Database Setup </h2>
+CREATE TABLE users (
+	username text,
+	email text,
+	password text,
+	family_name text,
+	given_name text,
+	created_at timestamptz,
+	updated_at timestamptz,
+	id text
+);
+
+CREATE TABLE passports (
+	auth_type text,
+	key text,
+	user_id text,
+	created_at timestamptz,
+	updated_at timestamptz,
+	id text
+);
+
+
+CREATE TABLE activities (
+	name text,
+	description text,
+	category text,
+	time1 float8,
+	time2 float8,
+	flag text,
+	begindate float8,
+	enddate float8,
+	lowprice float8,
+	highprice float8,
+	lownumparticipants float8,
+	highnumparticipants float8,
+	latitude float8,
+	longitude float8,
+	duration float8,
+	created_at timestamptz,
+	updated_at timestamptz,
+	id text
+);
