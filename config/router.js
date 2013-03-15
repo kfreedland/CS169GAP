@@ -43,7 +43,7 @@ router.get('/login').to('Main.login');
 router.get('/logout').to('Main.logout');
 router.post('/auth/local').to('Auth.local');
 
-router.post('/activities/create').to('Activities.create');
+router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
 
 // router.get('/auth/twitter').to('Auth.twitter');

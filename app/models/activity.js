@@ -10,7 +10,7 @@ var Activity = function () {
     time1: {type: 'number'},
     time2: {type: 'number'},
     flag: {type: 'string'},
-    begin_date: {type: 'string'},
+    begin_date: {type: 'number'},
     end_date: {type: 'number'},
     low_price: {type: 'number'},
     high_price: {type: 'number'},
@@ -23,8 +23,8 @@ var Activity = function () {
 
   this.validatesPresent('name');
   this.validatesPresent('flag');
-  // this.validatesPresent('low_price');
-  // this.validatesPresent('high_price');
+  this.validatesPresent('low_price');
+  this.validatesPresent('high_price');
 
 };
 
