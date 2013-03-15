@@ -144,6 +144,7 @@
       <div data-role="fieldcontain">
         <label for="location_input_<%= form.type; %>">Location: </label>
         <input id="location_input_<%= form.type; %>" name="location_input" type="text" placeholder="Starting Location" />
+        <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="grid" data-iconpos="notext" title="Get Current Location">Current Location</a>
       </div>
       <!-- Distance is only in the find activity view -->
       <% if(form.type === "find") { %>

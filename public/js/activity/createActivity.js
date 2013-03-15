@@ -42,6 +42,14 @@ $(document).ready(function() {
         	$('#start_end_range_create').hide();
         }
 	});
+
+	autocomplete_init('create');
+
+	var currentPosition = getCurrentPosition(function(pos) {
+		$("#loc_link_create").click(function() {
+			$("#location_input_create").val(pos);
+		});
+	});
 });
 
 

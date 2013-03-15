@@ -88,8 +88,14 @@ $(document).ready(function() {
         	$('#start_end_range_find').hide();
         }
 	});
+	
+	autocomplete_init('find');
 
-	//autocomplete_init('find');
+	var currentPosition = getCurrentPosition(function(pos) {
+		$("#loc_link_find").click(function() {
+			$("#location_input_find").val(pos);
+		});
+	});	
 });
 
 /*
@@ -134,14 +140,7 @@ function handleFindActivityResponse(jsonResp) {
 		addTimeRange(data.flag, data.time1, data.time2, activityTime);
 
 		// Calculate the address from the provided latitude and longitude, and insert it into the html
-		var latlng = new google.maps.LatLng(data.latitude, data.longitude);
-		geocoder.geocode({
-			"latLng": latlng
-		}, function (results, status) {
-			var address = '';
-			if (status == google.maps.GeocoderStatus.OK) {
-				address = results[0].formatted_address;
-			}
+		reverseGeocodeAddress(data.latitude, data.longitude, function(address) {
 			$("#activity-address-" + index).append('<span class="row-address-name">' + address + '</span>');
 		});
 	});
