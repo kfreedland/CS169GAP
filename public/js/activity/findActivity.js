@@ -65,7 +65,36 @@ $(document).ready(function() {
 			        			latitude: '37.867417',
 			        			longitude: '-122.260408',
 			        			category: 'Food'
+			        		},
+			        		3: {
+			        			name: 'Activity4',
+			        			description: 'Activity4 Description located here.',
+			        			time1: '53200000',
+			        			time2: '66800000',
+			        			flag: '',
+			        			low_price: '6',
+			        			high_price: '9',
+			        			low_num_participants: '3',
+			        			high_num_participants: '3',
+			        			latitude: '37.867417',
+			        			longitude: '-122.260408',
+			        			category: 'Sports'
+			        		},
+			        		4: {
+			        			name: 'Activity5',
+			        			description: 'Activity5 Description located here.',
+			        			time1: '23200000',
+			        			time2: '86800000',
+			        			flag: '',
+			        			low_price: '1',
+			        			high_price: '3',
+			        			low_num_participants: '8',
+			        			high_num_participants: '9',
+			        			latitude: '37.867417',
+			        			longitude: '-122.260408',
+			        			category: 'Sports'
 			        		}
+
 			        	};
 			        	handleFindActivityResponse(resp);
 			        },
@@ -119,14 +148,23 @@ function handleFindActivityResponse(jsonResp) {
 		// Append the html to the list_activities div
 		$("#list_activities").append(
 			'<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c id="' + activityID + '">' +
-			'<span class="row-title">' + index + '. ' + data.name + '</span>' +
-			'<span class="row-category">' + data.category + '</span>' +
-			'<span class="row-description">' + data.description + '</span>' +
+			'<div class="button_result">' +
+			'<div class="button_result_left">' +
+
+			'<div class="row-title">' + index + '. ' + data.name + '</div><br>' +
+			'<div class="row-description">' + data.description + '</div>' +
+			'<div class="row-num-participants" id="' + activityParticipants + '">For ' + data.low_num_participants + ' to ' + data.high_num_participants + ' people</div>' +
+			'<div class="row-time-range" id="' + activityTime + '"></div>' +
 			
-			'<span class="row-address" id="activity-address-' + index + '"></span>' +
-			'<span class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.low_price + ' to $' + data.high_price + '</span>' +
-			'<span class="row-num-participants" id="' + activityParticipants + '">For ' + data.low_num_participants + ' to ' + data.high_num_participants + ' people</span>' +
-			'<span class="row-time-range" id="' + activityTime + '"></span>' +
+			'</div>' +
+			'<div class = "button_result_right">' +
+			'<div class="row-category">' + data.category + '</div><br>' +
+			'<div class="row-address" id="activity-address-' + index + '"></div><br>' +
+			'<div class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.low_price + ' to $' + data.high_price + '</div>' +
+			
+			'</div>' +
+			
+			'</div>' + 
 			'</li>'
 		);
 
