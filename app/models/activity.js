@@ -60,7 +60,7 @@ Activity.add = function (parameterDict, callback){
     console.log("reached model create");
     console.dir(parameterDict);
 
-    var validCategories = ["sports", "entertainment", "concert"];
+    var validCategories = ["Sports", "Entertainment", "Food", "Entertainment", "Nature"];
 
 
     //Parse strings to Ints
@@ -164,6 +164,32 @@ Activity.add = function (parameterDict, callback){
 
         respDict.errCode = 6;
         respDict.message = "invalid prices";
+        callback(respDict);
+        return;
+
+      }
+
+    }
+
+    if(parameterDict.beginDate && parameterDict.endDate) {
+
+      if (parameterDict.beginDate > parameterDict.endDate) {
+
+        respDict.errCode = 6;
+        respDict.message = "invalid dates";
+        callback(respDict);
+        return;
+
+      }
+
+    }
+
+    if(parameterDict.time1 && parameterDict.time2) {
+
+      if (parameterDict.time1 > parameterDict.time2) {
+
+        respDict.errCode = 6;
+        respDict.message = "invalid times";
         callback(respDict);
         return;
 
