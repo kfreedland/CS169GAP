@@ -31,8 +31,8 @@ User.add = function(user, callback){
         console.log("bad username block");
         responseDict.errCode = 3; //"ERR_BAD_USERNAME"
         callback(responseDict);
-      } else if (!user.password || user.password.length === 0 || user.password.length > 128
-        || user.confirmPassword != user.password){
+      } else if (!user.password || user.password.length === 0 || user.password.length > 128 ) {
+        //|| user.confirmPassword != user.password){
         console.log("bad password block with confirmPassword: " + user.confirmPassword);
         //Check if password is not empty and <128 chars
         responseDict.errCode = 4; //"ERR_BAD_PASSWORD"

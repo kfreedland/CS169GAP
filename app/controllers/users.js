@@ -18,6 +18,10 @@ var Users = function () {
   };
 
   this.add = function (req, resp, params) {
+    console.log("PARAMS.ERRCODE = " + params.errCode);
+    if (!params.errCode){
+      params.errCode = 0;
+    }
     this.respond({params: params});
   };
 
@@ -27,12 +31,19 @@ var Users = function () {
       , sha;
 
     var callback = function(responseDict){
-      if (responseDict.errCode == 2){
-         params.errors = {
-           username: 'This username is already in use.'
-         };
+      // if (responseDict.errCode == 2){
+      //    params.errors = {
+      //      username: 'This username is already in use.'
+      //    };
+      // }
+      if (responseDict.errCode === 1){
+        console.log("redirecting to login?errCode=" + responseDict.errCode);
+        self.redirect('/login?errCode='+responseDict.errCode);
+      } else {
+        console.log("redirecting to users/add?errCode=" + responseDict.errCode);
+        self.redirect('/users/add?errCode=' + responseDict.errCode);
       }
-      self.respond(responseDict, {format: 'json'});
+      // self.respond(responseDict, {format: 'json'});
     };
 
     geddy.model.User.add(user, callback);

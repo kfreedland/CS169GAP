@@ -192,4 +192,10 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   .ui-li.ui-btn {
     margin: 20px;
   }
+
+  /*Error messages for create and add user*/
+  .errorMessage{
+    color: red;
+    text-align: center;
+  }
 }

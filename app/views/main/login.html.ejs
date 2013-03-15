@@ -21,6 +21,19 @@
 </div>
 <div class="hero-unit">
    <p>
+   <% if (params.errCode){ %>
+      <div class="errorMessage" >
+      <% if (params.errCode == 1){ %>
+         <p> Account Created Successfully. Please login. </p>
+      <% } else if (params.errCode == 5) { %>
+         <p> Authentication Failed. Please make sure your username and password are correct and try again. </p>
+      <% } %>
+      </div>
+   <% } %>
+
+   <% if (session.userId){ %>
+   <p> session.userId = <%=session.userId%> </p>
+   <% } %>
    <form id="login-form" class="form-horizontal" action="/auth/local" method="POST">
       <fieldset>
          <legend>Log In</legend>

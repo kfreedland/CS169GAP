@@ -23,6 +23,10 @@ var Main = function () {
   this.index = function (req, resp, params) {
     var self = this
       , User = geddy.model.User;
+
+    if (!params.errCode){
+      params.errCode = 0;
+    }
     console.log("this.session.get('userId') = " + this.session.get('userId'));
     User.first({id: this.session.get('userId')}, function (err, data) {
       var params = {
@@ -33,6 +37,7 @@ var Main = function () {
         params.user = data;
         params.authType = authTypes[self.session.get('authType')].name;
       }
+      console.log("Params.User = " + params.user);
       self.respond(params, {
         format: 'html'
       , template: 'app/views/main/index'
@@ -41,6 +46,13 @@ var Main = function () {
   };
 
   this.login = function (req, resp, params) {
+    //Check if redirected with errCode,
+    //Otherwise it is 0
+    if (!params.errCode){
+      params.errCode = 0;
+    }
+    //If errCode = 1, this means we successfully created an account
+    
     this.respond(params, {
       format: 'html'
     , template: 'app/views/main/login'
