@@ -11,12 +11,10 @@ $(document).ready(function() {
 			// Validate the dictionary object before sending it
 			// TODO: Write the success and failure functions
 			validateData(dataResp, function(validData) {
-				console.log("dataResp: ");
-				console.dir(dataResp);
 				$.ajax({
 			        type: 'GET',
 			        url: '/activities/search',
-			        data: JSON.stringify(dataResp),
+			        data: dataResp,
 			        contentType: "application/json",
 			        dataType: "json",
 			        success: function(respData) {
