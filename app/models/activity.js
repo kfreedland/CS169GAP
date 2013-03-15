@@ -246,7 +246,7 @@ Activity.add = function (parameterDict, callback){
     }
 
     //Make sure does not exist
-    geddy.model.Activity.load(activityDict, 
+    geddy.model.Activity.first(activityDict, 
       function (err, result) {
         if (result){
           respDict.errCode = 10;
