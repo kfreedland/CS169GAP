@@ -2,10 +2,18 @@ CS169GAP
 ========
 <h1>RUN CONFIGURATION</h1>
 <b>Info needed to Run App:</b>
-	<p>Latest version has facebook passport auth:</p> 
+	<p>Latest version has facebook passport auth, need the following command:</p> 
 	<p>sudo npm install passport-facebook</p>
+	<p>Also need to create the database and tables: instructions found below</p>
+	
+	<p>To run the app on your local machine:</p>
+	<p><tt>geddy</tt></p>
+	<p>Visit <tt>localhost.com:4000</tt></p>
+
+	<p>To visit our app online:</p>
 	<p>Heroku URL: thawing-hamlet-4089.herokuapp.com</p>
 
+	<p>Instructions on testing the code found below</p>
 
 <h1> CHANGELOGS:</h1>
 
