@@ -53,7 +53,11 @@ var geoSearchHelper = function (records, lat, long, callback)
       break;
     }
   }
+<<<<<<< HEAD
+  returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist});
+=======
   returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
+>>>>>>> f68a669f3af287984df40cc1ad31ace2e17ac1e9
   callback(returnRecords, count);
 };
 
@@ -126,7 +130,11 @@ Activity.add = function (parameterDict, callback){
         callback(respDict);
         return;
       }
+<<<<<<< HEAD
+      if(parameterDict.time2 == undefined) {
+=======
       if(parameterDict.time2 === undefined) {
+>>>>>>> f68a669f3af287984df40cc1ad31ace2e17ac1e9
 
         respDict.errCode = 6;
         respDict.message = "null time2";
@@ -225,12 +233,21 @@ Activity.add = function (parameterDict, callback){
       activityDict.end_date = parameterDict.end_date;
     }
     console.log("parameterDict.low_price = " + parameterDict.low_price);
+<<<<<<< HEAD
+    if(parameterDict.low_price != undefined){
+      console.log("low_price is NOT undefined!!");
+      activityDict.low_price = parameterDict.low_price;
+    } 
+    console.log("parameterDict.high_price = " + parameterDict.high_price); 
+    if(parameterDict.high_price != undefined){
+=======
     if(parameterDict.low_price !== undefined){
       console.log("low_price is NOT undefined!!");
       activityDict.low_price = parameterDict.low_price;
     }
     console.log("parameterDict.high_price = " + parameterDict.high_price); 
     if(parameterDict.high_price !== undefined){
+>>>>>>> f68a669f3af287984df40cc1ad31ace2e17ac1e9
       console.log("high_price is NOT undefined!!");
       activityDict.high_price = parameterDict.high_price;
     }  
@@ -251,6 +268,28 @@ Activity.add = function (parameterDict, callback){
     }
 
 
+<<<<<<< HEAD
+    //all checks pass
+    console.dir(activityDict);
+
+    var activityRecord = geddy.model.Activity.create(activityDict);
+
+    console.dir(activityRecord);
+
+    geddy.model.Activity.save(activityRecord, 
+      function (err, result){
+
+        if(err){
+
+          respDict.errCode = 7;
+          respDict.message = "database error";
+          callback(respDict);
+        } else {
+
+
+          respDict.errCode = 1;
+          callback(respDict);
+=======
     //Make sure does not exist
     geddy.model.Activity.load(activityDict, 
       function (err, result) {
@@ -287,6 +326,7 @@ Activity.add = function (parameterDict, callback){
                 callback(respDict);
               }
             });
+>>>>>>> f68a669f3af287984df40cc1ad31ace2e17ac1e9
         }
 
     });
