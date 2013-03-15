@@ -118,4 +118,52 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   legend {
     text-align: center;
   }
+
+
+
+  /*STYLING BRANDON'S HAIR AKA List Page*/
+  .list-item {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 10px 50px;
+      position: relative;
+      width: 460px;
+      box-shadow: rgba(0, 0, 0, 0.4) 0 1px 5px 0px;
+      border-radius: 3px;
+      margin-bottom: 30px;
+
+  }
+
+  .row-title {
+    padding: 30px;
+  }
+
+  .row-description {
+  }
+
+  .row-category {
+    position: relative;
+    width : 180px;
+    padding : 10px;
+  }
+
+  .row-address {
+    width : 100px;
+  }
+  
+  .row-price-range {
+
+  }
+
+  .row-num-participants {
+
+  }
+
+  .row-time-range {
+
+  }
+
+  .ui-li.ui-btn {
+    margin: 20px;
+  }
 }
