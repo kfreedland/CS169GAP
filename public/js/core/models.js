@@ -1,6 +1,9 @@
 (function () {
-const MIN_RETURNED = 1;
-const MAX_RETURNED = 2;
+/*jslint white: false */
+/*jslint indent: 2 */
+
+// const MIN_RETURNED = 1;
+// const MAX_RETURNED = 2;
 
 var Activity = function () {
 
@@ -50,7 +53,7 @@ var geoSearchHelper = function (records, lat, long, callback)
       break;
     }
   }
-  returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist});
+  returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
   callback(returnRecords, count);
 };
 
@@ -62,7 +65,7 @@ Activity.add = function (parameterDict, callback){
     console.log("reached model create");
     console.dir(parameterDict);
 
-    var validCategories = new Array("sports", "entertainment", "concert");
+    var validCategories = ["sports", "entertainment", "concert"];
 
 
     //Parse strings to Ints
@@ -123,7 +126,7 @@ Activity.add = function (parameterDict, callback){
         callback(respDict);
         return;
       }
-      if(parameterDict.time2 == undefined) {
+      if(parameterDict.time2 === undefined) {
 
         respDict.errCode = 6;
         respDict.message = "null time2";
@@ -206,44 +209,44 @@ Activity.add = function (parameterDict, callback){
     activityDict.flag = parameterDict.flag;
 
 
-    if(parameterDict.description != undefined){
+    if(parameterDict.description !== undefined){
       activityDict.description = parameterDict.description;
     }
-    if(parameterDict.time1 != undefined){
+    if(parameterDict.time1 !== undefined){
       activityDict.time1 = parameterDict.time1;
     }
-    if(parameterDict.time2 != undefined){
+    if(parameterDict.time2 !== undefined){
       activityDict.time2 = parameterDict.time2;
     }
-    if(parameterDict.begin_date != undefined){
+    if(parameterDict.begin_date !== undefined){
       activityDict.begin_date = parameterDict.begin_date;
     }
-    if(parameterDict.end_date != undefined){
+    if(parameterDict.end_date !== undefined){
       activityDict.end_date = parameterDict.end_date;
     }
     console.log("parameterDict.low_price = " + parameterDict.low_price);
-    if(parameterDict.low_price != undefined){
+    if(parameterDict.low_price !== undefined){
       console.log("low_price is NOT undefined!!");
-      activityDict['low_price'] = parameterDict.low_price;
+      activityDict.low_price = parameterDict.low_price;
     }
     console.log("parameterDict.high_price = " + parameterDict.high_price); 
-    if(parameterDict.high_price != undefined){
+    if(parameterDict.high_price !== undefined){
       console.log("high_price is NOT undefined!!");
       activityDict.high_price = parameterDict.high_price;
     }  
-    if(parameterDict.low_num_participants != undefined){
+    if(parameterDict.low_num_participants !== undefined){
       activityDict.low_num_participants = parameterDict.low_num_participants;
     }
-    if(parameterDict.high_num_participants != undefined){
+    if(parameterDict.high_num_participants !== undefined){
       activityDict.high_num_participants = parameterDict.high_num_participants;
     }
-    if(parameterDict.latitude != undefined){
+    if(parameterDict.latitude !== undefined){
       activityDict.latitude = parameterDict.latitude;
     }
-    if(parameterDict.longitude != undefined){
+    if(parameterDict.longitude !== undefined){
       activityDict.longitude = parameterDict.longitude;
     }
-    if(parameterDict.duration != undefined){
+    if(parameterDict.duration !== undefined){
       activityDict.duration = parameterDict.duration;
     }
 
@@ -307,9 +310,9 @@ Activity.search = function search(params, myLat, myLong, callback)
   latitude: number
   longitude: number
   **/
-  respDict ={};
+  respDict = {};
   //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
-  if(!(typeof params=='object'))
+  if (typeof params !== 'object')
   {
     respDict.errCode = 7;
     callback(respDict);
@@ -322,9 +325,9 @@ Activity.search = function search(params, myLat, myLong, callback)
     }
     console.log("found activities");
     console.dir(activities);
-    if(myLat && myLong && typeof myLat =='number' && typeof myLong =='number')
+    if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
     {
-      geoSearchHelper(activities, myLat, myLong, function(returnRecords, count)
+      geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
       {
         callback(returnRecords);
       });
