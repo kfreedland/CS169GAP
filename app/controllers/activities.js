@@ -16,7 +16,10 @@ var Activities = function () {
   **/
   this.search = function (req, resp, params)
   {
-    console.dir("params: "+params);
+    for(var key in params)
+    {
+      console.log(key+" "+params[key]);
+    }
     var self = this;
     console.log("Activities controller");
     var hour = 3600000;
