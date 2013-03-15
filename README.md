@@ -10,7 +10,8 @@ CS169GAP
 <h1> CHANGELOGS:</h1>
 
 <b>Changelog Entry 4:</b>
-	//Changing all Activities parameters to CamelCase
+	//Changing all Activities parameters to No Camel Case
+	//Flag is camelCase
 
 <b>Changelog Entry 3:</b>
 	//errCode
