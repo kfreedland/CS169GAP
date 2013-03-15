@@ -105,7 +105,6 @@ var Activities = function () {
           }
 
         }
-        console.log("RESP IS: "+responseDict);
         self.respond(responseDict, {format: 'json'});
       });
     }

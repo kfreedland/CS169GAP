@@ -15,12 +15,12 @@ tests = [
 	    activityDict.time1 = undefined;
 	    activityDict.time2 = undefined;
 	    activityDict.flag = 'anyTime';
-	    activityDict.beginDate = undefined;
-	    activityDict.endDate = undefined;
-	    activityDict.lowPrice = '0';
-	    activityDict.highPrice = '0';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = undefined;
+	    activityDict.begindate = undefined;
+	    activityDict.enddate = undefined;
+	    activityDict.lowprice = '0';
+	    activityDict.highprice = '0';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = undefined;
 	    activityDict.latitude = undefined;
 	    activityDict.longitude = undefined;
 	    activityDict.duration = '2';
@@ -36,6 +36,11 @@ tests = [
 	    	} 
 	    	catch(exc)
 	    	{
+	    		var expected = {errCode: 1};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity anyTime', false);
 	    	}
 	    });
@@ -58,12 +63,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -76,6 +81,11 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity specific date/time', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 1};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity specific date/time', false);
 	    	}
 	    });
@@ -97,12 +107,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -115,6 +125,11 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no name',true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'null name'};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity no name',false);
 	    	}
 	    });
@@ -137,12 +152,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -155,6 +170,11 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no description', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 1};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity no description', false);
 	    	}
 	    });
@@ -177,12 +197,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -195,6 +215,11 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no category', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'null category'};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity no category', false);
 	    	}
 	    });
@@ -217,12 +242,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -235,6 +260,11 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity invalid category', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'invalid category'};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity invalid category', false);
 	    	}
 	    });
@@ -255,12 +285,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -273,6 +303,11 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no time1, when needed for startEnd', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'null time1'};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity no time1, when needed for startEnd', false);
 	    	}
 	    });
@@ -293,12 +328,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -311,6 +346,11 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no time1, when needed for openClose', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'null time1'};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity no time1, when needed for openClose', false);
 	    	}
 	    });
@@ -333,12 +373,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -351,12 +391,17 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity time1 > time2', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'invalid times'};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity time1 > time2', false);
 	    	}
 	    });
 	},
 
-	//add activity beginDate > endDate
+	//add activity begindate > enddate
 	function (callBack) {
 
 	    var activityDict = {};
@@ -373,12 +418,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date2.getTime();
-	    activityDict.endDate = date1.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date2.getTime();
+	    activityDict.enddate = date1.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -389,14 +434,19 @@ tests = [
 	    	try{
 	    		var expected = {errCode: 6, message: 'invalid dates'};
 	    		assert.deepEqual(response,expected);
-	    		callBack('add activity beginDate > endDate', true);
+	    		callBack('add activity begindate > enddate', true);
 	    	} catch(exc){
-	    		callBack('add activity beginDate > endDate', false);
+	    		var expected = {errCode: 6, message: 'invalid dates'};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
+	    		callBack('add activity begindate > enddate', false);
 	    	}
 	    });
 	},
 
-	//add activity lowPrice > highPrice
+	//add activity lowprice > highprice
 	function (callBack) {
 
 	    var activityDict = {};
@@ -413,12 +463,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '300';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '300';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -431,6 +481,11 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity lowprice > highprice', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'invalid prices'};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity lowprice > highprice', false);
 	    	}
 	    });
@@ -454,12 +509,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '10';
-	    activityDict.highNumParticipants = '1';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '10';
+	    activityDict.highnumparticipants = '1';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -472,6 +527,11 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity lownumparticipants > highnumparticipants', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'invalid participants'};
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity lownumparticipants > highnumparticipants', false);
 	    	}
 	    });
@@ -495,12 +555,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    //activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    //activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -508,11 +568,15 @@ tests = [
 
 		Activity.add(activityDict, function(response){
 
+			var expected = {errCode: 6, message: 'null lowprice'};
 	    	try{
-	    		var expected = {errCode: 6, message: 'null lowprice'};
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity null lowprice', true);
 	    	} catch(exc){
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity null lowprice', false);
 	    	}
 	    });
@@ -535,12 +599,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    //activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    //activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -548,11 +612,16 @@ tests = [
 
 		Activity.add(activityDict, function(response){
 
+			var expected = {errCode: 6, message: 'null highprice'};
 	    	try{
-	    		var expected = {errCode: 6, message: 'null highprice'};
+	    		
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity null highprice', true);
 	    	} catch(exc){
+	    		console.log("expected = ");
+	    		console.dir(expected);
+	    		console.log("response = ");
+	    		console.dir(response);
 	    		callBack('add activity null highprice', false);
 	    	}
 	    });
@@ -569,12 +638,12 @@ tests = [
 	    activityDict.time1 = undefined;
 	    activityDict.time2 = undefined;
 	    activityDict.flag = 'anyTime';
-	    activityDict.beginDate = undefined;
-	    activityDict.endDate = undefined;
-	    activityDict.lowPrice = '0';
-	    activityDict.highPrice = '0';
-	    activityDict.lowNumParticipants = '2';
-	    activityDict.highNumParticipants = '4';
+	    activityDict.begindate = undefined;
+	    activityDict.enddate = undefined;
+	    activityDict.lowprice = '0';
+	    activityDict.highprice = '0';
+	    activityDict.lownumparticipants = '2';
+	    activityDict.highnumparticipants = '4';
 	    activityDict.latitude = undefined;
 	    activityDict.longitude = undefined;
 	    activityDict.duration = '2';
@@ -589,26 +658,31 @@ tests = [
 		    activityDict.time1 = undefined;
 		    activityDict.time2 = undefined;
 		    activityDict.flag = 'anyTime';
-		    activityDict.beginDate = undefined;
-		    activityDict.endDate = undefined;
-		    activityDict.lowPrice = '0';
-		    activityDict.highPrice = '0';
-		    activityDict.lowNumParticipants = '2';
-		    activityDict.highNumParticipants = '4';
+		    activityDict.begindate = undefined;
+		    activityDict.enddate = undefined;
+		    activityDict.lowprice = '0';
+		    activityDict.highprice = '0';
+		    activityDict.lownumparticipants = '2';
+		    activityDict.highnumparticipants = '4';
 		    activityDict.latitude = undefined;
 		    activityDict.longitude = undefined;
 		    activityDict.duration = '2';
 
 		    Activity.add(activityDict, function(response)
 		    {
+		    	var expected = {errCode: 10, message: "That Activity already exists."};
 		    	try
 		    	{
-		    		var expected = {errCode: 10, message: "That Activity already exists."};
+		    		
 		    		assert.deepEqual(response,expected);
 		    		callBack('add duplicate activities', true);
 		    	} 
 		    	catch(exc)
 		    	{
+		    		console.log("expected = ");
+		    		console.dir(expected);
+		    		console.log("response = ");
+		    		console.dir(response);
 		    		callBack('add duplicate activities', false);
 		    	}
 		    });
