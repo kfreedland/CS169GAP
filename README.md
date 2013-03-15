@@ -117,22 +117,23 @@ CREATE TABLE passports (
 	id text
 );
 
+
 CREATE TABLE activities (
 	name text,
 	description text,
+	category text,
 	time1 float8,
 	time2 float8,
 	flag text,
-	lowPrice float8,
-	highPrice float8,
-	beginDate float8,
-	endDate float8,
-	lowNumParticipants float8,
-	highNumParticipants float8,
-	duration float8,
+	begindate float8,
+	enddate float8,
+	lowprice float8,
+	highprice float8,
+	lownumparticipants float8,
+	highnumparticipants float8,
 	latitude float8,
 	longitude float8,
-	category text,
+	duration float8,
 	created_at timestamptz,
 	updated_at timestamptz,
 	id text
