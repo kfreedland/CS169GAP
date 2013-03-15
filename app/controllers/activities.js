@@ -16,6 +16,7 @@ var Activities = function () {
   **/
   this.search = function (req, resp, params)
   {
+    console.log("Lat Long: " +params.latitude+" "+params.longitude);
     var self = this;
     console.log("Activities controller");
     var hour = 3600000;
