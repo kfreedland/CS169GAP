@@ -108,22 +108,24 @@ function handleFindActivityResponse(jsonResp) {
 	// Loop through each activities entry in the dictionary
 	$.each(jsonResp, function(index, data) {
 		// Create variables for dynamic ids of certain divs
+		var index = parseInt(index)+1;
+		var index = index.toString();
 		var activityID = "activity-" + index;
 		var activityPrice = 'activity-price-' + index;
 		var activityParticipants = 'activity-participants-' + index;
 		var activityTime = 'activity-time-' + index;
-
 		// Append the html to the list_activities div
 		$("#list_activities").append(
-			'<div class="list-item" id="' + activityID + '">' +
-			'<div class="row-title">' + index + '. ' + data.name + '</div>' +
-			'<div class="row-category">' + data.category + '</div>' +
-			'<div class="row-address" id="activity-address-' + index + '"></div>' +
-			'<div class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.low_price + ' to $' + data.high_price + '</div>' +
-			'<div class="row-num-participants" id="' + activityParticipants + '">For ' + data.low_num_participants + ' to ' + data.high_num_participants + ' people</div>' +
-			'<div class="row-time-range" id="' + activityTime + '"></div>' +
-			'<div class="row-description">' + data.description + '</div>' +
-			'</div>'
+			'<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c id="' + activityID + '">' +
+			'<span class="row-title">' + index + '. ' + data.name + '</span>' +
+			'<span class="row-category">' + data.category + '</span>' +
+			'<span class="row-description">' + data.description + '</span>' +
+			
+			'<span class="row-address" id="activity-address-' + index + '"></span>' +
+			'<span class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.low_price + ' to $' + data.high_price + '</span>' +
+			'<span class="row-num-participants" id="' + activityParticipants + '">For ' + data.low_num_participants + ' to ' + data.high_num_participants + ' people</span>' +
+			'<span class="row-time-range" id="' + activityTime + '"></span>' +
+			'</li>'
 		);
 
 		// Do some additional fixing of the activity details
