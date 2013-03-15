@@ -8,13 +8,11 @@ $(document).ready(function() {
 	$('#find_activity_button').click(function() {
 		// Get the values from the form inputs
 		pullAndReturnData('find', function(dataResp) {
-			var dataDict = {data: dataResp};
-			console.log(JSON.stringify(dataDict));
 			// Validate the dictionary object before sending it
 			// TODO: Write the success and failure functions
 			validateData(dataResp, function(validData) {
-				console.log("dataResp: ");
-				console.dir(dataResp);
+				var dataDict = {data: dataResp};
+				console.log(JSON.stringify(dataDict));
 				$.ajax({
 			        type: 'GET',
 			        url: '/activities/search',
