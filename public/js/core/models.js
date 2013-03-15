@@ -107,7 +107,6 @@ Activity.add = function (parameterDict, callback){
     activityDict.category = parameterDict.category;
   }
 
-
   //FLAG
   if (!parameterDict.flag) 
   {
@@ -305,7 +304,6 @@ Activity.add = function (parameterDict, callback){
 
         geddy.model.Activity.save(activityRecord, 
           function (err, result){
-
             if(err){
               console.log("ERROR in Activity SAVE");
               for (var item in err){
@@ -371,7 +369,20 @@ Activity.search = function search(params, myLat, myLong, callback)
       callback(activities);
     }
   });
-};       
+};    
+
+Activity.TESTAPI_resetFixture = function (callback) {
+  geddy.model.Activity.all(function (err, result) {
+    console.log("got all users models with error: " + err + " and result: " + result);
+    for (var activityModel in result){
+      console.log("trying to remove userModel: " + result[activityModel]);
+      geddy.model.Activity.remove(result[activityModel].id);
+    }
+    var responseDict = {};
+  responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};   
 
 Activity = geddy.model.register('Activity', Activity);
 }());

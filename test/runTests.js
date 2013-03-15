@@ -1,5 +1,5 @@
 var User = geddy.model.User
-  , Activity = require('../app/models/activity.js');
+  , Activity = geddy.model.Activity;
 
 var currentTestNumber = -1;
 var tests = [];
@@ -53,37 +53,38 @@ var unitTests = function (callbackFunc) {
   callback = callbackFunc;
   //Remove all database entries
   console.log("Resetting fixture");
-  User.TESTAPI_resetFixture(function (nothingImportant){
-    console.log("Reset fixture completed");
-    
-    tests = require('../test/user.js');
-    tests.extend(require('../test/activity.js'));
-    testResults = "";
+  Activity.TESTAPI_resetFixture(function (nothingImportant){
+    User.TESTAPI_resetFixture(function (nothingImportant){
+      console.log("Reset fixture completed");
+      
+      tests = require('../test/user.js');
+      activityTests = require('../test/activity.js');
+      tests.push.apply(tests, activityTests);
+      testResults = "";
 
-    numberOfTests = 0;
-    for (var key in tests){
-      numberOfTests += 1;
-    }
-    console.log("There are " + numberOfTests + " tests to run.");
+      numberOfTests = 0;
+      for (var key in tests){
+        numberOfTests += 1;
+      }
+      console.log("There are " + numberOfTests + " tests to run.");
 
-    //Start running tests
-    console.log("Running tests");
-    runTests(false);
+      //Start running tests
+      console.log("Running tests");
+      runTests(false);
+    });
   });
 };
 
 
-var executeUnitTests = function unitTests () {
+var executeUnitTests = function (callback) {
     var response = {};
-    unitTests(function (answerDict) {
-      console.log("responding from unitTests");
-      response.userTests = answerDict.output;
+    console.log("calling unit tests");
+    unitTests(callback);
       //Call all activity unit tests and append their result
       // activityUnitTests(function (answerDict){
       //   response.activityTests = answerDict.output;
       //   self.respond(response, {format: 'json'});
       // });
-    });
 };
 
 module.exports = executeUnitTests;

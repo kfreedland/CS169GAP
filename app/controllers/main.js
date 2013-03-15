@@ -76,7 +76,10 @@ var Main = function () {
 
   this.unitTests = function (req, resp, params) {
     var self = this;
-      runTests();
+    runTests(function (answerDict) {
+      console.log("responding from unitTests");
+      self.respond(answerDict, {format: 'json'});
+    });
   };
 
 };
