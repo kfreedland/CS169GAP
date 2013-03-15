@@ -30,10 +30,10 @@ $(document).ready(function() {
 			        			time1: '',
 			        			time2: '',
 			        			flag: 'dayTime',
-			        			low_price: '30',
-			        			high_price: '50',
-			        			low_num_participants: '5',
-			        			high_num_participants: '10',
+			        			lowprice: '30',
+			        			highprice: '50',
+			        			lownumparticipants: '5',
+			        			highnumparticipants: '10',
 			        			latitude: '37.867417',
 			        			longitude: '-122.260408',
 			        			category: 'Sports'
@@ -44,10 +44,10 @@ $(document).ready(function() {
 			        			time1: '',
 			        			time2: '',
 			        			flag: 'nightTime',
-			        			low_price: '0',
-			        			high_price: '0',
-			        			low_num_participants: '1',
-			        			high_num_participants: '4',
+			        			lowprice: '0',
+			        			highprice: '0',
+			        			lownumparticipants: '1',
+			        			highnumparticipants: '4',
 			        			latitude: '37.867417',
 			        			longitude: '-122.260408',
 			        			category: 'Sports'
@@ -58,16 +58,16 @@ $(document).ready(function() {
 			        			time1: '43200000',
 			        			time2: '46800000',
 			        			flag: 'startEnd',
-			        			low_price: '5',
-			        			high_price: '5',
-			        			low_num_participants: '3',
-			        			high_num_participants: '3',
+			        			lowprice: '5',
+			        			highprice: '5',
+			        			lownumparticipants: '3',
+			        			highnumparticipants: '3',
 			        			latitude: '37.867417',
 			        			longitude: '-122.260408',
 			        			category: 'Food'
 			        		}
 			        	};
-			        	handleFindActivityResponse(resp);
+			        	handleFindActivityResponse(respData);
 			        },
 			        failure: function(err) {
 			        	console.log('Failure');
@@ -130,15 +130,15 @@ function handleFindActivityResponse(jsonResp) {
 			'<span class="row-description">' + data.description + '</span>' +
 			
 			'<span class="row-address" id="activity-address-' + index + '"></span>' +
-			'<span class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.low_price + ' to $' + data.high_price + '</span>' +
-			'<span class="row-num-participants" id="' + activityParticipants + '">For ' + data.low_num_participants + ' to ' + data.high_num_participants + ' people</span>' +
+			'<span class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.lowprice + ' to $' + data.highprice + '</span>' +
+			'<span class="row-num-participants" id="' + activityParticipants + '">For ' + data.lownumparticipants + ' to ' + data.highnumparticipants + ' people</span>' +
 			'<span class="row-time-range" id="' + activityTime + '"></span>' +
 			'</li>'
 		);
 
 		// Do some additional fixing of the activity details
-		fixPriceRange(parseInt(data.low_price), parseInt(data.high_price), activityPrice);
-		fixParticipantsRange(parseInt(data.low_num_participants), parseInt(data.high_num_participants), activityParticipants);
+		fixPriceRange(parseInt(data.lowprice), parseInt(data.highprice), activityPrice);
+		fixParticipantsRange(parseInt(data.lownumparticipants), parseInt(data.highnumparticipants), activityParticipants);
 		addTimeRange(data.flag, data.time1, data.time2, activityTime);
 
 		// Calculate the address from the provided latitude and longitude, and insert it into the html

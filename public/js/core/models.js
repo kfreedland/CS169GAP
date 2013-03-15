@@ -61,7 +61,7 @@ Activity.add = function (parameterDict, callback){
     console.log("reached model create");
     console.dir(parameterDict);
 
-    var validCategories = ["sports", "entertainment", "concert"];
+    var validCategories = ["Sports", "Entertainment", "Food", "Art", "Nature"];
 
 
     //Parse strings to Ints
