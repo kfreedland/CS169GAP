@@ -2,8 +2,11 @@ var assert = require('assert')
   , tests
   , Activity = geddy.model.Activity;
 
-tests = {
-  	'add activity anyTime': function (callBack) {
+tests = [
+
+	//add activity any time
+	function (callBack) 
+	{
 
 	    var activityDict = {};
 	    activityDict.name = 'jogging';
@@ -22,19 +25,24 @@ tests = {
 	    activityDict.longitude = undefined;
 	    activityDict.duration = '2';
 
-	    Activity.add(activityDict, function(response){
+	    Activity.add(activityDict, function(response)
+	    {
 
-	    	try{
+	    	try
+	    	{
 	    		var expected = {errCode: 1};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
-	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity anyTime', true);
+	    	} 
+	    	catch(exc)
+	    	{
+	    		callBack('add activity anyTime', false);
 	    	}
 	    });
-  }, 
+	},
 
-  	'add activity specific date/time': function () {
+	//add activity specific date/time
+	function (callBack) {
 
 	    var activityDict = {};
 	    activityDict.name = 'backstreet boys concert';
@@ -66,18 +74,17 @@ tests = {
 	    	try{
 	    		var expected = {errCode: 1};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
+	    		callBack('add activity specific date/time', true);
 	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity specific date/time', false);
 	    	}
 	    });
+	},
 
-  },
-
- 	'add activity no name': function () {
+	//add activity no name
+	function (callBack) {
 
 	    var activityDict = {};
-	    activityDict.name = undefined;
 	    activityDict.description = 'I want it that way...';
 	    activityDict.category = 'Entertainment';
 	    //7pm in milliseconds since midnight
@@ -106,15 +113,15 @@ tests = {
 	    	try{
 	    		var expected = {errCode: 6, message: 'null name'};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
+	    		callBack('add activity no name',true);
 	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity no name',false);
 	    	}
 	    });
+	},
 
-  },
-
-  'add activity no description': function () {
+	//add activity no description
+	 function (callBack) {
 
 	    var activityDict = {};
 	    activityDict.name = 'Rock the Bells';
@@ -146,14 +153,15 @@ tests = {
 	    	try{
 	    		var expected = {errCode: 1};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
+	    		callBack('add activity no description', true);
 	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity no description', false);
 	    	}
 	    });
+	},
 
-  },
- 'add activity no category': function () {
+	//add activity no category
+	function (callBack) {
 
 	    var activityDict = {};
 	    activityDict.name = 'Rock the Bells';
@@ -185,15 +193,15 @@ tests = {
 	    	try{
 	    		var expected = {errCode: 6, message: 'null category'};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
+	    		callBack('add activity no category', true);
 	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity no category', false);
 	    	}
 	    });
+	},
 
-  },
- 
- 'add activity invalid category': function () {
+	//add activity invalid category
+	function (callBack) {
 
 	    var activityDict = {};
 	    activityDict.name = 'Rock the Bells';
@@ -225,15 +233,15 @@ tests = {
 	    	try{
 	    		var expected = {errCode: 6, message: 'invalid category'};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
+	    		callBack('add activity invalid category', true);
 	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity invalid category', false);
 	    	}
 	    });
+	},
 
-  },
-
- 'add activity no time1, when needed for startEnd': function () {
+	//add activity no time1, needed for startEnd
+	function () {
 
 	    var activityDict = {};
 	    activityDict.name = 'Rock the Bells';
@@ -263,14 +271,15 @@ tests = {
 	    	try{
 	    		var expected = {errCode: 6, message: 'null time1'};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
+	    		callBack('add activity no time1, when needed for startEnd', true);
 	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity no time1, when needed for startEnd', false);
 	    	}
 	    });
+	},
 
-  },
-  'add activity no time1, when needed for openClose': function () {
+	//add activity no time1, when needed for openClose
+	function (callBack) {
 
 	    var activityDict = {};
 	    activityDict.name = 'Rock the Bells';
@@ -300,15 +309,15 @@ tests = {
 	    	try{
 	    		var expected = {errCode: 6, message: 'null time1'};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
+	    		callBack('add activity no time1, when needed for openClose', true);
 	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity no time1, when needed for openClose', false);
 	    	}
 	    });
+	},
 
-  },
-
-   'add activity time1 > time2': function () {
+	//add activity time1 > time 2
+	function (callBack) {
 
 	    var activityDict = {};
 	    activityDict.name = 'Rock the Bells';
@@ -340,15 +349,15 @@ tests = {
 	    	try{
 	    		var expected = {errCode: 6, message: 'invalid times'};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
+	    		callBack('add activity time1 > time2', true);
 	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity time1 > time2', false);
 	    	}
 	    });
+	},
 
-  },
-
-  	'add activity beginDate > endDate': function () {
+	//add activity beginDate > endDate
+	function (callBack) {
 
 	    var activityDict = {};
 	    activityDict.name = 'backstreet boys concert';
@@ -380,19 +389,95 @@ tests = {
 	    	try{
 	    		var expected = {errCode: 6, message: 'invalid dates'};
 	    		assert.deepEqual(response,expected);
-	    		callBack(true);
+	    		callBack('add activity beginDate > endDate', true);
 	    	} catch(exc){
-	    		callBack(false);
+	    		callBack('add activity beginDate > endDate', false);
 	    	}
 	    });
+	},
 
-  }
+	//add activity lowPrice > highPrice
+	function (callBack) {
+
+	    var activityDict = {};
+	    activityDict.name = 'backstreet boys concert';
+	    activityDict.description = 'I want it that way...';
+	    activityDict.category = 'Entertainment';
+	    //7pm in milliseconds since midnight
+	    var sevenPM = 1000 * 60 * 60 * 19;
+	    activityDict.time1 = sevenPM;
+	    //10pm in milliseconds senice midnight
+	    var tenPM = 1000 * 60 * 60 * 22;
+	    activityDict.time2 = tenPM;
+	    activityDict.flag = 'startEnd';
+	    //date is june 15th 2013
+	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
+	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
+	    activityDict.beginDate = date1.getTime();
+	    activityDict.endDate = date2.getTime();
+	    activityDict.lowPrice = '300';
+	    activityDict.highPrice = '200';
+	    activityDict.lowNumParticipants = '1';
+	    activityDict.highNumParticipants = '10';
+	    //oracle arena
+	    activityDict.latitude = '37.751';
+	    activityDict.longitude = '-122.200';
+	    activityDict.duration = '3';
+
+		Activity.add(activityDict, function(response){
+
+	    	try{
+	    		var expected = {errCode: 6, message: 'invalid dates'};
+	    		assert.deepEqual(response,expected);
+	    		callBack('add activity lowprice > highprice', true);
+	    	} catch(exc){
+	    		callBack('add activity lowprice > highprice', false);
+	    	}
+	    });
+	},
 
 
+	//add activity lownumparticipants > highnumparticipants
+	function (callBack) {
 
+	    var activityDict = {};
+	    activityDict.name = 'backstreet boys concert';
+	    activityDict.description = 'I want it that way...';
+	    activityDict.category = 'Entertainment';
+	    //7pm in milliseconds since midnight
+	    var sevenPM = 1000 * 60 * 60 * 19;
+	    activityDict.time1 = sevenPM;
+	    //10pm in milliseconds senice midnight
+	    var tenPM = 1000 * 60 * 60 * 22;
+	    activityDict.time2 = tenPM;
+	    activityDict.flag = 'startEnd';
+	    //date is june 15th 2013
+	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
+	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
+	    activityDict.beginDate = date1.getTime();
+	    activityDict.endDate = date2.getTime();
+	    activityDict.lowPrice = '25';
+	    activityDict.highPrice = '200';
+	    activityDict.lowNumParticipants = '10';
+	    activityDict.highNumParticipants = '1';
+	    //oracle arena
+	    activityDict.latitude = '37.751';
+	    activityDict.longitude = '-122.200';
+	    activityDict.duration = '3';
 
+		Activity.add(activityDict, function(response){
 
+	    	try{
+	    		var expected = {errCode: 6, message: 'invalid dates'};
+	    		assert.deepEqual(response,expected);
+	    		callBack('add activity lownumparticipants > highnumparticipants', true);
+	    	} catch(exc){
+	    		callBack('add activity lownumparticipants > highnumparticipants', false);
+	    	}
+	    });
+	}
 
-};
+];
+
 
 module.exports = tests;
