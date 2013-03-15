@@ -16,6 +16,7 @@ var Activities = function () {
   **/
   this.search = function (req, resp, params)
   {
+    console.log("inSearch");
     for(var key in params)
     {
       console.log(key+" "+params[key]);
