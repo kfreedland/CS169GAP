@@ -9,6 +9,13 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 5:</b> 
+	//Added information on how to test locally
+
+<b>Changelog Entry 4:</b>
+	//Changing all Activities parameters to No Camel Case
+	//Flag is camelCase
+
 <b>Changelog Entry 3:</b>
 	//errCode
 	<p>7 - Backend Error</p>
@@ -76,9 +83,9 @@ CS169GAP
 	{
 		<li>'name': [string, required],</li>
 		<li>'description': [string],</li>
-		<li>'time1': [int milliseconds since midnight, required-IF flag=='start_end' || flag=='open_close'],</li>
-		<li>'time2': [int, milliseconds since midnight, required-IF flag=='start_end' || flag=='open_close'],</li>
-		<li>'flag': [string subset of: {'start_end', 'open_close', 'any_time', 'day_time', 'night_time'}, required],</li>
+		<li>'time1': [int milliseconds since midnight, required-IF flag=='startEnd' || flag=='openClose'],</li>
+		<li>'time2': [int, milliseconds since midnight, required-IF flag=='startEnd' || flag=='openClose'],</li>
+		<li>'flag': [string subset of: {'startEnd', 'openClose', 'anyTime', 'dayTime', 'nightTime'}, required],</li>
 		<li>'begin_date': [milliseconds since epoch, int],</li>
 		<li>'end_date': [milliseconds since epoch, int],</li>
 		<li>'low_price': [int, required],</li>
@@ -92,6 +99,16 @@ CS169GAP
 </ul>
 
 <ul> Response Message: </ul>
+
+<h2> Testing Locally </h2>
+Create a Postgres database locally on your machine with the following parameters:
+   user: 'testing'
+   database name: 'postgres'
+   password: 'gap169'
+   host: 'localhost'
+   port: 5432
+
+Then use the following to costruct the tables required to run GAP:
 
 <h2> Queries for Database Setup </h2>
 CREATE TABLE users (
@@ -114,24 +131,24 @@ CREATE TABLE passports (
 	id text
 );
 
+
 CREATE TABLE activities (
 	name text,
 	description text,
+	category text,
 	time1 float8,
 	time2 float8,
 	flag text,
-	low_price float8,
-	high_price float8,
-	low_num_participants float8,
-	high_num_participants float8,
+	begindate float8,
+	enddate float8,
+	lowprice float8,
+	highprice float8,
+	lownumparticipants float8,
+	highnumparticipants float8,
 	latitude float8,
 	longitude float8,
-	category text,
+	duration float8,
 	created_at timestamptz,
 	updated_at timestamptz,
 	id text
 );
-
-
-
-

@@ -43,6 +43,8 @@ router.get('/login').to('Main.login');
 router.get('/logout').to('Main.logout');
 router.post('/auth/local').to('Auth.local');
 
+router.post('/TESTAPI/unitTests').to('users.unitTests');
+
 router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
 

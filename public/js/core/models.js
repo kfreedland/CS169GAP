@@ -2,8 +2,8 @@
 /*jslint white: false */
 /*jslint indent: 2 */
 
-// const MIN_RETURNED = 1;
-// const MAX_RETURNED = 2;
+ const MIN_RETURNED = 1;
+ const MAX_RETURNED = 2;
 
 var Activity = function () {
 
@@ -14,12 +14,12 @@ var Activity = function () {
     time1: {type: 'number'},
     time2: {type: 'number'},
     flag: {type: 'string', required: 'true'},
-    begin_date: {type: 'number'},
-    end_date: {type: 'number'},
-    low_price: {type: 'number', required: 'true'},
-    high_price: {type: 'number', required: 'true'},
-    low_num_participants: {type: 'number'},
-    high_num_participants: {type: 'number'},
+    begindate: {type: 'number'},
+    enddate: {type: 'number'},
+    lowprice: {type: 'number', required: 'true'},
+    highprice: {type: 'number', required: 'true'},
+    lownumparticipants: {type: 'number'},
+    highnumparticipants: {type: 'number'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
     duration: {type: 'number'}
@@ -61,33 +61,33 @@ Activity.add = function (parameterDict, callback){
     console.log("reached model create");
     console.dir(parameterDict);
 
-    var validCategories = ["sports", "entertainment", "concert"];
+    var validCategories = ["Sports", "Entertainment", "Food", "Arts", "Nature"];
 
 
     //Parse strings to Ints
     if (parameterDict.time1 !== undefined) {
-      parameterDict.time1 = parseInt(parameterDict.time1, 10);
+      parameterDict.time1 = parseFloat(parameterDict.time1);
     } 
     if (parameterDict.time2 !== undefined) {
-      parameterDict.time2 = parseInt(parameterDict.time2, 10);
+      parameterDict.time2 = parseFloat(parameterDict.time2);
     } 
-    if (parameterDict.begin_date !== undefined) {
-      parameterDict.begin_date = parseInt(parameterDict.begin_date, 10);
+    if (parameterDict.begindate !== undefined) {
+      parameterDict.begindate = parseFloat(parameterDict.begindate);
     } 
-    if (parameterDict.end_date !== undefined) {
-      parameterDict.end_date = parseInt(parameterDict.end_date, 10);
+    if (parameterDict.enddate !== undefined) {
+      parameterDict.enddate = parseFloat(parameterDict.enddate);
     } 
-    if (parameterDict.low_price !== undefined) {
-      parameterDict.low_price = parseInt(parameterDict.low_price, 10);
+    if (parameterDict.lowprice !== undefined) {
+      parameterDict.lowprice = parseFloat(parameterDict.lowprice);
     }
-    if (parameterDict.high_price !== undefined) {
-      parameterDict.high_price = parseInt(parameterDict.high_price, 10);
+    if (parameterDict.highprice !== undefined) {
+      parameterDict.highprice = parseFloat(parameterDict.highprice);
     }
-    if (parameterDict.low_num_participants !== undefined) {
-      parameterDict.low_num_participants = parseInt(parameterDict.low_num_participants, 10);
+    if (parameterDict.lownumparticipants !== undefined) {
+      parameterDict.lownumparticipants = parseFloat(parameterDict.lownumparticipants);
     }
-    if (parameterDict.high_num_participants !== undefined) {
-      parameterDict.high_num_participants = parseInt(parameterDict.high_num_participants, 10);
+    if (parameterDict.highnumparticipants !== undefined) {
+      parameterDict.highnumparticipants = parseFloat(parameterDict.highnumparticipants);
     }
     if (parameterDict.latitude !== undefined) {
       parameterDict.latitude = parseFloat(parameterDict.latitude);
@@ -95,7 +95,7 @@ Activity.add = function (parameterDict, callback){
     if (parameterDict.longitude !== undefined) {
       parameterDict.longitude = parseFloat(parameterDict.longitude);
     }
-    if(parameterDict.duration != undefined){
+    if(parameterDict.duration !== undefined){
       parameterDict.duration = parseFloat(parameterDict.duration);
     }
 
@@ -114,7 +114,7 @@ Activity.add = function (parameterDict, callback){
       return;
 
     }
-    if (parameterDict.flag === 'start_end' || parameterDict.flag === 'open_close') {
+    if (parameterDict.flag === 'startEnd' || parameterDict.flag === 'openClose') {
       
       if(parameterDict.time1 === undefined) {
         respDict.errCode = 6;
@@ -132,9 +132,9 @@ Activity.add = function (parameterDict, callback){
 
     } 
 
-    if (parameterDict.flag !== 'start_end' && parameterDict.flag !== 'open_close' 
-           && parameterDict.flag !== 'any_time' &&  parameterDict.flag !== 'day_time' && 
-           parameterDict.flag !== 'night_time') {
+    if (parameterDict.flag !== 'startEnd' && parameterDict.flag !== 'openClose' 
+           && parameterDict.flag !== 'anyTime' &&  parameterDict.flag !== 'dayTime' && 
+           parameterDict.flag !== 'nightTime') {
 
       respDict.errCode = 6;
       respDict.message = "invalid flag";
@@ -143,26 +143,25 @@ Activity.add = function (parameterDict, callback){
 
     } 
 
-    if (parameterDict.low_price === undefined) {
+    if (parameterDict.lowprice === undefined) {
       respDict.errCode = 6;
-      respDict.message = "null low_price";
+      respDict.message = "null lowPrice";
       callback(respDict);
       return;
 
     } 
 
-    if (parameterDict.high_price === undefined) {
+    if (parameterDict.highprice === undefined) {
       respDict.errCode = 6;
-      respDict.message = "null high_price";
+      respDict.message = "null highPrice";
       callback(respDict);
       return; 
 
     } 
 
-    if(parameterDict.low_price && parameterDict.high_price) {
+    if(parameterDict.lowprice && parameterDict.highprice) {
 
-      if (parameterDict.low_price > parameterDict.high_price) {
-
+      if (parameterDict.lowprice > parameterDict.highprice) {
         respDict.errCode = 6;
         respDict.message = "invalid prices";
         callback(respDict);
@@ -172,9 +171,9 @@ Activity.add = function (parameterDict, callback){
 
     }
     
-    if(parameterDict.low_num_participants && parameterDict.high_num_participants) {
+    if(parameterDict.lownumparticipants && parameterDict.highnumparticipants) {
 
-      if (parameterDict.low_num_participants > parameterDict.high_num_participants) {
+      if (parameterDict.lownumparticipants > parameterDict.highnumparticipants) {
         respDict.errCode = 6;
         respDict.message = "invalid participants";
         callback(respDict);
@@ -214,27 +213,27 @@ Activity.add = function (parameterDict, callback){
     if(parameterDict.time2 !== undefined){
       activityDict.time2 = parameterDict.time2;
     }
-    if(parameterDict.begin_date !== undefined){
-      activityDict.begin_date = parameterDict.begin_date;
+    if(parameterDict.begindate !== undefined){
+      activityDict.begindate = parameterDict.begindate;
     }
-    if(parameterDict.end_date !== undefined){
-      activityDict.end_date = parameterDict.end_date;
+    if(parameterDict.enddate !== undefined){
+      activityDict.enddate = parameterDict.enddate;
     }
-    console.log("parameterDict.low_price = " + parameterDict.low_price);
-    if(parameterDict.low_price !== undefined){
-      console.log("low_price is NOT undefined!!");
-      activityDict.low_price = parameterDict.low_price;
+    console.log("parameterDict.lowPrice = " + parameterDict.lowprice);
+    if(parameterDict.lowprice !== undefined){
+      console.log("lowPrice is NOT undefined!!");
+      activityDict.lowprice = parameterDict.lowprice;
     }
-    console.log("parameterDict.high_price = " + parameterDict.high_price); 
-    if(parameterDict.high_price !== undefined){
-      console.log("high_price is NOT undefined!!");
-      activityDict.high_price = parameterDict.high_price;
+    console.log("parameterDict.highPrice = " + parameterDict.highprice); 
+    if(parameterDict.highprice !== undefined){
+      console.log("highPrice is NOT undefined!!");
+      activityDict.highprice = parameterDict.highprice;
     }  
-    if(parameterDict.low_num_participants !== undefined){
-      activityDict.low_num_participants = parameterDict.low_num_participants;
+    if(parameterDict.lownumparticipants !== undefined){
+      activityDict.lownumparticipants = parameterDict.lownumparticipants;
     }
-    if(parameterDict.high_num_participants !== undefined){
-      activityDict.high_num_participants = parameterDict.high_num_participants;
+    if(parameterDict.highnumparticipants !== undefined){
+      activityDict.highnumparticipants = parameterDict.highnumparticipants;
     }
     if(parameterDict.latitude !== undefined){
       activityDict.latitude = parameterDict.latitude;
@@ -247,6 +246,22 @@ Activity.add = function (parameterDict, callback){
     }
 
 
+    // activityDict = {name :'name1',
+    //                 description : 'description YO',
+    //                 category : 'sports',
+    //                 time1 : 123,
+    //                 time2 : 234,
+    //                 flag : 'startEnd',
+    //                 begindate : 2323,
+    //                 enddate : 23444,
+    //                 lowprice : 1,
+    //                 highprice : 3,
+    //                 lownumparticipants : 1,
+    //                 highnumparticipants : 10,
+    //                 latitude : 37.87,
+    //                 longitude : -122.25,
+    //                 duration : 2344-2323};
+
     //Make sure does not exist
     geddy.model.Activity.first(activityDict, 
       function (err, result) {
@@ -257,7 +272,7 @@ Activity.add = function (parameterDict, callback){
         } else {
           console.log("activity does not exists yet, so we continue to create it");
           //all checks pass
-          console.log("ACTIVIT DICT: ");
+          console.log("ACTIVITY DICT: ");
           console.dir(activityDict);
 
           var activityRecord = geddy.model.Activity.create(activityDict);
@@ -284,10 +299,7 @@ Activity.add = function (parameterDict, callback){
               }
             });
         }
-
-    });
-
-       
+    });  
 };
 
 Activity.search = function search(params, myLat, myLong, callback)
@@ -351,21 +363,174 @@ Passport = geddy.model.register('Passport', Passport);
 }());
 
 (function () {
+var passport = require('passport')
+  , passportHelper = require('../helpers/passport/index')
+  , cryptPass = passportHelper.cryptPass;
+
 var User = function () {
+	this.property('username', 'string', {required: true});
+    this.property('password', 'string', {required: true});
+    this.property('familyName', 'string');
+    this.property('givenName', 'string');
+    this.property('email', 'string');
 
-  this.property('username', 'string', {required: true});
-  this.property('password', 'string', {required: true});
-  this.property('familyName', 'string', {required: true});
-  this.property('givenName', 'string', {required: true});
-  this.property('email', 'string', {required: true});
+    this.validatesLength('username', {min: 3, max:128});
+    this.validatesLength('password', {min: 8, max:128});
+    this.validatesConfirmed('password', 'confirmPassword');
 
-  this.validatesLength('username', {min: 3});
-  this.validatesLength('password', {min: 8});
-  this.validatesConfirmed('password', 'confirmPassword');
-
-  this.hasMany('Passports');
+    this.hasMany('Passports');
 };
 
-User = geddy.model.register('User', User);
+User.add = function(user, callback){
+    // Non-blocking uniqueness checks are hard
+    User.first({username: user.username}, function(err, data) {
+      var responseDict = {};
+    if (data) {
+      //Username Exists errCode=2
+          responseDict.errCode = 2;
+      callback(responseDict);
+      //self.transfer('add');
+    }
+    else {
+      if (!user.username || user.username.length === 0 || user.username.length > 128) {
+        console.log("bad username block");
+        responseDict.errCode = 3; //"ERR_BAD_USERNAME"
+        callback(responseDict);
+      } else if (!user.password || user.password.length === 0 || user.password.length > 128 ) {
+        //|| user.confirmPassword != user.password){
+        console.log("bad password block with confirmPassword: " + user.confirmPassword);
+        //Check if password is not empty and <128 chars
+        responseDict.errCode = 4; //"ERR_BAD_PASSWORD"
+        callback(responseDict);
+      } else {
+        if (user.isValid()) {
+          user.password = cryptPass(user.password);
+        }
+        console.log("user is : username: " + user.username + " and password: " + user.password);
+        user.save(function(err, data) {
+          console.log("Got Data: " + data);
+          if (err) {
+            // params.errors = err;
+            //Database Error errCode=7
+            console.log("Error saving User: ");
+            for (var item in err){
+              console.log(item + ":" + err[item] + "\n");
+            }
+            responseDict.errCode = 7;
+            callback(responseDict);
+            // self.transfer('add');
+          }
+          else {
+            //Success errCode=1
+            responseDict.errCode = 1;
+            callback(responseDict);
+              // self.redirect({controller: self.name});
+          }
+        });
+      }
+    }
+    });
+};
 
-}());
+
+User.login = function(params, callback){
+  var handler = function (badCredsError, user, noCredsError) {
+      var responseDict = {};
+      if (badCredsError || noCredsError) {
+        //Error errCode = 5
+        responseDict.errCode = 5;
+        callback(responseDict);
+      }
+      else {
+        //Success errCode = 1
+        responseDict.errCode = 1;
+        callback(responseDict);
+      }
+    };
+    // FIXME: Passport wants a request body or query
+    req = {};
+    req.body = {
+      username: params.username
+    , password: params.password
+    };
+    passport.authenticate('local', function () {
+      handler.apply(null, arguments);
+    })(req, null, handler);
+};
+
+User.TESTAPI_resetFixture = function (callback) {
+  geddy.model.User.all(function (err, result) {
+    console.log("got all users models with error: " + err + " and result: " + result);
+    for (var userModel in result){
+      console.log("trying to remove userModel: " + result[userModel]);
+      geddy.model.User.remove(result[userModel].id);
+    }
+    var responseDict = {};
+  responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};
+
+User.TESTAPI_unitTests = function (callback) {
+  //Remove all database entries
+  console.log("Resetting fixture");
+  User.TESTAPI_resetFixture(function (nothingImportant){
+    console.log("Reset fixture completed");
+    var successCount = 0;
+    var failCount = 0;
+    var tests = require('../../test/user.js');
+    var testResults = "";
+
+    var numberOfTests = 0;
+    for (var key in tests){
+      numberOfTests += 1;
+    }
+    console.log("There are " + numberOfTests + " tests to run.");
+    var currentTestNumber = -1;
+    // var numberOfTestsCompleted = 0;
+
+    var done = function done(){
+      var responseDict = {};
+      responseDict.totalTests = successCount + failCount;
+      responseDict.nrFailed = failCount;
+      if (failCount === 0){
+        responseDict.output = "All tests passed";
+      } else {
+        responseDict.output = testResults;
+      }
+      callback(responseDict);
+    };
+    var runTests = function (didTestPass){
+      //Don't do anything for the first run
+      if (currentTestNumber !== -1){
+        //Save info from previous test
+        if (!didTestPass){
+          failCount += 1;
+          testResults += "Test " + currentTestNumber + ": FAILED.                         ";
+          console.log("Test " + currentTestNumber + ": FAILED.");
+        } else{
+          successCount += 1;
+          //testResults += "Test " + currentTestNumber + ": PASSED.                         ";
+          console.log("Test " + currentTestNumber + ": PASSED.");
+        }
+      }
+      //Now we run the next test
+      currentTestNumber += 1;
+      console.log("running test: " + currentTestNumber + " and there are :" + numberOfTests + " total tests");
+      if (currentTestNumber >= numberOfTests){
+        //Done running all tests
+        console.log("running done now");
+        done();
+      } else{
+        console.log("Running next test");
+        //Run next test and pass this function as callback for next function
+        tests[currentTestNumber](runTests);
+      }
+    };
+    //Start running tests
+    console.log("Running tests");
+    runTests();
+  });
+};
+
+User = geddy.model.register('User', User);}());

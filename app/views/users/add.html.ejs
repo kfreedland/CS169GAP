@@ -19,6 +19,22 @@
   <form id="user-form" class="form-horizontal" action="/users" method="POST">
     <fieldset>
       <legend>Create a New User</legend>
+      <% if (params.errCode){ %>
+        <div class="errorMessage" >
+        <% if (params.errCode == 2){ %>
+           <p> A user with that username already exists. Please choose another username. </p>
+        <% } else { %>
+          <% if (params.errCode == 3) { %>
+           <p> Your username is not valid. Please choose a username that is not empty and less than 128 characters long. </p>
+          <% } else { %>
+            <% if (params.errCode == 4) { %>
+              <p> Your password is not valid. Please choose a password that is not empty and less than 128 characters long. </p>
+            <% } %>
+          <% } %>
+        <% } %>
+      </div>
+     <% } %>
+
       <% if(params.errors) { %>
       <div class="control-group">
         <ul>

@@ -82,10 +82,8 @@ var actions = new (function () {
             console.log("got through passport authenticate");
             if (!profile) {
               console.log("No Profile");
+              self.redirect(failureRedirect + '?errCode=5');
               //Error errCode = 5
-              responseDict['errCode'] = 5;
-              self.respond(responseDict, {format: 'json'});
-              // self.redirect(failureRedirect);
             }
             else {
               try {
@@ -93,20 +91,17 @@ var actions = new (function () {
                   console.log("got through lookup by passport");
                   if (err) {
                     console.log("Got error in lookupByPassport: " + err);
+                    self.error(err);
+                    //self.redirect(failureRedirect + '?errCode=5');
                     //Error errCode = 5
-                    responseDict['errCode'] = 5;
-                    self.respond(responseDict, {format: 'json'});
-                    // self.error(err);
                   }
                   else {
                     self.session.set('userId', user.id);
                     // self.session.set('user', user);
                     self.session.set('authType', authType);
                     console.log("No Error so about to redirect to successRedirect: " + successRedirect);
+                    self.redirect(successRedirect + '?errCode=1');
                     //Success errCode = 1 
-                    responseDict['errCode'] = 1;
-                    self.respond(responseDict, {format: 'json'});
-                    // self.redirect(successRedirect);
                   }
                 });
               }
@@ -129,21 +124,17 @@ var actions = new (function () {
       , handler = function (badCredsError, user, noCredsError) {
           var responseDict = {};
           if (badCredsError || noCredsError) {
-            //Error errCode = 5
-             responseDict['errCode'] = 5;
-             this.errCode = 5;
-            // self.respond(responseDict, {format: 'json'});
-            self.redirect(failureRedirect, responseDict);
+            console.log("Bad or no credentials. Redirecting to failureRedirect: " + failureRedirect);
+            self.redirect(failureRedirect + '?errCode=5');
+            //Error errCode = 5 bad credentials
           }
           else {
+            console.log("Good credentials. Setting session and Redirecting to successRedirect: " + successRedirect);
             self.session.set('userId', user.id);
             self.session.set('authType', 'local');
 
+            self.redirect(successRedirect + '?errCode=1');
             //Success errCode = 1
-             responseDict['errCode'] = 1;
-             this.errCode = 1;
-            // self.respond(responseDict, {format: 'json'});
-            self.redirect(successRedirect, responseDict);
           }
         };
     // FIXME: Passport wants a request body or query

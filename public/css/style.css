@@ -119,36 +119,64 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     text-align: center;
   }
 
+  .list-item div {
+    background: white;
+    border-bottom: 0px;
+    padding: 0px;
+  }
 
+  .list-item div > * {
+  padding: 0px;
+  }
+
+  .button_result_left {
+    width : 60%;
+    float: left;
+  }
+
+  .button_result_right {
+    width: 220px;
+    float : right;
+  }
 
   /*STYLING BRANDON'S HAIR AKA List Page*/
   .list-item {
       background: #fff;
       margin-bottom: 10px;
-      padding: 10px 50px;
+      padding: 10px 20px;
       position: relative;
-      width: 460px;
+      height : 200px;
+      width: 600px;
       box-shadow: rgba(0, 0, 0, 0.4) 0 1px 5px 0px;
       border-radius: 3px;
       margin-bottom: 30px;
 
   }
 
+  .ui-btn-up-c .button_result {
+    font-weight: normal;
+    color: #222;
+    text-shadow: 0 1px 0 #fff;
+  }
+
   .row-title {
-    padding: 30px;
+    font-size: 2em;
   }
 
   .row-description {
+    height : 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .row-category {
-    position: relative;
-    width : 180px;
-    padding : 10px;
+    height : 15px;
+    font-size: 1.5em;
+    text-align: center;
   }
 
   .row-address {
-    width : 100px;
+    padding: 0px;
   }
   
   .row-price-range {
@@ -165,5 +193,11 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
 
   .ui-li.ui-btn {
     margin: 20px;
+  }
+
+  /*Error messages for create and add user*/
+  .errorMessage{
+    color: red;
+    text-align: center;
   }
 }

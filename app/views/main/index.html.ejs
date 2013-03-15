@@ -1,8 +1,10 @@
 <!--Main Page-->
 
   <!-- Find Activities Page -->
-  <%- partial('../activities/activityForm', {form: {type: 'find'}}) %>
+  <%- partial('../activities/activityForm', {form: {type: 'find'}, user: params.user}) %>
   <!-- Create Activity Page -->
-  <%- partial('../activities/activityForm', {form: {type: 'create'}}) %>
+  <%- partial('../activities/activityForm', {form: {type: 'create'}, user: params.user}) %>
   <!-- List Suggested Activities Page -->
   <%- partial('../activities/list', {}) %>
+
+  <p> params.user = <%=params.user%> </p>
