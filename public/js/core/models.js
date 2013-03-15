@@ -26,7 +26,6 @@ var Activity = function () {
 
 var geoSearchHelper = function (records, lat, long, callback)
 {
-  var MAX_RETURNED = 2;
   var consDist = 69.1
     , consAng = 57.3
     , returnRecords = []
@@ -41,10 +40,6 @@ var geoSearchHelper = function (records, lat, long, callback)
     record.distance = dist*100;
     returnRecords[count] = record;
     count = count + 1;
-    if (count === MAX_RETURNED)
-    {
-      break;
-    }
   }
   returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
   console.log("RETURNING RECORDS");
@@ -256,7 +251,7 @@ Activity.add = function (parameterDict, callback){
 
   if (parameterDict.lownumparticipants && parameterDict.highnumparticipants) 
   {
-    if(activityDict.lownumparticipants < activityDict.highnumparticipants)
+    if(activityDict.lownumparticipants > activityDict.highnumparticipants)
     {
       respDict.errCode = 6;
       respDict.message = "invalid participants";
