@@ -28,7 +28,7 @@ var geoSearchHelper = function (records, lat, long, callback)
   var MAX_RETURNED = 2;
   var consDist = 69.1
     , consAng = 57.3
-    , returnRecords = {}
+    , returnRecords = []
     , count = 0
     , idx;
   for (idx in records)
