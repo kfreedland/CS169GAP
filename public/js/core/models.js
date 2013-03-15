@@ -9,6 +9,8 @@ var Activity = function () {
 
   this.defineProperties({
     name: {type: 'string', required: 'true'},
+    price1: {type: 'number', required: 'true'},
+    price2: {type: 'number', required: 'true'},
     description: {type: 'string'},
     category: {type: 'string'},
     time1: {type: 'number'},
@@ -16,8 +18,6 @@ var Activity = function () {
     flag: {type: 'string', required: 'true'},
     begin_date: {type: 'number'},
     end_date: {type: 'number'},
-    low_price: {type: 'number', required: 'true'},
-    high_price: {type: 'number', required: 'true'},
     low_num_participants: {type: 'number'},
     high_num_participants: {type: 'number'},
     latitude: {type: 'number'},
@@ -95,7 +95,7 @@ Activity.add = function (parameterDict, callback){
     if (parameterDict.longitude !== undefined) {
       parameterDict.longitude = parseFloat(parameterDict.longitude);
     }
-    if(parameterDict.duration != undefined){
+    if(parameterDict.duration !== undefined){
       parameterDict.duration = parseFloat(parameterDict.duration);
     }
 
@@ -246,7 +246,14 @@ Activity.add = function (parameterDict, callback){
       activityDict.duration = parameterDict.duration;
     }
 
-
+    activityDict = {name: 'BOOB',
+            description:'suckIT',
+            price1:1,
+            price2:10,
+            time1:123,
+            time2:345,
+            flag:'start_end',
+            category:'sports'};
     //Make sure does not exist
     geddy.model.Activity.first(activityDict, 
       function (err, result) {
@@ -296,7 +303,7 @@ Activity.search = function search(params, myLat, myLong, callback)
   Name: string
   time1: time
   time2: time
-  flag: string startEnd, openClose, anyTime, dayTime, nightTime
+  flag: string start_end, open_close, any_time, day_time, night_time
   begin_date: date
   end_date: date
   low_price: int

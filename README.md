@@ -9,6 +9,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 4:</b>
+	//Changing all Activities parameters to CamelCase
+
 <b>Changelog Entry 3:</b>
 	//errCode
 	<p>7 - Backend Error</p>
@@ -120,10 +123,12 @@ CREATE TABLE activities (
 	time1 float8,
 	time2 float8,
 	flag text,
-	low_price float8,
-	high_price float8,
-	low_num_participants float8,
-	high_num_participants float8,
+	lowPrice float8,
+	highPrice float8,
+	beginDate float8,
+	endDate float8,
+	lowNumParticipants float8,
+	highNumParticipants float8,
 	latitude float8,
 	longitude float8,
 	category text,
@@ -131,7 +136,3 @@ CREATE TABLE activities (
 	updated_at timestamptz,
 	id text
 );
-
-
-
-
