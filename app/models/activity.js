@@ -46,6 +46,8 @@ var geoSearchHelper = function (records, lat, long, callback)
     }
   }
   returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
+  console.log("RETURNING RECORDS");
+  console.dir(returnRecords);
   callback(returnRecords, count);
 };
 
@@ -354,8 +356,6 @@ Activity.search = function search(params, myLat, myLong, callback)
     {
       throw err;
     }
-    console.log("found activities");
-    console.dir(activities);
     if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
     {
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
