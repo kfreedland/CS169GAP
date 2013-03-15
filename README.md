@@ -91,4 +91,47 @@ CS169GAP
 	}
 </ul>
 
-<ul> Response Message:
+<ul> Response Message: </ul>
+
+<h2> Queries for Database Setup </h2>
+CREATE TABLE users (
+	username text,
+	email text,
+	password text,
+	family_name text,
+	given_name text,
+	created_at timestamptz,
+	updated_at timestamptz,
+	id text
+);
+
+CREATE TABLE passports (
+	auth_type text,
+	key text,
+	user_id text,
+	created_at timestamptz,
+	updated_at timestamptz,
+	id text
+);
+
+CREATE TABLE activities (
+	name text,
+	description text,
+	time1 float8,
+	time2 float8,
+	flag text,
+	low_price float8,
+	high_price float8,
+	low_num_participants float8,
+	high_num_participants float8,
+	latitude float8,
+	longitude float8,
+	category text,
+	created_at timestamptz,
+	updated_at timestamptz,
+	id text
+);
+
+
+
+
