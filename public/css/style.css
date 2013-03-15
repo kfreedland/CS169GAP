@@ -164,7 +164,9 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   }
 
   .row-description {
-    height : 75px;
+    height : 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .row-category {
