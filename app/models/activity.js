@@ -4,22 +4,27 @@ const MAX_RETURNED = 2;
 var Activity = function () {
 
   this.defineProperties({
-    name: {type: 'string', required: true},
+    name: {type: 'string'},
     description: {type: 'string'},
     category: {type: 'string'},
     time1: {type: 'int'},
     time2: {type: 'int'},
-    flag: {type: 'string', required: true},
+    flag: {type: 'string'},
     begin_date: {type: 'int'},
     end_date: {type: 'int'},
-    low_price: {type: 'int', required: true},
-    high_price: {type: 'int', required: true},
-    low_num_participants: {type: 'int'},
-    high_num_participants: {type: 'int'},
+    low_price: {type: 'number'},
+    high_price: {type: 'number'},
+    low_num_participants: {type: 'number'},
+    high_num_participants: {type: 'number'},
     latitude: {type: 'number'},
     longitude: {type: 'number'},
     duration: {type: 'number'}
   });
+
+  this.validatesPresent('name');
+  this.validatesPresent('flag');
+  this.validatesPresent('low_price');
+  this.validatesPresent('high_price');
 
 };
 
@@ -219,34 +224,36 @@ Activity.add = function (parameterDict, callback){
     if(parameterDict.low_price != undefined){
       console.log("low_price is NOT undefined!!");
       activityDict.low_price = parameterDict.low_price;
-    } 
+    }
     console.log("parameterDict.high_price = " + parameterDict.high_price); 
     if(parameterDict.high_price != undefined){
       console.log("high_price is NOT undefined!!");
       activityDict.high_price = parameterDict.high_price;
-    }   
+    }  
     if(parameterDict.low_num_participants != undefined){
       activityDict.low_num_participants = parameterDict.low_num_participants;
-    } 
+    }
     if(parameterDict.high_num_participants != undefined){
       activityDict.high_num_participants = parameterDict.high_num_participants;
-    } 
+    }
     if(parameterDict.latitude != undefined){
       activityDict.latitude = parameterDict.latitude;
-    } 
+    }
     if(parameterDict.longitude != undefined){
       activityDict.longitude = parameterDict.longitude;
-    } 
+    }
     if(parameterDict.duration != undefined){
       activityDict.duration = parameterDict.duration;
     }
 
 
     //all checks pass
+    console.log("ACTIVIT DICT: ");
     console.dir(activityDict);
 
     var activityRecord = geddy.model.Activity.create(activityDict);
 
+    console.log("ACTIVITY RECORD: ");
     console.dir(activityRecord);
 
     geddy.model.Activity.save(activityRecord, 
