@@ -1,5 +1,10 @@
-function pullAndReturnData(type, callback) {
+function pullAndReturnData(type, callback) {	
 	// Get the values from the form inputs
+	// Check for name and description if type is 'create'
+	if (type === 'create') {
+		var name = $('#activity_name').val();
+		var description = $('#activity_description').val();
+	}
 	var minPeople = $('#low_num_participants_' + type).val();
 	var maxPeople = $('#high_num_participants_' + type).val();
 	var minPrice = $('#min_price_' + type).val();
@@ -50,8 +55,11 @@ function pullAndReturnData(type, callback) {
 			category: category,
 			errStatus: null
 		};
-		if (type === "find") {
+		if (type === 'find') {
 			data.duration = duration;
+		} else if (type === 'create') {
+			data.name = name;
+			data.description = description;
 		}
 		callback(data);
 	});
@@ -80,6 +88,60 @@ function geocodeAddress(address, callback) {
       callback(latlng);
     });
 }
+
+// fill in the UI elements with new position data
+function update_ui(address, addressDivId) {
+  $(addressDivId).autocomplete("close");
+  $(addressDivId).val(address);
+}
+
+function autocomplete_init(type) {
+	var addressDivId = "#location_input_" + type;
+
+	var input = document.getElementById('location_input_' + type);
+	
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    
+	/*
+  $(addressDivId).autocomplete({
+
+    // source is the list of input options shown in the autocomplete dropdown.
+    // see documentation: http://jqueryui.com/demos/autocomplete/
+    source: function(request,response) {
+
+      // the geocode method takes an address or LatLng to search for
+      // and a callback function which should process the results into
+      // a format accepted by jqueryUI autocomplete
+      geocoder.geocode( {'address': request.term }, function(results, status) {
+        response($.map(results, function(item) {
+          return {
+            label: item.formatted_address, // appears in dropdown box
+            value: item.formatted_address, // inserted into input element when selected
+            geocode: item                  // all geocode data: used in select callback event
+          }
+        }));
+      })
+    },
+
+    // event triggered when drop-down option selected
+    select: function(event,ui){
+      update_ui(ui.item.value, addressDivId);
+    }
+  });
+
+  // triggered when user presses a key in the address box
+  $(addressDivId).bind('keydown', function(event) {
+    if(event.keyCode == 13) {
+      geocode_lookup('address', $(addressDivId).val(), true);
+
+      // ensures dropdown disappears when enter is pressed
+      $(addressDivId).autocomplete("disable")
+    } else {
+      // re-enable if previously disabled above
+      $(addressDivId).autocomplete("enable")
+    }
+  });*/
+}; // autocomplete_init
 
 /*
   Validate that the data in the dictionary. Convert the string values to integers for specific fields.

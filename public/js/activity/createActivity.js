@@ -8,6 +8,7 @@ $(document).ready(function() {
 	$('#create_activity_button').click(function() {
 		// Get the values from the form inputs
 		pullAndReturnData('create', function(dataResp) {
+			console.dir('DATA RESPONSE IS:' + JSON.stringify(dataResp));
 			// Validate the dictionary object before sending it
 			// TODO: Write the success and failure functions
 			validateData(dataResp, function(validData) {

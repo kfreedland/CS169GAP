@@ -28,7 +28,7 @@ var Activities = function () {
       geddy.model.Activity.search(queryInfo, function(responseDict)
       {
         console.log("RESP IS: " + responseDict);
-        self.respond(responsedict, {format: 'json'});
+        self.respond(responseDict, {format: 'json'});
       });
     }
     else
@@ -100,15 +100,16 @@ var Activities = function () {
   };
 */
 
-  this.create = function (req, resp, params) {
+  this.add = function (req, resp, params) {
 
     var self = this;
     console.log("activites.create reached")
 
     geddy.model.Activity.add(params, 
       function createCallBack(result){
+        console.log("EXECUTING CREATE ACTIVITY CALLBACK");
         console.dir(result);
-        self.respond(result);
+        self.respond(result, {format: 'json'});
       });
   };
 /*
