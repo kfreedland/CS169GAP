@@ -36,6 +36,9 @@ tests = [
 	    	} 
 	    	catch(exc)
 	    	{
+	    		var expected = {errCode: 1};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity anyTime', false);
 	    	}
 	    });
@@ -76,6 +79,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity specific date/time', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 1};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity specific date/time', false);
 	    	}
 	    });
@@ -115,6 +121,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no name',true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'null name'};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity no name',false);
 	    	}
 	    });
@@ -155,6 +164,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no description', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 1};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity no description', false);
 	    	}
 	    });
@@ -195,6 +207,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no category', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'null category'};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity no category', false);
 	    	}
 	    });
@@ -235,6 +250,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity invalid category', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'invalid category'};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity invalid category', false);
 	    	}
 	    });
@@ -273,6 +291,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no time1, when needed for startEnd', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'null time1'};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity no time1, when needed for startEnd', false);
 	    	}
 	    });
@@ -311,6 +332,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity no time1, when needed for openClose', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'null time1'};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity no time1, when needed for openClose', false);
 	    	}
 	    });
@@ -351,6 +375,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity time1 > time2', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'invalid times'};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity time1 > time2', false);
 	    	}
 	    });
@@ -391,6 +418,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity beginDate > endDate', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'invalid dates'};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity beginDate > endDate', false);
 	    	}
 	    });
@@ -431,6 +461,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity lowprice > highprice', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'invalid prices'};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity lowprice > highprice', false);
 	    	}
 	    });
@@ -472,6 +505,9 @@ tests = [
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity lownumparticipants > highnumparticipants', true);
 	    	} catch(exc){
+	    		var expected = {errCode: 6, message: 'invalid participants'};
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity lownumparticipants > highnumparticipants', false);
 	    	}
 	    });
@@ -508,11 +544,13 @@ tests = [
 
 		Activity.add(activityDict, function(response){
 
+			var expected = {errCode: 6, message: 'null lowprice'};
 	    	try{
-	    		var expected = {errCode: 6, message: 'null lowprice'};
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity null lowprice', true);
 	    	} catch(exc){
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity null lowprice', false);
 	    	}
 	    });
@@ -548,11 +586,14 @@ tests = [
 
 		Activity.add(activityDict, function(response){
 
+			var expected = {errCode: 6, message: 'null highprice'};
 	    	try{
-	    		var expected = {errCode: 6, message: 'null highprice'};
+	    		
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity null highprice', true);
 	    	} catch(exc){
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
 	    		callBack('add activity null highprice', false);
 	    	}
 	    });
@@ -601,14 +642,17 @@ tests = [
 
 		    Activity.add(activityDict, function(response)
 		    {
+		    	var expected = {errCode: 10, message: "That Activity already exists."};
 		    	try
 		    	{
-		    		var expected = {errCode: 10, message: "That Activity already exists."};
+		    		
 		    		assert.deepEqual(response,expected);
 		    		callBack('add duplicate activities', true);
 		    	} 
 		    	catch(exc)
 		    	{
+		    		console.log("expected = " + expected);
+	    			console.log("response = " + response);
 		    		callBack('add duplicate activities', false);
 		    	}
 		    });
