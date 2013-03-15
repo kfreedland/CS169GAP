@@ -7,11 +7,11 @@ var Activity = function () {
     name: {type: 'string'},
     description: {type: 'string'},
     category: {type: 'string'},
-    time1: {type: 'int'},
-    time2: {type: 'int'},
+    time1: {type: 'number'},
+    time2: {type: 'number'},
     flag: {type: 'string'},
-    begin_date: {type: 'int'},
-    end_date: {type: 'int'},
+    begin_date: {type: 'string'},
+    end_date: {type: 'number'},
     low_price: {type: 'number'},
     high_price: {type: 'number'},
     low_num_participants: {type: 'number'},
@@ -23,8 +23,8 @@ var Activity = function () {
 
   this.validatesPresent('name');
   this.validatesPresent('flag');
-  this.validatesPresent('low_price');
-  this.validatesPresent('high_price');
+  // this.validatesPresent('low_price');
+  // this.validatesPresent('high_price');
 
 };
 
@@ -223,7 +223,7 @@ Activity.add = function (parameterDict, callback){
     console.log("parameterDict.low_price = " + parameterDict.low_price);
     if(parameterDict.low_price != undefined){
       console.log("low_price is NOT undefined!!");
-      activityDict.low_price = parameterDict.low_price;
+      activityDict['low_price'] = parameterDict.low_price;
     }
     console.log("parameterDict.high_price = " + parameterDict.high_price); 
     if(parameterDict.high_price != undefined){
@@ -247,30 +247,47 @@ Activity.add = function (parameterDict, callback){
     }
 
 
-    //all checks pass
-    console.log("ACTIVIT DICT: ");
-    console.dir(activityDict);
-
-    var activityRecord = geddy.model.Activity.create(activityDict);
-
-    console.log("ACTIVITY RECORD: ");
-    console.dir(activityRecord);
-
-    geddy.model.Activity.save(activityRecord, 
-      function (err, result){
-
-        if(err){
-
-          respDict.errCode = 7;
-          respDict.message = "database error";
+    //Make sure does not exist
+    geddy.model.Activity.load(activityDict, 
+      function (err, result) {
+        if (result){
+          respDict.errCode = 10;
+          respDict.message = "That Activity already exists.";
           callback(respDict);
         } else {
+          console.log("activity does not exists yet, so we continue to create it");
+          //all checks pass
+          console.log("ACTIVIT DICT: ");
+          console.dir(activityDict);
+
+          var activityRecord = geddy.model.Activity.create(activityDict);
+
+          console.log("ACTIVITY RECORD: ");
+          console.dir(activityRecord);
+
+          geddy.model.Activity.save(activityRecord, 
+            function (err, result){
+
+              if(err){
+                console.log("ERROR in Activity SAVE");
+                for (var item in err){
+                  console.log(item + " : " + err.item);
+                }
+                respDict.errCode = 7;
+                respDict.message = "database error";
+                callback(respDict);
+              } else {
 
 
-          respDict.errCode = 1;
-          callback(respDict);
+                respDict.errCode = 1;
+                callback(respDict);
+              }
+            });
         }
-      });   
+
+    });
+
+       
 };
 
 Activity.search = function search(params, myLat, myLong, callback)
