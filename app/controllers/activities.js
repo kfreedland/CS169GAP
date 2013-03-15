@@ -78,7 +78,7 @@ var Activities = function () {
         queryInfo.highNumParticipants = {lt: Math.ceil(params.highNumParticipants * 1.1)}
       }
 
-      if (params.category && (typeof params.category == 'string')
+      if (params.category && (typeof params.category == 'string'))
       {
         queryInfo.category = params.category;
       }
