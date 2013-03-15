@@ -88,6 +88,8 @@ $(document).ready(function() {
         	$('#start_end_range_find').hide();
         }
 	});
+
+	//autocomplete_init('find');
 });
 
 /*
