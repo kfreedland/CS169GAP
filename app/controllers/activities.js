@@ -5,12 +5,12 @@ var Activities = function () {
   time1: time
   time2: time
   flag: string startEnd, openClose, anyTime, dayTime, nightTime
-  begin_date: date
-  end_date: date
-  low_price: int
-  high_price: int
-  low_num_participants: int
-  high_num_participants: int
+  beginDate: date
+  endDate: date
+  lowPrice: int
+  highPrice: int
+  lowNumParticipants: int
+  highNumParticipants: int
   latitude: number
   longitude: number
   **/
@@ -43,14 +43,14 @@ var Activities = function () {
         queryInfo.time2 = {lt: Math.max(params.time2 + hour)};
       }
 
-      if (params.begin_date && (typeof params.begin_date == 'number'))
+      if (params.beginDate && (typeof params.beginDate == 'number'))
       {
-        queryInfo.begin_date = {gt: params.begin_date};
+        queryInfo.beginDate = {gt: params.beginDate};
       }
 
-      if (params.end_date && (typeof params.end_date == 'number'))
+      if (params.endDate && (typeof params.endDate == 'number'))
       {
-        queryInfo.end_date = {lt: params.begin_date};
+        queryInfo.endDate = {lt: params.beginDate};
       }
 
       if (params.flag && (typeof params.time1 == 'string'))
@@ -58,24 +58,24 @@ var Activities = function () {
         queryInfo.flag = params.flag;
       }
 
-      if (params.low_price && (typeof params.low_price == 'number'))
+      if (params.lowPrice && (typeof params.lowPrice == 'number'))
       {
-        queryInfo.low_price = {gt: Math.floor(params.low_price * 0.75)};
+        queryInfo.lowPrice = {gt: Math.floor(params.lowPrice * 0.75)};
       }
 
-      if (params.high_price && (typeof params.high_price == 'number'))
+      if (params.highPrice && (typeof params.highPrice == 'number'))
       {
-        queryInfo.high_price = {lt: Math.ceil(params.high_price * 1.25)};
+        queryInfo.highPrice = {lt: Math.ceil(params.highPrice * 1.25)};
       }
 
-      if (params.low_num_participants && (typeof params.low_num_participants == 'number'))
+      if (params.lowNumParticipants && (typeof params.lowNumParticipants == 'number'))
       {
-        queryInfo.low_num_participants = {gt: Math.floor(params.low_num_participants * 0.90)};
+        queryInfo.lowNumParticipants = {gt: Math.floor(params.lowNumParticipants * 0.90)};
       }
 
-      if (params.high_num_participants && (typeof params.high_num_participants == 'number'))
+      if (params.highNumParticipants && (typeof params.highNumParticipants == 'number'))
       {
-        queryInfo.high_num_participants = {lt: Math.ceil(params.high_num_participants * 1.1)}
+        queryInfo.highNumParticipants = {lt: Math.ceil(params.highNumParticipants * 1.1)}
       }
 
       geddy.model.Activity.search(queryInfo, params.latitude, params.longitude, function(responseDict)

@@ -1,8 +1,8 @@
 /*jslint white: false */
 /*jslint indent: 2 */
 
-// const MIN_RETURNED = 1;
-// const MAX_RETURNED = 2;
+const MIN_RETURNED = 1;
+const MAX_RETURNED = 2;
 
 var Activity = function () {
 
