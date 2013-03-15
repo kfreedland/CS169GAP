@@ -174,34 +174,34 @@ function validateData(data, callback) {
 			errMsg = "Duration is not valid, needs to be integer.";
 		}
 	}
-	if (data.low_num_participants) {
+	if (data.lownumparticipants) {
 		try {
-			var low_num_participants_int = parseInt(data.low_num_participants);
-			data.low_num_participants = low_num_participants_int;
+			var lownumparticipants_int = parseInt(data.lownumparticipants);
+			data.lownumparticipants = lownumparticipants_int;
 		} catch(err) {
 			errMsg = "Number of Participants is not valid, needs to be integer.";
 		}
 	}
-	if (data.high_num_participants) {
+	if (data.highnumparticipants) {
 		try {
-			var high_num_participants_int = parseInt(data.high_num_participants);
-			data.high_num_participants = high_num_participants_int;
+			var highnumparticipants_int = parseInt(data.highnumparticipants);
+			data.highnumparticipants = highnumparticipants_int;
 		} catch(err) {
 			errMsg = "Number of Participants is not valid, needs to be integer.";
 		}
 	}
 	if (data.low_price) {
 		try {
-			var low_price_int = parseInt(data.low_price);
-			data.low_price = low_price_int;
+			var lowprice_int = parseInt(data.lowprice);
+			data.lowprice = lowprice_int;
 		} catch(err) {
 			errMsg = "Price Range is not valid, needs to be integer.";
 		}
 	}
-	if (data.high_price) {
+	if (data.highprice) {
 		try {
-			var high_price_int = parseInt(data.high_price);
-			data.high_price = high_price_int;
+			var highprice_int = parseInt(data.highprice);
+			data.highprice = highprice_int;
 		} catch(err) {
 			errMsg = "Price Range is not valid, needs to be integer.";
 		}
