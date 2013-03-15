@@ -9,6 +9,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 6:</b>
+	//Added Selenium Automation tests
+
 <b>Changelog Entry 5:</b> 
 	//Added information on how to test locally
 
@@ -152,3 +155,16 @@ CREATE TABLE activities (
 	updated_at timestamptz,
 	id text
 );
+
+
+<h1> Testing </h1>
+
+<h2> Selenium Automation UI Testing</h2>
+<p>The Standalone .jar file is included in the project under /test/selenium. The python client is needed in order to run. So you will need python-pip, which you can install (e.g. on Ubutnu it's <tt>sudo apt-get install python-pip</tt>). Then run the command to install the selenium client with pip install -U selenium</p>
+
+<p> Each file has all the imports needed, so to run, just run the python command with the file <tt>python testFile.py</tt></p>
+<ul>
+	<li>init.py is an example file that has some of API calls to make it work. As of right now the only browser that works is Firefox, so please have it installed</li>
+	<li>find_selenium_test.py is the find activity test that looks for activities most closely resembling the search query: 5-15 people, On March 15th, and All Day event.</li>
+	<li>create_selenium_test.py is the create activity test that creates a new activity</li>
+</ul>
