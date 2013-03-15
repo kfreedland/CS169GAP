@@ -13,7 +13,7 @@ function pullAndReturnData(type, callback) {
     var endDate = $('#end_date_' + type).val();
     var flag = $("input[type='radio'][name='time_range_" + type + "']:checked").val();
     // Check for the selected time range option
-    if (flag === 'start_end') {
+    if (flag === 'startEnd') {
     	var startTime = $('#start_time_' + type).val();
     	var endTime = $('#end_time_' + type).val();
     	if (type === 'find') {
@@ -42,13 +42,13 @@ function pullAndReturnData(type, callback) {
 		var data = {
 			time1: time1,
 			time2: time2,
-			begin_date: epochStartDate,
-			end_date: epochEndDate,
+			begindate: epochStartDate,
+			enddate: epochEndDate,
 			flag: flag,
-			low_price: minPrice,
-			high_price: maxPrice,
-			low_num_participants: minPeople,
-			high_num_participants: maxPeople,
+			lowprice: minPrice,
+			highprice: maxPrice,
+			lownumparticipants: minPeople,
+			highnumparticipants: maxPeople,
 			distance: distance,
 			latitude: lat,
 			longitude: lng,

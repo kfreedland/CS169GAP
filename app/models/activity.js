@@ -70,22 +70,22 @@ Activity.add = function (parameterDict, callback){
     if (parameterDict.time2 !== undefined) {
       parameterDict.time2 = parseFloat(parameterDict.time2);
     } 
-    if (parameterDict.beginDate !== undefined) {
+    if (parameterDict.begindate !== undefined) {
       parameterDict.begindate = parseFloat(parameterDict.begindate);
     } 
-    if (parameterDict.endDate !== undefined) {
+    if (parameterDict.enddate !== undefined) {
       parameterDict.enddate = parseFloat(parameterDict.enddate);
     } 
-    if (parameterDict.lowPrice !== undefined) {
+    if (parameterDict.lowprice !== undefined) {
       parameterDict.lowprice = parseFloat(parameterDict.lowprice);
     }
-    if (parameterDict.highPrice !== undefined) {
+    if (parameterDict.highprice !== undefined) {
       parameterDict.highprice = parseFloat(parameterDict.highprice);
     }
-    if (parameterDict.lowNumParticipants !== undefined) {
+    if (parameterDict.lownumparticipants !== undefined) {
       parameterDict.lownumparticipants = parseFloat(parameterDict.lownumparticipants);
     }
-    if (parameterDict.highNumParticipants !== undefined) {
+    if (parameterDict.highnumparticipants !== undefined) {
       parameterDict.highnumparticipants = parseFloat(parameterDict.highnumparticipants);
     }
     if (parameterDict.latitude !== undefined) {
@@ -161,7 +161,6 @@ Activity.add = function (parameterDict, callback){
     if(parameterDict.lowprice && parameterDict.highprice) {
 
       if (parameterDict.lowprice > parameterDict.highprice) {
-
         respDict.errCode = 6;
         respDict.message = "invalid prices";
         callback(respDict);
@@ -272,7 +271,7 @@ Activity.add = function (parameterDict, callback){
         } else {
           console.log("activity does not exists yet, so we continue to create it");
           //all checks pass
-          console.log("ACTIVIT DICT: ");
+          console.log("ACTIVITY DICT: ");
           console.dir(activityDict);
 
           var activityRecord = geddy.model.Activity.create(activityDict);

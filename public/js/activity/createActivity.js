@@ -62,7 +62,7 @@ $(document).ready(function() {
   @param String status - The status message to be shown to the user
 */
 function handleCreateActivityResponse(status) {
-	window.location = '/';
+	//window.location = '/';
 }
 
 /*
