@@ -130,18 +130,18 @@ var actions = new (function () {
           var responseDict = {};
           if (badCredsError || noCredsError) {
             //Error errCode = 5
-            responseDict['errCode'] = 5;
-            self.respond(responseDict, {format: 'json'});
-            // self.redirect(failureRedirect);
+            // responseDict['errCode'] = 5;
+            // self.respond(responseDict, {format: 'json'});
+            self.redirect(failureRedirect);
           }
           else {
             self.session.set('userId', user.id);
             self.session.set('authType', 'local');
 
             //Success errCode = 1
-            responseDict['errCode'] = 1;
-            self.respond(responseDict, {format: 'json'});
-            // self.redirect(successRedirect);
+            // responseDict['errCode'] = 1;
+            // self.respond(responseDict, {format: 'json'});
+            self.redirect(successRedirect);
           }
         };
     // FIXME: Passport wants a request body or query
