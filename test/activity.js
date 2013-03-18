@@ -521,13 +521,11 @@ tests = [
 	    activityDict.duration = '3';
 
 		Activity.add(activityDict, function(response){
-
+			var expected = {errCode: 6, message: 'invalid participants'};
 	    	try{
-	    		var expected = {errCode: 6, message: 'invalid participants'};
 	    		assert.deepEqual(response,expected);
 	    		callBack('add activity lownumparticipants > highnumparticipants', true);
 	    	} catch(exc){
-	    		var expected = {errCode: 6, message: 'invalid participants'};
 	    		console.log("expected = ");
 	    		console.dir(expected);
 	    		console.log("response = ");

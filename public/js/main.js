@@ -9,9 +9,10 @@ function facebookClicked(event) {
 }
 
 //Remove any parameters from the URL when changing views
-$('.ui-btn').click(function(){
+$('.ui-btn').on("click", function(){
 	if ($(location).attr('href').indexOf("errCode") !== -1)){
-		document.url = window.location.pathname;
+		document.location.search = "";
+		// document.url = window.location.pathname;
 	}
 	return true;
 });

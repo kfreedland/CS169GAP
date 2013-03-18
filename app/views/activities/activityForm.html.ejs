@@ -69,6 +69,11 @@
         </center>
       </div>
       <% if(form.type === "create") { %>
+        <!-- Error Section -->
+        <div class="errorMessage" id="missingParams" >
+          <p> You did not input all of the valid fields</p>
+        </div>
+
         <!--Activity Name-->
         <div data-role="fieldcontain">
             <label for="activity_name">Activity Name: </label>

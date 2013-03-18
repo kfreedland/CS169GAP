@@ -2,6 +2,9 @@
 
 $(document).ready(function() {
 	$('#list_activities_container').hide();
+
+	//Hide error message
+	$('#missingParams').hide();
 	/*
 	  When the Create Activity button is clicked, send an ajax call to /activities/create with the form data
 	*/
@@ -66,7 +69,8 @@ function handleCreateActivityResponse(status) {
       window.location = '/?methodType=createActivity&errCode=' + status.errCode;
     } else if (status.errCode === 6){
       //missing required parameter
-      window.location = '/#create_activity_page?errCode=' + status.errCode;
+      $('#missingParams').show();
+      //window.location = '/#create_activity_page?errCode=' + status.errCode;
     }
 	// window.location = '/';
 }
