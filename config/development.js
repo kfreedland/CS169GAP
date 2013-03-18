@@ -24,18 +24,18 @@ var config = {
 , model: {
     defaultAdapter: 'memory'
   }
-// , model: {
-//     defaultAdapter: 'postgres'
-//   }
-// , db: {
-// 	postgres: {
-// 	  user: 'testing'
-// 	, database: 'postgres'
-// 	, password: 'gap169'
-// 	, host: 'localhost'
-// 	, port: 5432
-// 	}
-// }
+ , model: {
+     defaultAdapter: 'postgres'
+   }
+ , db: {
+ 	postgres: {
+ 	  user: 'testing'
+ 	, database: 'postgres'
+ 	, password: 'gap169'
+ 	, host: 'localhost'
+ 	, port: 5432
+ 	}
+ }
 // , db: {
 //     postgres: {
 //       user: 'rbpysgebxrjyxf'
@@ -45,11 +45,11 @@ var config = {
 //     , port: 5432
 //     }
 //   }
-, sessions: {
-  store: 'memory'
-, key: 'sid'
-, expiry: 14 * 24 * 60 * 60
-  }
+//, sessions: {
+//  store: 'memory'
+//, key: 'sid'
+//, expiry: 14 * 24 * 60 * 60
+//  }
 };
 
 module.exports = config;
