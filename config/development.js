@@ -21,9 +21,9 @@ var config = {
 , debug: true
 , hostname: 'localhost'
 , port: 4000
-, model: {
-    defaultAdapter: 'memory'
-  }
+//, model: {
+//    defaultAdapter: 'memory'
+//  }
  , model: {
      defaultAdapter: 'postgres'
    }
@@ -45,11 +45,11 @@ var config = {
 //     , port: 5432
 //     }
 //   }
-//, sessions: {
-//  store: 'memory'
-//, key: 'sid'
-//, expiry: 14 * 24 * 60 * 60
-//  }
+, sessions: {
+  store: 'memory'
+, key: 'sid'
+, expiry: 14 * 24 * 60 * 60
+  }
 };
 
 module.exports = config;
