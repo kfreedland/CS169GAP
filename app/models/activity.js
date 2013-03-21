@@ -206,6 +206,7 @@ Activity.add = function (parameterDict, callback){
   {
     activityDict.lowprice = parseFloat(parameterDict.lowprice);
   }
+  console.log("parameterDict.highprice === '0' " + parameterDict.highprice === "0");
   if (parameterDict.highprice === "0")
   {
     activityDict.highprice = 0;

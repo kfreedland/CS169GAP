@@ -17,6 +17,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 7:</b>
+	//Updated Header for JSON Object
+
 <b>Changelog Entry 6:</b>
 	//Added Selenium Automation tests
 
@@ -86,7 +89,7 @@ CS169GAP
 		<li>7 - Backend Error - Probably retry</li>
 	</ul>
 
-<h2>CREATE ACTIVITY:</h2>
+<h2>CREATE ACTIVITY AND SEARCH FOR ACTIVITY:</h2>
 //Creates activity in database with corresponding fields
 
 <h3>Params: </h3>
@@ -166,6 +169,12 @@ CREATE TABLE activities (
 
 
 <h1> Testing </h1>
+
+Running unit tests:
+npm install -g
+install postgres with the database configured like the above^^
+Run this command after starting geddy locally:
+curl -X POST http://localhost:4000/TESTAPI/unitTests
 
 <h2> Selenium Automation UI Testing</h2>
 <p>The Standalone .jar file is included in the project under /test/selenium. The python client is needed in order to run. So you will need python-pip, which you can install (e.g. on Ubutnu it's <tt>sudo apt-get install python-pip</tt>). Then run the command to install the selenium client with pip install -U selenium</p>
