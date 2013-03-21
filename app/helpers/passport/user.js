@@ -1,6 +1,4 @@
 var strategies = require('./strategies')
-  , User = geddy.model.User
-  , Passport = geddy.model.Passport
   , user
   , _findOrCreateUser;
 
@@ -15,7 +13,7 @@ _findOrCreateUser = function (passport, profile, callback) {
     else {
       if (!data) {
         userData = strategies[passport.authType].parseProfile(profile);
-        user = User.create(userData);
+        user = geddy.model.User.create(userData);
         // User won't have all required fields, force-save
         user.save({force: true}, function (err, data) {
           if (err) {
@@ -50,15 +48,14 @@ user = new (function () {
     var typeData = strategies[authType]
       , key = String(profile[typeData.keyField]) // Important, want to use strings, not nums
       , passport;
-    console.log("Passport is: " + Passport);
-    passport = Passport.first({authType: authType, key: key}, function (err, data) {
+    passport = geddy.model.Passport.first({authType: authType, key: key}, function (err, data) {
       var pass;
       if (err) {
         callback(err, null);
       }
       else {
         if (!data) {
-          pass = Passport.create({
+          pass = geddy.model.Passport.create({
             authType: authType
           , key: key
           });
