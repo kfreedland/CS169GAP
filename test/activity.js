@@ -599,6 +599,49 @@ tests = [
 	    });
 	},
 
+	//add free event
+	function (callBack) {
+
+	    var activityDict = {};
+	    activityDict.name = 'walk in the';
+	    activityDict.description = "It's nice outside";
+	    activityDict.category = 'Entertainment';
+	    //7pm in milliseconds since midnight
+	    var sevenPM = 1000 * 60 * 60 * 19;
+	    activityDict.time1 = sevenPM;
+	    //10pm in milliseconds senice midnight
+	    var tenPM = 1000 * 60 * 60 * 22;
+	    activityDict.time2 = tenPM;
+	    activityDict.flag = 'startEnd';
+	    //date is june 15th 2013
+	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
+	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
+	    activityDict.beginDate = date1.getTime();
+	    activityDict.endDate = date2.getTime();
+	    activityDict.lowPrice = '0';
+	    //activityDict.highPrice = '200';
+	    activityDict.lowNumParticipants = '0';
+	    activityDict.highNumParticipants = '10';
+	    //oracle arena
+	    activityDict.latitude = '37.751';
+	    activityDict.longitude = '-122.200';
+	    activityDict.duration = '3';
+
+		Activity.add(activityDict, function(response){
+
+			var expected = {errCode: 1};
+	    	try{
+	    		
+	    		assert.deepEqual(response,expected);
+	    		callBack('add free activity', true);
+	    	} catch(exc){
+	    		console.log("expected = " + expected);
+	    		console.log("response = " + response);
+	    		callBack('add free activity', false);
+	    	}
+	    });
+	},
+
 	//add duplicate activities
 	function (callBack) 
 	{

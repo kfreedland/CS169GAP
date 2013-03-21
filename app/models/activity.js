@@ -206,7 +206,7 @@ Activity.add = function (parameterDict, callback){
   if (!parameterDict.highprice) 
   {
     respDict.errCode = 6;
-    respDict.message = "null highrice";
+    respDict.message = "null highprice";
     callback(respDict);
     return; 
 
