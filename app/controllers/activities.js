@@ -97,6 +97,7 @@ var Activities = function () {
         var toReturn = [];
         for(var key in responseDict)
         {
+          console.log("key is: "+key+" with value: "+responseDict[key]);
           if(count >= max_returned)
           {
             break;
