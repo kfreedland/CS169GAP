@@ -87,6 +87,7 @@ var actions = new (function () {
             }
             else {
               try {
+                console.log("user.lookupByPassport now");
                 user.lookupByPassport(authType, profile, function (err, user) {
                   console.log("got through lookup by passport");
                   if (err) {
