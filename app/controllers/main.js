@@ -35,10 +35,11 @@ var Main = function () {
     console.log("params.methodType =" + params.methodType + " and params.errCode =" + params.errCode);
     console.log("this.session.get('userId') = " + this.session.get('userId'));
     User.first({id: this.session.get('userId')}, function (err, data) {
-      localParams.user = null;
-      localParams.authType = null;
       var params = localParams;
+      params.user = null;
+      params.authType = null;
       if (data) {
+        console.log("Got User: " + data)
         params.user = data;
         params.authType = authTypes[self.session.get('authType')].name;
       }

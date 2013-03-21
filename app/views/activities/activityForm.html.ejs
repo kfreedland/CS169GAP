@@ -15,7 +15,8 @@
           Group Activity Planner
         </h1>
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
-          <% if (params.user) {%>
+          <% if (user) {%>
+            <p>Welcome: <%=user.username%>
             <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
           <% } else { %>
             <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
@@ -47,9 +48,9 @@
                 <% } %>
                 </div>
               <% } %>
-              <a href="#find_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
+              <a href="/#find_activity_page" id="findActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
             <% } else { %>
-              <a href="#find_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
+              <a href="/#find_activity_page" id="findActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
             <% } %>
               <span class="ui-btn-inner ui-btn-corner-all">
                 <span class="ui-btn-text">Find Activity</span>
@@ -57,9 +58,9 @@
             </a>
             <!--Create Activity Button-->
             <% if(form.type === "find") { %>
-              <a href="#create_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
+              <a href="/#create_activity_page" id="createActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
             <% } else { %>
-              <a href="#create_activity_page" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
+              <a href="/#create_activity_page" id="createActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
             <% } %>
               <span class="ui-btn-inner ui-btn-corner-all">
                 <span class="ui-btn-text">Create Activity</span>
