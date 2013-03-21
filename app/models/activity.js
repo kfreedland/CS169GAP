@@ -40,7 +40,9 @@ var geoSearchHelper = function (records, lat, long, callback)
     returnRecords[count] = record;
     count = count + 1;
   }
-  returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
+  if (count > 0){
+    returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
+  }
 
   console.log("RETURNING RECORDS");
   // console.dir(returnRecords);
