@@ -14,9 +14,9 @@ tests = [
     User.add(user, function (answerDict) {
       try{
         assert.deepEqual(answerDict, {'errCode': 1});
-        callback(true);
+        callback('Test Model Add', true);
       }catch (exc) {
-        callback(false);
+        callback('Test Model Add', false);
       }
     });
   },
@@ -34,10 +34,10 @@ tests = [
         console.log("add second same with errCode: " + answerDict.errCode);
         try{
           assert.deepEqual(answerDict, {'errCode': 2});
-          callback(true);
+          callback('Test Model Add Same', true);
         }catch (exc){
           console.log("Test 1 exception: " + exc);
-          callback(false);
+          callback('Test Model Add Same', false);
         }
       });
     });
@@ -53,10 +53,10 @@ tests = [
     User.add(user2, function (answerDict) {
       try{
         assert.deepEqual(answerDict, {'errCode': 1});
-        callback(true);
+        callback('Test Model Add Different', true);
       }catch (exc){
         console.log("Test 2 exception: " + exc);
-        callback(false);
+        callback('Test Model Add Different', false);
       }
     });
   },
@@ -71,10 +71,10 @@ tests = [
     User.add(user, function (answerDict) {
       try{
         assert.deepEqual(answerDict, {'errCode': 3});
-        callback(true);
+        callback('Test Model Add Empty Username', true);
       }catch (exc){
         console.log("Test 3 exception: " + exc);
-        callback(false);
+        callback('Test Model Add Empty Username', false);
       }
     });
   },
@@ -90,10 +90,10 @@ tests = [
       console.log("added null username and returned answerDict");
       try{
         assert.deepEqual(answerDict, {'errCode': 3});
-        callback(true);
+        callback('Test Model Add Null Username', true);
       }catch (exc){
         console.log("Test 4 exception: " + exc);
-        callback(false);
+        callback('Test Model Add Null Username', false);
       }
     });
   },
@@ -108,10 +108,10 @@ tests = [
     User.add(user, function (answerDict) {
       try{
         assert.deepEqual(answerDict, {'errCode': 3});
-        callback(true);
+        callback('Test Model Add 129 Username', true);
       }catch (exc){
         console.log("Test 5 exception: " + exc);
-        callback(false);
+        callback('Test Model Add 129 Username', false);
       }
     });
   },
@@ -126,10 +126,10 @@ tests = [
     User.add(user, function (answerDict) {
       try{
         assert.deepEqual(answerDict, {"errCode": 4});
-        callback(true);
+        callback('Test Model Add Empty Password', true);
       }catch (exc){
         console.log("Test 6 exception: " + exc);
-        callback(false);
+        callback('Test Model Add Empty Password', false);
       }
     });
   },
@@ -147,10 +147,10 @@ tests = [
       }
       try{
         assert.deepEqual(answerDict, {"errCode": 4});
-        callback(true);
+        callback('Test Model Add Null Password', true);
       }catch (exc){
         console.log("Test 7 exception: " + exc);
-        callback(false);
+        callback('Test Model Add Null Password', false);
       }
     });
   },
@@ -168,37 +168,37 @@ tests = [
       }
       try{
         assert.deepEqual(answerDict, {"errCode": 4});
-        callback(true);
+        callback('Test Model Add 129 Password', true);
       }catch (exc){
         console.log("Test 8 exception: " + exc);
-        callback(false);
+        callback('Test Model Add 129 Password', false);
       }
     });
   },
-  //9 'Test Model Login'
-  function (callback) {
-    var user = User.create({username: 'Greg10',
-                            password: 'MyPassword!',
-                            confirmPassword: 'MyPassword!',
-                            familyName: 'LastName10',
-                            givenName: 'FirstName10',
-                            email: 'Greg10@greg.com'});
-    User.add(user, function (answerDict) {
-      User.login(user, function (answerDict) {
-        console.log("login with answerDict: ");
-        for (var key in answerDict){
-          console.log(key + " : " + answerDict[key]);
-        }
-        try{
-          assert.deepEqual(answerDict, {'errCode': 1});
-          callback(true);
-        }catch (exc){
-          console.log("Test 9 exception: " + exc);
-          callback(false);
-        }
-      });
-    });
-  },
+  // //9 'Test Model Login'
+  // function (callback) {
+  //   var user = User.create({username: 'Greg10',
+  //                           password: 'MyPassword!',
+  //                           confirmPassword: 'MyPassword!',
+  //                           familyName: 'LastName10',
+  //                           givenName: 'FirstName10',
+  //                           email: 'Greg10@greg.com'});
+  //   User.add(user, function (answerDict) {
+  //     User.login(user, function (answerDict) {
+  //       console.log("login with answerDict: ");
+  //       for (var key in answerDict){
+  //         console.log(key + " : " + answerDict[key]);
+  //       }
+  //       try{
+  //         assert.deepEqual(answerDict, {'errCode': 1});
+  //         callback('Test Model Login', true);
+  //       }catch (exc){
+  //         console.log("Test 9 exception: " + exc);
+  //         callback('Test Model Login', false);
+  //       }
+  //     });
+  //   });
+  // },
   //10 'Test Model Login Bad Credentials'
   function (callback) {
     var user = User.create({username: 'Greg23524',
@@ -214,10 +214,10 @@ tests = [
       }
       try{
         assert.deepEqual(answerDict, {'errCode': 5});
-        callback(true);
+        callback('Test Model Login Bad Credentials', true);
       }catch (exc){
         console.log("Test 10 exception: " + exc);
-        callback(false);
+        callback('Test Model Login Bad Credentials', false);
       }
     });
   }

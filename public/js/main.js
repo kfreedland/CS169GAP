@@ -7,3 +7,12 @@ function facebookClicked(event) {
 	// $(href + $('.btn-facebook').attr('href') ).show();
     return false;
 }
+
+//Remove any parameters from the URL when changing views
+$('.ui-btn').on("click", function(){
+	if ($(location).attr('href').indexOf("errCode") !== -1)){
+		document.location.search = "";
+		// document.url = window.location.pathname;
+	}
+	return true;
+});

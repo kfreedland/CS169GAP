@@ -2,6 +2,13 @@
   <form id="activity-form" class="form-horizontal" action="/activities" method="POST">
     <fieldset>
       <legend>Create a new Activity</legend>
+      <% if (params.errCode){ %>
+        <div class="errorMessage" >
+        <% if (params.errCode == 6){ %>
+           <p> You are missing a required field. Please fill out all of the fields and try again. </p>
+        <% } %>
+        </div>
+      <% } %>
       <% if(params.errors) { %>
       <div class="control-group">
         <ul>

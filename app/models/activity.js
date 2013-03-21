@@ -25,7 +25,6 @@ var Activity = function () {
 
 var geoSearchHelper = function (records, lat, long, callback)
 {
-  var MAX_RETURNED = 2;
   var consDist = 69.1
     , consAng = 57.3
     , returnRecords = {}
@@ -40,12 +39,11 @@ var geoSearchHelper = function (records, lat, long, callback)
     record.distance = dist;
     returnRecords[count] = record;
     count = count + 1;
-    if (count === MAX_RETURNED)
-    {
-      break;
-    }
   }
   returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
+
+  console.log("RETURNING RECORDS");
+  // console.dir(returnRecords);
   callback(returnRecords, count);
 };
 
@@ -56,7 +54,7 @@ Activity.add = function (parameterDict, callback){
   var respDict = {};
 
   console.log("reached model create");
-  console.dir(parameterDict);
+  // console.dir(parameterDict);
 
 
   var validCategories = ["Sports", "Entertainment", "Food", "Arts", "Nature"];
@@ -105,7 +103,6 @@ Activity.add = function (parameterDict, callback){
   {
     activityDict.category = parameterDict.category;
   }
-
 
   //FLAG
   if (!parameterDict.flag) 
@@ -295,16 +292,15 @@ Activity.add = function (parameterDict, callback){
         console.log("activity does not exists yet, so we continue to create it");
         //all checks pass
         console.log("ACTIVITY DICT: ");
-        console.dir(activityDict);
+        // console.dir(activityDict);
 
         var activityRecord = geddy.model.Activity.create(activityDict);
 
         console.log("ACTIVITY RECORD: ");
-        console.dir(activityRecord);
+        // console.dir(activityRecord);
 
         geddy.model.Activity.save(activityRecord, 
           function (err, result){
-
             if(err){
               console.log("ERROR in Activity SAVE");
               for (var item in err){
@@ -361,7 +357,7 @@ Activity.search = function search(params, myLat, myLong, callback)
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
       {
         console.log("YO THESE ARE THE RECORDS");
-        console.dir(returnRecords);
+        // console.dir(returnRecords);
         callback(returnRecords);
       });
     }
@@ -370,6 +366,19 @@ Activity.search = function search(params, myLat, myLong, callback)
       callback(activities);
     }
   });
-};       
+};    
+
+Activity.TESTAPI_resetFixture = function (callback) {
+  geddy.model.Activity.all(function (err, result) {
+    console.log("got all users models with error: " + err + " and result: " + result);
+    for (var activityModel in result){
+      console.log("trying to remove userModel: " + result[activityModel]);
+      geddy.model.Activity.remove(result[activityModel].id);
+    }
+    var responseDict = {};
+  responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};   
 
 Activity = geddy.model.register('Activity', Activity);
