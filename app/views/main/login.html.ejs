@@ -1,5 +1,8 @@
 <!-- Lets talk about geddy -->
 <%- styleLink('/css/auth-buttons.css', {rel:'stylesheet'}) %>
+<!-- <%- scriptLink('/js/login.js', {type:'text/javascript'}) %> -->
+
+
 <!--Nav Bar-->
 <div class="navbar navbar-fixed-top">
    <div class="navbar-inner">
@@ -62,7 +65,7 @@
          </a>
          &nbsp; -->
          <!-- href="<%= geddy.config.fullHostname %>/auth/facebook">  -->
-      <a class="btn-auth btn-facebook large"
+      <a class="btn-auth btn-facebook large" data-ajax="false"
          href="/auth/facebook" data-role="none" onClick="facebookClicked(event);">
          Log in with Facebook
       </a>
