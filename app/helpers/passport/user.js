@@ -50,7 +50,7 @@ user = new (function () {
     var typeData = strategies[authType]
       , key = String(profile[typeData.keyField]) // Important, want to use strings, not nums
       , passport;
-
+    console.log("Passport is: " + Passport);
     passport = Passport.first({authType: authType, key: key}, function (err, data) {
       var pass;
       if (err) {
