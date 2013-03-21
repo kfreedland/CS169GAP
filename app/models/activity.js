@@ -27,8 +27,8 @@ var geoSearchHelper = function (records, lat, long, callback)
 {
   var consDist = 69.1
     , consAng = 57.3
-    , returnRecords = {}
-    , count = 0
+    , returnRecords = []
+    // , count = 0
     , idx;
   for (idx in records)
   {
@@ -37,10 +37,11 @@ var geoSearchHelper = function (records, lat, long, callback)
     //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - long) * Math.cos(lat / 57.3), 2));
     record.distance = dist;
-    returnRecords[count] = record;
-    count = count + 1;
+    returnRecords.append(record);
+    // returnRecords[count] = record;
+    // count = count + 1;
   }
-  if (count > 0){
+  if (returnRecords.count > 0){
     returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
   }
 
