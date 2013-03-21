@@ -94,6 +94,7 @@ var Activities = function () {
         //this is because 0 is represented as null in the db and we want to return free items as having cost 0 not cost null!
         var max_returned = 3;
         var count = 0;
+        var toReturn = [];
         for(var key in responseDict)
         {
           if(count >= max_returned)
@@ -109,6 +110,7 @@ var Activities = function () {
           {
             record.lowprice = '0';
           }
+          toReturn[count] = record;
           count+=1;
 
         }
