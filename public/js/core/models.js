@@ -13,8 +13,8 @@ var Activity = function () {
     time2: {type: 'number'},
     begindate: {type: 'number'},
     enddate: {type: 'number'},
-    lowprice: {type: 'number', required: 'true'},
-    highprice: {type: 'number', required: 'true'},
+    lowprice: {type: 'number'},
+    highprice: {type: 'number'},
     lownumparticipants: {type: 'number'},
     highnumparticipants: {type: 'number'},
     latitude: {type: 'number'},
@@ -28,7 +28,7 @@ var geoSearchHelper = function (records, lat, long, callback)
 {
   var consDist = 69.1
     , consAng = 57.3
-    , returnRecords = []
+    , returnRecords = {}
     , count = 0
     , idx;
   for (idx in records)
@@ -37,11 +37,12 @@ var geoSearchHelper = function (records, lat, long, callback)
     console.log("RECORD: " + record);
     //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - long) * Math.cos(lat / 57.3), 2));
-    record.distance = dist*100;
+    record.distance = dist;
     returnRecords[count] = record;
     count = count + 1;
   }
   returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
+
   console.log("RETURNING RECORDS");
   // console.dir(returnRecords);
   callback(returnRecords, count);
@@ -188,7 +189,13 @@ Activity.add = function (parameterDict, callback){
 
 
   //PRICES
-  if (!parameterDict.lowprice) 
+  console.log("LOWPRICE = " + parameterDict.lowprice);
+  console.log("HIGHPRICE = " + parameterDict.highprice);
+  if (parameterDict.lowprice === "0")
+  {
+    activityDict.lowprice = 0;
+
+  } else if (!parameterDict.lowprice) 
   {
     respDict.errCode = 6;
     respDict.message = "null lowprice";
@@ -200,7 +207,11 @@ Activity.add = function (parameterDict, callback){
   {
     activityDict.lowprice = parseFloat(parameterDict.lowprice);
   }
-  if (!parameterDict.highprice) 
+  if (parameterDict.highprice === "0")
+  {
+    activityDict.highprice = 0;
+    
+  } else if (!parameterDict.highprice) 
   {
     respDict.errCode = 6;
     respDict.message = "null highprice";
@@ -291,13 +302,13 @@ Activity.add = function (parameterDict, callback){
       } else {
         console.log("activity does not exists yet, so we continue to create it");
         //all checks pass
-        console.log("ACTIVITY DICT: ");
+        // console.log("ACTIVITY DICT: ");
         // console.dir(activityDict);
 
         var activityRecord = geddy.model.Activity.create(activityDict);
 
         console.log("ACTIVITY RECORD: ");
-        // console.dir(activityRecord);
+        console.dir(activityRecord);
 
         geddy.model.Activity.save(activityRecord, 
           function (err, result){
@@ -344,12 +355,16 @@ Activity.search = function search(params, myLat, myLong, callback)
     respDict.errCode = 7;
     callback(respDict);
   }
+  console.log("PARAMS:");
+  console.dir(params);
   Activity.all(params, function (err, activities)
   {
     if(err)
     {
       throw err;
     }
+    console.log("found activities");
+    console.dir(activities);
     if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
     {
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)

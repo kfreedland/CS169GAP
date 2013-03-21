@@ -25,7 +25,7 @@ var runTests = function (testName, didTestPass){
   }
   //Now we run the next test
   currentTestNumber += 1;
-  console.log("running test: " + currentTestNumber + " and there are :" + numberOfTests + " total tests");
+  console.log("running test: " + currentTestNumber + " : " + testName + " and there are :" + numberOfTests + " total tests");
   if (currentTestNumber >= numberOfTests){
     //Done running all tests
     console.log("running done now");
@@ -81,6 +81,15 @@ var unitTests = function (callbackFunc) {
 
 var executeUnitTests = function (callback) {
     var response = {};
+    //Reset all global variables
+    currentTestNumber = -1;
+    tests = [];
+    numberOfTests = 0;
+    callback = callback;
+    successCount = 0;
+    failCount = 0;
+    testResults = "";
+
     console.log("calling unit tests");
     unitTests(callback);
       //Call all activity unit tests and append their result

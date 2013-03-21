@@ -644,8 +644,8 @@ tests = [
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
 	    activityDict.beginDate = date1.getTime();
 	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '0';
-	    //activityDict.highPrice = '200';
+	    activityDict.lowprice = '0';
+	    activityDict.highprice = '0';
 	    activityDict.lowNumParticipants = '0';
 	    activityDict.highNumParticipants = '10';
 	    //oracle arena
@@ -681,8 +681,8 @@ tests = [
 	    activityDict.flag = 'anyTime';
 	    activityDict.begindate = undefined;
 	    activityDict.enddate = undefined;
-	    activityDict.lowprice = '0';
-	    activityDict.highprice = '0';
+	    activityDict.lowprice = '1';
+	    activityDict.highprice = '2';
 	    activityDict.lownumparticipants = '2';
 	    activityDict.highnumparticipants = '4';
 	    activityDict.latitude = undefined;
@@ -701,8 +701,8 @@ tests = [
 		    activityDict.flag = 'anyTime';
 		    activityDict.begindate = undefined;
 		    activityDict.enddate = undefined;
-		    activityDict.lowprice = '0';
-		    activityDict.highprice = '0';
+		    activityDict.lowprice = '1';
+		    activityDict.highprice = '2';
 		    activityDict.lownumparticipants = '2';
 		    activityDict.highnumparticipants = '4';
 		    activityDict.latitude = undefined;
@@ -714,7 +714,7 @@ tests = [
 		    	var expected = {errCode: 10, message: "That Activity already exists."};
 		    	try
 		    	{
-		    		
+		    		console.log("Finished Add Duplicate Activities Test");
 		    		assert.deepEqual(response,expected);
 		    		callBack('add duplicate activities', true);
 		    	} 

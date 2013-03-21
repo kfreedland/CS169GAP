@@ -13,22 +13,22 @@ tests = [
 	    activityDict.name = 'jogging';
 	    activityDict.description = 'go for a run with some friends!';
 	    activityDict.category = 'Sports';
-	    activityDict.time1 = undefined;
-	    activityDict.time2 = undefined;
+	    // activityDict.time1 = undefined;
+	    // activityDict.time2 = undefined;
 	    activityDict.flag = 'anyTime';
-	    activityDict.beginDate = undefined;
-	    activityDict.endDate = undefined;
-	    activityDict.lowPrice = '0';
-	    activityDict.highPrice = '0';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = undefined;
-	    activityDict.latitude = undefined;
-	    activityDict.longitude = undefined;
+	    // activityDict.begindate = undefined;
+	    // activityDict.enddate = undefined;
+	    activityDict.lowprice = '0';
+	    activityDict.highprice = '0';
+	    activityDict.lownumparticipants = '1';
+	    // activityDict.highnumparticipants = undefined;
+	    // activityDict.latitude = undefined;
+	    // activityDict.longitude = undefined;
 	    activityDict.duration = '2';
 
 	    Activity.add(activityDict, function(response)
 	    {
-	    	Activity.search(activityDict, function(response)
+	    	Activity.search(activityDict, null/*myLat*/, null/*myLong*/, function(response)
 	    	{
 	    		try
 	    		{
@@ -60,12 +60,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.enddate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -73,7 +73,7 @@ tests = [
 
 	    Activity.add(activityDict, function(response)
 	    {
-	    	Activity.search(activityDict, function(response)
+	    	Activity.search(activityDict, null/*myLat*/, null/*myLong*/, function(response)
 	    	{
 	    		try
 	    		{
@@ -93,7 +93,7 @@ tests = [
 
 	    var activityDict = {};
 	    activityDict.name = 'Rock the Bells';
-	    activityDict.description = undefined;
+	    // activityDict.description = undefined;
 	    activityDict.category = 'Entertainment';
 	    //7pm in milliseconds since midnight
 	    var sevenPM = 1000 * 60 * 60 * 19;
@@ -105,12 +105,12 @@ tests = [
 	    //date is june 15th 2013
 	    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 	    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-	    activityDict.beginDate = date1.getTime();
-	    activityDict.endDate = date2.getTime();
-	    activityDict.lowPrice = '25';
-	    activityDict.highPrice = '200';
-	    activityDict.lowNumParticipants = '1';
-	    activityDict.highNumParticipants = '10';
+	    activityDict.begindate = date1.getTime();
+	    activityDict.endDdate = date2.getTime();
+	    activityDict.lowprice = '25';
+	    activityDict.highprice = '200';
+	    activityDict.lownumparticipants = '1';
+	    activityDict.highnumparticipants = '10';
 	    //oracle arena
 	    activityDict.latitude = '37.751';
 	    activityDict.longitude = '-122.200';
@@ -118,7 +118,7 @@ tests = [
 	    
 	    Activity.add(activityDict, function(response)
 	    {
-	    	Activity.search(activityDict, function(response)
+	    	Activity.search(activityDict, null/*myLat*/, null/*myLong*/, function(response)
 	    	{
 	    		try
 	    		{
