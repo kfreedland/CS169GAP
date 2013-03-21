@@ -61,8 +61,8 @@ var unitTests = function (callbackFunc) {
       activityTests = require('../test/activity.js');
       tests.push.apply(tests, activityTests);
 
-      findActivityTests = require('../test/findActivity.js');
-      tests.push.apply(tests, findActivityTests);
+      // findActivityTests = require('../test/findActivity.js');
+      // tests.push.apply(tests, findActivityTests);
       testResults = "";
 
       numberOfTests = 0;
