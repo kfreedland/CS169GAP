@@ -45,7 +45,7 @@ var Activities = function () {
 
       if (params.time2)
       {
-        queryInfo.time2 = {lt: Math.max(parseFloat(params.time2) + hour)};
+        queryInfo.time2 = {lt: Math.max(parseFloat(params.time2) + hour, 0)};
       }
 
       if (params.beginDate)
