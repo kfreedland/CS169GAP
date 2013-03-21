@@ -27,7 +27,7 @@ var geoSearchHelper = function (records, lat, long, callback)
 {
   var consDist = 69.1
     , consAng = 57.3
-    , returnRecords = []
+    , returnRecords = {}
     , count = 0
     , idx;
   for (idx in records)
@@ -36,11 +36,12 @@ var geoSearchHelper = function (records, lat, long, callback)
     console.log("RECORD: " + record);
     //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - long) * Math.cos(lat / 57.3), 2));
-    record.distance = dist*100;
+    record.distance = dist;
     returnRecords[count] = record;
     count = count + 1;
   }
   returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
+
   console.log("RETURNING RECORDS");
   // console.dir(returnRecords);
   callback(returnRecords, count);
@@ -349,6 +350,8 @@ Activity.search = function search(params, myLat, myLong, callback)
     {
       throw err;
     }
+    console.log("found activities");
+    console.dir(activities);
     if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
     {
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
