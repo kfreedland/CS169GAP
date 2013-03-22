@@ -127,7 +127,7 @@ CS169GAP
 	}
 </ul>
 
-<ul> 'responseCode': [see below for valid codes]</ul>
+<ul> 'errCode': [see above API for valid codes for activities and events]</ul>
 <h2> Testing Locally </h2>
 Create a Postgres database locally on your machine with the following parameters:
    user: 'testing'
