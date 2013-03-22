@@ -189,7 +189,7 @@ Activity.add = function (parameterDict, callback){
   //PRICES
   console.log("LOWPRICE = " + parameterDict.lowprice);
   console.log("HIGHPRICE = " + parameterDict.highprice);
-  if (parameterDict.lowprice === "0")
+  if ((parameterDict.lowprice) === "0" || (parameterDict.lowprice === 0))
   {
     activityDict.lowprice = 0;
 
@@ -205,8 +205,7 @@ Activity.add = function (parameterDict, callback){
   {
     activityDict.lowprice = parseFloat(parameterDict.lowprice);
   }
-  console.log("parameterDict.highprice === '0' " + parameterDict.highprice === "0");
-  if (parameterDict.highprice === "0")
+  if ((parameterDict.highprice === "0") || (parameterDict.highprice === 0))
   {
     activityDict.highprice = 0;
     
