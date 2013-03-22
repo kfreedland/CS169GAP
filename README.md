@@ -128,6 +128,20 @@ CS169GAP
 </ul>
 
 <ul> 'errCode': [see above API for valid codes for activities and events]</ul>
+
+<h6><b>User</b></h6>
+<h3>Params: </h3>
+<ul>
+	{
+		<li>'userName': [string],</li>
+		<li>'firstName': [string],</li>
+		<li>'lastName': [string],</li>
+		<li>'password': [string],</li>
+		<li>'email': [string],</li>
+		<li>'activities': [array of activities],</li>
+	}
+</ul>
+
 <h2> Testing Locally </h2>
 Create a Postgres database locally on your machine with the following parameters:
    user: 'testing'
