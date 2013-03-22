@@ -88,11 +88,12 @@ var Activities = function () {
       var toReturn = [];
       for(var key in responseDict)
       {
-        console.log("key is: "+key+" with value: "+responseDict[key]);
-        if(count >= max_returned-1)
+        
+        if(count >= max_returned)
         {
           break;
         }
+        console.log("key is: "+key+" with value: "+responseDict[key]);
         var record = responseDict[key];
         if(!record.highprice)
         {
@@ -106,7 +107,7 @@ var Activities = function () {
         count+=1;
 
       }
-      self.respond(responseDict, {format: 'json'});
+      self.respond(toReturn, {format: 'json'});
     });
   }
   /*
