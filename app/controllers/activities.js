@@ -77,7 +77,7 @@ var Activities = function () {
     }
     for(var key in queryInfo)
     {
-      console.log("queryInfo key: "+key+" value: "+querInfo[key]);
+      console.log("queryInfo key: "+key+" value: "+queryInfo[key]);
     }
 
     geddy.model.Activity.search(queryInfo, parseFloat(params.latitude), parseFloat(params.longitude), function(responseDict)
