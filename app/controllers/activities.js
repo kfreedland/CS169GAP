@@ -89,7 +89,7 @@ var Activities = function () {
       for(var key in responseDict)
       {
         console.log("key is: "+key+" with value: "+responseDict[key]);
-        if(count >= max_returned)
+        if(count >= max_returned-1)
         {
           break;
         }
