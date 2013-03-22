@@ -112,8 +112,6 @@ CS169GAP
 	}
 </ul>
 
-<ul> Response Message: </ul>
-
 <h6><b>CREATE EVENT</b></h6>
 //Creates an event and returns it with the correspoding fileds
 <h3>Params: </h3>
