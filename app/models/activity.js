@@ -40,7 +40,7 @@ var geoSearchHelper = function (records, lat, long, callback)
     count = count + 1;
   }
   if (returnRecords.length > 0){
-    returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
+    returnRecords.sort(function (recA, recB) {return recA.distance - recB.distance;});
   }
   // console.dir(returnRecords);
   callback(returnRecords, count);
