@@ -114,6 +114,21 @@ CS169GAP
 
 <ul> Response Message: </ul>
 
+<h>CREATE EVENT</h>
+//Creates an event and returns it with the correspoding fileds
+<h3>Params: </h3>
+<ul>
+	{
+		<li>'description': [string],</li>
+		<li>'time1': [int milliseconds since midnight</li>
+		<li>'time2': [int, milliseconds since midnight</li>
+		<li>'begin_date': [milliseconds since epoch, int],</li>
+		<li>'end_date': [milliseconds since epoch, int],</li>
+		<li>'participants': [array of participants],</li>
+		<li>'activity':[activity record corresponding to this event]</li>
+	}
+</ul>
+
 <h2> Testing Locally </h2>
 Create a Postgres database locally on your machine with the following parameters:
    user: 'testing'
