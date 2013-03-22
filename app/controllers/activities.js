@@ -17,12 +17,7 @@ var Activities = function () {
   this.search = function (req, resp, params)
   {
     console.log("inSearch");
-    for(var key in params)
-    {
-      console.log("KEY IS: "+key+" AND VAL IS: "+params[key]);
-    }
     var self = this;
-    console.log("Activities controller");
     var hour = 3600000;
     //We want to assure ourselves that the model only gets the relevant params and not anything extra
     //I use default values for fields that are left blank to make for easier queries in the model
@@ -30,91 +25,90 @@ var Activities = function () {
     if(params.name && (typeof params.name == 'string'))
     {
       queryInfo.name = {'like': params.name};
-      geddy.model.Activity.search(queryInfo, function(responseDict)
-      {
-        console.log("RESP IS: " + responseDict);
-        self.respond(responseDict, {format: 'json'});
-      });
     }
-    else
+    if (params.time1)
     {
-      if (params.time1)
-      {
-        queryInfo.time1 = {gt: Math.max(parseFloat(params.time1) - hour,0)};
-      }
-
-      if (params.time2)
-      {
-        queryInfo.time2 = {lt: Math.max(parseFloat(params.time2) + hour, 0)};
-      }
-
-      if (params.beginDate)
-      {
-        queryInfo.beginDate = {gt: parseFloat(params.beginDate)};
-      }
-
-      if (params.endDate)
-      {
-        queryInfo.endDate = {lt: parseFloat(params.beginDate)};
-      }
-
-      if (params.flag && (typeof params.time1 == 'string'))
-      {
-        queryInfo.flag = params.flag;
-      }
-
-      if (params.lowPrice)
-      {
-        queryInfo.lowPrice = {gt: Math.floor(parseFloat(params.lowPrice) * 0.75)};
-      }
-
-      if (params.highPrice)
-      {
-        queryInfo.highPrice = {lt: Math.ceil(parseFloat(params.highPrice) * 1.25)};
-      }
-
-      if (params.lowNumParticipants)
-      {
-        queryInfo.lowNumParticipants = {gt: Math.floor(parseFloat(params.lowNumParticipants) * 0.90)};
-      }
-
-      if (params.highNumParticipants)
-      {
-        queryInfo.highNumParticipants = {lt: Math.ceil(parseFloat(params.highNumParticipants) * 1.1)}
-      }
-
-      if (params.category && (typeof params.category == 'string'))
-      {
-        queryInfo.category = params.category;
-      }
-      console.dir(queryInfo+" IS BEING SENT TO QUERY");
-
-      geddy.model.Activity.search(queryInfo, parseFloat(params.latitude), parseFloat(params.longitude), function(responseDict)
-      {
-        //this is because 0 is represented as null in the db and we want to return free items as having cost 0 not cost null!
-        var max_returned = 3;
-        var count = 0;
-        for(var key in responseDict)
-        {
-          if(count >= max_returned)
-          {
-            break;
-          }
-          var record = responseDict[key];
-          if(!record.highprice)
-          {
-            record.highprice = '0';
-          }
-          if(!record.lowprice)
-          {
-            record.lowprice = '0';
-          }
-          count+=1;
-
-        }
-        self.respond(responseDict, {format: 'json'});
-      });
+      queryInfo.time1 = {gt: Math.max(parseFloat(params.time1) - hour,0)};
     }
+
+    if (params.time2)
+    {
+      queryInfo.time2 = {lt: Math.max(parseFloat(params.time2) + hour, 0)};
+    }
+
+    if (params.beginDate)
+    {
+      queryInfo.beginDate = {gt: parseFloat(params.beginDate)};
+    }
+
+    if (params.endDate)
+    {
+      queryInfo.endDate = {lt: parseFloat(params.beginDate)};
+    }
+
+    if (params.flag && (typeof params.time1 == 'string'))
+    {
+      queryInfo.flag = params.flag;
+    }
+
+    if (params.lowPrice)
+    {
+      queryInfo.lowPrice = {gt: Math.floor(parseFloat(params.lowPrice) * 0.75)};
+    }
+
+    if (params.highPrice)
+    {
+      queryInfo.highPrice = {lt: Math.ceil(parseFloat(params.highPrice) * 1.25)};
+    }
+
+    if (params.lowNumParticipants)
+    {
+      queryInfo.lowNumParticipants = {gt: Math.floor(parseFloat(params.lowNumParticipants) * 0.90)};
+    }
+
+    if (params.highNumParticipants)
+    {
+      queryInfo.highNumParticipants = {lt: Math.ceil(parseFloat(params.highNumParticipants) * 1.1)}
+    }
+
+    if (params.category && (typeof params.category == 'string'))
+    {
+      queryInfo.category = params.category;
+    }
+    for(var key in queryInfo)
+    {
+      console.log("queryInfo key: "+key+" value: "+queryInfo[key]);
+    }
+
+    geddy.model.Activity.search(queryInfo, parseFloat(params.latitude), parseFloat(params.longitude), function(responseDict)
+    {
+      //this is because 0 is represented as null in the db and we want to return free items as having cost 0 not cost null!
+      var max_returned = 3;
+      var count = 0;
+      var toReturn = [];
+      for(var key in responseDict)
+      {
+        
+        if(count >= max_returned)
+        {
+          break;
+        }
+        console.log("key is: "+key+" with value: "+responseDict[key]);
+        var record = responseDict[key];
+        if(!record.highprice)
+        {
+          record.highprice = '0';
+        }
+        if(!record.lowprice)
+        {
+          record.lowprice = '0';
+        }
+        toReturn[count] = record;
+        count+=1;
+
+      }
+      self.respond(toReturn, {format: 'json'});
+    });
   }
   /*
   this.index = function (req, resp, params) {
