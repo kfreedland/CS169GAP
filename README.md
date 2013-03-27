@@ -112,7 +112,35 @@ CS169GAP
 	}
 </ul>
 
-<ul> Response Message: </ul>
+<h6><b>CREATE EVENT</b></h6>
+//Creates an event and returns it with the correspoding fileds
+<h3>Params: </h3>
+<ul>
+	{
+		<li>'description': [string],</li>
+		<li>'time1': [int milliseconds since midnight</li>
+		<li>'time2': [int, milliseconds since midnight</li>
+		<li>'begin_date': [milliseconds since epoch, int],</li>
+		<li>'end_date': [milliseconds since epoch, int],</li>
+		<li>'participants': [array of participants],</li>
+		<li>'activity':[activity record corresponding to this event]</li>
+	}
+</ul>
+
+<ul> 'errCode': [see above API for valid codes for activities and events]</ul>
+
+<h6><b>User</b></h6>
+<h3>Params: </h3>
+<ul>
+	{
+		<li>'userName': [string],</li>
+		<li>'firstName': [string],</li>
+		<li>'lastName': [string],</li>
+		<li>'password': [string],</li>
+		<li>'email': [string],</li>
+		<li>'activities': [array of activities],</li>
+	}
+</ul>
 
 <h2> Testing Locally </h2>
 Create a Postgres database locally on your machine with the following parameters:
