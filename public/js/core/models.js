@@ -34,7 +34,6 @@ var geoSearchHelper = function (records, lat, long, callback)
   for (idx in records)
   {
     var record = records[idx];
-    console.log("RECORD: " + record);
     //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - long) * Math.cos(lat / 57.3), 2));
     record.distance = dist;
@@ -42,10 +41,8 @@ var geoSearchHelper = function (records, lat, long, callback)
     count = count + 1;
   }
   if (returnRecords.length > 0){
-    returnRecords.sort(function (recA, recB) {return recA.dist - recB.dist;});
+    returnRecords.sort(function (recA, recB) {return recA.distance - recB.distance;});
   }
-
-  console.log("RETURNING RECORDS");
   // console.dir(returnRecords);
   callback(returnRecords, count);
 };
@@ -56,7 +53,7 @@ Activity.add = function (parameterDict, callback){
 
   var respDict = {};
 
-  console.log("reached model create");
+  // console.log("reached model create");
   // console.dir(parameterDict);
 
 
@@ -191,8 +188,8 @@ Activity.add = function (parameterDict, callback){
 
 
   //PRICES
-  console.log("LOWPRICE = " + parameterDict.lowprice);
-  console.log("HIGHPRICE = " + parameterDict.highprice);
+  // console.log("LOWPRICE = " + parameterDict.lowprice);
+  // console.log("HIGHPRICE = " + parameterDict.highprice);
   if ((parameterDict.lowprice) === "0" || (parameterDict.lowprice === 0))
   {
     activityDict.lowprice = 0;
@@ -302,15 +299,15 @@ Activity.add = function (parameterDict, callback){
         respDict.message = "That Activity already exists.";
         callback(respDict);
       } else {
-        console.log("activity does not exists yet, so we continue to create it");
+        // console.log("activity does not exists yet, so we continue to create it");
         //all checks pass
         // console.log("ACTIVITY DICT: ");
         // console.dir(activityDict);
 
         var activityRecord = geddy.model.Activity.create(activityDict);
 
-        console.log("ACTIVITY RECORD: ");
-        console.dir(activityRecord);
+        // console.log("ACTIVITY RECORD: ");
+        // console.dir(activityRecord);
 
         geddy.model.Activity.save(activityRecord, 
           function (err, result){
@@ -350,34 +347,30 @@ Activity.search = function search(params, myLat, myLong, callback)
   latitude: number
   longitude: number
   **/
-  respDict = {};
+  var respDict = {};
   //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
   if (typeof params !== 'object')
   {
     respDict.errCode = 7;
     callback(respDict);
   }
-  console.log("PARAMS:");
-  console.dir(params);
   Activity.all(params, function (err, activities)
   {
     if(err)
     {
       throw err;
     }
-    console.log("found activities");
-    console.dir(activities);
     if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
     {
+      console.log("Calling geoSearchHelper");
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
       {
-        console.log("YO THESE ARE THE RECORDS");
-        // console.dir(returnRecords);
         callback(returnRecords);
       });
     }
     else
     {
+      console.log("Not using geoSearchHelper");
       callback(activities);
     }
   });
@@ -385,9 +378,9 @@ Activity.search = function search(params, myLat, myLong, callback)
 
 Activity.TESTAPI_resetFixture = function (callback) {
   geddy.model.Activity.all(function (err, result) {
-    console.log("got all users models with error: " + err + " and result: " + result);
+    // console.log("got all activity models with error: " + err + " and result: " + result);
     for (var activityModel in result){
-      console.log("trying to remove userModel: " + result[activityModel]);
+      // console.log("trying to remove activityModel: " + result[activityModel]);
       geddy.model.Activity.remove(result[activityModel].id);
     }
     var responseDict = {};
@@ -435,19 +428,21 @@ User.add = function(user, callback){
     User.first({username: user.username}, function(err, data) {
       var responseDict = {};
     if (data) {
+      // console.log("USER EXISTS");
       //Username Exists errCode=2
-          responseDict.errCode = 2;
+      responseDict.errCode = 2;
       callback(responseDict);
       //self.transfer('add');
     }
     else {
+      // console.log("USER DOESNT EXIST");
       if (!user.username || user.username.length === 0 || user.username.length > 128) {
-        console.log("bad username block");
+        // console.log("bad username block");
         responseDict.errCode = 3; //"ERR_BAD_USERNAME"
         callback(responseDict);
       } else if (!user.password || user.password.length === 0 || user.password.length > 128 ) {
         //|| user.confirmPassword != user.password){
-        console.log("bad password block with confirmPassword: " + user.confirmPassword);
+        // console.log("bad password block with confirmPassword: " + user.confirmPassword);
         //Check if password is not empty and <128 chars
         responseDict.errCode = 4; //"ERR_BAD_PASSWORD"
         callback(responseDict);
@@ -455,9 +450,9 @@ User.add = function(user, callback){
         if (user.isValid()) {
           user.password = cryptPass(user.password);
         }
-        console.log("user is : username: " + user.username + " and password: " + user.password);
+        // console.log("user is : username: " + user.username + " and password: " + user.password);
         user.save(function(err, data) {
-          console.log("Got Data: " + data);
+          // console.log("Got Data: " + data);
           if (err) {
             // params.errors = err;
             //Database Error errCode=7
@@ -509,9 +504,9 @@ User.login = function(params, callback){
 
 User.TESTAPI_resetFixture = function (callback) {
   geddy.model.User.all(function (err, result) {
-    console.log("got all users models with error: " + err + " and result: " + result);
+     // console.log("got all users models with error: " + err + " and result: " + result);
     for (var userModel in result){
-      console.log("trying to remove userModel: " + result[userModel]);
+       // console.log("trying to remove userModel: " + result[userModel]);
       geddy.model.User.remove(result[userModel].id);
     }
     var responseDict = {};

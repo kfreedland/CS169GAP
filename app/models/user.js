@@ -21,19 +21,21 @@ User.add = function(user, callback){
     User.first({username: user.username}, function(err, data) {
       var responseDict = {};
     if (data) {
+      // console.log("USER EXISTS");
       //Username Exists errCode=2
-          responseDict.errCode = 2;
+      responseDict.errCode = 2;
       callback(responseDict);
       //self.transfer('add');
     }
     else {
+      // console.log("USER DOESNT EXIST");
       if (!user.username || user.username.length === 0 || user.username.length > 128) {
-        console.log("bad username block");
+        // console.log("bad username block");
         responseDict.errCode = 3; //"ERR_BAD_USERNAME"
         callback(responseDict);
       } else if (!user.password || user.password.length === 0 || user.password.length > 128 ) {
         //|| user.confirmPassword != user.password){
-        console.log("bad password block with confirmPassword: " + user.confirmPassword);
+        // console.log("bad password block with confirmPassword: " + user.confirmPassword);
         //Check if password is not empty and <128 chars
         responseDict.errCode = 4; //"ERR_BAD_PASSWORD"
         callback(responseDict);
@@ -41,9 +43,9 @@ User.add = function(user, callback){
         if (user.isValid()) {
           user.password = cryptPass(user.password);
         }
-        console.log("user is : username: " + user.username + " and password: " + user.password);
+        // console.log("user is : username: " + user.username + " and password: " + user.password);
         user.save(function(err, data) {
-          console.log("Got Data: " + data);
+          // console.log("Got Data: " + data);
           if (err) {
             // params.errors = err;
             //Database Error errCode=7
@@ -95,9 +97,9 @@ User.login = function(params, callback){
 
 User.TESTAPI_resetFixture = function (callback) {
   geddy.model.User.all(function (err, result) {
-    console.log("got all users models with error: " + err + " and result: " + result);
+     // console.log("got all users models with error: " + err + " and result: " + result);
     for (var userModel in result){
-      console.log("trying to remove userModel: " + result[userModel]);
+       // console.log("trying to remove userModel: " + result[userModel]);
       geddy.model.User.remove(result[userModel].id);
     }
     var responseDict = {};

@@ -52,7 +52,7 @@ Activity.add = function (parameterDict, callback){
 
   var respDict = {};
 
-  console.log("reached model create");
+  // console.log("reached model create");
   // console.dir(parameterDict);
 
 
@@ -187,8 +187,8 @@ Activity.add = function (parameterDict, callback){
 
 
   //PRICES
-  console.log("LOWPRICE = " + parameterDict.lowprice);
-  console.log("HIGHPRICE = " + parameterDict.highprice);
+  // console.log("LOWPRICE = " + parameterDict.lowprice);
+  // console.log("HIGHPRICE = " + parameterDict.highprice);
   if ((parameterDict.lowprice) === "0" || (parameterDict.lowprice === 0))
   {
     activityDict.lowprice = 0;
@@ -298,15 +298,15 @@ Activity.add = function (parameterDict, callback){
         respDict.message = "That Activity already exists.";
         callback(respDict);
       } else {
-        console.log("activity does not exists yet, so we continue to create it");
+        // console.log("activity does not exists yet, so we continue to create it");
         //all checks pass
         // console.log("ACTIVITY DICT: ");
         // console.dir(activityDict);
 
         var activityRecord = geddy.model.Activity.create(activityDict);
 
-        console.log("ACTIVITY RECORD: ");
-        console.dir(activityRecord);
+        // console.log("ACTIVITY RECORD: ");
+        // console.dir(activityRecord);
 
         geddy.model.Activity.save(activityRecord, 
           function (err, result){
@@ -346,7 +346,7 @@ Activity.search = function search(params, myLat, myLong, callback)
   latitude: number
   longitude: number
   **/
-  respDict = {};
+  var respDict = {};
   //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
   if (typeof params !== 'object')
   {
@@ -361,6 +361,7 @@ Activity.search = function search(params, myLat, myLong, callback)
     }
     if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
     {
+      console.log("Calling geoSearchHelper");
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
       {
         callback(returnRecords);
@@ -368,6 +369,7 @@ Activity.search = function search(params, myLat, myLong, callback)
     }
     else
     {
+      console.log("Not using geoSearchHelper");
       callback(activities);
     }
   });
@@ -375,9 +377,9 @@ Activity.search = function search(params, myLat, myLong, callback)
 
 Activity.TESTAPI_resetFixture = function (callback) {
   geddy.model.Activity.all(function (err, result) {
-    console.log("got all users models with error: " + err + " and result: " + result);
+    // console.log("got all activity models with error: " + err + " and result: " + result);
     for (var activityModel in result){
-      console.log("trying to remove userModel: " + result[activityModel]);
+      // console.log("trying to remove activityModel: " + result[activityModel]);
       geddy.model.Activity.remove(result[activityModel].id);
     }
     var responseDict = {};
