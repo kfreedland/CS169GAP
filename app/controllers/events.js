@@ -9,8 +9,12 @@ var Events = function () {
     });
   };
 
-  this.add = function (req, resp, params) {
-    this.respond({params: params});
+  this.add = function (req, resp, params) 
+  {
+    geddy.model.Event.add(params, function(respDict)
+    {
+      this.respond(respDict);
+    });
   };
 
   this.create = function (req, resp, params) {
