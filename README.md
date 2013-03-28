@@ -85,7 +85,7 @@ CS169GAP
 		<li>3 - Username Too Long / Empty (for Create User)</li>
 		<li>4 - Password Too Long / Empty (for Create User)</li>
 		<li>5 - Auth Failed (for Login)</li>
-		<li>6 - Missing Required Parameter (for Create/Find Activity)</li>
+		<li>6 - Missing Required Parameter (for Create/Find Activity/Event)</li>
 		<li>7 - Backend Error - Probably retry</li>
 	</ul>
 
@@ -120,10 +120,10 @@ CS169GAP
 		<li>'description': [string],</li>
 		<li>'time1': [int milliseconds since midnight</li>
 		<li>'time2': [int, milliseconds since midnight</li>
-		<li>'begin_date': [milliseconds since epoch, int],</li>
-		<li>'end_date': [milliseconds since epoch, int],</li>
-		<li>'participants': [array of participants],</li>
-		<li>'activity':[activity record corresponding to this event]</li>
+		<li>'begindate': [milliseconds since epoch, int],</li>
+		<li>'enddate': [milliseconds since epoch, int],</li>
+		<li>'attendingusers': [CSV string of user ids],</li>
+		<li>'activity':[activity recordID corresponding to this event]</li>
 	}
 </ul>
 
@@ -138,7 +138,7 @@ CS169GAP
 		<li>'lastName': [string],</li>
 		<li>'password': [string],</li>
 		<li>'email': [string],</li>
-		<li>'activities': [array of activities],</li>
+		<li>'myevents': [CSV string of event ID's],</li>
 	}
 </ul>
 
@@ -161,6 +161,7 @@ CREATE TABLE users (
 	given_name text,
 	created_at timestamptz,
 	updated_at timestamptz,
+	myevents text,
 	id text
 );
 
@@ -192,6 +193,7 @@ CREATE TABLE activities (
 	duration float8,
 	created_at timestamptz,
 	updated_at timestamptz,
+	attendingusers,
 	id text
 );
 
