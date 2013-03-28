@@ -58,4 +58,5 @@ router.resource('users');
 
 //router.resource('activities');
 
+router.resource('events');
 exports.router = router;
