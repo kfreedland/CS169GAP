@@ -193,10 +193,22 @@ CREATE TABLE activities (
 	duration float8,
 	created_at timestamptz,
 	updated_at timestamptz,
-	attendingusers,
 	id text
 );
 
+CREATE TABLE events (
+	name text,
+	description text,
+	time1 float8,
+	time2 float8,
+	begindate float8,
+	enddate float8,
+	activityid text,
+	attendingusers text,
+	created_at timestamptz,
+	updated_at timestamptz,
+	id text
+);
 
 <h1> Testing </h1>
 
