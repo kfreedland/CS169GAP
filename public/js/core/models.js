@@ -398,8 +398,8 @@ var Event = function () {
   this.defineProperties({
     name: {type: 'string', required: true},
     description: {type: 'string'},
-    time1: {type: '1'},
-    time2: {type: '2'},
+    time1: {type: 'number'},
+    time2: {type: 'number'},
     begindate: {type: 'number'},
     enddate: {type: 'number'},
     activityid: {type: 'string'},

@@ -23,11 +23,13 @@
 
 var Mocha = require('mocha');
 var mocha = new Mocha({reporter: 'spec', ui: 'bdd'});
+// var mocha = new Mocha({reporter: 'html-cov', ui: 'bdd'}); 
  
 function run_tests(cb) {
     mocha.addFile('./test/userTest.js');
     mocha.addFile('./test/activityAddTest.js');
     mocha.addFile('./test/activityFindTest.js');
+    mocha.options.ignoreLeaks = true;
     mocha.run(function(failures) {
         cb(failures);
     });

@@ -8,6 +8,7 @@ log
 npm-debug.log
 config/secrets.json
 lib-cov
+app-cov
 *.seed
 *.log
 *.csv
@@ -15,6 +16,7 @@ lib-cov
 *.out
 *.pid
 *.gz
+coverage.html
 
 pids
 logs
