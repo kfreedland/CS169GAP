@@ -494,7 +494,7 @@ describe('Activity', function(){
 		});
 	});
 
-	describe('Activity.add free event', function(){
+	describe('Activity.add free activity', function(){
 		it('should return errCode:1', function(done){
 		    var activityDict = {};
 		    activityDict.name = 'walk in the';

@@ -106,7 +106,7 @@ var Event = function () {
             eventDict.time2 = params.time2;
             eventDict.description = params.description;
             eventDict.activityid = params.activityid;
-            eventDict.attendingusers = userIds.toString();;
+            eventDict.attendingusers = userIds.toString();
             var eventRecord = geddy.model.Event.create(eventDict);
 
             geddy.model.Event.save(eventRecord, function(err, result)
@@ -155,7 +155,7 @@ var Event = function () {
   };
 };
 
-addEventToUsers(eventid, uesrIds, callback)
+function addEventToUsers(eventid, uesrIds, callback)
 {
   for(var key in userIds)
   {
