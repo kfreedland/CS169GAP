@@ -87,6 +87,8 @@ CS169GAP
 		<li>5 - Auth Failed (for Login)</li>
 		<li>6 - Missing Required Parameter (for Create/Find Activity/Event)</li>
 		<li>7 - Backend Error - Probably retry</li>
+		<li>8 - Event dates/times are incorrect (startdate > enddate)</li>
+		<li>9 - User/Activity specified to add to the event does not exist</li>
 	</ul>
 
 <h2>CREATE ACTIVITY AND SEARCH FOR ACTIVITY:</h2>
@@ -117,7 +119,8 @@ CS169GAP
 <h3>Params: </h3>
 <ul>
 	{
-		<li>'description': [string],</li>
+		<li>'name': [string]<li>
+		<li>'description': [string]</li>
 		<li>'time1': [int milliseconds since midnight</li>
 		<li>'time2': [int, milliseconds since midnight</li>
 		<li>'begindate': [milliseconds since epoch, int],</li>
