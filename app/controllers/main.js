@@ -17,7 +17,7 @@
 */
 var strategies = require('../helpers/passport/strategies')
   , authTypes = geddy.mixin(strategies, {local: {name: 'local account'}});
-var runTests = require('../../test/runTests.js');
+// var runTests = require('../../test/runTests.js');
 
 var Main = function () {
 
@@ -75,13 +75,13 @@ var Main = function () {
   };
 
 
-  this.unitTests = function (req, resp, params) {
-    var self = this;
-    runTests(function (answerDict) {
-      console.log("responding from unitTests");
-      self.respond(answerDict, {format: 'json'});
-    });
-  };
+  // this.unitTests = function (req, resp, params) {
+  //   var self = this;
+  //   runTests(function (answerDict) {
+  //     console.log("responding from unitTests");
+  //     self.respond(answerDict, {format: 'json'});
+  //   });
+  // };
 
 };
 
