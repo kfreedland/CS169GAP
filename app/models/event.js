@@ -32,34 +32,82 @@ var Event = function () {
     // Do some stuff
   };
   */
-  Event.add = function(params, callback)
+Event.add = function(params, callback)
+{
+  var incorrectParams = {errCode: 6};
+  var backendError = {errCode: 7};
+  var badTimes = {errCode: 8};
+  var badTableJoin = {errCode: 9};
+  if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
-    var incorrectParams = {errCode: 6};
-    var backendError = {errCode: 7};
-    var badTimes = {errCode: 8};
-    var badTableJoin = {errCode: 9};
-    if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
+    var usernamesOrEmails = params.attendingusers.split(',');
+    var emails = [];
+    var userIds = [];
+    for(var key in usernamesOrEmails)
     {
-      var usernamesOrEmails = params.attendingusers.split(',');
-      var emails = [];
-      var userIds = [];
-      for(var key in usernamesOrEmails)
+      var name = usernamesOrEmails[key];
+      if(name.indexOf('@') >= 0) //special characters cant be in usernames only in emails
       {
-        var done = false;
-        var reqSent = false;
-        var name = usernamesOrEmails[key];
-        if(name.indexOf('@') >= 0) //special characters cant be in usernames only in emails
+        emails.append(name);
+        continue;
+      }
+      else
+      {
+        geddy.model.User.first({username: name}, function(err, record)
         {
-          emails.append(name);
-          continue;
-        }
-        else
-        {
-          while(!done)
-          {
-            if(!reqSent)
+            if(err)
             {
-              geddy.model.User.first({username: name}, function(err, record)
+              callback(backendError);
+            }
+            else
+            {
+              if(record && record.email && record.id)
+              {
+                emails.push(record.email);
+                userIds.push(record.id);
+              }
+              else
+              {
+                callback(badTableJoin);
+              }
+            }
+          });
+        }
+      }
+    }
+    while(useremail.length < usernamesOrEmails.length)
+    {
+      console.log('waiting on email parsing to finish it will kill this if it errors');
+      continue;
+    }
+    geddy.model.Activity.first({id: params.id}, function(err, record)
+    {
+      if(record && record.name) //basic assertion that record exists
+      {
+        if(params.startdate <= params.enddate && params.time1 <= params.time2)
+        {
+          //all required fields are valid
+          eventDict = {};
+          eventDict.name = params.name;
+          eventDict.startdate = params.startdate;
+          eventDict.enddate = params.enddate;
+          eventDict.time1 = params.time1;
+          eventDict.time2 = params.time2;
+          eventDict.description = params.description;
+          eventDict.activityid = params.activityid;
+          eventDict.attendingusers = userIds.toString();
+          var eventRecord = geddy.model.Event.create(eventDict);
+
+          geddy.model.Event.save(eventRecord, function(err, result)
+          {
+            if(err)
+            {
+              callback(backendError);
+            }
+            else
+            {
+              //now we have to add the eventRecord to each user
+              geddy.model.Event.first({attendingusers: userIds.toString()}, function(err, record)
               {
                 if(err)
                 {
@@ -67,93 +115,29 @@ var Event = function () {
                 }
                 else
                 {
-                  if(record && record.email && record.id)
+                  addEventToUsers(record.id, uesrIds, function(respDict)
                   {
-                    emails.push(record.email);
-                    userIds.push(record.id);
-                    done = true;
-                  }
-                  else
-                  {
-                    callback(badTableJoin);
-                    done = true;
-                    break;
-                  }
+                    emailNotify(emails);
+                    callback(respDict);
+                  });
                 }
-                reqSent = true;
+
               });
             }
-          }
-        }
-      }
-      while(useremail.length < usernamesOrEmails.length)
-      {
-        console.log('waiting on email parsing to finish it will kill this if it errors');
-        continue;
-      }
-      geddy.model.Activity.first({id: params.id}, function(err, record)
-      {
-        if(record && record.name) //basic assertion that record exists
-        {
-          if(params.startdate <= params.enddate && params.time1 <= params.time2)
-          {
-            //all required fields are valid
-            eventDict = {};
-            eventDict.name = params.name;
-            eventDict.startdate = params.startdate;
-            eventDict.enddate = params.enddate;
-            eventDict.time1 = params.time1;
-            eventDict.time2 = params.time2;
-            eventDict.description = params.description;
-            eventDict.activityid = params.activityid;
-            eventDict.attendingusers = userIds.toString();
-            var eventRecord = geddy.model.Event.create(eventDict);
-
-            geddy.model.Event.save(eventRecord, function(err, result)
-            {
-              if(err)
-              {
-                callback(backendError);
-              }
-              else
-              {
-                //now we have to add the eventRecord to each user
-                geddy.model.Event.first({attendingusers: userIds.toString()}, function(err, record)
-                  {
-                    if(err)
-                    {
-                      callback(backendError);
-                    }
-                    else
-                    {
-                      addEventToUsers(record.id, uesrIds, function(respDict)
-                      {
-                        emailNotify(emails);
-                        callback(respDict);
-                      });
-                    }
-
-                  });
-              }
-            });
-          }
-          else
-          {
-            callback(badTimes);
-          }
+          });
         }
         else
         {
-          callback(badTableJoin);
+          callback(badTimes);
         }
-      });
-    }
-    else
-    {
-      callback(incorrectParams);
-    }
-  };
-};
+      }
+      else
+      {
+        callback(badTableJoin);
+      }
+    });
+  }
+}
 
 function addEventToUsers(eventid, uesrIds, callback)
 {
@@ -182,19 +166,10 @@ function addEventToUsers(eventid, uesrIds, callback)
           {
             callback({errCode: 7});
           }
-          else
-          {
-            continue;
-          }
         });
       }
     });
-    while(true)
-    {
-      //force the for loop to complete in order
-    }
   }
-
   callback({errCode: 1});
 }
 /*
