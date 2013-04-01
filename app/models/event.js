@@ -191,6 +191,23 @@ Event.getMyEvents = function (params, callback) {
   var responseDict = {};
   responseDict.errCode = 1;
   responseDict.events = [];
+
+  var query = {};
+  query.attendingusers = params.userID;
+
+  Event.all(query, function (err, events)
+  {
+    if(err)
+    {
+      responseDict.errCode = 7;
+      // throw err;
+    }
+    else
+    {
+      responseDict.events = events;
+    }
+    callback(responseDict);
+  });
 };
 /*
 // Can also define them on the prototype
