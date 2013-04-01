@@ -302,7 +302,9 @@ npm install -g
 install postgres with the database configured like the above^^
 
 <b>Install node-jscoverage</b>
-cd /node_models/node-jscoverage-master
+Download node-jscoverage from here as ZIP: https://github.com/visionmedia/node-jscoverage
+Extract zip folder to ./node_modules
+cd ./node_models/node-jscoverage-master
 ./configure && make && make install
 
 <b>Run Tests</b>
