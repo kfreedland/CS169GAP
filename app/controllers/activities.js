@@ -16,7 +16,7 @@ var Activities = function () {
   **/
   this.search = function (req, resp, params)
   {
-    console.log("inSearch");
+    // console.log("inSearch");
     var self = this;
     var hour = 3600000;
     //We want to assure ourselves that the model only gets the relevant params and not anything extra
@@ -77,7 +77,7 @@ var Activities = function () {
     }
     for(var key in queryInfo)
     {
-      console.log("queryInfo key: "+key+" value: "+queryInfo[key]);
+      // console.log("queryInfo key: "+key+" value: "+queryInfo[key]);
     }
 
     geddy.model.Activity.search(queryInfo, parseFloat(params.latitude), parseFloat(params.longitude), function(responseDict)
@@ -93,7 +93,7 @@ var Activities = function () {
         {
           break;
         }
-        console.log("key is: "+key+" with value: "+responseDict[key]);
+        // console.log("key is: "+key+" with value: "+responseDict[key]);
         var record = responseDict[key];
         if(!record.highprice)
         {
@@ -128,11 +128,11 @@ var Activities = function () {
   this.add = function (req, resp, params) {
 
     var self = this;
-    console.log("activites.create reached")
+    // console.log("activites.create reached")
 
     geddy.model.Activity.add(params, 
       function createCallBack(result){
-        console.log("EXECUTING CREATE ACTIVITY CALLBACK");
+        // console.log("EXECUTING CREATE ACTIVITY CALLBACK");
         console.dir(result);
         self.respond(result, {format: 'json'});
       });

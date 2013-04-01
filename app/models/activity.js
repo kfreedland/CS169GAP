@@ -23,7 +23,7 @@ var Activity = function () {
 
 };
 
-var geoSearchHelper = function (records, lat, long, callback)
+var geoSearchHelper = function (records, lat, myLong, callback)
 {
   var consDist = 69.1
     , consAng = 57.3
@@ -34,7 +34,7 @@ var geoSearchHelper = function (records, lat, long, callback)
   {
     var record = records[idx];
     //using a geo dist equation
-    var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - long) * Math.cos(lat / 57.3), 2));
+    var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - myLong) * Math.cos(lat / 57.3), 2));
     record.distance = dist*100;
     returnRecords.push(record);
     count = count + 1;
@@ -291,7 +291,7 @@ Activity.add = function (parameterDict, callback){
   }
 
   //Make sure does not exist
-  geddy.model.Activity.first(activityDict, 
+   geddy.model.Activity.first(activityDict,
     function (err, result) {
       if (result){
         respDict.errCode = 10;
@@ -331,7 +331,7 @@ Activity.add = function (parameterDict, callback){
 
 Activity.search = function search(params, myLat, myLong, callback)
 {
-  console.log("Lat Long: " +myLat+" "+myLong);
+  // console.log("Lat Long: " +myLat+" "+myLong);
   /** data is of the following form
   Name: string
   time1: time
@@ -361,7 +361,7 @@ Activity.search = function search(params, myLat, myLong, callback)
     }
     if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
     {
-      console.log("Calling geoSearchHelper");
+      // console.log("Calling geoSearchHelper");
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
       {
         callback(returnRecords);
@@ -369,7 +369,7 @@ Activity.search = function search(params, myLat, myLong, callback)
     }
     else
     {
-      console.log("Not using geoSearchHelper");
+      // console.log("Not using geoSearchHelper");
       callback(activities);
     }
   });

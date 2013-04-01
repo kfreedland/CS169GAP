@@ -77,7 +77,7 @@ Event.add = function(params, callback)
     }
     while(useremail.length < usernamesOrEmails.length)
     {
-      console.log('waiting on email parsing to finish it will kill this if it errors');
+      // console.log('waiting on email parsing to finish it will kill this if it errors');
       continue;
     }
     geddy.model.Activity.first({id: params.id}, function(err, record)

@@ -100,7 +100,7 @@ describe('Activity', function(){
 		    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
 		    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
 		    activityDict.begindate = date1.getTime();
-		    activityDict.endDdate = date2.getTime();
+		    activityDict.enddate = date2.getTime();
 		    activityDict.lowprice = '25';
 		    activityDict.highprice = '200';
 		    activityDict.lownumparticipants = '1';

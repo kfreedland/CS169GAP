@@ -18,7 +18,7 @@ var Users = function () {
   };
 
   this.add = function (req, resp, params) {
-    console.log("PARAMS.ERRCODE = " + params.errCode);
+    // console.log("PARAMS.ERRCODE = " + params.errCode);
     if (!params.errCode){
       params.errCode = 0;
     }
@@ -37,10 +37,10 @@ var Users = function () {
       //    };
       // }
       if (responseDict.errCode === 1){
-        console.log("redirecting to login?errCode=" + responseDict.errCode);
+        // console.log("redirecting to login?errCode=" + responseDict.errCode);
         self.redirect('/login?errCode='+responseDict.errCode);
       } else {
-        console.log("redirecting to users/add?errCode=" + responseDict.errCode);
+        // console.log("redirecting to users/add?errCode=" + responseDict.errCode);
         self.redirect('/users/add?errCode=' + responseDict.errCode);
       }
       // self.respond(responseDict, {format: 'json'});
@@ -54,7 +54,7 @@ var Users = function () {
   this.unitTests = function (req, resp, params) {
     var self = this;
     geddy.model.User.TESTAPI_unitTests(function (answerDict) {
-      console.log("responding from unitTests");
+      // console.log("responding from unitTests");
       self.respond(answerDict, {format: 'json'});
     });
   };
