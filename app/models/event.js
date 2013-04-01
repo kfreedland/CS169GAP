@@ -39,6 +39,7 @@ var badTableJoin = {errCode: 9};
 
 Event.add = function(params, callback)
 {
+  console.dir(params);
   if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
     var usernamesOrEmails = params.attendingusers.split(',');
@@ -204,6 +205,19 @@ Event.someStaticMethod = function () {
 };
 Event.someStaticProperty = 'YYZ';
 */
+
+Event.TESTAPI_resetFixture = function (callback) {
+  geddy.model.Event.all(function (err, result) {
+    // console.log("got all activity models with error: " + err + " and result: " + result);
+    for (var eventModel in result){
+      // console.log("trying to remove activityModel: " + result[activityModel]);
+      geddy.model.Event.remove(result[eventModel].id);
+    }
+    var responseDict = {};
+  responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};  
 
 Event = geddy.model.register('Event', Event);
 
