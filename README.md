@@ -135,7 +135,7 @@ CS169GAP
 <h6><b>CHANGE DATE/TIME OF EVENT</b></h6>
 //Changes the date and/or time of an event already made
 
-URL - /events/changedatetime
+<h3>URL: </h3> /events/changedatetime
 <h3>Params: </h3>
 <ul>
 	{
@@ -143,15 +143,18 @@ URL - /events/changedatetime
 		<li>'time2': [int, milliseconds since midnight]</li>
 		<li>'begindate': [milliseconds since epoch, int],</li>
 		<li>'enddate': [milliseconds since epoch, int],</li>	
-
-
-		only pass fields that are changed	
+	
 	}
+
+	only pass fields that are changed
 </ul>
 
-URL - /events/invite
 <h6><b>Invite friends to an event</b></h6>
 //Sends email to emails provided
+
+<h3>URL: </h3> /events/invite
+
+
 <h3>Params: </h3>
 <ul>
 	{
