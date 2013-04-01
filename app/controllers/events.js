@@ -108,7 +108,6 @@ var Events = function () {
   };
 
 
-<<<<<<< HEAD
   this.invite = function (req, resp, params) {
 
   };
@@ -117,8 +116,6 @@ var Events = function () {
 
   };
 
-
-=======
   //Get My Events
   this.getMyEvents = function (req, resp, params) {
     var self = this;
@@ -135,7 +132,6 @@ var Events = function () {
     });
   };
 
->>>>>>> 57c13cc1702b8d41c9856c91aa91771fe32fd6eb
 };
 
 exports.Events = Events;
