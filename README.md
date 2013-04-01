@@ -114,6 +114,8 @@ CS169GAP
 	}
 </ul>
 
+<h2> EVENTS </h2>
+
 <h6><b>CREATE EVENT</b></h6>
 //Creates an event and returns it with the correspoding fileds
 <h3>Params: </h3>
@@ -129,6 +131,36 @@ CS169GAP
 		<li>'activity':[activity recordID corresponding to this event]</li>
 	}
 </ul>
+
+<h6><b>CHANGE DATE/TIME OF EVENT</b></h6>
+//Changes the date and/or time of an event already made
+
+URL - /events/changedatetime
+<h3>Params: </h3>
+<ul>
+	{
+		<li>'time1': [int milliseconds since midnight]</li>
+		<li>'time2': [int, milliseconds since midnight]</li>
+		<li>'begindate': [milliseconds since epoch, int],</li>
+		<li>'enddate': [milliseconds since epoch, int],</li>	
+
+
+		only pass fields that are changed	
+	}
+</ul>
+
+URL - /events/invite
+<h6><b>Invite friends to an event</b></h6>
+//Sends email to emails provided
+<h3>Params: </h3>
+<ul>
+	{
+		<li>'emails': [List of strings]</li>
+		<li>'message': [String]</li>
+
+	}
+</ul>
+
 
 <ul> 'errCode': [see above API for valid codes for activities and events]</ul>
 
@@ -230,3 +262,5 @@ curl -X POST http://localhost:4000/TESTAPI/unitTests
 	<li>find_selenium_test.py is the find activity test that looks for activities most closely resembling the search query: 5-15 people, On March 15th, and All Day event.</li>
 	<li>create_selenium_test.py is the create activity test that creates a new activity</li>
 </ul>
+
+
