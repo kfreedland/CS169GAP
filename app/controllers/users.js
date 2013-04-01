@@ -84,7 +84,7 @@ var Users = function () {
         err.statusCode = 400;
         self.error(err);
       } else {
-        self.respond({params: params, user: user});
+        self.respond({params: params, user: user.toObj()});
       }
     });
   };
