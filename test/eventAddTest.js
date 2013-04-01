@@ -1,6 +1,5 @@
 var assert = require("assert")
   , User = geddy.model.User
-  , event = geddy.model.event
   , Event = geddy.model.Event;
 
 var resetFixture = function (done)
@@ -14,7 +13,7 @@ var resetFixture = function (done)
 
 describe('Event', function()
 {
-	before(function(done) 
+	beforeEach(function(done) 
 	{
 		//Erase database
 		resetFixture(done);
@@ -72,6 +71,7 @@ describe('Event', function()
 
 		    });
 		});
+	});
 
 	describe('Event.add valid', function()
 	{
@@ -128,4 +128,8 @@ describe('Event', function()
 								});
 							});
 					});
+				});
+			});
+		});
 	});
+});

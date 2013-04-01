@@ -48,7 +48,7 @@ Event.add = function(params, callback)
       var name = usernamesOrEmails[key];
       if(name.indexOf('@') >= 0) //special characters cant be in usernames only in emails
       {
-        emails.append(name);
+        emails.push(name);
         continue;
       }
       else
@@ -172,6 +172,11 @@ function addEventToUsers(eventid, uesrIds, callback)
   }
   callback({errCode: 1});
 }
+
+
+Event.getMyEvents = function (params, callback) {
+
+};
 /*
 // Can also define them on the prototype
 Event.prototype.someOtherMethod = function () {
