@@ -28,6 +28,19 @@ function run_tests(callback){
     execute_test_code(mocha, callback);
 }
 
+function create_coverage_code(callback){
+    //Create backup
+    jake.exec(['rm -rf app-backup', 'cp -R ./app ./app-backup'], function() {
+        //Create coverage code
+        jake.exec(['rm -rf app-cov', 'jscoverage ./app ./app-cov'], function() {
+            //Make coverage code the app dir
+            jake.exec(['rm -rf app', 'cp -R ./app-cov ./app'], function() {
+                callback();
+            });
+        });
+    });
+}
+
 function run_test_coverage(callback){
     var mocha = new Mocha({reporter: 'html-cov', ui: 'bdd'});
     execute_test_code(mocha, callback);
@@ -36,7 +49,7 @@ function run_test_coverage(callback){
 function execute_test_code(mochaInstance, cb) {
     mochaInstance.addFile('./test/userTest.js');
     mochaInstance.addFile('./test/activityAddTest.js');
-    mochaInstance.addFile('./test/activityFindTest.js');
+    // mochaInstance.addFile('./test/activityFindTest.js');
     mochaInstance.options.ignoreLeaks = true;
     mochaInstance.run(function(failures) {
         cb(failures);
@@ -50,7 +63,7 @@ task('test', {async: true}, function(args) {
             fail(err);
         } else {
             //This runs the runTestCoverage task and directs the output to the correct file
-            jake.exec(['geddy jake runTestCoverage > ./output/testOutput.html'], function () {
+            jake.exec(['geddy jake runTestCoverage > ./output/coverage.html'], function () {
                 complete();
             }, {printStdout: true});
         }
@@ -59,15 +72,17 @@ task('test', {async: true}, function(args) {
 
 //This runs the test coverage and when done, opens the html output
 task('runTestCoverage', {async: true}, function(args) {
-    run_test_coverage(function(err) {
-        jake.exec(['open ./output/testOutput.html']);
-        complete();
+    create_coverage_code(function(err){
+        if (err){
+
+        } else {
+            run_test_coverage(function(err) {
+                jake.exec(['open ./output/coverage.html']);
+                //Put back backup
+                jake.exec(['rm -rf app' ,'cp -R app-backup app'], function(){
+                    complete();
+                });
+            });
+        }
     });
 });
-
-// task('testCoverageRunner', {async:true}, function(args) {
-//     jake.exec(['geddy jake runTestCoverage > ./output/testOutput.html'], function () {
-//      complete();
-//    }, {printStdout: true});
-// });
-
