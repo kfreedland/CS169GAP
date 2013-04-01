@@ -50,9 +50,9 @@ Event.add = function(params, callback)
     getEmailAndId(usernamesOrEmails, callback, function(emailAndId)
     {
       var emails = emailAndId.email;
-      var userIds = emailAndId.Id;
+      var userIds = emailAndId.id;
 
-      geddy.model.Activity.first({id: params.id}, function(err, activityRecord)
+      geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
         if(activityRecord &&  activityRecord.name) //basic assertion that record exists
         {
@@ -87,11 +87,13 @@ Event.add = function(params, callback)
                   }
                   else
                   {
-                    addEventToUsers(eventRecord.id, uesrIds, function(respDict)
+                    addEventToUsers(eventRecord.id, userIds, function(respDict)
                     {
                       var message = "People want you to join the following activity: "+activityRecord.name;
-                      emailNotify(emails, message);
-                      callback(respDict);
+                      invite({eventid: eventRecord.id, emails: emails , message: message}, function()
+                        {
+                          callback(respDict);
+                        });
                     });
                   }
 
@@ -106,6 +108,8 @@ Event.add = function(params, callback)
         }
         else
         {
+          console.log('bad table join in add');
+          console.dir(activityRecord);
           callback(badTableJoin);
         }
       });
@@ -117,7 +121,7 @@ Event.add = function(params, callback)
   }
 }
 
-function getEmailandId(usernamesOrEmails, errorCallback, successCallback)
+function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
   emails = [];
   userIds = [];
@@ -304,7 +308,10 @@ Event.invite = function(params, callback)
 
     });
 }
-
+function invite(params, callback)
+{
+  callback();
+}
 function isValidEmail(email) { 
 
   return check(email).isEmail();

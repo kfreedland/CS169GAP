@@ -112,23 +112,23 @@ describe('Event', function()
 						var uId = userRecord.id;
 
 						Activity.first({name: 'jogging'}, function(err, activityRecord)
-							{
-								var aId = activityRecord.id;
-								var d = new Date();
-								eventData.name ="magical orgy";
-								eventData.time1 = 500;
-								eventData.time2 = 1000;
-								eventData.startdate = d.getTime();
-								eventData.enddate = d.getTime() + 50000;
-								eventData.description = 'my Event';
-								eventData.myAct
+						{
+							var d = new Date();
+							eventData.name ="magical orgy";
+							eventData.activityid = activityRecord.id;
+							eventData.time1 = 500;
+							eventData.time2 = 1000;
+							eventData.startdate = d.getTime();
+							eventData.enddate = d.getTime() + 50000;
+							eventData.description = 'my Event';
+							eventData.attendingusers = userRecord.email;
 
-								Event.add(eventData, function(respDict)
-								{
-									assert.deepEqual(respDict, expected);
-									done();
-								});
+							Event.add(eventData, function(respDict)
+							{
+								assert.deepEqual(respDict, expected);
+								done();
 							});
+						});
 					});
 				});
 			});
