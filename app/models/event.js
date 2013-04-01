@@ -189,7 +189,9 @@ function addEventToUsers(eventid, uesrIds, callback)
 
 
 Event.getMyEvents = function (params, callback) {
-
+  var responseDict = {};
+  responseDict.errCode = 1;
+  responseDict.events = [];
 };
 /*
 // Can also define them on the prototype

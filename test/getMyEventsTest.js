@@ -59,9 +59,10 @@ describe('Event', function()
                 User.add(user, function (answerDict) 
                 {    
                     //Never add the event so we shouldn't have any now
-                    Event.getMyEvents(function (resp1)
+                    Event.getMyEvents(function (err, resp1)
                     {
-                        assert.equal(resp1.count, 0);
+                        assert.equal(resp1.errCode, 1);
+                        assert.equal(resp1.events.count, 0);
                         done();
                     });
                 });
@@ -118,12 +119,13 @@ describe('Event', function()
                         eventData.begindate = begindate;
                         eventData.enddate = enddate;
 
-                        Event.getMyEvents(function (resp1)
+                        Event.getMyEvents(function (err, resp1)
                         {
+                            assert.equal(resp1.errCode, 1);
                             //Make sure we get 1 event back
-                            assert.equal(resp1.count, 1);
+                            assert.equal(resp1.events.count, 1);
                             //Check if first item equals the event we added
-                            assert.deepEqual(resp1[0], resp);
+                            assert.deepEqual(resp1.events[0], resp);
                             done();
                         });
                     });
@@ -220,13 +222,14 @@ describe('Event', function()
                             {
                                 assert.deepEqual(eventResp2, expected);
 
-                                Event.getMyEvents(function (resp1)
+                                Event.getMyEvents(function (err, resp1)
                                 {
+                                    assert.equal(resp1.errCode, 1);
                                     //Make sure we get 1 event back
-                                    assert.equal(resp1.count, 2);
+                                    assert.equal(resp1.events.count, 2);
                                     //Check if first item equals the event we added
-                                    assert.deepEqual(resp1[0], eventResp1);
-                                    assert.deepEqual(resp1[1], eventResp2);
+                                    assert.deepEqual(resp1.events[0], eventResp1);
+                                    assert.deepEqual(resp1.events[1], eventResp2);
                                     done();
                                 });
                             });

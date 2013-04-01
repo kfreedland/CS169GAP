@@ -1,4 +1,10 @@
+var requireAuth = passport.requireAuth;
+
 var Events = function () {
+  this.before(requireAuth, {
+    except: ['']
+  });
+
   this.respondsWith = ['html', 'json', 'xml', 'js', 'txt'];
 
   this.index = function (req, resp, params) {
@@ -96,6 +102,22 @@ var Events = function () {
         self.transfer('edit');
       } else {
         self.redirect({controller: self.name});
+      }
+    });
+  };
+
+
+  //Get My Events
+  this.getMyEvents = function (req, resp, params) {
+    var self = this;
+
+    geddy.model.Event.getMyEvents(function(err, responseDict) {
+      if (err) {
+        params.errors = err;
+
+      } else {
+        params.errCode = responseDict.errCode;
+        params.events = responseDict.events;
       }
     });
   };
