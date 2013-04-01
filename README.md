@@ -96,8 +96,9 @@ CS169GAP
 		<li>7 - Backend Error - Probably retry</li>
 		<li>8 - Event dates/times are incorrect (startdate > enddate)</li>
 		<li>9 - User/Activity specified to add to the event does not exist</li>
-
-		<li>13 - User Not Authenticated (for any events methods)</li>
+		<li>10 - EventID passed to backend does not correspond to a valid event </li>
+		<li>11 - Event date/time is invalid </li>
+		<li>12 - Atleast one email in the list of emails is malformed </li>
 	</ul>
 
 <h2>CREATE ACTIVITY AND SEARCH FOR ACTIVITY:</h2>
@@ -162,7 +163,7 @@ CS169GAP
 
 <h3>Response: </h3>
 <ul>
-	<li>'errCode': [1 = success, 2 = invalid event, 3 = invalid date/times] </li>
+	<li>'errCode': [1 = success, 6 = missing eventID or date/time parameters, 10 = invalid event, 11 = invalid date/times] </li>
 	<li>'message': [string] more info about error</li>
 </ul>
 
@@ -184,8 +185,8 @@ CS169GAP
 
 <h3>Response: </h3>
 <ul>
-	<li>'errCode': [1 = success, 2 = invalid event, 3 = some emails were malformed ] </li>
-	<li>'bademails': [if errCode = 3, contains list of malformed emails, else null]</li>
+	<li>'errCode': [1 = success, 6 = missing eventID or email list parameters, 10 = invalid event, 12 = some emails were malformed ] </li>
+	<li>'bademails': [if errCode = 12, contains list of malformed emails, else null]</li>
 </ul>
 
 <h6><b>Get My Events</b></h6>
@@ -202,8 +203,11 @@ CS169GAP
 
 <h3>Response: </h3>
 <ul>
-	<li>'errCode': [1 = success, 13 = User Not Authenticated ] </li>
-	<li>'events': [if errCode = 1, contains list of events for the current user, else null]</li>
+	<li>'errCode': [1 = success] </li>
+	<li>'events': [Contains list of events for the current user]</li>
+
+	OR
+	<li>Redirect to /login if User Not Authenticated</li>
 </ul>
 
 
