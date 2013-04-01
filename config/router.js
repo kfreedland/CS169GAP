@@ -52,6 +52,7 @@ router.get('/activities/search').to('Activities.search');
 
 router.post('/events/invite').to('Events.invite');
 router.post('/events/changedatetime').to('Events.changeDateTime');
+router.get('/events/getmyevents').to('Events.getMyEvents');
 
 // router.get('/auth/twitter').to('Auth.twitter');
 // router.get('/auth/twitter/callback').to('Auth.twitterCallback');
