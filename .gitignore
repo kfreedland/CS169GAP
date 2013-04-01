@@ -16,6 +16,7 @@ app-cov
 *.out
 *.pid
 *.gz
+*.orig
 coverage.html
 ./app-cov/*
 app-cov
