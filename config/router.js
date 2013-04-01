@@ -48,6 +48,10 @@ router.post('/auth/local').to('Auth.local');
 router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
 
+
+router.post('/events/invite').to('Events.invite');
+router.post('/events/changedatetime').to('Events.changeDateTime');
+
 // router.get('/auth/twitter').to('Auth.twitter');
 // router.get('/auth/twitter/callback').to('Auth.twitterCallback');
 router.get('/auth/facebook').to('Auth.facebook');

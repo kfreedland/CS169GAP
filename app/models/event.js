@@ -172,6 +172,20 @@ function addEventToUsers(eventid, uesrIds, callback)
   }
   callback({errCode: 1});
 }
+
+Event.invite = function(params, callback) 
+{
+
+}
+
+Event.changeDateTime = function(params, callback) 
+{
+
+}
+
+
+
+
 /*
 // Can also define them on the prototype
 Event.prototype.someOtherMethod = function () {

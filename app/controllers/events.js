@@ -100,6 +100,16 @@ var Events = function () {
     });
   };
 
+
+  this.invite = function (req, resp, params) {
+
+  };
+
+  this.changeDateTime = function (req, resp, params) {
+
+  };
+
+
 };
 
 exports.Events = Events;
