@@ -139,6 +139,7 @@ CS169GAP
 <h3>Params: </h3>
 <ul>
 	{
+		<li>'eventid': [string]</li>
 		<li>'time1': [int milliseconds since midnight]</li>
 		<li>'time2': [int, milliseconds since midnight]</li>
 		<li>'begindate': [milliseconds since epoch, int],</li>
@@ -149,19 +150,33 @@ CS169GAP
 	only pass fields that are changed
 </ul>
 
+
+<h3>Response: </h3>
+<ul>
+	<li>'errCode': [1 = success, 2 = invalid event, 3 = invalid date/times] </li>
+	<li>'message': [string] more info about error</li>
+</ul>
+
+
 <h6><b>Invite friends to an event</b></h6>
 //Sends email to emails provided
 
 <h3>URL: </h3> /events/invite
 
-
 <h3>Params: </h3>
 <ul>
 	{
+		<li>'eventid': [string]</li>
 		<li>'emails': [List of strings]</li>
 		<li>'message': [String]</li>
 
 	}
+</ul>
+
+<h3>Response: </h3>
+<ul>
+	<li>'errCode': [1 = success, 2 = invalid event, 3 = some emails were malformed ] </li>
+	<li>'bademails': [if errCode = 3, contains list of malformed emails, else null]</li>
 </ul>
 
 
