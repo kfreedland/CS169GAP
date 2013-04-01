@@ -1,3 +1,6 @@
+var nodemailer = require("nodemailer");
+
+
 var Event = function () {
 
   this.defineProperties({
@@ -187,6 +190,132 @@ function addEventToUsers(eventid, uesrIds, callback)
   callback({errCode: 1}); //success!
 }
 
+Event.invite = function(params, callback) 
+{
+  //send email containing "message" to list of emails
+  var self = this;
+  var responseDict = {};
+
+  var eventID = params.eventid;
+  var emailList = params.emails;
+  var message = params.message;
+
+  if (eventID === null || eventID === undefined ) 
+  {
+    //handle null eventid
+    
+    callback(responseDict);
+    return;
+  } 
+
+  if (emailList === null || emailList === undefined || emailList === [] ) 
+  {
+    //handle empty emails
+
+    callback(responseDict);
+    return;
+  } 
+
+  //check all emails for propper form
+  var badEmails = [];
+  var goodEmailsString = "";
+  for(var emailAddr in emailList)
+  {
+
+    if (!isValidEmail(emailAddr))
+    {
+      //email address is malformed
+      badEmails.push(emailAddr);
+    } else {
+
+      goodEmailsString += emailAddr + ", ";
+
+    }
+  }
+
+  //some emails are bad
+  if(badEmails.count > 0 ){
+
+    callback(responseDict);
+    return;
+  }
+
+  //chop off the ", " at the end of the string
+  if(goodEmailsString.length > 2)
+  {
+    goodEmailsString = goodEmailsString.substring(0,goodEmailsString.length-3);
+  } 
+  else
+  {
+
+
+    callback(responseDict);
+    return;
+  } 
+
+
+
+  geddy.model.Event.first({id: eventID}, function (err, result) 
+    {
+
+      if(err){
+        //handle error
+      } 
+      else 
+      {
+
+        if(result)
+        {
+          //invite all emails
+
+            // create reusable transport method (opens pool of SMTP connections)
+          var smtpTransport = nodemailer.createTransport("SMTP",{
+              service: "Gmail",
+              auth: {
+                  user: "groupactivityplanner@gmail.com",
+                  pass: "gapgapgap"
+              }
+          });
+
+          var mailOptions = {
+              from: "Group Activity Planner ✔ <groupactivityplanner@gmail.com>", // sender address
+              to: goodEmailsString, // list of receivers
+              subject: "You have been invited to an event!", // Subject line
+              text: message, // plaintext body
+              html: null // html body
+          }
+
+          // send mail with defined transport object
+          smtpTransport.sendMail(mailOptions, function(error, response){
+              if(error){
+                  console.log(error);
+              }else{
+                  console.log("Message sent: " + response.message);
+              }
+
+              // if you don't want to use this transport object anymore, uncomment following line
+              //smtpTransport.close(); // shut down the connection pool, no more messages
+          });
+
+        }
+      }
+
+    });
+}
+
+function isValidEmail(emailAddr)
+{
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
+    ".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA
+    -Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    
+    return re.test(email);
+}
+
+Event.changeDateTime = function(params, callback) 
+{
+
+}
 
 Event.getMyEvents = function (params, callback) {
   var responseDict = {};

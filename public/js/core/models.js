@@ -1,339 +1,4 @@
 (function () {
-var Event = function () {
-
-  this.defineProperties({
-    name: {type: 'string', required: true},
-    description: {type: 'string'},
-    time1: {type: 'number'},
-    time2: {type: 'number'},
-    begindate: {type: 'number'},
-    enddate: {type: 'number'},
-    activityid: {type: 'string'},
-    attendingusers: {type: 'string'}
-  });
-
-  /*
-  this.property('login', 'string', {required: true});
-  this.property('password', 'string', {required: true});
-  this.property('lastName', 'string');
-  this.property('firstName', 'string');
-
-  this.validatesPresent('login');
-  this.validatesFormat('login', /[a-z]+/, {message: 'Subdivisions!'});
-  this.validatesLength('login', {min: 3});
-  // Use with the name of the other parameter to compare with
-  this.validatesConfirmed('password', 'confirmPassword');
-  // Use with any function that returns a Boolean
-  this.validatesWithFunction('password', function (s) {
-      return s.length > 0;
-  });
-
-  // Can define methods for instances like this
-  this.someMethod = function () {
-    // Do some stuff
-  };
-  */
-var incorrectParams = {errCode: 6};
-var backendError = {errCode: 7};
-var badTimes = {errCode: 8};
-var badTableJoin = {errCode: 9};
-
-Event.add = function(params, callback)
-{
-  if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
-  {
-    var usernamesOrEmails = params.attendingusers.split(',');
-    getEmailAndId(usernamesOrEmails, callback, function(emailAndId)
-    {
-      var emails = emailAndId.email;
-      var userIds = emailAndId.Id;
-
-      geddy.model.Activity.first({id: params.id}, function(err, activityRecord)
-      {
-        if(activityRecord &&  activityRecord.name) //basic assertion that record exists
-        {
-          if(params.startdate <= params.enddate && params.time1 <= params.time2)
-          {
-            //all required fields are valid
-            eventDict = {};
-            eventDict.name = params.name;
-            eventDict.startdate = params.startdate;
-            eventDict.enddate = params.enddate;
-            eventDict.time1 = params.time1;
-            eventDict.time2 = params.time2;
-            eventDict.description = params.description;
-            eventDict.activityid = params.activityid;
-            eventDict.attendingusers = userIds.toString();
-            var eventRecord = geddy.model.Event.create(eventDict);
-
-            geddy.model.Event.save(eventRecord, function(err, result)
-            {
-              if(err)
-              {
-                callback(backendError);
-              }
-              else
-              {
-                //now we have to add the eventRecord to each user
-                geddy.model.Event.first({attendingusers: userIds.toString()}, function(err, eventRecord)
-                {
-                  if(err)
-                  {
-                    callback(backendError);
-                  }
-                  else
-                  {
-                    addEventToUsers(eventRecord.id, uesrIds, function(respDict)
-                    {
-                      var message = "People want you to join the following activity: "+activityRecord.name;
-                      emailNotify(emails, message);
-                      callback(respDict);
-                    });
-                  }
-
-                });
-              }
-            });
-          }
-          else
-          {
-            callback(badTimes);
-          }
-        }
-        else
-        {
-          callback(badTableJoin);
-        }
-      });
-    });
-  }
-  else
-  {
-    callback(incorrectParams);
-  }
-}
-
-function getEmailandId(usernamesOrEmails, errorCallback, successCallback)
-{
-  emails = [];
-  userIds = [];
-  for(var key in usernamesOrEmails)
-  {
-    var name = usernamesOrEmails[key];
-    if(name.indexOf('@') >= 0) //special characters cant be in usernames only in emails
-    {
-      emails.push(name);
-      continue;
-    }
-    else
-    {
-      geddy.model.User.first({username: name}, function(err, record)
-      {
-          if(err)
-          {
-            errorCallback(backendError);
-          }
-          else
-          {
-            if(record && record.email && record.id)
-            {
-              emails.push(record.email);
-              userIds.push(record.id);
-            }
-            else
-            {
-              errorCallback(badTableJoin);
-            }
-          }
-        });
-      }
-    }
-    result = {};
-    result.email = emails;
-    result.id = userIds;
-    successCallback(result);
-  }
-}
-function addEventToUsers(eventid, uesrIds, callback)
-{
-  for(var key in userIds)
-  {
-    var uid = userIds[key];
-    geddy.model.users.first({id: uid}, function(err, record)
-    {
-      if(err)
-      {
-        callback(backendError);
-      }
-      else
-      {
-        if(record.myevents)
-        {
-          record.myevents += ","+eventid;
-        }
-        else
-        {
-          record.myevents = eventid;
-        }
-        geddy.model.User.save(record, function(err, result)
-        {
-          if(err)
-          {
-            callback(backendError);
-          }
-        });
-      }
-    });
-  }
-  callback({errCode: 1}); //success!
-}
-
-
-Event.getMyEvents = function (params, callback) {
-
-};
-/*
-// Can also define them on the prototype
-Event.prototype.someOtherMethod = function () {
-  // Do some other stuff
-};
-// Can also define static methods and properties
-Event.someStaticMethod = function () {
-  // Do some other stuff
-};
-Event.someStaticProperty = 'YYZ';
-*/
-
-Event = geddy.model.register('Event', Event);
-
-}());
-
-(function () {
-var Passport = function () {
-  this.property('authType', 'string');
-  this.property('key', 'string');
-
-  this.belongsTo('User');
-};
-
-Passport = geddy.model.register('Passport', Passport);
-
-}());
-
-(function () {
-var passport = require('passport')
-  , passportHelper = require('../helpers/passport/index')
-  , cryptPass = passportHelper.cryptPass;
-
-var User = function () {
-	this.property('username', 'string', {required: true});
-    this.property('password', 'string', {required: true});
-    this.property('familyName', 'string');
-    this.property('givenName', 'string');
-    this.property('email', 'string');
-    this.property('myevents', 'string');
-    this.validatesLength('username', {min: 3, max:128});
-    this.validatesLength('password', {min: 8, max:128});
-    this.validatesConfirmed('password', 'confirmPassword');
-
-    this.hasMany('Passports');
-};
-
-User.add = function(user, callback){
-    // Non-blocking uniqueness checks are hard
-    User.first({username: user.username}, function(err, data) {
-      var responseDict = {};
-    if (data) {
-      // console.log("USER EXISTS");
-      //Username Exists errCode=2
-      responseDict.errCode = 2;
-      callback(responseDict);
-      //self.transfer('add');
-    }
-    else {
-      // console.log("USER DOESNT EXIST");
-      if (!user.username || user.username.length === 0 || user.username.length > 128) {
-        // console.log("bad username block");
-        responseDict.errCode = 3; //"ERR_BAD_USERNAME"
-        callback(responseDict);
-      } else if (!user.password || user.password.length === 0 || user.password.length > 128 ) {
-        //|| user.confirmPassword != user.password){
-        // console.log("bad password block with confirmPassword: " + user.confirmPassword);
-        //Check if password is not empty and <128 chars
-        responseDict.errCode = 4; //"ERR_BAD_PASSWORD"
-        callback(responseDict);
-      } else {
-        if (user.isValid()) {
-          user.password = cryptPass(user.password);
-        }
-        // console.log("user is : username: " + user.username + " and password: " + user.password);
-        user.save(function(err, data) {
-          // console.log("Got Data: " + data);
-          if (err) {
-            // params.errors = err;
-            //Database Error errCode=7
-            console.log("Error saving User: ");
-            for (var item in err){
-              console.log(item + ":" + err[item] + "\n");
-            }
-            responseDict.errCode = 7;
-            callback(responseDict);
-            // self.transfer('add');
-          }
-          else {
-            //Success errCode=1
-            responseDict.errCode = 1;
-            callback(responseDict);
-              // self.redirect({controller: self.name});
-          }
-        });
-      }
-    }
-    });
-};
-
-
-User.login = function(params, callback){
-  var handler = function (badCredsError, user, noCredsError) {
-      var responseDict = {};
-      if (badCredsError || noCredsError) {
-        //Error errCode = 5
-        responseDict.errCode = 5;
-        callback(responseDict);
-      }
-      else {
-        //Success errCode = 1
-        responseDict.errCode = 1;
-        callback(responseDict);
-      }
-    };
-    // FIXME: Passport wants a request body or query
-    req = {};
-    req.body = {
-      username: params.username
-    , password: params.password
-    };
-    passport.authenticate('local', function () {
-      handler.apply(null, arguments);
-    })(req, null, handler);
-};
-
-User.TESTAPI_resetFixture = function (callback) {
-  geddy.model.User.all(function (err, result) {
-     // console.log("got all users models with error: " + err + " and result: " + result);
-    for (var userModel in result){
-       // console.log("trying to remove userModel: " + result[userModel]);
-      geddy.model.User.remove(result[userModel].id);
-    }
-    var responseDict = {};
-  responseDict.errCode = 1;
-    callback(responseDict); //"SUCCESS"
-  });
-};
-
-User = geddy.model.register('User', User);}());
-
-(function () {
 /*jslint white: false */
 /*jslint indent: 2 */
 
@@ -725,3 +390,357 @@ Activity.TESTAPI_resetFixture = function (callback) {
 
 Activity = geddy.model.register('Activity', Activity);
 }());
+
+(function () {
+var Event = function () {
+
+  this.defineProperties({
+    name: {type: 'string', required: true},
+    description: {type: 'string'},
+    time1: {type: 'number'},
+    time2: {type: 'number'},
+    begindate: {type: 'number'},
+    enddate: {type: 'number'},
+    activityid: {type: 'string'},
+    attendingusers: {type: 'string'}
+  });
+
+  /*
+  this.property('login', 'string', {required: true});
+  this.property('password', 'string', {required: true});
+  this.property('lastName', 'string');
+  this.property('firstName', 'string');
+
+  this.validatesPresent('login');
+  this.validatesFormat('login', /[a-z]+/, {message: 'Subdivisions!'});
+  this.validatesLength('login', {min: 3});
+  // Use with the name of the other parameter to compare with
+  this.validatesConfirmed('password', 'confirmPassword');
+  // Use with any function that returns a Boolean
+  this.validatesWithFunction('password', function (s) {
+      return s.length > 0;
+  });
+
+  // Can define methods for instances like this
+  this.someMethod = function () {
+    // Do some stuff
+  };
+  */
+var incorrectParams = {errCode: 6};
+var backendError = {errCode: 7};
+var badTimes = {errCode: 8};
+var badTableJoin = {errCode: 9};
+
+Event.add = function(params, callback)
+{
+  if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
+  {
+    var usernamesOrEmails = params.attendingusers.split(',');
+    getEmailAndId(usernamesOrEmails, callback, function(emailAndId)
+    {
+      var emails = emailAndId.email;
+      var userIds = emailAndId.Id;
+
+      geddy.model.Activity.first({id: params.id}, function(err, activityRecord)
+      {
+        if(activityRecord &&  activityRecord.name) //basic assertion that record exists
+        {
+          if(params.startdate <= params.enddate && params.time1 <= params.time2)
+          {
+            //all required fields are valid
+            eventDict = {};
+            eventDict.name = params.name;
+            eventDict.startdate = params.startdate;
+            eventDict.enddate = params.enddate;
+            eventDict.time1 = params.time1;
+            eventDict.time2 = params.time2;
+            eventDict.description = params.description;
+            eventDict.activityid = params.activityid;
+            eventDict.attendingusers = userIds.toString();
+            var eventRecord = geddy.model.Event.create(eventDict);
+
+            geddy.model.Event.save(eventRecord, function(err, result)
+            {
+              if(err)
+              {
+                callback(backendError);
+              }
+              else
+              {
+                //now we have to add the eventRecord to each user
+                geddy.model.Event.first({attendingusers: userIds.toString()}, function(err, eventRecord)
+                {
+                  if(err)
+                  {
+                    callback(backendError);
+                  }
+                  else
+                  {
+                    addEventToUsers(eventRecord.id, uesrIds, function(respDict)
+                    {
+                      var message = "People want you to join the following activity: "+activityRecord.name;
+                      emailNotify(emails, message);
+                      callback(respDict);
+                    });
+                  }
+
+                });
+              }
+            });
+          }
+          else
+          {
+            callback(badTimes);
+          }
+        }
+        else
+        {
+          callback(badTableJoin);
+        }
+      });
+    });
+  }
+  else
+  {
+    callback(incorrectParams);
+  }
+}
+
+function getEmailandId(usernamesOrEmails, errorCallback, successCallback)
+{
+  emails = [];
+  userIds = [];
+  for(var key in usernamesOrEmails)
+  {
+    var name = usernamesOrEmails[key];
+    if(name.indexOf('@') >= 0) //special characters cant be in usernames only in emails
+    {
+      emails.push(name);
+      continue;
+    }
+    else
+    {
+      geddy.model.User.first({username: name}, function(err, record)
+      {
+          if(err)
+          {
+            errorCallback(backendError);
+          }
+          else
+          {
+            if(record && record.email && record.id)
+            {
+              emails.push(record.email);
+              userIds.push(record.id);
+            }
+            else
+            {
+              errorCallback(badTableJoin);
+            }
+          }
+        });
+      }
+    }
+    result = {};
+    result.email = emails;
+    result.id = userIds;
+    successCallback(result);
+  }
+}
+function addEventToUsers(eventid, uesrIds, callback)
+{
+  for(var key in userIds)
+  {
+    var uid = userIds[key];
+    geddy.model.users.first({id: uid}, function(err, record)
+    {
+      if(err)
+      {
+        callback(backendError);
+      }
+      else
+      {
+        if(record.myevents)
+        {
+          record.myevents += ","+eventid;
+        }
+        else
+        {
+          record.myevents = eventid;
+        }
+        geddy.model.User.save(record, function(err, result)
+        {
+          if(err)
+          {
+            callback(backendError);
+          }
+        });
+      }
+    });
+  }
+  callback({errCode: 1}); //success!
+}
+
+
+Event.getMyEvents = function (params, callback) {
+  var responseDict = {};
+  responseDict.errCode = 1;
+  responseDict.events = [];
+
+  var query = {};
+  query.attendingusers = params.userID;
+
+  Event.all(query, function (err, events)
+  {
+    if(err)
+    {
+      responseDict.errCode = 7;
+      // throw err;
+    }
+    else
+    {
+      responseDict.events = events;
+    }
+    callback(responseDict);
+  });
+};
+/*
+// Can also define them on the prototype
+Event.prototype.someOtherMethod = function () {
+  // Do some other stuff
+};
+// Can also define static methods and properties
+Event.someStaticMethod = function () {
+  // Do some other stuff
+};
+Event.someStaticProperty = 'YYZ';
+*/
+
+Event = geddy.model.register('Event', Event);
+
+}());
+
+(function () {
+var Passport = function () {
+  this.property('authType', 'string');
+  this.property('key', 'string');
+
+  this.belongsTo('User');
+};
+
+Passport = geddy.model.register('Passport', Passport);
+
+}());
+
+(function () {
+var passport = require('passport')
+  , passportHelper = require('../helpers/passport/index')
+  , cryptPass = passportHelper.cryptPass;
+
+var User = function () {
+	this.property('username', 'string', {required: true});
+    this.property('password', 'string', {required: true});
+    this.property('familyName', 'string');
+    this.property('givenName', 'string');
+    this.property('email', 'string');
+    this.property('myevents', 'string');
+    this.validatesLength('username', {min: 3, max:128});
+    this.validatesLength('password', {min: 8, max:128});
+    this.validatesConfirmed('password', 'confirmPassword');
+
+    this.hasMany('Passports');
+};
+
+User.add = function(user, callback){
+    // Non-blocking uniqueness checks are hard
+    User.first({username: user.username}, function(err, data) {
+      var responseDict = {};
+    if (data) {
+      // console.log("USER EXISTS");
+      //Username Exists errCode=2
+      responseDict.errCode = 2;
+      callback(responseDict);
+      //self.transfer('add');
+    }
+    else {
+      // console.log("USER DOESNT EXIST");
+      if (!user.username || user.username.length === 0 || user.username.length > 128) {
+        // console.log("bad username block");
+        responseDict.errCode = 3; //"ERR_BAD_USERNAME"
+        callback(responseDict);
+      } else if (!user.password || user.password.length === 0 || user.password.length > 128 ) {
+        //|| user.confirmPassword != user.password){
+        // console.log("bad password block with confirmPassword: " + user.confirmPassword);
+        //Check if password is not empty and <128 chars
+        responseDict.errCode = 4; //"ERR_BAD_PASSWORD"
+        callback(responseDict);
+      } else {
+        if (user.isValid()) {
+          user.password = cryptPass(user.password);
+        }
+        // console.log("user is : username: " + user.username + " and password: " + user.password);
+        user.save(function(err, data) {
+          // console.log("Got Data: " + data);
+          if (err) {
+            // params.errors = err;
+            //Database Error errCode=7
+            console.log("Error saving User: ");
+            for (var item in err){
+              console.log(item + ":" + err[item] + "\n");
+            }
+            responseDict.errCode = 7;
+            callback(responseDict);
+            // self.transfer('add');
+          }
+          else {
+            //Success errCode=1
+            responseDict.errCode = 1;
+            callback(responseDict);
+              // self.redirect({controller: self.name});
+          }
+        });
+      }
+    }
+    });
+};
+
+
+User.login = function(params, callback){
+  var handler = function (badCredsError, user, noCredsError) {
+      var responseDict = {};
+      if (badCredsError || noCredsError) {
+        //Error errCode = 5
+        responseDict.errCode = 5;
+        callback(responseDict);
+      }
+      else {
+        //Success errCode = 1
+        responseDict.errCode = 1;
+        callback(responseDict);
+      }
+    };
+    // FIXME: Passport wants a request body or query
+    req = {};
+    req.body = {
+      username: params.username
+    , password: params.password
+    };
+    passport.authenticate('local', function () {
+      handler.apply(null, arguments);
+    })(req, null, handler);
+};
+
+User.TESTAPI_resetFixture = function (callback) {
+  geddy.model.User.all(function (err, result) {
+     // console.log("got all users models with error: " + err + " and result: " + result);
+    for (var userModel in result){
+       // console.log("trying to remove userModel: " + result[userModel]);
+      geddy.model.User.remove(result[userModel].id);
+    }
+    var responseDict = {};
+  responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};
+
+User = geddy.model.register('User', User);}());
