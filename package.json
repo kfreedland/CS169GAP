@@ -4,6 +4,7 @@
   "dependencies": {
   	"pg": "0.12.3",
     "geddy": "0.6.18",
+    "model": "0.0.43",
     "jake": "0.5.8",
     "passport": "0.1.16",
     "passport-local": "0.1.6",
