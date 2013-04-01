@@ -47,9 +47,9 @@ Event.add = function(params, callback)
       var emails = emailAndId.email;
       var userIds = emailAndId.Id;
 
-      geddy.model.Activity.first({id: params.id}, function(err, record)
+      geddy.model.Activity.first({id: params.id}, function(err, activityRecord)
       {
-        if(record && record.name) //basic assertion that record exists
+        if(activityRecord &&  activityRecord.name) //basic assertion that record exists
         {
           if(params.startdate <= params.enddate && params.time1 <= params.time2)
           {
@@ -74,7 +74,7 @@ Event.add = function(params, callback)
               else
               {
                 //now we have to add the eventRecord to each user
-                geddy.model.Event.first({attendingusers: userIds.toString()}, function(err, record)
+                geddy.model.Event.first({attendingusers: userIds.toString()}, function(err, eventRecord)
                 {
                   if(err)
                   {
@@ -82,9 +82,10 @@ Event.add = function(params, callback)
                   }
                   else
                   {
-                    addEventToUsers(record.id, uesrIds, function(respDict)
+                    addEventToUsers(eventRecord.id, uesrIds, function(respDict)
                     {
-                      emailNotify(emails);
+                      var message = "People want you to join the following activity: "+activityRecord.name;
+                      emailNotify(emails, message);
                       callback(respDict);
                     });
                   }
