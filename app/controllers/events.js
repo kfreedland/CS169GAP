@@ -1,4 +1,5 @@
-var requireAuth = passport.requireAuth;
+var passport = require('../helpers/passport')
+  , requireAuth = passport.requireAuth;
 
 var Events = function () {
   this.before(requireAuth, {
@@ -122,13 +123,14 @@ var Events = function () {
   this.getMyEvents = function (req, resp, params) {
     var self = this;
 
-    geddy.model.Event.getMyEvents(function(err, responseDict) {
+    geddy.model.Event.getMyEvents(self.session.get('userId'), function(err, responseDict) {
       if (err) {
         params.errors = err;
-
+        self.respond();
       } else {
         params.errCode = responseDict.errCode;
         params.events = responseDict.events;
+        self.respond(responseDict, {format: 'json'});
       }
     });
   };
