@@ -10,7 +10,8 @@
     "passport-local": "0.1.6",
     "passport-facebook": "0.1.5",
     "mocha": "1.8.2",
-    "nodemailer": "0.4.1"
+    "nodemailer": "0.4.1",
+    "validator": "0.4.28"
   },
   "engines": {
     "node": "0.8.x",
