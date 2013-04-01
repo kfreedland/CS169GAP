@@ -62,27 +62,27 @@ task('test', {async: true}, function(args) {
         if (err) {
             fail(err);
         } else {
-            //This runs the runTestCoverage task and directs the output to the correct file
-            jake.exec(['geddy jake runTestCoverage > ./output/coverage.html'], function () {
-                complete();
-            }, {printStdout: true});
+            create_coverage_code(function(err){
+                if (err){
+
+                }else {
+                    //This runs the runTestCoverage task and directs the output to the correct file
+                    jake.exec(['geddy jake runTestCoverage > ./output/coverage.html'], function () {
+                        complete();
+                    }, {printStdout: true});
+                }
+            })
         }
     });
 });
 
 //This runs the test coverage and when done, opens the html output
 task('runTestCoverage', {async: true}, function(args) {
-    create_coverage_code(function(err){
-        if (err){
-
-        } else {
-            run_test_coverage(function(err) {
-                jake.exec(['open ./output/coverage.html']);
-                //Put back backup
-                jake.exec(['rm -rf app' ,'cp -R app-backup app'], function(){
-                    complete();
-                });
-            });
-        }
+    run_test_coverage(function(err) {
+        jake.exec(['open ./output/coverage.html']);
+        //Put back backup
+        jake.exec(['rm -rf app' ,'cp -R app-backup app'], function(){
+            complete();
+        });
     });
 });
