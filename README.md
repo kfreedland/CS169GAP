@@ -99,6 +99,7 @@ CS169GAP
 		<li>10 - EventID passed to backend does not correspond to a valid event </li>
 		<li>11 - Event date/time is invalid </li>
 		<li>12 - Atleast one email in the list of emails is malformed </li>
+		<li>13 - Invite Email failed to send </li>
 	</ul>
 
 <h2>CREATE ACTIVITY AND SEARCH FOR ACTIVITY:</h2>
@@ -168,7 +169,7 @@ CS169GAP
 </ul>
 
 
-<h6><b>Invite friends to an event</b></h6>
+<h6><b>INVITE FRIENDS TO AN EVENT</b></h6>
 //Sends email to emails provided
 
 <h3>URL: </h3> /events/invite
@@ -185,8 +186,9 @@ CS169GAP
 
 <h3>Response: </h3>
 <ul>
-	<li>'errCode': [1 = success, 6 = missing eventID or email list parameters, 10 = invalid event, 12 = some emails were malformed ] </li>
+	<li>'errCode': [1 = success, 6 = missing eventID or email list parameters, 10 = invalid event, 12 = some emails were malformed, 13 = Invite email failed to send for whatever reason ] </li>
 	<li>'bademails': [if errCode = 12, contains list of malformed emails, else null]</li>
+	<li>'message': [string] further explains any error code </li>
 </ul>
 
 <h6><b>Get My Events</b></h6>
