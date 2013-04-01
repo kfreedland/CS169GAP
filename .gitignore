@@ -1,7 +1,11 @@
 *.swp
 *.swo
 dist
-node_modules
+
+node_modules/*
+!node_modules/node-jscoverage-master
+node_modules/node-jscoverage-master/tests
+
 log
 *.DS_Store
 .log
