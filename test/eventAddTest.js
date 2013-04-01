@@ -1,6 +1,7 @@
 var assert = require("assert")
   , User = geddy.model.User
-  , Event = geddy.model.Event;
+  , Event = geddy.model.Event
+  , Activity = geddy.model.Activity;
 
 var resetFixture = function (done)
 {
@@ -94,7 +95,7 @@ describe('Event', function()
 		    eventDict.longitude = undefined;
 		    eventDict.duration = '2';
 
-		    Activity.add(eventDict, function(response)
+		    Activity.add(eventDict, function(err, response)
 		    {
 		    	var user = User.create({username: 'Greg',
 		                    password: 'MyPassword!',
@@ -106,14 +107,15 @@ describe('Event', function()
 				{
 					var eventData = {};
 					var expected = {errCode: 1};
-					User.first({username: 'Greg'}, function(userRecord)
+					User.first({username: 'Greg'}, function(err, userRecord)
 					{
 						var uId = userRecord.id;
 
-						Activity.first({name: 'jogging'}, function(activityRecord)
+						Activity.first({name: 'jogging'}, function(err, activityRecord)
 							{
 								var aId = activityRecord.id;
 								var d = new Date();
+								eventData.name ="magical orgy";
 								eventData.time1 = 500;
 								eventData.time2 = 1000;
 								eventData.startdate = d.getTime();

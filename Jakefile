@@ -49,7 +49,8 @@ function run_test_coverage(callback){
 function execute_test_code(mochaInstance, cb) {
     mochaInstance.addFile('./test/userTest.js');
     mochaInstance.addFile('./test/activityAddTest.js');
-    // mochaInstance.addFile('./test/activityFindTest.js');
+    mochaInstance.addFile('./test/activityFindTest.js');
+    mochaInstance.addFile('./test/eventAddTest.js')
     mochaInstance.options.ignoreLeaks = true;
     mochaInstance.run(function(failures) {
         cb(failures);
