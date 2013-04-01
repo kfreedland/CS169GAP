@@ -274,7 +274,6 @@ install postgres with the database configured like the above^^
 <b>Install node-jscoverage</b>
 cd /node_models/node-jscoverage-master
 ./configure && make && make install
-Run this command after starting geddy locally:
 
 <b>Run Tests</b>
 geddy jake test
