@@ -1,4 +1,10 @@
+var requireAuth = passport.requireAuth;
+
 var Events = function () {
+  this.before(requireAuth, {
+    except: ['']
+  });
+
   this.respondsWith = ['html', 'json', 'xml', 'js', 'txt'];
 
   this.index = function (req, resp, params) {
@@ -101,6 +107,7 @@ var Events = function () {
   };
 
 
+<<<<<<< HEAD
   this.invite = function (req, resp, params) {
 
   };
@@ -110,6 +117,23 @@ var Events = function () {
   };
 
 
+=======
+  //Get My Events
+  this.getMyEvents = function (req, resp, params) {
+    var self = this;
+
+    geddy.model.Event.getMyEvents(function(err, responseDict) {
+      if (err) {
+        params.errors = err;
+
+      } else {
+        params.errCode = responseDict.errCode;
+        params.events = responseDict.events;
+      }
+    });
+  };
+
+>>>>>>> 57c13cc1702b8d41c9856c91aa91771fe32fd6eb
 };
 
 exports.Events = Events;

@@ -17,6 +17,10 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 9:</b>
+	//Added getMyEvents API 
+	//Added response information for User API section
+
 <b>Changelog Entry 8:</b>
 	//Update Testing Information With Code Coverage
 
@@ -95,8 +99,7 @@ CS169GAP
 		<li>10 - EventID passed to backend does not correspond to a valid event </li>
 		<li>11 - Event date/time is invalid </li>
 		<li>12 - Atleast one email in the list of emails is malformed </li>
-
-
+		<li>13 - User Not Authenticated (for any events methods)</li>
 	</ul>
 
 <h2>CREATE ACTIVITY AND SEARCH FOR ACTIVITY:</h2>
@@ -187,6 +190,24 @@ CS169GAP
 	<li>'bademails': [if errCode = 12, contains list of malformed emails, else null]</li>
 </ul>
 
+<h6><b>Get My Events</b></h6>
+//Returns a list of events for the current user
+
+<h3>URL: </h3> /events/getmyevents
+
+
+<h3>Params: (there are no params)</h3>
+<ul>
+	{
+	}
+</ul>
+
+<h3>Response: </h3>
+<ul>
+	<li>'errCode': [1 = success, 13 = User Not Authenticated ] </li>
+	<li>'events': [if errCode = 1, contains list of events for the current user, else null]</li>
+</ul>
+
 
 
 <h6><b>User</b></h6>
@@ -200,6 +221,12 @@ CS169GAP
 		<li>'email': [string],</li>
 		<li>'myevents': [CSV string of event ID's],</li>
 	}
+</ul>
+
+<h3>Response </h3>
+<ul>
+	<li>'errCode': [1 = Success (for all API), 2 = User Exists (for Create User), 3 = Username Too Long / Empty (for Create User),
+	<p>4 = Password Too Long / Empty (for Create User), 5 = Auth Failed (for Login), 7 = Backend Error - Probably retry</p>] </li>
 </ul>
 
 <h2> Testing Locally </h2>
@@ -277,7 +304,9 @@ npm install -g
 install postgres with the database configured like the above^^
 
 <b>Install node-jscoverage</b>
-cd /node_models/node-jscoverage-master
+Download node-jscoverage from here as ZIP: https://github.com/visionmedia/node-jscoverage
+Extract zip folder to ./node_modules
+cd ./node_models/node-jscoverage-master
 ./configure && make && make install
 
 <b>Run Tests</b>
