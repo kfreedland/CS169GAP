@@ -21,18 +21,21 @@ var config = {
 , debug: true
 , hostname: 'localhost'
 , port: 4000
-, model: {
-    defaultAdapter: 'memory'
-  }
-// , db: {
-//     postgres: {
-//       user: 'rbpysgebxrjyxf'
-//     , database: 'daodtk3mocobm6'
-//     , password: 'Cj_bnX2TOCUcMtXKkHEnMNMLQJ'
-//     , host: 'ec2-54-243-234-148.compute-1.amazonaws.com'
-//     , port: 5432
-//     }
+// , model: {
+//     defaultAdapter: 'memory'
 //   }
+, model: {
+    defaultAdapter: 'postgres'
+  }
+, db: {
+	postgres: {
+	  user: 'testing'
+	, database: 'postgres'
+	, password: 'gap169'
+	, host: 'localhost'
+	, port: 5432
+	}
+}
 , sessions: {
   store: 'memory'
 , key: 'sid'

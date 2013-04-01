@@ -114,6 +114,8 @@ CS169GAP
 	}
 </ul>
 
+<h2> EVENTS </h2>
+
 <h6><b>CREATE EVENT</b></h6>
 //Creates an event and returns it with the correspoding fileds
 <h3>Params: </h3>
@@ -130,7 +132,54 @@ CS169GAP
 	}
 </ul>
 
-<ul> 'errCode': [see above API for valid codes for activities and events]</ul>
+<h6><b>CHANGE DATE/TIME OF EVENT</b></h6>
+//Changes the date and/or time of an event already made
+
+<h3>URL: </h3> /events/changedatetime
+<h3>Params: </h3>
+<ul>
+	{
+		<li>'eventid': [string]</li>
+		<li>'time1': [int milliseconds since midnight]</li>
+		<li>'time2': [int, milliseconds since midnight]</li>
+		<li>'begindate': [milliseconds since epoch, int],</li>
+		<li>'enddate': [milliseconds since epoch, int],</li>	
+	
+	}
+
+	only pass fields that are changed
+</ul>
+
+
+<h3>Response: </h3>
+<ul>
+	<li>'errCode': [1 = success, 2 = invalid event, 3 = invalid date/times] </li>
+	<li>'message': [string] more info about error</li>
+</ul>
+
+
+<h6><b>Invite friends to an event</b></h6>
+//Sends email to emails provided
+
+<h3>URL: </h3> /events/invite
+
+<h3>Params: </h3>
+<ul>
+	{
+		<li>'eventid': [string]</li>
+		<li>'emails': [List of strings]</li>
+		<li>'message': [String]</li>
+
+	}
+</ul>
+
+<h3>Response: </h3>
+<ul>
+	<li>'errCode': [1 = success, 2 = invalid event, 3 = some emails were malformed ] </li>
+	<li>'bademails': [if errCode = 3, contains list of malformed emails, else null]</li>
+</ul>
+
+
 
 <h6><b>User</b></h6>
 <h3>Params: </h3>
@@ -230,3 +279,5 @@ curl -X POST http://localhost:4000/TESTAPI/unitTests
 	<li>find_selenium_test.py is the find activity test that looks for activities most closely resembling the search query: 5-15 people, On March 15th, and All Day event.</li>
 	<li>create_selenium_test.py is the create activity test that creates a new activity</li>
 </ul>
+
+

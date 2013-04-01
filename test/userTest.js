@@ -11,7 +11,7 @@ var resetFixture = function (done){
 describe('User', function(){
 	before(function(done) {
 		//Erase database
-		console.log("Running resetFixture");
+		// console.log("Running resetFixture");
 		resetFixture(done);
 	});
 
@@ -24,7 +24,7 @@ describe('User', function(){
 		                    givenName: 'FirstName1',
 		                    email: 'Greg@greg.com'});
 			User.add(user, function (answerDict) {
-				console.log("Done adding user with errCode:" + answerDict.errCode);
+				// console.log("Done adding user with errCode:" + answerDict.errCode);
 				assert.deepEqual(answerDict, {'errCode': 1});
 				done();
 			});

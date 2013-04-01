@@ -17,6 +17,10 @@ app-cov
 *.pid
 *.gz
 coverage.html
+./app-cov/*
+app-cov
+app-backup
+app-backup/*
 
 pids
 logs
