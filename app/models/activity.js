@@ -331,7 +331,6 @@ Activity.add = function (parameterDict, callback){
 
 Activity.search = function search(params, myLat, myLong, callback)
 {
-  console.log("Lat Long: " +myLat+" "+myLong);
   /** data is of the following form
   Name: string
   time1: time
@@ -361,7 +360,6 @@ Activity.search = function search(params, myLat, myLong, callback)
     }
     if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
     {
-      console.log("Calling geoSearchHelper");
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
       {
         callback(returnRecords);
@@ -369,7 +367,6 @@ Activity.search = function search(params, myLat, myLong, callback)
     }
     else
     {
-      console.log("Not using geoSearchHelper");
       callback(activities);
     }
   });
