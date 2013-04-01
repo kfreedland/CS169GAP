@@ -17,6 +17,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 8:</b>
+	//Update Testing Information With Code Coverage
+
 <b>Changelog Entry 7:</b>
 	//Updated Header for JSON Object
 
@@ -267,8 +270,13 @@ CREATE TABLE events (
 Running unit tests:
 npm install -g
 install postgres with the database configured like the above^^
-Run this command after starting geddy locally:
-curl -X POST http://localhost:4000/TESTAPI/unitTests
+
+<b>Install node-jscoverage</b>
+cd /node_models/node-jscoverage-master
+./configure && make && make install
+
+<b>Run Tests</b>
+geddy jake test
 
 <h2> Selenium Automation UI Testing</h2>
 <p>The Standalone .jar file is included in the project under /test/selenium. The python client is needed in order to run. So you will need python-pip, which you can install (e.g. on Ubutnu it's <tt>sudo apt-get install python-pip</tt>). Then run the command to install the selenium client with pip install -U selenium</p>

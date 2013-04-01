@@ -331,7 +331,6 @@ Activity.add = function (parameterDict, callback){
 
 Activity.search = function search(params, myLat, myLong, callback)
 {
-  // console.log("Lat Long: " +myLat+" "+myLong);
   /** data is of the following form
   Name: string
   time1: time
