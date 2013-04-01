@@ -498,7 +498,7 @@ describe('Activity', function(){
 		it('should return errCode:1', function(done){
 		    var activityDict = {};
 		    activityDict.name = 'walk in the';
-		    activityDict.description = 'It\"s nice outside';
+		    activityDict.description = "It's nice outside";
 		    activityDict.category = 'Entertainment';
 		    //7pm in milliseconds since midnight
 		    var sevenPM = 1000 * 60 * 60 * 19;

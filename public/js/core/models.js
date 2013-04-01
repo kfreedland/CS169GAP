@@ -1,20 +1,4 @@
 (function () {
-  console.dir(params);
-  responseDict.errCode = 1;
-  responseDict.events = [];
-
-Event.TESTAPI_resetFixture = function (callback) {
-  geddy.model.Event.all(function (err, result) {
-    // console.log("got all activity models with error: " + err + " and result: " + result);
-    for (var eventModel in result){
-      // console.log("trying to remove activityModel: " + result[activityModel]);
-      geddy.model.Event.remove(result[eventModel].id);
-    }
-    var responseDict = {};
-  responseDict.errCode = 1;
-    callback(responseDict); //"SUCCESS"
-  });
-};  
 /*jslint white: false */
 /*jslint indent: 2 */
 
@@ -453,6 +437,7 @@ var badTableJoin = {errCode: 9};
 
 Event.add = function(params, callback)
 {
+  console.dir(params);
   if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
     var usernamesOrEmails = params.attendingusers.split(',');
@@ -499,7 +484,7 @@ Event.add = function(params, callback)
                     addEventToUsers(eventRecord.id, uesrIds, function(respDict)
                     {
                       var message = "People want you to join the following activity: "+activityRecord.name;
-                      emailNotify(emails, message);
+                      invite(emails, message);
                       callback(respDict);
                     });
                   }
@@ -614,7 +599,8 @@ Event.invite = function(params, callback)
   if (eventID === null || eventID === undefined ) 
   {
     //handle null eventid
-    
+    responseDict.errCode = 6;
+    responseDict.message = "null eventid";
     callback(responseDict);
     return;
   } 
@@ -622,7 +608,17 @@ Event.invite = function(params, callback)
   if (emailList === null || emailList === undefined || emailList === [] ) 
   {
     //handle empty emails
+    responseDict.errCode = 6;
+    responseDict.message = "null emails";
+    callback(responseDict);
+    return;
+  } 
 
+  if (message === null || message === undefined ) 
+  {
+    //handle null eventid
+    responseDict.errCode = 6;
+    responseDict.message = "null message";
     callback(responseDict);
     return;
   } 
@@ -647,6 +643,9 @@ Event.invite = function(params, callback)
   //some emails are bad
   if(badEmails.count > 0 ){
 
+    responseDict.errCode = 12;
+    responseDict.message = "malformed emails";
+    responseDict.bademails = badEmails;
     callback(responseDict);
     return;
   }
@@ -659,7 +658,8 @@ Event.invite = function(params, callback)
   else
   {
 
-
+    responseDict.errCode = 6;
+    responseDict.message = "couldn't find any good emails";
     callback(responseDict);
     return;
   } 
@@ -671,6 +671,8 @@ Event.invite = function(params, callback)
 
       if(err){
         //handle error
+        responseDict.errCode = 10;
+        responseDict.message = "invalid eventid";
       } 
       else 
       {
@@ -699,13 +701,18 @@ Event.invite = function(params, callback)
           // send mail with defined transport object
           smtpTransport.sendMail(mailOptions, function(error, response){
               if(error){
-                  console.log(error);
+                  responseDict.errCode = 13;
+                  responseDict.message = "email failed";
+                  callback(responseDict);
+                  return;
               }else{
-                  console.log("Message sent: " + response.message);
+                  responseDict.errCode = 1;
+                  callback(responseDict);
+                  return;
               }
 
-              // if you don't want to use this transport object anymore, uncomment following line
-              //smtpTransport.close(); // shut down the connection pool, no more messages
+              smtpTransport.close();
+
           });
 
         }
@@ -758,6 +765,19 @@ Event.someStaticMethod = function () {
 };
 Event.someStaticProperty = 'YYZ';
 */
+
+Event.TESTAPI_resetFixture = function (callback) {
+  geddy.model.Event.all(function (err, result) {
+    // console.log("got all activity models with error: " + err + " and result: " + result);
+    for (var eventModel in result){
+      // console.log("trying to remove activityModel: " + result[activityModel]);
+      geddy.model.Event.remove(result[eventModel].id);
+    }
+    var responseDict = {};
+  responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};  
 
 Event = geddy.model.register('Event', Event);
 
