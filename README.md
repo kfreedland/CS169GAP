@@ -180,7 +180,6 @@ CS169GAP
 </ul>
 
 
-<ul> 'errCode': [see above API for valid codes for activities and events]</ul>
 
 <h6><b>User</b></h6>
 <h3>Params: </h3>
