@@ -905,32 +905,18 @@ User.add = function(user, callback){
     });
 };
 
-
-User.login = function(params, callback){
-  var handler = function (badCredsError, user, noCredsError) {
-      var responseDict = {};
-      if (badCredsError || noCredsError) {
-        //Error errCode = 5
-        responseDict.errCode = 5;
-        callback(responseDict);
-      }
-      else {
-        //Success errCode = 1
-        responseDict.errCode = 1;
-        callback(responseDict);
-      }
-    };
-    // FIXME: Passport wants a request body or query
-    req = {};
-    req.body = {
-      username: params.username
-    , password: params.password
-    };
-    passport.authenticate('local', function () {
-      handler.apply(null, arguments);
-    })(req, null, handler);
-};
-
+User.getUsernames = function(params, callback)
+{
+  usernames = [];
+  geddy.model.User.all(function(err, result)
+  {
+    for(var recordId in result)
+    {
+      usernames.push(result.recordId.username);
+    }
+    callback(usernames);
+  });
+}
 User.TESTAPI_resetFixture = function (callback) {
   geddy.model.User.all(function (err, result) {
      // console.log("got all users models with error: " + err + " and result: " + result);

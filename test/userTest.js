@@ -177,63 +177,59 @@ describe('User', function(){
                               familyName: 'LastName11',
                               givenName: 'FirstName11',
                               email: 'Greg11@greg.com'});
- 			//Login
-            var req = {};
-            var params = {
-                username: 'test',
-                password: 'woot'
-            };
-            //This is a stub for the Auth controller
-			var Auth = geddy.mixin(
-			        {
-			            redirect: function(url){
-			            	assert.equal(url, "/login?errCode=5");
-			            	done();
-			        	},
-			            session: session
-			        },
-			        Actions);
-            Auth.local(req, null, params, function(err, success){
+ 			User.add(user, function (answerDict) {
+	 			//Login
+	            var req = {};
+	            var params = {
+	                username: 'test',
+	                password: 'woot'
+	            };
+	            //This is a stub for the Auth controller
+				var Auth = geddy.mixin(
+				        {
+				            redirect: function(url){
+				            	assert.equal(url, "/login?errCode=5");
+				            	done();
+				        	},
+				            session: session
+				        },
+				        Actions);
+	            Auth.local(req, null, params, function(err, success){
 
-            });
-			// User.login(user, function (answerDict) {
-			// 	assert.deepEqual(answerDict, {'errCode': 5});
-			// 	done();
-			// });
+	            });
+	        });
  		});
  	});
 
 	describe('User.login valid Credentials', function() {
  		it('should return errCode:1', function(done) {
- 			var user = User.create({username: 'Greg23524',
-                              password: '2342234812093',
-                              confirmPassword: '2342234812093',
+ 			var user = User.create({username: 'elayman',
+                              password: '12345678',
+                              confirmPassword: '12345678',
                               familyName: 'LastName11',
                               givenName: 'FirstName11',
                               email: 'Greg11@greg.com'});
- 			//Login
-            var req = {};
-            var params = {
-                username: 'Greg23524',
-                password: '2342234812093'
-            };
-            //This is a stub for the Auth controller
-			var Auth = geddy.mixin(
-			        {
-			            redirect: function(url){
-			            	assert.equal(url, "/?errCode=1");
-			            	done();
-			        	},
-			            session: session
-			        },
-			        Actions);
-            Auth.local(req, null, params, function(err, success){
+ 			User.add(user, function (answerDict) {
+	 			//Login
+	            var req = {};
+	            var params = {
+	                username: 'elayman',
+	                password: '12345678'
+	            };
+	            //This is a stub for the Auth controller
+				var Auth = geddy.mixin(
+				        {
+				            redirect: function(url){
+				            	assert.equal(url, "/?errCode=1");
+				            	done();
+				        	},
+				            session: session
+				        },
+				        Actions);
+	            Auth.local(req, null, params, function(err, success){
 
-            });
-			// User.login(user, function (answerDict) {
-			// 	assert.deepEqual(answerDict, {'errCode': 5});
-			// 	done();
-			// });
+	            });
+	        });
  		});
  	});
 

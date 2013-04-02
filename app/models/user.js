@@ -69,32 +69,6 @@ User.add = function(user, callback){
     });
 };
 
-
-User.login = function(params, callback){
-  var handler = function (badCredsError, user, noCredsError) {
-      var responseDict = {};
-      if (badCredsError || noCredsError) {
-        //Error errCode = 5
-        responseDict.errCode = 5;
-        callback(responseDict);
-      }
-      else {
-        //Success errCode = 1
-        responseDict.errCode = 1;
-        callback(responseDict);
-      }
-    };
-    // FIXME: Passport wants a request body or query
-    req = {};
-    req.body = {
-      username: params.username
-    , password: params.password
-    };
-    passport.authenticate('local', function () {
-      handler.apply(null, arguments);
-    })(req, null, handler);
-};
-
 User.getUsernames = function(params, callback)
 {
   usernames = [];
