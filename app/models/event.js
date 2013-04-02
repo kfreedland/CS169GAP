@@ -89,7 +89,7 @@ Event.add = function(params, callback)
                     addEventToUsers(eventRecord.id, userIds, function(respDict)
                     {
                       var message = "People want you to join the following activity: "+activityRecord.name;
-                      Event.invite({eventid: eventRecord.id, emails: emails , message: message}, function()
+                      invite({eventid: eventRecord.id, emails: emails , message: message}, function()
                       {
                         callback(respDict);
                       });
@@ -118,6 +118,11 @@ Event.add = function(params, callback)
   }
 }
 
+function invite(params, callback)
+{
+  callback();
+}
+
 function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
   emails = [];
@@ -127,7 +132,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     var name = usernamesOrEmails[key];
     if(name.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
-      console.log('EMAIL found is: '+name);
+      //console.log('EMAIL found is: '+name);
       emails.push(name);
       continue;
     }
@@ -143,7 +148,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
           {
             if(record && record.email && record.id)
             {
-              console.log('EMAIL found is: '+record.email);
+              //console.log('EMAIL found is: '+record.email);
               emails.push(record.email);
               userIds.push(record.id);
             }
