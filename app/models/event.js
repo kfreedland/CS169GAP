@@ -171,7 +171,7 @@ function addEventToUsers(eventid, uesrIds, callback)
   for(var key in userIds)
   {
     var uid = userIds[key];
-    geddy.model.users.first({id: uid}, function(err, record)
+    geddy.model.User.first({id: uid}, function(err, record)
     {
       if(err)
       {
@@ -411,7 +411,7 @@ Event.TESTAPI_resetFixture = function (callback) {
       geddy.model.Event.remove(result[eventModel].id);
     }
     var responseDict = {};
-  responseDict.errCode = 1;
+    responseDict.errCode = 1;
     callback(responseDict); //"SUCCESS"
   });
 };  
