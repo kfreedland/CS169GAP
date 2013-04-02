@@ -1,5 +1,5 @@
-var nodemailer = require("nodemailer");
-var check = require("validator").check;
+var nodemailer = require("nodemailer")
+  , check = require("validator").check;
 
 
 var Event = function () {
@@ -43,16 +43,15 @@ var badTableJoin = {errCode: 9};
 
 Event.add = function(params, callback)
 {
-  console.dir(params);
   if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
     var usernamesOrEmails = params.attendingusers.split(',');
     getEmailAndId(usernamesOrEmails, callback, function(emailAndId)
     {
       var emails = emailAndId.email;
-      var userIds = emailAndId.Id;
+      var userIds = emailAndId.id;
 
-      geddy.model.Activity.first({id: params.id}, function(err, activityRecord)
+      geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
         if(activityRecord &&  activityRecord.name) //basic assertion that record exists
         {
@@ -87,11 +86,13 @@ Event.add = function(params, callback)
                   }
                   else
                   {
-                    addEventToUsers(eventRecord.id, uesrIds, function(respDict)
+                    addEventToUsers(eventRecord.id, userIds, function(respDict)
                     {
                       var message = "People want you to join the following activity: "+activityRecord.name;
-                      invite(emails, message);
-                      callback(respDict);
+                      invite({eventid: eventRecord.id, emails: emails , message: message}, function()
+                      {
+                        callback(respDict);
+                      });
                     });
                   }
 
@@ -117,7 +118,12 @@ Event.add = function(params, callback)
   }
 }
 
-function getEmailandId(usernamesOrEmails, errorCallback, successCallback)
+function invite(params, callback)
+{
+  callback();
+}
+
+function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
   emails = [];
   userIds = [];
@@ -126,6 +132,7 @@ function getEmailandId(usernamesOrEmails, errorCallback, successCallback)
     var name = usernamesOrEmails[key];
     if(name.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
+      //console.log('EMAIL found is: '+name);
       emails.push(name);
       continue;
     }
@@ -141,6 +148,7 @@ function getEmailandId(usernamesOrEmails, errorCallback, successCallback)
           {
             if(record && record.email && record.id)
             {
+              //console.log('EMAIL found is: '+record.email);
               emails.push(record.email);
               userIds.push(record.id);
             }
@@ -232,9 +240,9 @@ Event.invite = function(params, callback)
   //check all emails for propper form
   var badEmails = [];
   var goodEmailsString = "";
-  for(var emailAddr in emailList)
+  for(var index in emailList)
   {
-
+    var emailAddr = emailList[index];
     if (!isValidEmail(emailAddr))
     {
       //email address is malformed
@@ -328,7 +336,6 @@ Event.invite = function(params, callback)
 }
 
 function isValidEmail(email) { 
-
   return check(email).isEmail();
 
 } 
@@ -340,29 +347,39 @@ Event.changeDateTime = function(params, callback)
 
 Event.getMyEvents = function (params, callback) {
   var query = {};
-  query.attendingusers = params.userId;
-  console.log("Calling Event.all");
-  Event.all(query, function (err, events)
-  {
-    var responseDict = {};
-    console.log("Done calling Event.all");
-    if(err)
-    {
-      responseDict.events = [];
-      console.log("err exists: ");
-      console.dir(err);
-      responseDict.errCode = 7;
-      callback(responseDict);
-      // throw err;
-    }
-    else
-    {
-      console.log("Succeeded with no err");
-      responseDict.errCode = 1;
-      responseDict.events = events;
-      callback(responseDict);
+  geddy.model.User.first({id: params.userId}, function (err, userModel) {
+    if (err){
+
+    } else {
+      if (userModel){
+        query.attendingusers = userModel.email;
+        console.log("Calling Event.all with UserID " + params.userId);
+        Event.all(query, function (err, events)
+        {
+          var responseDict = {};
+          console.log("Done calling Event.all");
+          if(err)
+          {
+            responseDict.events = [];
+            console.log("err exists: ");
+            console.dir(err);
+            responseDict.errCode = 7;
+            callback(responseDict);
+            // throw err;
+          }
+          else
+          {
+            console.log("Succeeded with no err");
+            responseDict.errCode = 1;
+            responseDict.events = events;
+            callback(responseDict);
+          }
+        });
+      }
     }
   });
+
+  
 };
 /*
 // Can also define them on the prototype

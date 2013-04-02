@@ -1,6 +1,16 @@
 var assert = require("assert")
   , User = geddy.model.User
-  , Activity = geddy.model.Activity;
+  , Activity = geddy.model.Activity
+  , Actions = require("../app/helpers/passport/actions.js");
+
+//This is used in Auth stub defined within the login tests
+var session = {};
+session.get = function(name){
+    return session.name;
+};
+session.set = function(name, value){
+    session.name = value;
+};
 
 var resetFixture = function (done){
 	User.TESTAPI_resetFixture(function(response){
@@ -159,19 +169,72 @@ describe('User', function(){
  		});
  	});
   
- 	// describe('User.login bad Credentials', function() {
- 	// 	it('should return errCode:5', function(done) {
- 	// 		var user = User.create({username: 'Greg23524',
-  //                             password: '2342234812093',
-  //                             confirmPassword: '2342234812093',
-  //                             familyName: 'LastName11',
-  //                             givenName: 'FirstName11',
-  //                             email: 'Greg11@greg.com'});
-		// 	User.login(user, function (answerDict) {
-		// 		assert.deepEqual(answerDict, {'errCode': 5});
-		// 		done();
-		// 	});
- 	// 	});
- 	// });
+ 	describe('User.login bad Credentials', function() {
+ 		it('should return errCode:5', function(done) {
+ 			var user = User.create({username: 'Greg23524',
+                              password: '2342234812093',
+                              confirmPassword: '2342234812093',
+                              familyName: 'LastName11',
+                              givenName: 'FirstName11',
+                              email: 'Greg11@greg.com'});
+ 			//Login
+            var req = {};
+            var params = {
+                username: 'test',
+                password: 'woot'
+            };
+            //This is a stub for the Auth controller
+			var Auth = geddy.mixin(
+			        {
+			            redirect: function(url){
+			            	assert.equal(url, "/login?errCode=5");
+			            	done();
+			        	},
+			            session: session
+			        },
+			        Actions);
+            Auth.local(req, null, params, function(err, success){
+
+            });
+			// User.login(user, function (answerDict) {
+			// 	assert.deepEqual(answerDict, {'errCode': 5});
+			// 	done();
+			// });
+ 		});
+ 	});
+
+	describe('User.login valid Credentials', function() {
+ 		it('should return errCode:1', function(done) {
+ 			var user = User.create({username: 'Greg23524',
+                              password: '2342234812093',
+                              confirmPassword: '2342234812093',
+                              familyName: 'LastName11',
+                              givenName: 'FirstName11',
+                              email: 'Greg11@greg.com'});
+ 			//Login
+            var req = {};
+            var params = {
+                username: 'Greg23524',
+                password: '2342234812093'
+            };
+            //This is a stub for the Auth controller
+			var Auth = geddy.mixin(
+			        {
+			            redirect: function(url){
+			            	assert.equal(url, "/?errCode=1");
+			            	done();
+			        	},
+			            session: session
+			        },
+			        Actions);
+            Auth.local(req, null, params, function(err, success){
+
+            });
+			// User.login(user, function (answerDict) {
+			// 	assert.deepEqual(answerDict, {'errCode': 5});
+			// 	done();
+			// });
+ 		});
+ 	});
 
 });

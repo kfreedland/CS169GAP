@@ -121,15 +121,15 @@ var actions = new (function () {
       };
 
   this.local = function (req, resp, params) {
-     console.log("SELF IS ");
-     console.dir(this);
-
-
-    console.log("LOCAL REQ IS ");
-    console.dir(req);
     var self = this
       , handler = function (badCredsError, user, noCredsError) {
           var responseDict = {};
+          if (badCredsError){
+            console.log("badCredsError");
+          }
+          if (noCredsError){
+            console.log("noCredsError");
+          }
           if (badCredsError || noCredsError) {
             console.log("Bad or no credentials. Redirecting to failureRedirect: " + failureRedirect);
             self.redirect(failureRedirect + '?errCode=5');
@@ -150,6 +150,8 @@ var actions = new (function () {
     , password: params.password
     };
     passport.authenticate('local', function () {
+      console.log("Args are:");
+      console.dir(arguments);
       handler.apply(null, arguments);
     })(req, resp, handler);
   };
