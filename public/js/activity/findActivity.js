@@ -35,13 +35,26 @@ $(document).ready(function() {
 	  Show or hide the time range options depending on which radio button is active
 	*/
 	$('input:radio[name="time_range_find"]').change(function() {
-    	if ($(this).val() === "start_end") {
+    	if ($(this).val() === "startEnd") {
         	$('#start_end_range_find').show();
         } else {
         	$('#start_end_range_find').hide();
         }
 	});
 	
+		/*
+	  Show or hide the date range options depending on whether the checkbox is active
+	*/
+	$('input:checkbox[name="checkbox-1"]').click(function() {
+    	if ($(this).is(':checked') == false) {
+        	$('#date-start-end-find').show();
+        } else {
+        	$('#date-start-end-find').hide();
+        }
+	});
+
+
+
 	autocomplete_init('find');
 
 	var currentPosition = getCurrentPosition(function(pos) {
