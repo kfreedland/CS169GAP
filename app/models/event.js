@@ -346,15 +346,13 @@ Event.changeDateTime = function(params, callback)
 }
 
 Event.getMyEvents = function (params, callback) {
-  var query = {};
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
     if (err){
 
     } else {
       if (userModel){
-        query.attendingusers = userModel.email;
-        console.log("Calling Event.all with UserID " + params.userId);
-        Event.all(query, function (err, events)
+        console.log("Calling Event.all with email " + userModel.email);
+        Event.all(function (err, events)
         {
           var responseDict = {};
           console.log("Done calling Event.all");
@@ -369,15 +367,27 @@ Event.getMyEvents = function (params, callback) {
           }
           else
           {
+            //Filter out only my Events
+            var myEvents = getEventsFilter(userModel.email, events);
             console.log("Succeeded with no err");
             responseDict.errCode = 1;
-            responseDict.events = events;
+            responseDict.events = myEvents;
             callback(responseDict);
           }
         });
       }
     }
-  });
+});
+
+function getEventsFilter(myEmail, events){
+  var myEvents = [];
+  for (var index in events){
+    if (events[index].attendingusers.indexOf(myEmail) !== -1){
+      myEvents.push(events[index]);
+    }
+  }
+  return myEvents;
+}
 
   
 };

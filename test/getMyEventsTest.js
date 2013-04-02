@@ -254,6 +254,8 @@ describe('Event', function()
 
                                             Event.getMyEvents({userId: userRecord.id}, function (resp1)
                                             {
+                                                console.log("resp1 =");
+                                                console.dir(resp1);
                                                 assert.equal(resp1.errCode, 1);
                                                 //Make sure we get 1 event back
                                                 assert.equal(resp1.events.length, 2);
