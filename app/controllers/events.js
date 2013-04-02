@@ -120,15 +120,10 @@ var Events = function () {
   this.getMyEvents = function (req, resp, params) {
     var self = this;
 
-    geddy.model.Event.getMyEvents({userId: self.session.get('userId')}, function(err, responseDict) {
-      if (err) {
-        params.errors = err;
-        self.respond();
-      } else {
-        params.errCode = responseDict.errCode;
-        params.events = responseDict.events;
-        self.respond(responseDict, {format: 'json'});
-      }
+    geddy.model.Event.getMyEvents({userId: self.session.get('userId')}, function(responseDict) {
+      params.errCode = responseDict.errCode;
+      params.events = responseDict.events;
+      self.respond(responseDict, {format: 'json'});
     });
   };
 

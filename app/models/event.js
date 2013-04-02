@@ -351,7 +351,11 @@ Event.changeDateTime = function(params, callback)
 Event.getMyEvents = function (params, callback) {
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
     if (err){
-
+      responseDict.events = [];
+      // console.log("err exists: ");
+      // console.dir(err);
+      responseDict.errCode = 7;
+      callback(responseDict);
     } else {
       if (err){
         responseDict.events = [];
