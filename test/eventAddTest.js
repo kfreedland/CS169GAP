@@ -48,7 +48,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'Greg@greg.com'});
+		                    email: 'Greg@theGracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -97,17 +97,17 @@ describe('Event', function()
 
 		    Activity.add(eventDict, function(err, response)
 		    {
-		    	var user = User.create({username: 'Greg',
+		    	var user = User.create({username: 'foo',
 		                    password: 'MyPassword!',
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'Greg@greg.com'});
+		                    email: 'kfreedland@berkeley.edu'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
 					var expected = {errCode: 1};
-					User.first({username: 'Greg'}, function(err, userRecord)
+					User.first({username: 'foo'}, function(err, userRecord)
 					{
 						var uId = userRecord.id;
 

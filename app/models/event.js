@@ -43,7 +43,6 @@ var badTableJoin = {errCode: 9};
 
 Event.add = function(params, callback)
 {
-  console.dir(params);
   if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
     var usernamesOrEmails = params.attendingusers.split(',');
@@ -90,10 +89,10 @@ Event.add = function(params, callback)
                     addEventToUsers(eventRecord.id, userIds, function(respDict)
                     {
                       var message = "People want you to join the following activity: "+activityRecord.name;
-                      invite({eventid: eventRecord.id, emails: emails , message: message}, function()
-                        {
-                          callback(respDict);
-                        });
+                      Event.invite({eventid: eventRecord.id, emails: emails , message: message}, function()
+                      {
+                        callback(respDict);
+                      });
                     });
                   }
 
@@ -108,8 +107,6 @@ Event.add = function(params, callback)
         }
         else
         {
-          console.log('bad table join in add');
-          console.dir(activityRecord);
           callback(badTableJoin);
         }
       });
@@ -130,6 +127,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     var name = usernamesOrEmails[key];
     if(name.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
+      console.log('EMAIL found is: '+name);
       emails.push(name);
       continue;
     }
@@ -145,6 +143,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
           {
             if(record && record.email && record.id)
             {
+              console.log('EMAIL found is: '+record.email);
               emails.push(record.email);
               userIds.push(record.id);
             }
@@ -236,9 +235,9 @@ Event.invite = function(params, callback)
   //check all emails for propper form
   var badEmails = [];
   var goodEmailsString = "";
-  for(var emailAddr in emailList)
+  for(var index in emailList)
   {
-
+    var emailAddr = emailList[index];
     if (!isValidEmail(emailAddr))
     {
       //email address is malformed
@@ -330,12 +329,8 @@ Event.invite = function(params, callback)
 
     });
 }
-function invite(params, callback)
-{
-  callback();
-}
-function isValidEmail(email) { 
 
+function isValidEmail(email) { 
   return check(email).isEmail();
 
 } 
