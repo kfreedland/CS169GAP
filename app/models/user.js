@@ -50,9 +50,11 @@ User.add = function(user, callback){
             // params.errors = err;
             //Database Error errCode=7
             console.log("Error saving User: ");
+            responseDict.message = "";
             for (var item in err){
-              console.log(item + ":" + err[item] + "\n");
+              responseDict.message += err[item];
             }
+            console.log(responseDict.message);
             responseDict.errCode = 7;
             callback(responseDict);
             // self.transfer('add');

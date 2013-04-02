@@ -39,6 +39,9 @@ var Users = function () {
       if (responseDict.errCode === 1){
         // console.log("redirecting to login?errCode=" + responseDict.errCode);
         self.redirect('/login?errCode='+responseDict.errCode);
+      } else if (responseDict.errCode === 7) {
+        self.redirect('/users/add?errCode=' + responseDict.errCode + '&message=' + responseDict.message);
+
       } else {
         // console.log("redirecting to users/add?errCode=" + responseDict.errCode);
         self.redirect('/users/add?errCode=' + responseDict.errCode);

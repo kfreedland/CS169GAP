@@ -29,6 +29,10 @@
           <% } else { %>
             <% if (params.errCode == 4) { %>
               <p> Your password is not valid. Please choose a password that is not empty and less than 128 characters long. </p>
+            <% } else { %>
+              <% if (params.errCode == 7) { %>
+                <p> Error: <%= params.message %> </p>
+              <% } %>
             <% } %>
           <% } %>
         <% } %>
