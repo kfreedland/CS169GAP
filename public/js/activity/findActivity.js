@@ -132,15 +132,19 @@ function handleFindActivityResponse(jsonResp) {
 	// Loop through each activities entry in the dictionary
 	$.each(jsonResp, function(index, data) {
 		// Create variables for dynamic ids of certain divs
-		var index = parseInt(index)+1;
+		var index = parseInt(index) + 1;
 		var index = index.toString();
 		var activityID = "activity-" + index;
 		var activityPrice = 'activity-price-' + index;
 		var activityParticipants = 'activity-participants-' + index;
 		var activityTime = 'activity-time-' + index;
+
+		// Encode the json object to a string
+		var encodedData = window.btoa(JSON.stringify(data));
+
 		// Append the html to the list_activities div
 		$("#list_activities").append(
-			'<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c id="' + activityID + '">' +
+			'<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c" id="' + activityID + '">' +
 			'<div class="button_result">' +
 			'<div class="button_result_left">' +
 
@@ -158,6 +162,11 @@ function handleFindActivityResponse(jsonResp) {
 			'</div>' +
 			'</li>'
 		);
+
+		// Add on click functionality to the activity
+		$('"#' + activityID + '"').click(function() {
+			window.location = '/activities/activitydetail#' + encodedData;
+		});
 
 		// Do some additional fixing of the activity details
 		fixPriceRange(parseInt(data.lowprice), parseInt(data.highprice), activityPrice);

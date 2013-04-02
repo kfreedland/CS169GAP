@@ -137,6 +137,33 @@ var Activities = function () {
         self.respond(result, {format: 'json'});
       });
   };
+
+  this.detail = function (req, resp, params) {
+    var self = this
+      , User = geddy.model.User;
+
+    var localParams = params;
+    if (!localParams.errCode){
+      localParams.errCode = 0;
+    }
+    if (!localParams.methodType){
+      localParams.methodType = 0;
+    }
+    User.first({id: this.session.get('userId')}, function (err, data) {
+      var params = localParams;
+      params.user = null;
+      params.authType = null;
+      if (data) {
+        params.user = data;
+        params.authType = authTypes[self.session.get('authType')].name;
+      }
+      self.respond(params, {
+        format: 'html'
+      , template: 'app/views/activities/activityDetail'
+      });
+    });
+  };
+
 /*
   this.show = function (req, resp, params) {
     var self = this;

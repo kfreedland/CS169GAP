@@ -1,0 +1,38 @@
+<!-- Include the profile js -->
+<%- scriptLink('/js/users/profile.js', {type:'text/javascript'}) %>
+
+<!--Profile Page -->
+<div data-role="page" class="profile_page">
+
+  <!--Navigation Bar-->
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div data-role="header">
+        <h1>
+          Group Activity Planner
+        </h1>
+        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
+          <% if (user) {%>
+            <p>Welcome: <a href="/users/profile"><%=user.givenName%> <%=user.familyName%></a>
+            <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+          <% } else { %>
+            <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
+            <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="profile_content" class="box" data-role="content">
+    <div id="my_profile">
+      <h2 id="profile_title">My Profile</h2>
+      <div id="username">Username: <%=user.username%></div>
+      <div id="name">Name: <%=user.givenName%> <%=user.familyName%></div>
+      <div id="email">Email: <%=user.email%></div>
+    </div>
+    <div id="my_events">
+      <h2 id="my_events_title">My Events</h2>
+    </div>
+  </div>
+</div><!-- End Page -->

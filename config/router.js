@@ -42,12 +42,14 @@ router.get('/').to('Main.index');
 router.get('/login').to('Main.login');
 router.get('/logout').to('Main.logout');
 router.post('/auth/local').to('Auth.local');
+router.get('/users/profile').to('Users.profile');
 
 router.post('/events/create').to('Events.add');
 // router.post('/TESTAPI/unitTests').to('Main.unitTests');
 
 router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
+router.get('/activities/activitydetail').to('Activities.detail');
 
 
 router.post('/events/invite').to('Events.invite');
