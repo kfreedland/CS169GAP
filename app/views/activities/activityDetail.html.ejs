@@ -1,0 +1,39 @@
+<!-- Include the activityDetail js -->
+<%- scriptLink('/js/activity/activityDetail.js', {type:'text/javascript'}) %>
+
+<!--Find Activity Page -->
+<div data-role="page" class="activity_detail_page">
+
+  <!--Navigation Bar-->
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div data-role="header">
+        <h1>
+          Group Activity Planner
+        </h1>
+        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
+          <% if (user) {%>
+            <p>Welcome: <%=user.givenName%> <%=user.familyName%>
+            <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+          <% } else { %>
+            <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
+            <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box activity_detail_content" data-role="content">
+    <div id="add-to-my-event">
+      <button id="add-to-my-event-button" value="Add To My Event" data-role="button">Add To My Events</button>
+    </div>
+    <div id="activity-title"></div>
+    <div id="activity-description"></div>
+    <div id="activity-num-participants"></div>
+    <div id="activity-category"></div>
+    <div id="activity-time-range"></div>
+    <div id="activity-address"></div>
+    <div id="activity-price-range"></div>
+  </div>
+</div><!-- End Page -->

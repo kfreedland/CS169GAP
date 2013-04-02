@@ -48,6 +48,7 @@ router.post('/events/create').to('Events.add');
 
 router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
+router.get('/activities/activitydetail').to('Activities.detail');
 
 
 router.post('/events/invite').to('Events.invite');
