@@ -733,25 +733,29 @@ Event.changeDateTime = function(params, callback)
 }
 
 Event.getMyEvents = function (params, callback) {
-  var responseDict = {};
-  responseDict.errCode = 1;
-  responseDict.events = [];
-
   var query = {};
-  query.attendingusers = params.userID;
-
+  query.attendingusers = params.userId;
+  console.log("Calling Event.all");
   Event.all(query, function (err, events)
   {
+    var responseDict = {};
+    console.log("Done calling Event.all");
     if(err)
     {
+      responseDict.events = [];
+      console.log("err exists: ");
+      console.dir(err);
       responseDict.errCode = 7;
+      callback(responseDict);
       // throw err;
     }
     else
     {
+      console.log("Succeeded with no err");
+      responseDict.errCode = 1;
       responseDict.events = events;
+      callback(responseDict);
     }
-    callback(responseDict);
   });
 };
 /*

@@ -121,6 +121,12 @@ var actions = new (function () {
       };
 
   this.local = function (req, resp, params) {
+     console.log("SELF IS ");
+     console.dir(this);
+
+
+    console.log("LOCAL REQ IS ");
+    console.dir(req);
     var self = this
       , handler = function (badCredsError, user, noCredsError) {
           var responseDict = {};
