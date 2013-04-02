@@ -35,7 +35,10 @@ function create_coverage_code(callback){
         jake.exec(['rm -rf app-cov', 'jscoverage ./app ./app-cov'], function() {
             //Make coverage code the app dir
             jake.exec(['rm -rf app', 'cp -R ./app-cov ./app'], function() {
-                callback();
+                //Put back passport helper
+                jake.exec(['rm -rf app/helpers/passport', 'cp -R ./app-backup/helpers/passport ./app/helpers/passport'], function() {
+                    callback();
+                });
             });
         });
     });
