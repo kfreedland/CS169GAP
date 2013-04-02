@@ -394,7 +394,10 @@ Activity = geddy.model.register('Activity', Activity);
 (function () {
 var nodemailer = require("nodemailer")
   , check = require("validator").check;
-
+var incorrectParams = {errCode: 6};
+var backendError = {errCode: 7};
+var badTimes = {errCode: 8};
+var badTableJoin = {errCode: 9};
 
 var Event = function () {
 
@@ -430,10 +433,7 @@ var Event = function () {
     // Do some stuff
   };
   */
-var incorrectParams = {errCode: 6};
-var backendError = {errCode: 7};
-var badTimes = {errCode: 8};
-var badTableJoin = {errCode: 9};
+
 
 Event.add = function(params, callback)
 {
@@ -510,7 +510,7 @@ Event.add = function(params, callback)
   {
     callback(incorrectParams);
   }
-}
+};
 
 function invite(params, callback)
 {
@@ -581,10 +581,13 @@ function addEventToUsers(eventid, uesrIds, callback)
         {
           record.myevents = eventid;
         }
+        record.confirmPassword = record.password;
         geddy.model.User.save(record, function(err, result)
         {
           if(err)
           {
+            console.log("err ");
+            console.dir(err);
             callback(backendError);
           }
         });
@@ -744,47 +747,51 @@ Event.getMyEvents = function (params, callback) {
     if (err){
 
     } else {
-      if (userModel){
-        console.log("Calling Event.all with email " + userModel.email);
-        Event.all(function (err, events)
-        {
-          var responseDict = {};
-          console.log("Done calling Event.all");
-          if(err)
-          {
-            responseDict.events = [];
-            console.log("err exists: ");
-            console.dir(err);
-            responseDict.errCode = 7;
-            callback(responseDict);
-            // throw err;
+      if (err){
+        responseDict.events = [];
+        // console.log("err exists: ");
+        // console.dir(err);
+        responseDict.errCode = 7;
+        callback(responseDict);
+      } else if (userModel){
+        // console.log("myevents = ");
+        // console.dir(userModel.myevents);
+        var myEvents = [];
+        if (userModel.myevents){
+          var eventIds = userModel.myevents.split(',');
+          for (var index in eventIds){
+            var eventId = eventIds[index];
+            geddy.model.Event.first({id: eventId}, function (err, eventModel){
+              if (err){
+                responseDict.events = [];
+                console.log("err exists: ");
+                console.dir(err);
+                responseDict.errCode = 7;
+                callback(responseDict);
+              } else if (eventModel){
+                myEvents.push(eventModel);
+              }
+              if (index == eventIds.length - 1){
+                getEventsCallback(1, myEvents, callback);
+              }
+            });
           }
-          else
-          {
-            //Filter out only my Events
-            var myEvents = getEventsFilter(userModel.email, events);
-            console.log("Succeeded with no err");
-            responseDict.errCode = 1;
-            responseDict.events = myEvents;
-            callback(responseDict);
-          }
-        });
+        } else {
+          getEventsCallback(1, myEvents, callback);
+        }
       }
     }
-});
+  });
+};
 
-function getEventsFilter(myEmail, events){
-  var myEvents = [];
-  for (var index in events){
-    if (events[index].attendingusers.indexOf(myEmail) !== -1){
-      myEvents.push(events[index]);
-    }
-  }
-  return myEvents;
-}
+function getEventsCallback(errCode, events, callback){
+  var responseDict = {};
+  responseDict.errCode = 1;
+  responseDict.events = events;
+  callback(responseDict);
+};
 
   
-};
 /*
 // Can also define them on the prototype
 Event.prototype.someOtherMethod = function () {

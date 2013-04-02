@@ -66,8 +66,6 @@ describe('Event', function()
                         //Never add the event so we shouldn't have any now
                         Event.getMyEvents({userId: userModel.id}, function (resp1)
                         {
-                            console.log("resp1 =");
-                            console.dir(resp1);
                             assert.equal(resp1.errCode, 1);
                             assert.equal(resp1.events.length, 0);
                             done();
@@ -125,27 +123,27 @@ describe('Event', function()
                             eventData.startdate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = userRecord.email;
+                            eventData.attendingusers = userRecord.username;
 
                             Event.add(eventData, function(respDict)
                             {
                                 assert.deepEqual(respDict, expected);
-                                var d = new Date();
-                                var begindate = d.getTime();
-                                var enddate = d.getTime()+500;
-                                eventData.begindate = begindate;
-                                eventData.enddate = enddate;
+                                Event.first({name: eventData.name}, function (err, eventModel) {
+                                    var d = new Date();
+                                    var begindate = d.getTime();
+                                    var enddate = d.getTime()+500;
+                                    eventData.begindate = begindate;
+                                    eventData.enddate = enddate;
 
-                                Event.getMyEvents({userId: userRecord.id}, function (resp1)
-                                {
-                                    console.log("resp1 =");
-                                    console.dir(resp1);
-                                    assert.equal(resp1.errCode, 1);
-                                    //Make sure we get 1 event back
-                                    assert.equal(resp1.events.length, 1);
-                                    //Check if first item equals the event we added
-                                    assert.deepEqual(resp1.events[0], resp);
-                                    done();
+                                    Event.getMyEvents({userId: userRecord.id}, function (resp1)
+                                    {
+                                        assert.equal(resp1.errCode, 1);
+                                        //Make sure we get 1 event back
+                                        assert.equal(resp1.events.length, 1);
+                                        //Check if first item equals the event we added
+                                        assert.deepEqual(resp1.events[0].id, eventModel.id);
+                                        done();
+                                    });
                                 });
                             });
                         });
@@ -160,8 +158,8 @@ describe('Event', function()
         it('should return response with length=2', function(done)
         {
             var user = User.create({username: 'Greg',
-                                    password: 'MyPassword!',
-                                    confirmPassword: 'MyPassword!',
+                                    password: 'MyPasswordYO',
+                                    confirmPassword: 'MyPasswordYO',
                                     familyName: 'LastName1',
                                     givenName: 'FirstName1',
                                     email: 'Greg@greg.com'});
@@ -201,68 +199,70 @@ describe('Event', function()
                             eventData.startdate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = activityDict.description;
-                            eventData.attendingusers = userRecord.email;
+                            eventData.attendingusers = userRecord.username;
                             
                             Event.add(eventData, function (eventResp1)
                             {
                                 assert.deepEqual(eventResp1, expected);
 
-                                var activityDict2 = {};
-                                activityDict2.name = 'backstreet boys concert';
-                                activityDict2.description = 'I want it that way...';
-                                activityDict2.category = 'Entertainment';
-                                //7pm in milliseconds since midnight
-                                var sevenPM = 1000 * 60 * 60 * 19;
-                                activityDict2.time1 = sevenPM;
-                                //10pm in milliseconds senice midnight
-                                var tenPM = 1000 * 60 * 60 * 22;
-                                activityDict2.time2 = tenPM;
-                                activityDict2.flag = 'startEnd';
-                                //date is june 15th 2013
-                                var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
-                                var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
-                                activityDict2.begindate = date1.getTime();
-                                activityDict2.enddate = date2.getTime();
-                                activityDict2.lowprice = '25';
-                                activityDict2.highprice = '200';
-                                activityDict2.lownumparticipants = '1';
-                                activityDict2.highnumparticipants = '10';
-                                //oracle arena
-                                activityDict2.latitude = '37.751';
-                                activityDict2.longitude = '-122.200';
-                                activityDict2.duration = '3';
+                                Event.first({name: eventData.name}, function (err, eventModel1) {
+                                    var activityDict2 = {};
+                                    activityDict2.name = 'backstreet boys concert';
+                                    activityDict2.description = 'I want it that way...';
+                                    activityDict2.category = 'Entertainment';
+                                    //7pm in milliseconds since midnight
+                                    var sevenPM = 1000 * 60 * 60 * 19;
+                                    activityDict2.time1 = sevenPM;
+                                    //10pm in milliseconds senice midnight
+                                    var tenPM = 1000 * 60 * 60 * 22;
+                                    activityDict2.time2 = tenPM;
+                                    activityDict2.flag = 'startEnd';
+                                    //date is june 15th 2013
+                                    var date1 = new Date(2013, 6, 15, 19, 0, 0, 0);
+                                    var date2 = new Date(2013, 6, 15, 22, 0, 0, 0);
+                                    activityDict2.begindate = date1.getTime();
+                                    activityDict2.enddate = date2.getTime();
+                                    activityDict2.lowprice = '25';
+                                    activityDict2.highprice = '200';
+                                    activityDict2.lownumparticipants = '1';
+                                    activityDict2.highnumparticipants = '10';
+                                    //oracle arena
+                                    activityDict2.latitude = '37.751';
+                                    activityDict2.longitude = '-122.200';
+                                    activityDict2.duration = '3';
 
-                                Activity.add(activityDict2, function(response)
-                                {
-                                    Activity.first({name: 'backstreet boys concert'}, function (err, model2) {
-                                        var eventData2 = {};
-                                        var expected2 = {errCode: 1};
+                                    Activity.add(activityDict2, function(response)
+                                    {
+                                        Activity.first({name: 'backstreet boys concert'}, function (err, model2) {
+                                            var eventData2 = {};
+                                            var expected2 = {errCode: 1};
 
-                                        var d2 = new Date();
-                                        eventData2.name = activityDict.name;
-                                        eventData2.activityid = model2.id;
-                                        eventData2.time1 = 500;
-                                        eventData2.time2 = 1000;
-                                        eventData2.startdate = d2.getTime();
-                                        eventData2.enddate = d2.getTime() + 50000;
-                                        eventData2.description = activityDict2.description;
-                                        eventData2.attendingusers = userRecord.email;
-                                        
-                                        Event.add(eventData2, function (eventResp2)
-                                        {
-                                            assert.deepEqual(eventResp2, expected);
-
-                                            Event.getMyEvents({userId: userRecord.id}, function (resp1)
+                                            var d2 = new Date();
+                                            eventData2.name = activityDict.name;
+                                            eventData2.activityid = model2.id;
+                                            eventData2.time1 = 500;
+                                            eventData2.time2 = 1000;
+                                            eventData2.startdate = d2.getTime();
+                                            eventData2.enddate = d2.getTime() + 50000;
+                                            eventData2.description = activityDict2.description;
+                                            eventData2.attendingusers = userRecord.username;
+                                            
+                                            Event.add(eventData2, function (eventResp2)
                                             {
-                                                console.log("resp1 =");
-                                                console.dir(resp1);
-                                                assert.equal(resp1.errCode, 1);
-                                                //Make sure we get 1 event back
-                                                assert.equal(resp1.events.length, 2);
-                                                //Check if first item equals the event we added
-                                                assert.deepEqual(resp1.events[0], eventResp1);
-                                                assert.deepEqual(resp1.events[1], eventResp2);
-                                                done();
+                                                assert.deepEqual(eventResp2, expected);
+
+                                                Event.first({name: eventData2.name}, function (err, eventModel2) {
+                                                    Event.getMyEvents({userId: userRecord.id}, function (resp1)
+                                                    {
+                                                        assert.equal(resp1.errCode, 1);
+                                                        //Make sure we get 1 event back
+                                                        assert.equal(resp1.events.length, 2);
+                                                        //Check if first item equals the event we added
+                                                        assert.deepEqual(resp1.events[0].id, eventModel1.id);
+                                                        assert.deepEqual(resp1.events[1].id, eventModel2.id);
+                                                        done();
+                                                    });
+                                                });
                                             });
                                         });
                                     });
