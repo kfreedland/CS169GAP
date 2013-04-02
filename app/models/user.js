@@ -95,6 +95,18 @@ User.login = function(params, callback){
     })(req, null, handler);
 };
 
+User.getUsernames = function(params, callback)
+{
+  usernames = [];
+  geddy.model.User.all(function(err, result)
+  {
+    for(var recordId in result)
+    {
+      usernames.push(result.recordId.username);
+    }
+    callback(usernames);
+  });
+}
 User.TESTAPI_resetFixture = function (callback) {
   geddy.model.User.all(function (err, result) {
      // console.log("got all users models with error: " + err + " and result: " + result);
