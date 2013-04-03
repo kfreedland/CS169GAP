@@ -84,10 +84,11 @@ task('test', {async: true}, function(args) {
 //This runs the test coverage and when done, opens the html output
 task('runTestCoverage', {async: true}, function(args) {
     run_test_coverage(function(err) {
-        jake.exec(['open ./coverage.html']);
         //Put back backup
         jake.exec(['rm -rf app' ,'cp -R app-backup app'], function(){
-            complete();
+            jake.exec(['open ./coverage.html'], function() {
+                complete();
+            });
         });
     });
 });
