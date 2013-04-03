@@ -805,9 +805,13 @@ Event.invite = function(params, callback)
           var smtpTransport = nodemailer.createTransport("SMTP",{
               service: "Gmail",
               auth: {
-                  user: "groupactivityplanner@gmail.com",
-                  pass: "gapgapgap"
+                user: "groupactivityplanner.gap@gmail.com",
+                pass: "gapgapgap"
               }
+              // auth: {
+              //     user: "groupactivityplanner@gmail.com",
+              //     pass: "gapgapgap"
+              // }
           });
 
           //Append event data to message
