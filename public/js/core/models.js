@@ -78,11 +78,18 @@ Event.add = function(params, callback)
               {
                 addEventToUsers(eventModel.id, userIds, function(respDict)
                 {
-                  var message = "People want you to join the following event: "+params.name;
-                  Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
+                  if(params.noemail)
                   {
                     callback(respDict);
-                  });
+                  }
+                  else
+                  {
+                    var message = "People want you to join the following event: "+params.name;
+                    Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
+                    {
+                      callback(respDict);
+                    });
+                  }
                 });
               }
             });
