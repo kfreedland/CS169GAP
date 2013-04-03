@@ -134,6 +134,79 @@ describe('Event', function()
 			});
 		});
 	});
+	
+	describe('Event.addUsersToEvent valid', function()
+	{
+		it('should return errCode:1', function(done)
+		{
+		    var eventDict = {};
+		    eventDict.name = 'jogging';
+		    eventDict.description = 'go for a run with some friends!';
+		    eventDict.category = 'Sports';
+		    eventDict.time1 = undefined;
+		    eventDict.time2 = undefined;
+		    eventDict.flag = 'anyTime';
+		    eventDict.begindate = undefined;
+		    eventDict.enddate = undefined;
+		    eventDict.lowprice = '0';
+		    eventDict.highprice = '0';
+		    eventDict.lownumparticipants = '1';
+		    eventDict.highnumparticipants = undefined;
+		    eventDict.latitude = undefined;
+		    eventDict.longitude = undefined;
+		    eventDict.duration = '2';
+
+		    Activity.add(eventDict, function(err, response)
+		    {
+		    	var user = User.create({username: 'foo',
+		                    password: 'MyPassword!',
+		                    confirmPassword: 'MyPassword!',
+		                    familyName: 'LastName1',
+		                    givenName: 'FirstName1',
+		                    email: 'kfreedland@berkeley.edu'});
+				User.add(user, function (answerDict) 
+				{
+					var eventData = {};
+					var expected = {errCode: 1};
+					User.first({username: 'foo'}, function(err, userRecord)
+					{
+						var uId = userRecord.id;
+
+						Activity.first({name: 'jogging'}, function(err, activityRecord)
+						{
+							var d = new Date();
+							eventData.name ="magical orgy";
+							eventData.activityid = activityRecord.id;
+							eventData.time1 = 500;
+							eventData.time2 = 1000;
+							eventData.startdate = d.getTime();
+							eventData.enddate = d.getTime() + 50000;
+							eventData.description = 'my Event';
+							eventData.attendingusers = userRecord.email;
+
+							Event.add(eventData, function(respDict)
+							{
+								var user1 = User.create({username: 'blahbyblah',
+			                    password: 'MyPassword!',
+			                    confirmPassword: 'MyPassword!',
+			                    familyName: 'LastName1',
+			                    givenName: 'FirstName1',
+			                    email: 'kfreedland@berkeley.edu'});
+			                    geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+			                    {
+									geddy.model.Event.addUsersToEvent(eventRecord.id, user1.username, function (answerDict)
+									{
+										assert.deepEqual(answerDict, {errCode: 1});
+										done();
+									});
+			                    });
+							});
+						});
+					});
+				});
+			});
+		});
+	});
 
 	describe('Event.add registered', function()
 	{
