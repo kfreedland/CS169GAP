@@ -37,7 +37,7 @@ describe('Event.changeDateTime change time1', function()
                             confirmPassword: 'MyPassword!',
                             familyName: 'LastName1',
                             givenName: 'FirstName1',
-                            email: 'kfreedland@berkeley.edu'});
+                            email: 'greg@greg.edu'});
                 User.add(user, function (answerDict) 
                 {
                     var eventData = {};
