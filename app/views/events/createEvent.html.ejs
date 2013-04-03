@@ -1,0 +1,77 @@
+<!--Create Event Page -->
+<div data-role="page" class="create_event_page">
+  <!-- Include the createEvent js -->
+  <%- scriptLink('/js/event/createEvent.js', {type:'text/javascript'}) %>
+  <!--Navigation Bar-->
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div data-role="header">
+        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-left">
+          <a href="#" onClick="history.back()" id="back_button" name="back" value="Back" data-inline="true" data-theme="a" data-role="button">Back</a>
+        </div>
+        <h1>
+          Group Activity Planner
+        </h1>
+        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
+          <% if (user) {%>
+            <p>Welcome: <a href="/users/profile"><%=user.givenName%> <%=user.familyName%></a>
+            <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+          <% } else { %>
+            <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
+            <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="createEventPage" class="box" data-role="content">
+		<div id="modify_left">
+			<center><h2>Create New Event</h2></center>
+			<div data-role="fieldcontain">
+			    <label for="name">Name:</label>
+			    <input type="text" name="name" id="name" value=""  />
+			</div>
+			<div data-role="fieldcontain">
+			    <label for="activity-description">Description:</label>
+			  	<textarea name="textarea" id="ativity-description" value="" > </textarea>
+			</div>	
+
+
+			<!-- Date Range -->
+		    <div data-role="fieldcontain">
+		    	<label for="beginDate">Start Date: </label>
+		        <input name="beginDate" id="beginDate" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
+		    </div>
+		    <div data-role="fieldcontain">
+		        <label for="endDate">End Date: </label>
+		        <input name="endDate" id="endDate" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
+		    </div>
+		    
+			<!--Time Range-->
+			<div id="startEndTime">
+				<div data-role="fieldcontain">
+			      <label for="startTimeEvent">Start Time: </label>
+			      <input name="start_time" id="startTimeEvent" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
+			    </div>
+			    <div data-role="fieldcontain">
+			      <label for="endTimeEvent">End Time: </label>
+			      <input name="end_time" id="endTimeEvent" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
+			    </div>
+			</div>
+			
+			<div id="address"></div>
+			<div id="priceRange"></div>
+	      	<div id="numParticipants"></div>
+	      	<div id="category"></div>
+		</div>
+		<div id="invite_friends_right">
+			<label for="textarea-a"><h2>Invite Friends:</h2></label>
+			<textarea name="textarea" id="textarea-a">
+			
+			</textarea>
+		</div>
+
+		<input id="createEventButton" type="button" value="Create Event" data-role="button" data-icon="home" data-theme="b">
+	</div>
+</div>

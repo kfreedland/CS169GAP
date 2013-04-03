@@ -128,7 +128,7 @@ var Events = function () {
   };
 
   // Create New Event
-  this.detail = function (req, resp, params) {
+  this.createNewEvent = function (req, resp, params) {
     var self = this
       , User = geddy.model.User;
 
