@@ -54,7 +54,7 @@ Event.add = function(params, callback)
 
       geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
-        if(!err && activityRecord &&  activityRecord.name) //basic assertion that record exists
+        if(activityRecord &&  activityRecord.name) //basic assertion that record exists
         {
           if(params.startdate <= params.enddate && params.time1 <= params.time2)
           {
@@ -80,7 +80,7 @@ Event.add = function(params, callback)
                 addEventToUsers(eventModel.id, userIds, function(respDict)
                 {
                   var message = "People want you to join the following activity: "+activityRecord.name;
-                  invite({eventid: eventModel.id, emails: emails , message: message}, function()
+                  Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
                   {
                     callback(respDict);
                   });
@@ -106,34 +106,26 @@ Event.add = function(params, callback)
   }
 };
 
-function invite(params, callback)
-{
-  callback();
-}
-
 function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
   emails = [];
   userIds = [];
   for(var key in usernamesOrEmails)
   {
-    var name = usernamesOrEmails[key];
-    if(name.indexOf('@') >= 0) //special characters cant be in usernames only in emails
+    var id = usernamesOrEmails[key];
+    if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
       //console.log('EMAIL found is: '+name);
-      emails.push(name);
+      emails.push(id);
       continue;
     }
     else
     {
-      geddy.model.User.first({username: name}, function(err, record)
+      geddy.model.User.first({id: id}, function(err, record)
       {
           if(err)
           {
-            if(key == 0)//this is the user who created it
-            {
-              callback(backendError);
-            }
+            errorCallback(backendError);
           }
           else
           {
@@ -156,14 +148,15 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     result.id = userIds;
     successCallback(result);
 }
+
 Event.addUsersToEvent = function(eventid, userIds, callback)
 {
   userIds = userIds.split(',');
   geddy.model.Event.first({id: eventid}, function(err, eventRecord)
   {
-    if(!err && eventRecord && eventRecord.attendingusers)
+    if(eventRecord && eventRecord.attendingusers)
     {
-      var newUids = eventRecord.attendingusers.split(',').concat(userIds)
+      var newUids = eventRecord.attendingusers.split(',').concat(userIds);
       newUids = validateUserIds(newUids, eventid);
       eventRecord.attendingusers = newUids.toString();
       geddy.model.Event.save(eventRecord, function(err, result)
@@ -183,7 +176,7 @@ Event.addUsersToEvent = function(eventid, userIds, callback)
       callback(badTableJoin);
     } 
   });
-}
+};
 
 function validateUserIds(idArray, eventid) //assumes valid usernames
 {
@@ -199,9 +192,9 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
     else
     {
       idHash[id] = true;
-      geddy.model.user.first({id: id}, function(err, userRecord)
+      geddy.model.User.first({id: id}, function(err, userRecord)
       {
-        if(!err && userRecord && userRecord.name)
+        if(userRecord && userRecord.username)
         {
           if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
           {
@@ -213,7 +206,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
             {
               userRecord.myevents = eventid;
             }
-            geddy.model.Event.save(userRecord, function(err, result)
+            geddy.model.User.save(userRecord, function(err, result)
             {
               if(!err)
               {
@@ -226,6 +219,9 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
     }
   }
   return idReturn;
+}
+
+function addEventToUsers(eventid, userIds, callback)
 {
   for(var key in userIds)
   {
@@ -238,17 +234,15 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       }
       else
       {
-        if(record.myevents)
+        if(record && record.myevents)
         {
-          record.myevents += ","+eventId;
+          record.myevents += ","+eventid;
         }
         else
         {
-          record.myevents = eventId;
+          record.myevents = eventid;
         }
         record.confirmPassword = record.password;
-        console.log("record: ");
-        console.dir(record);
         geddy.model.User.save(record, function(err, result)
         {
           if(err)
@@ -314,10 +308,8 @@ Event.invite = function(params, callback)
 
     if (!isValidEmail(emailAddr))
     {
-      console.log("ADDING BAD EMAIL");
       //email address is malformed
       badEmails.push(emailAddr);
-      console.log("bad emails = " + badEmails);
     } else {
 
       goodEmailsString += emailAddr + ", ";
@@ -350,7 +342,8 @@ Event.invite = function(params, callback)
     return;
   } 
 
-  geddy.model.Event.first({id: eventID}, function (err, result) 
+
+  geddy.model.Event.first({id: eventID}, function (err, eventModel) 
     {
 
       if(err){
@@ -363,12 +356,11 @@ Event.invite = function(params, callback)
       else 
       {
 
-        if(result)
+        if(eventModel)
         {
-          console.log("GOT RESULT");
           //invite all emails
 
-            // create reusable transport method (opens pool of SMTP connections)
+          // create reusable transport method (opens pool of SMTP connections)
           var smtpTransport = nodemailer.createTransport("SMTP",{
               service: "Gmail",
               auth: {
@@ -376,6 +368,9 @@ Event.invite = function(params, callback)
                   pass: "gapgapgap"
               }
           });
+
+          //Append event data to message
+          message = message + "";
 
           var mailOptions = {
               from: "Group Activity Planner ✔ <groupactivityplanner@gmail.com>", // sender address
@@ -388,15 +383,11 @@ Event.invite = function(params, callback)
           // send mail with defined transport object
           smtpTransport.sendMail(mailOptions, function(error, response){
               if(error){
-                  console.log("SENT MAIL WITH ERROR: ");
-                  console.dir(error);
                   responseDict.errCode = 13;
                   responseDict.message = "email failed";
                   callback(responseDict);
                   return;
               }else{
-                console.log("SENT MAIL WITH RESPONSE");
-                console.dir(response);
                   responseDict.errCode = 1;
                   callback(responseDict);
                   return;
@@ -433,7 +424,7 @@ function isValidEmail(email) {
     return false;
   }
 
-} 
+}
 
 Event.changeDateTime = function(params, callback) 
 {
@@ -576,15 +567,6 @@ Event.changeDateTime = function(params, callback)
         }
       }
     });
-
-
-
-
-
-
-
-
-
 };
 
 Event.getMyEvents = function (params, callback) {
@@ -596,13 +578,7 @@ Event.getMyEvents = function (params, callback) {
       responseDict.errCode = 7;
       callback(responseDict);
     } else {
-      if (err){
-        responseDict.events = [];
-        // console.log("err exists: ");
-        // console.dir(err);
-        responseDict.errCode = 7;
-        callback(responseDict);
-      } else if (userModel){
+      if (userModel){
         // console.log("myevents = ");
         // console.dir(userModel.myevents);
         var myEvents = [];
@@ -613,8 +589,6 @@ Event.getMyEvents = function (params, callback) {
             geddy.model.Event.first({id: eventId}, function (err, eventModel){
               if (err){
                 responseDict.events = [];
-                console.log("err exists: ");
-                console.dir(err);
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
@@ -667,4 +641,3 @@ Event.TESTAPI_resetFixture = function (callback) {
 };  
 
 Event = geddy.model.register('Event', Event);
-

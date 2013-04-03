@@ -40,7 +40,7 @@ describe('Event.invite valid emails', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -120,7 +120,7 @@ describe('Event.invite valid and invalid emails', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -201,7 +201,7 @@ describe('Event.invite empty email list', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -282,7 +282,7 @@ describe('Event.invite emails undefined', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -364,7 +364,7 @@ describe('Event.invite null message', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -445,7 +445,7 @@ describe('Event.invite invalid event id', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -527,7 +527,7 @@ describe('Event.invite null eventid', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};

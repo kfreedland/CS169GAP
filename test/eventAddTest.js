@@ -102,7 +102,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -163,7 +163,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -182,7 +182,7 @@ describe('Event', function()
 							eventData.startdate = d.getTime();
 							eventData.enddate = d.getTime() + 50000;
 							eventData.description = 'my Event';
-							eventData.attendingusers = userRecord.email;
+							eventData.attendingusers = userRecord.id;
 
 							Event.add(eventData, function(respDict)
 							{
@@ -191,15 +191,21 @@ describe('Event', function()
 			                    confirmPassword: 'MyPassword!',
 			                    familyName: 'LastName1',
 			                    givenName: 'FirstName1',
-			                    email: 'kfreedland@berkeley.edu'});
-			                    geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+			                    email: 'greg@greg.com'});
+			                    geddy.model.User.add(user1, function(aDict)
 			                    {
-									geddy.model.Event.addUsersToEvent(eventRecord.id, user1.username, function (answerDict)
-									{
-										assert.deepEqual(answerDict, {errCode: 1});
-										done();
-									});
-			                    });
+			                    	geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+				                    {
+				                    	geddy.model.User.first({username: user1.username}, function(err, userRecord1)
+				                    	{
+				                    		geddy.model.Event.addUsersToEvent(eventRecord.id, userRecord1.id, function (answerDict)
+											{
+												assert.deepEqual(answerDict, {errCode: 1});
+												done();
+											});
+				                    	});
+				                    });
+		                    	});
 							});
 						});
 					});
@@ -236,7 +242,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -255,7 +261,7 @@ describe('Event', function()
 							eventData.startdate = d.getTime();
 							eventData.enddate = d.getTime() + 50000;
 							eventData.description = 'my Event';
-							eventData.attendingusers = userRecord.email;
+							eventData.attendingusers = uId;
 
 							Event.add(eventData, function(respDict)
 							{
@@ -297,7 +303,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -358,7 +364,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'kfreedland@berkeley.edu'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};

@@ -49,7 +49,7 @@ describe('User', function(){
                               familyName: 'LastName2',
                               givenName: 'FirstName2',
                               email: 'Bob@bob.com'});
-			User.add(user, function (answerDict) {
+			User.add(user, function (answerDict1) {
 				User.add(user, function (answerDict) {
 				    assert.deepEqual(answerDict, {'errCode': 2});
 					done();
@@ -72,9 +72,40 @@ describe('User', function(){
                               familyName: 'LastName192',
                               givenName: 'FirstName192',
                               email: 'Greg192@greg.com'});
-			User.add(user2, function (answerDict) {
-				assert.deepEqual(answerDict, {'errCode': 1});
-				done();
+			User.add(user1, function (answerDict1) {
+				User.add(user2, function (answerDict) {
+					assert.deepEqual(answerDict, {'errCode': 1});
+					done();
+				});
+			});
+		});
+	});
+
+	describe('Get all usernames', function() {
+		it('should return all usernames', function(done) {
+			var user1 = User.create({username: 'Greg191',
+                              password: 'MyPassword!191',
+                              confirmPassword: 'MyPassword!191',
+                              familyName: 'LastName191',
+                              givenName: 'FirstName191',
+                              email: 'Greg191@greg.com'});
+			var user2 = User.create({username: 'Greg192',
+                              password: 'MyPassword!192',
+                              confirmPassword: 'MyPassword!192',
+                              familyName: 'LastName192',
+                              givenName: 'FirstName192',
+                              email: 'Greg192@greg.com'});
+			User.add(user1, function (answerDict) 
+			{
+				User.add(user2, function (answerDict) 
+				{
+					User.getUsernames(function(response)
+					{
+						correct = [user1.username, user2.username];
+						assert.deepEqual(correct, response);
+						done();
+					});
+				});
 			});
 		});
 	});

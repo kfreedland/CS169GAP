@@ -104,7 +104,7 @@ describe('Event', function()
                             confirmPassword: 'MyPassword!',
                             familyName: 'LastName1',
                             givenName: 'FirstName1',
-                            email: 'kfreedland@berkeley.edu'});
+                            email: 'greg@greg.com'});
                 User.add(user, function (answerDict) 
                 {
                     var eventData = {};
@@ -139,8 +139,6 @@ describe('Event', function()
                                     {
                                         assert.equal(resp1.errCode, 1);
                                         //Make sure we get 1 event back
-                                        console.log("resp1 =");
-                                        console.dir(resp1);
                                         assert.equal(resp1.events.length, 1);
                                         //Check if first item equals the event we added
                                         assert.deepEqual(resp1.events[0].id, eventModel.id);
@@ -194,7 +192,7 @@ describe('Event', function()
                             var expected = {errCode: 1};
 
                             var d = new Date();
-                            eventData.name = activityDict.name;
+                            eventData.name = 'datName';
                             eventData.activityid = model1.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
@@ -240,7 +238,7 @@ describe('Event', function()
                                             var expected2 = {errCode: 1};
 
                                             var d2 = new Date();
-                                            eventData2.name = activityDict.name;
+                                            eventData2.name = 'name2';
                                             eventData2.activityid = model2.id;
                                             eventData2.time1 = 500;
                                             eventData2.time2 = 1000;
