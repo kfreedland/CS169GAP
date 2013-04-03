@@ -264,15 +264,13 @@ Event.invite = function(params, callback)
   if(goodEmailsString.length > 2)
   {
 
-    console.log("goodEmailsString = " + goodEmailsString);
     goodEmailsString = goodEmailsString.substring(0,goodEmailsString.length-2);
-    console.log("goodEmailsString truncated = " +goodEmailsString);
   } 
   else
   {
 
     responseDict.errCode = 6;
-    responseDict.message = "couldn't find any good emails";
+    responseDict.message = "null emails";
     callback(responseDict);
     return;
   } 
