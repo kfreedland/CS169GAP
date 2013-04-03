@@ -288,6 +288,8 @@ Event.invite = function(params, callback)
         //handle error
         responseDict.errCode = 10;
         responseDict.message = "invalid eventid";
+        callback(responseDict);
+        return;
       } 
       else 
       {
