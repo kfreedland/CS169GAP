@@ -12,7 +12,7 @@ var Event = function () {
     description: {type: 'string'},
     time1: {type: 'number'},
     time2: {type: 'number'},
-    begindate: {type: 'number'},
+    startdate: {type: 'number'},
     enddate: {type: 'number'},
     activityid: {type: 'string'},
     attendingusers: {type: 'string'}
@@ -45,8 +45,8 @@ Event.add = function(params, callback)
 {
   if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
-    var usernamesOrEmails = params.attendingusers.split(',');
-    getEmailAndId(usernamesOrEmails, callback, function(emailAndId)
+    var idsOrEmails = params.attendingusers.split(',');
+    getEmailAndId(idsOrEmails, callback, function(emailAndId)
     {
       var emails = emailAndId.email;
       var userIds = emailAndId.id;
@@ -104,13 +104,13 @@ Event.add = function(params, callback)
   }
 };
 
-function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
+function getEmailAndId(idsOrEmails, errorCallback, successCallback)
 {
   emails = [];
   userIds = [];
-  for(var key in usernamesOrEmails)
+  for(var key in idsOrEmails)
   {
-    var id = usernamesOrEmails[key];
+    var id = idsOrEmails[key];
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
       //console.log('EMAIL found is: '+name);
@@ -119,7 +119,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     }
     else
     {
-      geddy.model.User.first({username: id}, function(err, record)
+      geddy.model.User.first({id: id}, function(err, record)
       {
           if(err)
           {
@@ -217,7 +217,6 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
               {
                 userRecord.myevents = eventid;
               }
-              console.log('saving User myevents');
               geddy.model.User.save(userRecord, function(err, result)
               {
                 if(!err)
@@ -264,8 +263,6 @@ function addEventToUsers(eventid, userIds, callback)
         {
           if(err)
           {
-            console.log("Error Adding Event To User");
-            console.dir(err);
             callback(backendError);
           }
 
@@ -461,7 +458,7 @@ Event.changeDateTime = function(params, callback)
 
   var eventID = params.eventid;
 
-  if (!params.time1 && !params.time2 && !params.begindate && !params.enddate )
+  if (!params.time1 && !params.time2 && !params.startdate && !params.enddate )
   {
     responseDict.errCode = 6;
     responseDict.message = "all date/time parameters are null";
@@ -478,19 +475,19 @@ Event.changeDateTime = function(params, callback)
   //time2
   var newTime2;
   if(params.time2) {
-    newTime2 = params.time2;
+    newTime2 = parseFloat(params.time2);
   }
 
-  //begindate
-  var newBeginDate;
-  if(params.time2) {
-    newBeginDate = params.begindate;
+  //startdate
+  var newstartdate;
+  if(params.startdate) {
+    newstartdate = parseFloat(params.startdate);
   }
 
   //enddate
   var newEndDate;
-  if(params.time2) {
-    newEndDate = params.enddate;
+  if(params.enddate) {
+    newEndDate = parseFloat(params.enddate);
   }
 
 
@@ -520,24 +517,28 @@ Event.changeDateTime = function(params, callback)
         else
         {
 
+          console.log('start: '+ eventModel.time1+ ' end: '+eventModel.time2);
+
           //set fields if neccesary
-          if (newTime1 !== undefined) {
+          if (newTime1) {
             eventModel.time1 = newTime1;
           }
 
-          if (newTime2 !== undefined) {
+          if (newTime2) {
             eventModel.time2 = newTime2;
           }
 
-          if (newBeginDate !== undefined) {
-            eventModel.begindate = newBeginDate;
+          if (newstartdate) {
+            console.log("changing startdate was: "+eventModel.startdate+" now is: "+newstartdate);
+            eventModel.startdate = newstartdate;
           }
 
-          if (newEndDate !== undefined) {
+          if (newEndDate) {
             eventModel.enddate = newEndDate;
           }
         }
-
+        
+        console.log('start: '+ eventModel.time1+ ' end: '+eventModel.time2);
         //check to see if fields are valid
         if(eventModel.time1 >= eventModel.time2)
         {
@@ -547,7 +548,7 @@ Event.changeDateTime = function(params, callback)
           return;
         }
 
-        if(eventModel.begindate >= eventModel.enddate)
+        if(eventModel.startdate >= eventModel.enddate)
         {
           responseDict.errCode = 11;
           responseDict.message = "invalid dates";
@@ -596,8 +597,6 @@ Event.getMyEvents = function (params, callback) {
       callback(responseDict);
     } else {
       if (userModel){
-         console.log("myevents = ");
-         console.dir(userModel.myevents);
         var myEvents = [];
         if (userModel.myevents){
           var eventIds = userModel.myevents.split(',');
