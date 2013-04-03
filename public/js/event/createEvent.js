@@ -22,10 +22,27 @@ $(document).ready(function() {
 
 	// Calculate the address from the provided latitude and longitude, and insert it into the html
 	reverseGeocodeAddress(jsonData.latitude, jsonData.longitude, function(address) {
-		$("#address").append('<div data-role="fieldcontain"><label for="name">Text Input:</label><input type="text" name="address" id="addressReadOnly" value=""  /></div>	
-
-		$("#address").append('<span class="row-address-name"> Address: ' + address + '</span>');
+		$("#addressReadOnly").val(address);
 	});
+
+	$('#name').val(name);
+	$('#activityDescription').val(desc);
+
+	if (time1 != null && time2 != null) {
+		console.log(time1 + "time2 is " + time2);
+		var correctedTime1 = convertMsToString(time1);
+		var correctedTime2 = convertMsToString(time2);
+		$('#startTimeEvent').val(correctedTime1);
+		$('#endTimeEvent').val(correctedTime2);
+	}
+
+	$('#minPrice').val(lowprice);
+	$('#maxPrice').val(highprice);
+	$('#lowNumPart').val(lowpart);
+	$('#highNumPart').val(highpart);
+	$('#category').val(category);
+
+
 
 
 });

@@ -33,10 +33,16 @@
 			    <input type="text" name="name" id="name" value=""  />
 			</div>
 			<div data-role="fieldcontain">
-			    <label for="activity-description">Description:</label>
-			  	<textarea name="textarea" id="ativity-description" value="" > </textarea>
+			    <label for="activityDescription">Description:</label>
+			  	<textarea name="textarea" id="activityDescription" value="" > </textarea>
 			</div>	
 
+
+	      	<!--Category-->
+	      	<div data-role="fieldcontain">
+			    <label for="category">Category:</label>
+			  	<input name="text" id="category" value="" readonly="readonly"/>
+			</div>	
 
 			<!-- Date Range -->
 		    <div data-role="fieldcontain">
@@ -47,7 +53,7 @@
 		        <label for="endDate">End Date: </label>
 		        <input name="endDate" id="endDate" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
 		    </div>
-		    
+
 			<!--Time Range-->
 			<div id="startEndTime">
 				<div data-role="fieldcontain">
@@ -60,11 +66,48 @@
 			    </div>
 			</div>
 			
-			<div id="address"></div>
-			<div id="priceRange"></div>
-	      	<div id="numParticipants"></div>
-	      	<div id="category"></div>
+			<!--ADDRESS-->
+			<div id="address" data-role="fieldcontain" data-type="horizontal">
+				<label for="addressReadOnly">Address:</label>
+				<input type="text" name="text" id="addressReadOnly" readonly="readonly" value=""  />
+			</div>
+
+			<!-- Price Range -->
+		      <label>Price Range (Dollars): </label>
+		      <div class="ui-grid-c my-breakpoint">
+		        <div class="ui-block-a">
+		          <label for="lowPrice" class="grid_label">Min: </label>
+		        </div>
+		        <div class="ui-block-b">
+		          <input readonly="readonly" type="number" name="lowPrice" id="minPrice" value="" pattern="[0-9]*" min="0" max="9999999" />
+		        </div>
+		        <div class="ui-block-c">
+		          <label for="maxPrice" class="grid_label">Max: </label>
+		        </div>
+		        <div class="ui-block-d">
+		          <input readonly="readonly" type="number" name="highPrice" id="maxPrice" value="" pattern="[0-9]*" min="0" max="9999999" />
+		        </div>
+      		</div>
+
+      		<!---->
+	      	<label>Number of Participants: </label>
+		      <div class="ui-grid-c my-breakpoint">
+		        <div class="ui-block-a">
+		          <label for="lowNumPart" class="grid_label">Min: </label>
+		        </div>
+		        <div class="ui-block-b">
+		          <input readonly="readonly" type="number" name="lowNumPart" id="lowNumPart" value="" pattern="[0-9]*" min="0" max="9999999" />
+		        </div>
+		        <div class="ui-block-c">
+		          <label for="highNumPart" class="grid_label">Max: </label>
+		        </div>
+		        <div class="ui-block-d">
+		          <input readonly="readonly" type="number" name="highNumPart" id="highNumPart" value="" pattern="[0-9]*" min="0" max="9999999" />
+		        </div>
+      		</div>
+
 		</div>
+		<br>
 		<div id="invite_friends_right">
 			<label for="textarea-a"><h2>Invite Friends:</h2></label>
 			<textarea name="textarea" id="textarea-a">
