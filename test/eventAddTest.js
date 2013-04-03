@@ -102,7 +102,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -163,7 +163,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -191,7 +191,7 @@ describe('Event', function()
 			                    confirmPassword: 'MyPassword!',
 			                    familyName: 'LastName1',
 			                    givenName: 'FirstName1',
-			                    email: 'elayman123@gmail.com'});
+			                    email: 'greg@greg.com'});
 			                    geddy.model.User.add(user1, function(aDict)
 			                    {
 			                    	geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
@@ -242,7 +242,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -303,7 +303,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -364,7 +364,7 @@ describe('Event', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@greg.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
