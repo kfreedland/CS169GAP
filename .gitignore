@@ -29,6 +29,3 @@ logs
 results
 
 npm-debug.log
-
-!config
-config/development.js
