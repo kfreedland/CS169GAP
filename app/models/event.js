@@ -52,7 +52,7 @@ Event.add = function(params, callback)
       var userIds = emailAndId.id;
       geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
-        if(activityRecord &&  activityRecord.name) //basic assertion that record exists
+        if(activityRecord && activityRecord.name) //basic assertion that record exists
         {
           if(params.startdate <= params.enddate && params.time1 <= params.time2)
           {
@@ -119,7 +119,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     }
     else
     {
-      geddy.model.User.first({id: id}, function(err, record)
+      geddy.model.User.first({username: id}, function(err, record)
       {
           if(err)
           {
@@ -217,6 +217,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
               {
                 userRecord.myevents = eventid;
               }
+              console.log('saving User myevents');
               geddy.model.User.save(userRecord, function(err, result)
               {
                 if(!err)
@@ -258,6 +259,7 @@ function addEventToUsers(eventid, userIds, callback)
           record.myevents = eventid;
         }
         record.confirmPassword = record.password;
+        //record.errors = null;
         geddy.model.User.save(record, function(err, result)
         {
           if(err)
@@ -594,8 +596,8 @@ Event.getMyEvents = function (params, callback) {
       callback(responseDict);
     } else {
       if (userModel){
-        // console.log("myevents = ");
-        // console.dir(userModel.myevents);
+         console.log("myevents = ");
+         console.dir(userModel.myevents);
         var myEvents = [];
         if (userModel.myevents){
           var eventIds = userModel.myevents.split(',');

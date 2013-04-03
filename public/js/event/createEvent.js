@@ -77,9 +77,9 @@ function createEvent(activityId) {
 	        contentType: "application/json",
 	        dataType: "json",
 	        success: function(respData) {
-	        	console.log('success');
+	        	console.log('Success');
 	        	console.log(respData);
-	        	//handleCreateActivityResponse(respData);
+	        	window.location = '/events/myevents';
 	        },
 	        failure: function(err) {
 	        	console.log('Failure');
@@ -87,5 +87,3 @@ function createEvent(activityId) {
 	    });
 	});
 }
-
-
