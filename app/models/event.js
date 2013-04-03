@@ -390,9 +390,13 @@ Event.invite = function(params, callback)
           var smtpTransport = nodemailer.createTransport("SMTP",{
               service: "Gmail",
               auth: {
-                  user: "groupactivityplanner@gmail.com",
-                  pass: "gapgapgap"
+                user: "groupactivityplanner.gap@gmail.com",
+                pass: "gapgapgap"
               }
+              // auth: {
+              //     user: "groupactivityplanner@gmail.com",
+              //     pass: "gapgapgap"
+              // }
           });
 
           //Append event data to message
@@ -441,6 +445,8 @@ Event.invite = function(params, callback)
                         // send mail with defined transport object
                         smtpTransport.sendMail(mailOptions, function(error, response){
                             if(error){
+                                console.log("error");
+                                console.dir(error);
                                 responseDict.errCode = 13;
                                 responseDict.message = "email failed";
                                 callback(responseDict);
@@ -460,6 +466,8 @@ Event.invite = function(params, callback)
               });
               
             } else {
+              console.log("err =");
+              console.dir(err);
               responseDict.errCode = 13;
               responseDict.message = "email failed";
               callback(responseDict);
@@ -708,6 +716,11 @@ Event.getMyEvents = function (params, callback) {
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
+<<<<<<< HEAD
+=======
+                //console.log("EVENT MODEL:");
+                //console.log(eventModel);
+>>>>>>> 3f66a80e9bac11fe5df64e2a3bd4bc81294a0e3d
                 myEvents.push(eventModel);
               }
               if (index == eventIds.length - 1){
