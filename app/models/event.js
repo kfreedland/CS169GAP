@@ -79,7 +79,7 @@ Event.add = function(params, callback)
               {
                 addEventToUsers(eventModel.id, userIds, function(respDict)
                 {
-                  var message = "People want you to join the following activity: "+activityRecord.name;
+                  var message = "People want you to join the following event: "+params.name;
                   Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
                   {
                     callback(respDict);
@@ -156,7 +156,8 @@ Event.addUsersToEvent = function(eventid, userIds, callback)
   {
     if(eventRecord && eventRecord.attendingusers)
     {
-      var newUids = eventRecord.attendingusers.split(',').concat(userIds);
+      var data = eventRecord.attendingusers.split(',').concat(userIds);
+      var newUids = data.id;
       newUids = validateUserIds(newUids, eventid);
       eventRecord.attendingusers = newUids.toString();
       geddy.model.Event.save(eventRecord, function(err, result)
@@ -167,7 +168,11 @@ Event.addUsersToEvent = function(eventid, userIds, callback)
         }
         else
         {
-          callback({errCode: 1});
+          var message = "People want you to join the following event: "+eventRecord.name;
+          Event.invite({eventid: eventid, emails: data.email, message: message}, function(respDict)
+          {
+            callback({errCode: 1});
+          });
         }
       });
     }
@@ -180,8 +185,10 @@ Event.addUsersToEvent = function(eventid, userIds, callback)
 
 function validateUserIds(idArray, eventid) //assumes valid usernames
 {
+  toReturn = {};
   idHash = {};
   idReturn = [];
+  emailReturn = [];
   for(var key in idArray)
   {
     var id = idArray[key];
@@ -192,33 +199,43 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
     else
     {
       idHash[id] = true;
-      geddy.model.User.first({id: id}, function(err, userRecord)
+      if(id.indexOf('@') >= 0)
       {
-        if(userRecord && userRecord.username)
+        emailReturn.push(id);
+      }
+      else
+      {
+        geddy.model.User.first({id: id}, function(err, userRecord)
         {
-          if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
+          if(userRecord && userRecord.username)
           {
-            if(userRecord.myevents)
+            if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
             {
-              userRecord.myevents += ',' + eventid;
-            }
-            else
-            {
-              userRecord.myevents = eventid;
-            }
-            geddy.model.User.save(userRecord, function(err, result)
-            {
-              if(!err)
+              if(userRecord.myevents)
               {
-                idReturn.push(id);
+                userRecord.myevents += ',' + eventid;
               }
-            });
+              else
+              {
+                userRecord.myevents = eventid;
+              }
+              geddy.model.User.save(userRecord, function(err, result)
+              {
+                if(!err)
+                {
+                  emailReturn.push(userRecord.email);
+                  idReturn.push(id);
+                }
+              });
+            }
           }
-        }
-      });
+        });
+      }
     }
   }
-  return idReturn;
+  toReturn.id = idReturn;
+  toReturn.email = emailReturn;
+  return toReturn;
 }
 
 function addEventToUsers(eventid, userIds, callback)
