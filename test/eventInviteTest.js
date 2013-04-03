@@ -71,7 +71,7 @@ describe('Event.invite valid emails', function()
 									paramDict = {};
 									paramDict.eventid = eventRecord.id;
 									paramDict.message = "you are invited to go jogging with friends!";
-									paramDict.emails = ["tlangner1@gmail.com"];
+									paramDict.emails = ["fake@fake.com"];
 
 
 									//INVITE
@@ -163,7 +163,6 @@ describe('Event.invite valid and invalid emails', function()
 										expected.message = "malformed emails"
 										assert.deepEqual(eventInviteResponse, expected);
 										done();
-
 									});
 								});
 							});
@@ -418,7 +417,7 @@ describe('Event.invite null message', function()
 		});
 	});
 
-describe('Event.invite null message', function()
+describe('Event.invite invalid event id', function()
 	{
 		it('should return errCode:10', function(done)
 		{

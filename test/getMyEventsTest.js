@@ -123,7 +123,7 @@ describe('Event', function()
                             eventData.startdate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = userRecord.username;
+                            eventData.attendingusers = userRecord.id;
 
                             Event.add(eventData, function(respDict)
                             {
@@ -139,6 +139,8 @@ describe('Event', function()
                                     {
                                         assert.equal(resp1.errCode, 1);
                                         //Make sure we get 1 event back
+                                        console.log("resp1 =");
+                                        console.dir(resp1);
                                         assert.equal(resp1.events.length, 1);
                                         //Check if first item equals the event we added
                                         assert.deepEqual(resp1.events[0].id, eventModel.id);
@@ -199,7 +201,7 @@ describe('Event', function()
                             eventData.startdate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = activityDict.description;
-                            eventData.attendingusers = userRecord.username;
+                            eventData.attendingusers = userRecord.id;
                             
                             Event.add(eventData, function (eventResp1)
                             {
@@ -245,7 +247,7 @@ describe('Event', function()
                                             eventData2.startdate = d2.getTime();
                                             eventData2.enddate = d2.getTime() + 50000;
                                             eventData2.description = activityDict2.description;
-                                            eventData2.attendingusers = userRecord.username;
+                                            eventData2.attendingusers = userRecord.id;
                                             
                                             Event.add(eventData2, function (eventResp2)
                                             {

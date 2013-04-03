@@ -707,10 +707,14 @@ Event.invite = function(params, callback)
   for(var index in emailList)
   {
     var emailAddr = emailList[index];
+
+
     if (!isValidEmail(emailAddr))
     {
+      console.log("ADDING BAD EMAIL");
       //email address is malformed
       badEmails.push(emailAddr);
+      console.log("bad emails = " + badEmails);
     } else {
 
       goodEmailsString += emailAddr + ", ";
@@ -719,7 +723,7 @@ Event.invite = function(params, callback)
   }
 
   //some emails are bad
-  if(badEmails.count > 0 ){
+  if(badEmails.length > 0 ){
 
     responseDict.errCode = 12;
     responseDict.message = "malformed emails";
@@ -732,15 +736,13 @@ Event.invite = function(params, callback)
   if(goodEmailsString.length > 2)
   {
 
-    console.log("goodEmailsString = " + goodEmailsString);
     goodEmailsString = goodEmailsString.substring(0,goodEmailsString.length-2);
-    console.log("goodEmailsString truncated = " +goodEmailsString);
   } 
   else
   {
 
     responseDict.errCode = 6;
-    responseDict.message = "couldn't find any good emails";
+    responseDict.message = "null emails";
     callback(responseDict);
     return;
   } 
@@ -754,6 +756,8 @@ Event.invite = function(params, callback)
         //handle error
         responseDict.errCode = 10;
         responseDict.message = "invalid eventid";
+        callback(responseDict);
+        return;
       } 
       else 
       {
@@ -802,13 +806,31 @@ Event.invite = function(params, callback)
           });
 
         }
+         else 
+        {
+        
+        responseDict.errCode = 10;
+        responseDict.message = "invalid eventid";
+        callback(responseDict);
+        return;
+        }
       }
 
     });
 };
 
 function isValidEmail(email) { 
-  return check(email).isEmail();
+
+
+  try
+  {
+    check(email).isEmail();
+    return true;
+  } 
+  catch (error)
+  {
+    return false;
+  }
 
 } 
 

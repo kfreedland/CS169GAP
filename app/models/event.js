@@ -326,7 +326,7 @@ Event.invite = function(params, callback)
   }
 
   //some emails are bad
-  if(badEmails.count > 0 ){
+  if(badEmails.length > 0 ){
 
     responseDict.errCode = 12;
     responseDict.message = "malformed emails";
@@ -357,8 +357,10 @@ Event.invite = function(params, callback)
 
       if(err){
         //handle error
-        responseDict.errCode = 10;
-        responseDict.message = "invalid eventid";
+        responseDict.errCode = 7;
+        responseDict.message = "database error";
+        callback(responseDict);
+        return;
       } 
       else 
       {
@@ -406,6 +408,14 @@ Event.invite = function(params, callback)
 
           });
 
+        }
+         else 
+        {
+        
+        responseDict.errCode = 10;
+        responseDict.message = "invalid eventid";
+        callback(responseDict);
+        return;
         }
       }
 

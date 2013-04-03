@@ -231,9 +231,9 @@ describe('Event', function()
 
 		    Activity.add(eventDict, function(err, response)
 		    {
-		    	var user = User.create({username: 'theGracken',
-		                    password: 'MyPasswordWOOT',
-		                    confirmPassword: 'MyPasswordWOOT',
+		    	var user = User.create({username: 'foo',
+		                    password: 'MyPassword!',
+		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
 		                    email: 'kfreedland@berkeley.edu'});
@@ -255,7 +255,7 @@ describe('Event', function()
 							eventData.startdate = d.getTime();
 							eventData.enddate = d.getTime() + 50000;
 							eventData.description = 'my Event';
-							eventData.attendingusers = userRecord.username;
+							eventData.attendingusers = userRecord.email;
 
 							Event.add(eventData, function(respDict)
 							{
