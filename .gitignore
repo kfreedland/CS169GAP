@@ -20,6 +20,7 @@ app-cov
 coverage.html
 ./app-cov/*
 app-cov
+app-cov/*
 app-backup
 app-backup/*
 

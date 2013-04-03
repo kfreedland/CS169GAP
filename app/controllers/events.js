@@ -1,221 +1,403 @@
-var passport = require('../helpers/passport')
-  , requireAuth = passport.requireAuth;
-
-var Events = function () {
-  this.before(requireAuth, {
-    except: ['']
-  });
-
-  this.respondsWith = ['html', 'json', 'xml', 'js', 'txt'];
-
-  this.index = function (req, resp, params) {
-    var self = this;
-
-    geddy.model.Event.all(function(err, events) {
-      self.respond({params: params, events: events});
-    });
-  };
-
-  this.add = function (req, resp, params) 
-  {
-    var self = this;
-    geddy.model.Event.add(params, function createCallback(respDict)
-    {
-      console.log('respDict is');
-      console.log(respDict);
-      self.respond(respDict, {format: 'json'});
-    });
-  };
-
-  this.create = function (req, resp, params) {
-    params.id = params.id || geddy.string.uuid(10);
-
-    var self = this
-      , event = geddy.model.Event.create(params);
-
-    if (!event.isValid()) {
-      params.errors = event.errors;
-      self.transfer('add');
-    }
-
-    event.save(function(err, data) {
-      if (err) {
-        params.errors = err;
-        self.transfer('add');
-      } else {
-        self.redirect({controller: self.name});
-      }
-    });
-  };
-
-  this.show = function (req, resp, params) {
-    var self = this;
-
-    geddy.model.Event.first(params.id, function(err, event) {
-      if (!event) {
-        var error = new Error();
-        error.statusCode = 400;
-        self.error(error);
-      } else {
-        self.respond({params: params, event: event.toObj()});
-      }
-    });
-  };
-
-  this.edit = function (req, resp, params) {
-    var self = this;
-
-    geddy.model.Event.first(params.id, function(err, event) {
-      if (!event) {
-        var error = new Error();
-        error.statusCode = 400;
-        self.error(error);
-      } else {
-        self.respond({params: params, event: event});
-      }
-    });
-  };
-
-  this.update = function (req, resp, params) {
-    var self = this;
-
-    geddy.model.Event.first(params.id, function(err, event) {
-      event.updateProperties(params);
-      if (!event.isValid()) {
-        params.errors = event.errors;
-        self.transfer('edit');
-      }
-
-      event.save(function(err, data) {
-        if (err) {
-          params.errors = err;
-          self.transfer('edit');
-        } else {
-          self.redirect({controller: self.name});
-        }
-      });
-    });
-  };
-
-  this.destroy = function (req, resp, params) {
-    var self = this;
-
-    geddy.model.Event.remove(params.id, function(err) {
-      if (err) {
-        params.errors = err;
-        self.transfer('edit');
-      } else {
-        self.redirect({controller: self.name});
-      }
-    });
-  };
-
-
-  this.changeDateTime = function (req, resp, params) {
-
-    var self = this;
-
-
-    geddy.model.Event.invite(params, function(responseDict) 
-    {
-
-      self.respond(responseDict, {format: 'json'});
-      
-    });
-
-  };
-
-  //Get My Events
-  this.getMyEvents = function (req, resp, params) {
-    var self = this;
-
-    geddy.model.Event.getMyEvents({userId: self.session.get('userId')}, function(responseDict) {
-      params.errCode = responseDict.errCode;
-      params.events = responseDict.events;
-      console.log('RESPONSE FROM MY EVENTS');
-      console.log(responseDict);
-      self.respond(responseDict, {format: 'json'});
-    });
-  };
-
-  // Create New Event
-  this.createNewEvent = function (req, resp, params) {
-    var self = this
-      , User = geddy.model.User;
-
-    var localParams = params;
-    if (!localParams.errCode){
-      localParams.errCode = 0;
-    }
-    if (!localParams.methodType){
-      localParams.methodType = 0;
-    }
-    User.first({id: this.session.get('userId')}, function (err, data) {
-      var params = localParams;
-      params.user = null;
-      params.authType = null;
-      if (data) {
-        params.user = data;
-      }
-      self.respond(params, {
-        format: 'html'
-      , template: 'app/views/events/createEvent'
-      });
-    });
-  };
-
-  // My Events
-  this.myEvents = function (req, resp, params) {
-    var self = this
-      , User = geddy.model.User;
-
-    var localParams = params;
-    if (!localParams.errCode){
-      localParams.errCode = 0;
-    }
-    if (!localParams.methodType){
-      localParams.methodType = 0;
-    }
-    User.first({id: this.session.get('userId')}, function (err, data) {
-      var params = localParams;
-      params.user = null;
-      params.authType = null;
-      if (data) {
-        params.user = data;
-      }
-      self.respond(params, {
-        format: 'html'
-      , template: 'app/views/events/myEvents'
-      });
-    });
-  };
-
-  // Event Detail
-  this.detail = function (req, resp, params) {
-    var self = this
-      , User = geddy.model.User;
-
-    var localParams = params;
-    if (!localParams.errCode){
-      localParams.errCode = 0;
-    }
-    if (!localParams.methodType){
-      localParams.methodType = 0;
-    }
-    User.first({id: this.session.get('userId')}, function (err, data) {
-      var params = localParams;
-      params.user = null;
-      params.authType = null;
-      if (data) {
-        params.user = data;
-      }
-      self.respond(params, {
-        format: 'html'
-      , template: 'app/views/events/eventDetail'
-      });
-    });
-  };
-
-};
-
+/* automatically generated by JSCoverage - do not edit */
+if (typeof _$jscoverage === 'undefined') _$jscoverage = {};
+if (! _$jscoverage['controllers/events.js']) {
+  _$jscoverage['controllers/events.js'] = [];
+  _$jscoverage['controllers/events.js'][1] = 0;
+  _$jscoverage['controllers/events.js'][4] = 0;
+  _$jscoverage['controllers/events.js'][5] = 0;
+  _$jscoverage['controllers/events.js'][9] = 0;
+  _$jscoverage['controllers/events.js'][11] = 0;
+  _$jscoverage['controllers/events.js'][12] = 0;
+  _$jscoverage['controllers/events.js'][14] = 0;
+  _$jscoverage['controllers/events.js'][15] = 0;
+  _$jscoverage['controllers/events.js'][19] = 0;
+  _$jscoverage['controllers/events.js'][21] = 0;
+  _$jscoverage['controllers/events.js'][22] = 0;
+  _$jscoverage['controllers/events.js'][24] = 0;
+  _$jscoverage['controllers/events.js'][25] = 0;
+  _$jscoverage['controllers/events.js'][26] = 0;
+  _$jscoverage['controllers/events.js'][30] = 0;
+  _$jscoverage['controllers/events.js'][31] = 0;
+  _$jscoverage['controllers/events.js'][33] = 0;
+  _$jscoverage['controllers/events.js'][36] = 0;
+  _$jscoverage['controllers/events.js'][37] = 0;
+  _$jscoverage['controllers/events.js'][38] = 0;
+  _$jscoverage['controllers/events.js'][41] = 0;
+  _$jscoverage['controllers/events.js'][42] = 0;
+  _$jscoverage['controllers/events.js'][43] = 0;
+  _$jscoverage['controllers/events.js'][44] = 0;
+  _$jscoverage['controllers/events.js'][46] = 0;
+  _$jscoverage['controllers/events.js'][51] = 0;
+  _$jscoverage['controllers/events.js'][52] = 0;
+  _$jscoverage['controllers/events.js'][54] = 0;
+  _$jscoverage['controllers/events.js'][55] = 0;
+  _$jscoverage['controllers/events.js'][56] = 0;
+  _$jscoverage['controllers/events.js'][57] = 0;
+  _$jscoverage['controllers/events.js'][58] = 0;
+  _$jscoverage['controllers/events.js'][60] = 0;
+  _$jscoverage['controllers/events.js'][65] = 0;
+  _$jscoverage['controllers/events.js'][66] = 0;
+  _$jscoverage['controllers/events.js'][68] = 0;
+  _$jscoverage['controllers/events.js'][69] = 0;
+  _$jscoverage['controllers/events.js'][70] = 0;
+  _$jscoverage['controllers/events.js'][71] = 0;
+  _$jscoverage['controllers/events.js'][72] = 0;
+  _$jscoverage['controllers/events.js'][74] = 0;
+  _$jscoverage['controllers/events.js'][79] = 0;
+  _$jscoverage['controllers/events.js'][80] = 0;
+  _$jscoverage['controllers/events.js'][82] = 0;
+  _$jscoverage['controllers/events.js'][83] = 0;
+  _$jscoverage['controllers/events.js'][84] = 0;
+  _$jscoverage['controllers/events.js'][85] = 0;
+  _$jscoverage['controllers/events.js'][86] = 0;
+  _$jscoverage['controllers/events.js'][89] = 0;
+  _$jscoverage['controllers/events.js'][90] = 0;
+  _$jscoverage['controllers/events.js'][91] = 0;
+  _$jscoverage['controllers/events.js'][92] = 0;
+  _$jscoverage['controllers/events.js'][94] = 0;
+  _$jscoverage['controllers/events.js'][100] = 0;
+  _$jscoverage['controllers/events.js'][101] = 0;
+  _$jscoverage['controllers/events.js'][103] = 0;
+  _$jscoverage['controllers/events.js'][104] = 0;
+  _$jscoverage['controllers/events.js'][105] = 0;
+  _$jscoverage['controllers/events.js'][106] = 0;
+  _$jscoverage['controllers/events.js'][108] = 0;
+  _$jscoverage['controllers/events.js'][114] = 0;
+  _$jscoverage['controllers/events.js'][116] = 0;
+  _$jscoverage['controllers/events.js'][119] = 0;
+  _$jscoverage['controllers/events.js'][122] = 0;
+  _$jscoverage['controllers/events.js'][129] = 0;
+  _$jscoverage['controllers/events.js'][130] = 0;
+  _$jscoverage['controllers/events.js'][132] = 0;
+  _$jscoverage['controllers/events.js'][133] = 0;
+  _$jscoverage['controllers/events.js'][134] = 0;
+  _$jscoverage['controllers/events.js'][135] = 0;
+  _$jscoverage['controllers/events.js'][136] = 0;
+  _$jscoverage['controllers/events.js'][137] = 0;
+  _$jscoverage['controllers/events.js'][142] = 0;
+  _$jscoverage['controllers/events.js'][143] = 0;
+  _$jscoverage['controllers/events.js'][146] = 0;
+  _$jscoverage['controllers/events.js'][147] = 0;
+  _$jscoverage['controllers/events.js'][148] = 0;
+  _$jscoverage['controllers/events.js'][150] = 0;
+  _$jscoverage['controllers/events.js'][151] = 0;
+  _$jscoverage['controllers/events.js'][153] = 0;
+  _$jscoverage['controllers/events.js'][154] = 0;
+  _$jscoverage['controllers/events.js'][155] = 0;
+  _$jscoverage['controllers/events.js'][156] = 0;
+  _$jscoverage['controllers/events.js'][157] = 0;
+  _$jscoverage['controllers/events.js'][158] = 0;
+  _$jscoverage['controllers/events.js'][160] = 0;
+  _$jscoverage['controllers/events.js'][168] = 0;
+  _$jscoverage['controllers/events.js'][169] = 0;
+  _$jscoverage['controllers/events.js'][172] = 0;
+  _$jscoverage['controllers/events.js'][173] = 0;
+  _$jscoverage['controllers/events.js'][174] = 0;
+  _$jscoverage['controllers/events.js'][176] = 0;
+  _$jscoverage['controllers/events.js'][177] = 0;
+  _$jscoverage['controllers/events.js'][179] = 0;
+  _$jscoverage['controllers/events.js'][180] = 0;
+  _$jscoverage['controllers/events.js'][181] = 0;
+  _$jscoverage['controllers/events.js'][182] = 0;
+  _$jscoverage['controllers/events.js'][183] = 0;
+  _$jscoverage['controllers/events.js'][184] = 0;
+  _$jscoverage['controllers/events.js'][186] = 0;
+  _$jscoverage['controllers/events.js'][194] = 0;
+  _$jscoverage['controllers/events.js'][195] = 0;
+  _$jscoverage['controllers/events.js'][198] = 0;
+  _$jscoverage['controllers/events.js'][199] = 0;
+  _$jscoverage['controllers/events.js'][200] = 0;
+  _$jscoverage['controllers/events.js'][202] = 0;
+  _$jscoverage['controllers/events.js'][203] = 0;
+  _$jscoverage['controllers/events.js'][205] = 0;
+  _$jscoverage['controllers/events.js'][206] = 0;
+  _$jscoverage['controllers/events.js'][207] = 0;
+  _$jscoverage['controllers/events.js'][208] = 0;
+  _$jscoverage['controllers/events.js'][209] = 0;
+  _$jscoverage['controllers/events.js'][210] = 0;
+  _$jscoverage['controllers/events.js'][212] = 0;
+  _$jscoverage['controllers/events.js'][221] = 0;
+}
+_$jscoverage['controllers/events.js'][1]++;
+var passport = require("../helpers/passport"), requireAuth = passport.requireAuth;
+_$jscoverage['controllers/events.js'][4]++;
+var Events = (function () {
+  _$jscoverage['controllers/events.js'][5]++;
+  this.before(requireAuth, {except: [""]});
+  _$jscoverage['controllers/events.js'][9]++;
+  this.respondsWith = ["html", "json", "xml", "js", "txt"];
+  _$jscoverage['controllers/events.js'][11]++;
+  this.index = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][12]++;
+  var self = this;
+  _$jscoverage['controllers/events.js'][14]++;
+  geddy.model.Event.all((function (err, events) {
+  _$jscoverage['controllers/events.js'][15]++;
+  self.respond({params: params, events: events});
+}));
+});
+  _$jscoverage['controllers/events.js'][19]++;
+  this.add = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][21]++;
+  var self = this;
+  _$jscoverage['controllers/events.js'][22]++;
+  geddy.model.Event.add(params, (function createCallback(respDict) {
+  _$jscoverage['controllers/events.js'][24]++;
+  console.log("respDict is");
+  _$jscoverage['controllers/events.js'][25]++;
+  console.log(respDict);
+  _$jscoverage['controllers/events.js'][26]++;
+  self.respond(respDict, {format: "json"});
+}));
+});
+  _$jscoverage['controllers/events.js'][30]++;
+  this.create = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][31]++;
+  params.id = params.id || geddy.string.uuid(10);
+  _$jscoverage['controllers/events.js'][33]++;
+  var self = this, event = geddy.model.Event.create(params);
+  _$jscoverage['controllers/events.js'][36]++;
+  if (! event.isValid()) {
+    _$jscoverage['controllers/events.js'][37]++;
+    params.errors = event.errors;
+    _$jscoverage['controllers/events.js'][38]++;
+    self.transfer("add");
+  }
+  _$jscoverage['controllers/events.js'][41]++;
+  event.save((function (err, data) {
+  _$jscoverage['controllers/events.js'][42]++;
+  if (err) {
+    _$jscoverage['controllers/events.js'][43]++;
+    params.errors = err;
+    _$jscoverage['controllers/events.js'][44]++;
+    self.transfer("add");
+  }
+  else {
+    _$jscoverage['controllers/events.js'][46]++;
+    self.redirect({controller: self.name});
+  }
+}));
+});
+  _$jscoverage['controllers/events.js'][51]++;
+  this.show = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][52]++;
+  var self = this;
+  _$jscoverage['controllers/events.js'][54]++;
+  geddy.model.Event.first(params.id, (function (err, event) {
+  _$jscoverage['controllers/events.js'][55]++;
+  if (! event) {
+    _$jscoverage['controllers/events.js'][56]++;
+    var error = new Error();
+    _$jscoverage['controllers/events.js'][57]++;
+    error.statusCode = 400;
+    _$jscoverage['controllers/events.js'][58]++;
+    self.error(error);
+  }
+  else {
+    _$jscoverage['controllers/events.js'][60]++;
+    self.respond({params: params, event: event.toObj()});
+  }
+}));
+});
+  _$jscoverage['controllers/events.js'][65]++;
+  this.edit = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][66]++;
+  var self = this;
+  _$jscoverage['controllers/events.js'][68]++;
+  geddy.model.Event.first(params.id, (function (err, event) {
+  _$jscoverage['controllers/events.js'][69]++;
+  if (! event) {
+    _$jscoverage['controllers/events.js'][70]++;
+    var error = new Error();
+    _$jscoverage['controllers/events.js'][71]++;
+    error.statusCode = 400;
+    _$jscoverage['controllers/events.js'][72]++;
+    self.error(error);
+  }
+  else {
+    _$jscoverage['controllers/events.js'][74]++;
+    self.respond({params: params, event: event});
+  }
+}));
+});
+  _$jscoverage['controllers/events.js'][79]++;
+  this.update = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][80]++;
+  var self = this;
+  _$jscoverage['controllers/events.js'][82]++;
+  geddy.model.Event.first(params.id, (function (err, event) {
+  _$jscoverage['controllers/events.js'][83]++;
+  event.updateProperties(params);
+  _$jscoverage['controllers/events.js'][84]++;
+  if (! event.isValid()) {
+    _$jscoverage['controllers/events.js'][85]++;
+    params.errors = event.errors;
+    _$jscoverage['controllers/events.js'][86]++;
+    self.transfer("edit");
+  }
+  _$jscoverage['controllers/events.js'][89]++;
+  event.save((function (err, data) {
+  _$jscoverage['controllers/events.js'][90]++;
+  if (err) {
+    _$jscoverage['controllers/events.js'][91]++;
+    params.errors = err;
+    _$jscoverage['controllers/events.js'][92]++;
+    self.transfer("edit");
+  }
+  else {
+    _$jscoverage['controllers/events.js'][94]++;
+    self.redirect({controller: self.name});
+  }
+}));
+}));
+});
+  _$jscoverage['controllers/events.js'][100]++;
+  this.destroy = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][101]++;
+  var self = this;
+  _$jscoverage['controllers/events.js'][103]++;
+  geddy.model.Event.remove(params.id, (function (err) {
+  _$jscoverage['controllers/events.js'][104]++;
+  if (err) {
+    _$jscoverage['controllers/events.js'][105]++;
+    params.errors = err;
+    _$jscoverage['controllers/events.js'][106]++;
+    self.transfer("edit");
+  }
+  else {
+    _$jscoverage['controllers/events.js'][108]++;
+    self.redirect({controller: self.name});
+  }
+}));
+});
+  _$jscoverage['controllers/events.js'][114]++;
+  this.changeDateTime = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][116]++;
+  var self = this;
+  _$jscoverage['controllers/events.js'][119]++;
+  geddy.model.Event.invite(params, (function (responseDict) {
+  _$jscoverage['controllers/events.js'][122]++;
+  self.respond(responseDict, {format: "json"});
+}));
+});
+  _$jscoverage['controllers/events.js'][129]++;
+  this.getMyEvents = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][130]++;
+  var self = this;
+  _$jscoverage['controllers/events.js'][132]++;
+  geddy.model.Event.getMyEvents({userId: self.session.get("userId")}, (function (responseDict) {
+  _$jscoverage['controllers/events.js'][133]++;
+  params.errCode = responseDict.errCode;
+  _$jscoverage['controllers/events.js'][134]++;
+  params.events = responseDict.events;
+  _$jscoverage['controllers/events.js'][135]++;
+  console.log("RESPONSE FROM MY EVENTS");
+  _$jscoverage['controllers/events.js'][136]++;
+  console.log(responseDict);
+  _$jscoverage['controllers/events.js'][137]++;
+  self.respond(responseDict, {format: "json"});
+}));
+});
+  _$jscoverage['controllers/events.js'][142]++;
+  this.createNewEvent = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][143]++;
+  var self = this, User = geddy.model.User;
+  _$jscoverage['controllers/events.js'][146]++;
+  var localParams = params;
+  _$jscoverage['controllers/events.js'][147]++;
+  if (! localParams.errCode) {
+    _$jscoverage['controllers/events.js'][148]++;
+    localParams.errCode = 0;
+  }
+  _$jscoverage['controllers/events.js'][150]++;
+  if (! localParams.methodType) {
+    _$jscoverage['controllers/events.js'][151]++;
+    localParams.methodType = 0;
+  }
+  _$jscoverage['controllers/events.js'][153]++;
+  User.first({id: this.session.get("userId")}, (function (err, data) {
+  _$jscoverage['controllers/events.js'][154]++;
+  var params = localParams;
+  _$jscoverage['controllers/events.js'][155]++;
+  params.user = null;
+  _$jscoverage['controllers/events.js'][156]++;
+  params.authType = null;
+  _$jscoverage['controllers/events.js'][157]++;
+  if (data) {
+    _$jscoverage['controllers/events.js'][158]++;
+    params.user = data;
+  }
+  _$jscoverage['controllers/events.js'][160]++;
+  self.respond(params, {format: "html", template: "app/views/events/createEvent"});
+}));
+});
+  _$jscoverage['controllers/events.js'][168]++;
+  this.myEvents = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][169]++;
+  var self = this, User = geddy.model.User;
+  _$jscoverage['controllers/events.js'][172]++;
+  var localParams = params;
+  _$jscoverage['controllers/events.js'][173]++;
+  if (! localParams.errCode) {
+    _$jscoverage['controllers/events.js'][174]++;
+    localParams.errCode = 0;
+  }
+  _$jscoverage['controllers/events.js'][176]++;
+  if (! localParams.methodType) {
+    _$jscoverage['controllers/events.js'][177]++;
+    localParams.methodType = 0;
+  }
+  _$jscoverage['controllers/events.js'][179]++;
+  User.first({id: this.session.get("userId")}, (function (err, data) {
+  _$jscoverage['controllers/events.js'][180]++;
+  var params = localParams;
+  _$jscoverage['controllers/events.js'][181]++;
+  params.user = null;
+  _$jscoverage['controllers/events.js'][182]++;
+  params.authType = null;
+  _$jscoverage['controllers/events.js'][183]++;
+  if (data) {
+    _$jscoverage['controllers/events.js'][184]++;
+    params.user = data;
+  }
+  _$jscoverage['controllers/events.js'][186]++;
+  self.respond(params, {format: "html", template: "app/views/events/myEvents"});
+}));
+});
+  _$jscoverage['controllers/events.js'][194]++;
+  this.detail = (function (req, resp, params) {
+  _$jscoverage['controllers/events.js'][195]++;
+  var self = this, User = geddy.model.User;
+  _$jscoverage['controllers/events.js'][198]++;
+  var localParams = params;
+  _$jscoverage['controllers/events.js'][199]++;
+  if (! localParams.errCode) {
+    _$jscoverage['controllers/events.js'][200]++;
+    localParams.errCode = 0;
+  }
+  _$jscoverage['controllers/events.js'][202]++;
+  if (! localParams.methodType) {
+    _$jscoverage['controllers/events.js'][203]++;
+    localParams.methodType = 0;
+  }
+  _$jscoverage['controllers/events.js'][205]++;
+  User.first({id: this.session.get("userId")}, (function (err, data) {
+  _$jscoverage['controllers/events.js'][206]++;
+  var params = localParams;
+  _$jscoverage['controllers/events.js'][207]++;
+  params.user = null;
+  _$jscoverage['controllers/events.js'][208]++;
+  params.authType = null;
+  _$jscoverage['controllers/events.js'][209]++;
+  if (data) {
+    _$jscoverage['controllers/events.js'][210]++;
+    params.user = data;
+  }
+  _$jscoverage['controllers/events.js'][212]++;
+  self.respond(params, {format: "html", template: "app/views/events/eventDetail"});
+}));
+});
+});
+_$jscoverage['controllers/events.js'][221]++;
 exports.Events = Events;
+_$jscoverage['controllers/events.js'].source = ["var passport = require('../helpers/passport')","  , requireAuth = passport.requireAuth;","","var Events = function () {","  this.before(requireAuth, {","    except: ['']","  });","","  this.respondsWith = ['html', 'json', 'xml', 'js', 'txt'];","","  this.index = function (req, resp, params) {","    var self = this;","","    geddy.model.Event.all(function(err, events) {","      self.respond({params: params, events: events});","    });","  };","","  this.add = function (req, resp, params) ","  {","    var self = this;","    geddy.model.Event.add(params, function createCallback(respDict)","    {","      console.log('respDict is');","      console.log(respDict);","      self.respond(respDict, {format: 'json'});","    });","  };","","  this.create = function (req, resp, params) {","    params.id = params.id || geddy.string.uuid(10);","","    var self = this","      , event = geddy.model.Event.create(params);","","    if (!event.isValid()) {","      params.errors = event.errors;","      self.transfer('add');","    }","","    event.save(function(err, data) {","      if (err) {","        params.errors = err;","        self.transfer('add');","      } else {","        self.redirect({controller: self.name});","      }","    });","  };","","  this.show = function (req, resp, params) {","    var self = this;","","    geddy.model.Event.first(params.id, function(err, event) {","      if (!event) {","        var error = new Error();","        error.statusCode = 400;","        self.error(error);","      } else {","        self.respond({params: params, event: event.toObj()});","      }","    });","  };","","  this.edit = function (req, resp, params) {","    var self = this;","","    geddy.model.Event.first(params.id, function(err, event) {","      if (!event) {","        var error = new Error();","        error.statusCode = 400;","        self.error(error);","      } else {","        self.respond({params: params, event: event});","      }","    });","  };","","  this.update = function (req, resp, params) {","    var self = this;","","    geddy.model.Event.first(params.id, function(err, event) {","      event.updateProperties(params);","      if (!event.isValid()) {","        params.errors = event.errors;","        self.transfer('edit');","      }","","      event.save(function(err, data) {","        if (err) {","          params.errors = err;","          self.transfer('edit');","        } else {","          self.redirect({controller: self.name});","        }","      });","    });","  };","","  this.destroy = function (req, resp, params) {","    var self = this;","","    geddy.model.Event.remove(params.id, function(err) {","      if (err) {","        params.errors = err;","        self.transfer('edit');","      } else {","        self.redirect({controller: self.name});","      }","    });","  };","","","  this.changeDateTime = function (req, resp, params) {","","    var self = this;","","","    geddy.model.Event.invite(params, function(responseDict) ","    {","","      self.respond(responseDict, {format: 'json'});","      ","    });","","  };","","  //Get My Events","  this.getMyEvents = function (req, resp, params) {","    var self = this;","","    geddy.model.Event.getMyEvents({userId: self.session.get('userId')}, function(responseDict) {","      params.errCode = responseDict.errCode;","      params.events = responseDict.events;","      console.log('RESPONSE FROM MY EVENTS');","      console.log(responseDict);","      self.respond(responseDict, {format: 'json'});","    });","  };","","  // Create New Event","  this.createNewEvent = function (req, resp, params) {","    var self = this","      , User = geddy.model.User;","","    var localParams = params;","    if (!localParams.errCode){","      localParams.errCode = 0;","    }","    if (!localParams.methodType){","      localParams.methodType = 0;","    }","    User.first({id: this.session.get('userId')}, function (err, data) {","      var params = localParams;","      params.user = null;","      params.authType = null;","      if (data) {","        params.user = data;","      }","      self.respond(params, {","        format: 'html'","      , template: 'app/views/events/createEvent'","      });","    });","  };","","  // My Events","  this.myEvents = function (req, resp, params) {","    var self = this","      , User = geddy.model.User;","","    var localParams = params;","    if (!localParams.errCode){","      localParams.errCode = 0;","    }","    if (!localParams.methodType){","      localParams.methodType = 0;","    }","    User.first({id: this.session.get('userId')}, function (err, data) {","      var params = localParams;","      params.user = null;","      params.authType = null;","      if (data) {","        params.user = data;","      }","      self.respond(params, {","        format: 'html'","      , template: 'app/views/events/myEvents'","      });","    });","  };","","  // Event Detail","  this.detail = function (req, resp, params) {","    var self = this","      , User = geddy.model.User;","","    var localParams = params;","    if (!localParams.errCode){","      localParams.errCode = 0;","    }","    if (!localParams.methodType){","      localParams.methodType = 0;","    }","    User.first({id: this.session.get('userId')}, function (err, data) {","      var params = localParams;","      params.user = null;","      params.authType = null;","      if (data) {","        params.user = data;","      }","      self.respond(params, {","        format: 'html'","      , template: 'app/views/events/eventDetail'","      });","    });","  };","","};","","exports.Events = Events;"];
