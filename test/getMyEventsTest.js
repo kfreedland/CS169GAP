@@ -254,9 +254,6 @@ describe('Event', function()
                                                 Event.first({name: eventData2.name}, function (err, eventModel2) {
                                                     Event.getMyEvents({userId: userRecord.id}, function (resp1)
                                                     {
-                                                        console.dir(resp1.events);
-                                                        console.log('eventModel1.id: '+eventModel1.id);
-                                                        console.log('eventModel2.id: '+eventModel2.id);
                                                         assert.equal(resp1.errCode, 1);
                                                         //Make sure we get 1 event back
                                                         assert.equal(resp1.events.length, 2);
