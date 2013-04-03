@@ -4,9 +4,9 @@ var assert = require("assert")
   , Event = geddy.model.Event;
 
 var resetFixture = function (done){
-	Activity.TESTAPI_resetFixture(function(){
-		done();
-	});
+    Activity.TESTAPI_resetFixture(function(){
+        done();
+    });
 };
 
 describe('Event', function()
@@ -1425,12 +1425,5 @@ describe('Event.changeDateTime invalid new dates', function()
 
 
 });
-
-
-
-
-
-
-
 
 
