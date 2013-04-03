@@ -500,7 +500,12 @@ Event.add = function(params, callback)
                   }
                   else
                   {
-                    var message = "People want you to join the following event: "+params.name;
+                    var inviter = "Somebody";
+                    if(params.inviter)
+                    {
+                      inviter = params.inviter;
+                    }
+                    var message = inviter+" wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
                     Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
                     {
                       callback(respDict);
@@ -551,11 +556,11 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
           }
           else
           {
-            if(record && record.email && record.id)
+            if(record && record.email && record.username)
             {
               //console.log('EMAIL found is: '+record.email);
               emails.push(record.email);
-              userIds.push(record.id);
+              userIds.push(record.username);
             }
             else
             {
@@ -590,7 +595,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
         }
         else
         {
-          var message = "People want you to join the following event: "+eventRecord.name;
+          var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
           Event.invite({eventid: eventid, emails: data.email, message: message}, function(respDict)
           {
             callback({errCode: 1});
@@ -629,7 +634,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       {
         geddy.model.User.first({username: id}, function(err, userRecord)
         {
-          if(userRecord && userRecord.id)
+          if(userRecord && userRecord.username)
           {
             if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
             {
@@ -646,7 +651,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 if(!err)
                 {
                   emailReturn.push(userRecord.email);
-                  idReturn.push(userRecord.id);
+                  idReturn.push(userRecord.username);
                 }
               });
             }
@@ -665,7 +670,7 @@ function addEventToUsers(eventid, userIds, callback)
   for(var key in userIds)
   {
     var uid = userIds[key];
-    geddy.model.User.first({id: uid}, function(err, record)
+    geddy.model.User.first({username: uid}, function(err, record)
     {
       if(err)
       {
@@ -742,8 +747,6 @@ Event.invite = function(params, callback)
   for(var index in emailList)
   {
     var emailAddr = emailList[index];
-
-
     if (!isValidEmail(emailAddr))
     {
       //email address is malformed
@@ -809,7 +812,7 @@ Event.invite = function(params, callback)
 
           //Append event data to message
           blade.compileFile('app/helpers/templates/bladeEmailTemplate.blade', function (err, tmpl) {
-            console.log("Compiled Blade File");
+            //console.log("Compiled Blade File");
             if (!err && tmpl){
               //Look up activity info
               geddy.model.Activity.first({id: eventModel.activityid}, function (err, activityModel) {
@@ -834,7 +837,7 @@ Event.invite = function(params, callback)
                     };
 
                     var templateHTML = tmpl(templateVars, function(err, html) {
-                        console.log("GOT HTML");
+                        //console.log("GOT HTML");
                         if(err) throw err;
 
                         var templateHTML = null;
@@ -1120,6 +1123,8 @@ Event.getMyEvents = function (params, callback) {
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
+                console.log("EVENT MODEL:");
+                console.log(eventModel);
                 myEvents.push(eventModel);
               }
               if (index == eventIds.length - 1){
