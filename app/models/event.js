@@ -602,7 +602,6 @@ Event.changeDateTime = function(params, callback)
   if(params.time2) {
     newTime2 = parseFloat(params.time2);
   }
-  console.log("NEW TIME 2 = "+ newTime2);
 
   //begindate
   var newBeginDate;
@@ -652,7 +651,6 @@ Event.changeDateTime = function(params, callback)
 
           if ((typeof newTime2) == 'number') {
             eventModel.time2 = newTime2;
-            console.log("CHANGED TIME 2");
           }
 
           if ((typeof newBeginDate) == 'number') {
