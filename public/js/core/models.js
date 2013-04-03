@@ -270,21 +270,6 @@ Activity.add = function (parameterDict, callback){
     }
   } 
 
-<<<<<<< HEAD
-=======
-          // create reusable transport method (opens pool of SMTP connections)
-          var smtpTransport = nodemailer.createTransport("SMTP",{
-              service: "Gmail",
-              auth: {
-                user: "groupactivityplanner.gap@gmail.com",
-                pass: "gapgapgap"
-              }
-              // auth: {
-              //     user: "groupactivityplanner@gmail.com",
-              //     pass: "gapgapgap"
-              // }
-          });
->>>>>>> 3f66a80e9bac11fe5df64e2a3bd4bc81294a0e3d
 
   //LATTITUDE LONGITUDE
   if (parameterDict.latitude) {
@@ -503,6 +488,8 @@ Event.add = function(params, callback)
             {
               if(err)
               {
+                console.log("error in event.save in Event.add");
+                console.dir(err);
                 callback(backendError);
               }
               else
@@ -567,6 +554,8 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
       {
           if(err)
           {
+            console.log("error in user.first in Event.add");
+            console.dir(err);
             errorCallback(backendError);
           }
           else
@@ -606,6 +595,8 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
       {
         if(err)
         {
+          console.log("error in event.save in Event.addUsersToEvent");
+          console.dir(err);
           callback(backendError);
         }
         else
@@ -661,6 +652,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
               {
                 userRecord.myevents = eventid;
               }
+              userRecord.confirmPassword = userRecord.password;
               geddy.model.User.save(userRecord, function(err, result)
               {
                 if(!err)
@@ -689,6 +681,8 @@ function addEventToUsers(eventid, userIds, callback)
     {
       if(err)
       {
+        console.log("error in user.first in Event.addEventToUsers");
+        console.dir(err);
         callback(backendError);
       }
       else
@@ -702,11 +696,13 @@ function addEventToUsers(eventid, userIds, callback)
           record.myevents = eventid;
         }
         record.confirmPassword = record.password;
-        //record.errors = null;
+        record.errors = null;
         geddy.model.User.save(record, function(err, result)
         {
           if(err)
           {
+            console.log("error in event.save in Event.addEventToUsers");
+            console.dir(err);
             callback(backendError);
           }
 
@@ -717,46 +713,6 @@ function addEventToUsers(eventid, userIds, callback)
   callback({errCode: 1}); //success!
 }
 
-<<<<<<< HEAD
-=======
-Event.getMyEvents = function (params, callback) {
-  geddy.model.User.first({id: params.userId}, function (err, userModel) {
-    if (err){
-      responseDict.events = [];
-      // console.log("err exists: ");
-      // console.dir(err);
-      responseDict.errCode = 7;
-      callback(responseDict);
-    } else {
-      if (userModel){
-        var myEvents = [];
-        if (userModel.myevents){
-          var eventIds = userModel.myevents.split(',');
-          for (var index in eventIds){
-            var eventId = eventIds[index];
-            geddy.model.Event.first({id: eventId}, function (err, eventModel){
-              if (err){
-                responseDict.events = [];
-                responseDict.errCode = 7;
-                callback(responseDict);
-              } else if (eventModel){
-                //console.log("EVENT MODEL:");
-                //console.log(eventModel);
-                myEvents.push(eventModel);
-              }
-              if (index == eventIds.length - 1){
-                getEventsCallback(1, myEvents, callback);
-              }
-            });
-          }
-        } else {
-          getEventsCallback(1, myEvents, callback);
-        }
-      }
-    }
-  });
-};
->>>>>>> 3f66a80e9bac11fe5df64e2a3bd4bc81294a0e3d
 
 //params requires eventid, emails, and message
 Event.invite = function(params, callback) 
@@ -844,6 +800,8 @@ Event.invite = function(params, callback)
 
       if(err){
         //handle error
+        console.log("err");
+        console.dir(err);
         responseDict.errCode = 7;
         responseDict.message = "database error";
         callback(responseDict);
@@ -1079,6 +1037,8 @@ Event.changeDateTime = function(params, callback)
 
       if (err){
         //handle error
+        console.log("err change date time");
+        console.dir(err);
         responseDict.errCode = 7;
         responseDict.message = "database error";
         callback(responseDict);
@@ -1140,6 +1100,8 @@ Event.changeDateTime = function(params, callback)
         {
           if(err)
           {
+            console.log("error in Event.save in changeDateTime");
+            console.dir(err);
             responseDict.errCode = 7;
             responseDict.message = "database error";
             callback(responseDict);
@@ -1168,6 +1130,8 @@ Event.changeDateTime = function(params, callback)
 Event.getMyEvents = function (params, callback) {
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
     if (err){
+      console.log("error in getMyEvents");
+      console.dir(err);
       responseDict.events = [];
       // console.log("err exists: ");
       // console.dir(err);
@@ -1182,12 +1146,14 @@ Event.getMyEvents = function (params, callback) {
             var eventId = eventIds[index];
             geddy.model.Event.first({id: eventId}, function (err, eventModel){
               if (err){
+                console.log("error in event.first in getMyEvents");
+                console.dir(err);
                 responseDict.events = [];
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
-                console.log("EVENT MODEL:");
-                console.log(eventModel);
+                //console.log("EVENT MODEL:");
+                //console.log(eventModel);
                 myEvents.push(eventModel);
               }
               if (index == eventIds.length - 1){
