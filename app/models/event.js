@@ -127,6 +127,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
+    console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
       //console.log('EMAIL found is: '+name);
@@ -159,6 +160,14 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
         });
       }
     }
+    // while(usernamesOrEmails.length != emails.length + userIds.length)
+    // {
+    //   console.log('waiting');
+    //   console.log(usernamesOrEmails);
+    //   console.log(emails);
+    //   console.log(userIds);
+    //   continue;
+    // }
     result = {};
     result.email = emails;
     result.id = userIds;
