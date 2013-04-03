@@ -270,6 +270,21 @@ Activity.add = function (parameterDict, callback){
     }
   } 
 
+<<<<<<< HEAD
+=======
+          // create reusable transport method (opens pool of SMTP connections)
+          var smtpTransport = nodemailer.createTransport("SMTP",{
+              service: "Gmail",
+              auth: {
+                user: "groupactivityplanner.gap@gmail.com",
+                pass: "gapgapgap"
+              }
+              // auth: {
+              //     user: "groupactivityplanner@gmail.com",
+              //     pass: "gapgapgap"
+              // }
+          });
+>>>>>>> 3f66a80e9bac11fe5df64e2a3bd4bc81294a0e3d
 
   //LATTITUDE LONGITUDE
   if (parameterDict.latitude) {
@@ -702,6 +717,46 @@ function addEventToUsers(eventid, userIds, callback)
   callback({errCode: 1}); //success!
 }
 
+<<<<<<< HEAD
+=======
+Event.getMyEvents = function (params, callback) {
+  geddy.model.User.first({id: params.userId}, function (err, userModel) {
+    if (err){
+      responseDict.events = [];
+      // console.log("err exists: ");
+      // console.dir(err);
+      responseDict.errCode = 7;
+      callback(responseDict);
+    } else {
+      if (userModel){
+        var myEvents = [];
+        if (userModel.myevents){
+          var eventIds = userModel.myevents.split(',');
+          for (var index in eventIds){
+            var eventId = eventIds[index];
+            geddy.model.Event.first({id: eventId}, function (err, eventModel){
+              if (err){
+                responseDict.events = [];
+                responseDict.errCode = 7;
+                callback(responseDict);
+              } else if (eventModel){
+                //console.log("EVENT MODEL:");
+                //console.log(eventModel);
+                myEvents.push(eventModel);
+              }
+              if (index == eventIds.length - 1){
+                getEventsCallback(1, myEvents, callback);
+              }
+            });
+          }
+        } else {
+          getEventsCallback(1, myEvents, callback);
+        }
+      }
+    }
+  });
+};
+>>>>>>> 3f66a80e9bac11fe5df64e2a3bd4bc81294a0e3d
 
 //params requires eventid, emails, and message
 Event.invite = function(params, callback) 

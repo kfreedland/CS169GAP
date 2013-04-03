@@ -716,8 +716,8 @@ Event.getMyEvents = function (params, callback) {
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
-                console.log("EVENT MODEL:");
-                console.log(eventModel);
+                //console.log("EVENT MODEL:");
+                //console.log(eventModel);
                 myEvents.push(eventModel);
               }
               if (index == eventIds.length - 1){
