@@ -22,8 +22,7 @@ var strategies = require('../helpers/passport/strategies')
 var Main = function () {
 
   this.index = function (req, resp, params) {
-    var self = this
-      , User = geddy.model.User;
+    var self = this;
 
     var localParams = params;
     if (!localParams.errCode){
@@ -34,7 +33,7 @@ var Main = function () {
     }
     console.log("params.methodType =" + params.methodType + " and params.errCode =" + params.errCode);
     console.log("this.session.get('userId') = " + this.session.get('userId'));
-    User.first({id: this.session.get('userId')}, function (err, data) {
+    geddy.model.User.first({id: this.session.get('userId')}, function (err, data) {
       var params = localParams;
       params.user = null;
       params.authType = null;
