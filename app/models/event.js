@@ -522,7 +522,7 @@ Event.changeDateTime = function(params, callback)
         }
 
         //check to see if fields are valid
-        if(eventModel.time1 >= evenModel.time2)
+        if(eventModel.time1 >= eventModel.time2)
         {
           responseDict.errCode = 11;
           responseDict.message = "invalid times";
@@ -530,7 +530,7 @@ Event.changeDateTime = function(params, callback)
           return;
         }
 
-        if(eventModel.begindate >= evenModel.enddate)
+        if(eventModel.begindate >= eventModel.enddate)
         {
           responseDict.errCode = 11;
           responseDict.message = "invalid dates";

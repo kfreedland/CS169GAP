@@ -11,6 +11,14 @@ var resetFixture = function (done)
 	});
 };
 
+describe('Event', function()
+{
+	beforeEach(function(done) 
+	{
+		//Erase database
+		resetFixture(done);
+	});
+
 
 describe('Event.invite valid emails', function()
 	{
@@ -579,6 +587,8 @@ describe('Event.invite null eventid', function()
 			});
 		});
 	});
+
+});
 
 
 
