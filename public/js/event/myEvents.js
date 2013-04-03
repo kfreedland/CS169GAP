@@ -7,8 +7,6 @@ $(document).ready(function() {
         contentType: "application/json",
         dataType: "json",
         success: function(respData) {
-        	console.log("TEST");
-        	console.log(respData);
         	addMyEvents(respData.events);
         },
         failure: function(err) {

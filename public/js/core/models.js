@@ -484,15 +484,16 @@ Event.add = function(params, callback)
             eventDict.activityid = params.activityid;
             eventDict.attendingusers = userIds.toString();
             var eventRecord = geddy.model.Event.create(eventDict);
+            console.log("USER IDS:");
+            console.log(userIds.toString());
+            console.log("EVENT RECORD:");
+            console.log(eventRecord);
             geddy.model.Event.save(eventRecord, function(err, eventModel)
             {
               if(err)
               {
-<<<<<<< HEAD
-=======
                 console.log("error in event.save in Event.add");
                 console.dir(err);
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
                 callback(backendError);
               }
               else
@@ -545,6 +546,8 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
+    console.log("GET EMAIL AND ID:");
+    console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
       //console.log('EMAIL found is: '+name);
@@ -557,11 +560,8 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
       {
           if(err)
           {
-<<<<<<< HEAD
-=======
             console.log("error in user.first in Event.add");
             console.dir(err);
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
             errorCallback(backendError);
           }
           else
@@ -583,6 +583,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     result = {};
     result.email = emails;
     result.id = userIds;
+    console.log(result);
     successCallback(result);
 }
 
@@ -601,11 +602,8 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
       {
         if(err)
         {
-<<<<<<< HEAD
-=======
           console.log("error in event.save in Event.addUsersToEvent");
           console.dir(err);
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
           callback(backendError);
         }
         else
@@ -661,10 +659,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
               {
                 userRecord.myevents = eventid;
               }
-<<<<<<< HEAD
-=======
               userRecord.confirmPassword = userRecord.password;
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
               geddy.model.User.save(userRecord, function(err, result)
               {
                 if(!err)
@@ -693,11 +688,8 @@ function addEventToUsers(eventid, userIds, callback)
     {
       if(err)
       {
-<<<<<<< HEAD
-=======
         console.log("error in user.first in Event.addEventToUsers");
         console.dir(err);
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
         callback(backendError);
       }
       else
@@ -716,11 +708,8 @@ function addEventToUsers(eventid, userIds, callback)
         {
           if(err)
           {
-<<<<<<< HEAD
-=======
             console.log("error in event.save in Event.addEventToUsers");
             console.dir(err);
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
             callback(backendError);
           }
 
@@ -811,23 +800,6 @@ Event.invite = function(params, callback)
     callback(responseDict);
     return;
   } 
-<<<<<<< HEAD
-
-
-  geddy.model.Event.first({id: eventID}, function (err, eventModel) 
-    {
-
-      if(err){
-        //handle error
-        responseDict.errCode = 7;
-        responseDict.message = "database error";
-        callback(responseDict);
-        return;
-      } 
-      else 
-      {
-
-=======
 
 
   geddy.model.Event.first({id: eventID}, function (err, eventModel) 
@@ -845,7 +817,6 @@ Event.invite = function(params, callback)
       else 
       {
 
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
         if(eventModel)
         {
           //invite all emails
@@ -1073,11 +1044,8 @@ Event.changeDateTime = function(params, callback)
 
       if (err){
         //handle error
-<<<<<<< HEAD
-=======
         console.log("err change date time");
         console.dir(err);
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
         responseDict.errCode = 7;
         responseDict.message = "database error";
         callback(responseDict);
@@ -1139,11 +1107,8 @@ Event.changeDateTime = function(params, callback)
         {
           if(err)
           {
-<<<<<<< HEAD
-=======
             console.log("error in Event.save in changeDateTime");
             console.dir(err);
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
             responseDict.errCode = 7;
             responseDict.message = "database error";
             callback(responseDict);
@@ -1172,11 +1137,8 @@ Event.changeDateTime = function(params, callback)
 Event.getMyEvents = function (params, callback) {
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
     if (err){
-<<<<<<< HEAD
-=======
       console.log("error in getMyEvents");
       console.dir(err);
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
       responseDict.events = [];
       // console.log("err exists: ");
       // console.dir(err);
@@ -1191,26 +1153,15 @@ Event.getMyEvents = function (params, callback) {
             var eventId = eventIds[index];
             geddy.model.Event.first({id: eventId}, function (err, eventModel){
               if (err){
-<<<<<<< HEAD
-=======
                 console.log("error in event.first in getMyEvents");
                 console.dir(err);
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
                 responseDict.events = [];
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
-<<<<<<< HEAD
-                myEvents.push(eventModel);
-              }
-              if (index == eventIds.length - 1){
-=======
-                //console.log("EVENT MODEL:");
-                //console.log(eventModel);
                 myEvents.push(eventModel);
               }
               if (index == myEvents.length - 1){
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
                 getEventsCallback(1, myEvents, callback);
               }
             });

@@ -146,8 +146,6 @@ var Events = function () {
     geddy.model.Event.getMyEvents({userId: self.session.get('userId')}, function(responseDict) {
       params.errCode = responseDict.errCode;
       params.events = responseDict.events;
-      console.log('RESPONSE FROM MY EVENTS');
-      console.log(responseDict);
       self.respond(responseDict, {format: 'json'});
     });
   };

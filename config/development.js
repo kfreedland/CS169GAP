@@ -21,9 +21,8 @@ var config = {
 , debug: true
 , hostname: 'localhost'
 , port: 4000
-<<<<<<< HEAD
-// // , model: {
-// //  defaultAdapter: 'memory'
+// , model: {
+//  defaultAdapter: 'memory'
 // }
   , model: {
       defaultAdapter: 'postgres'
@@ -37,23 +36,6 @@ var config = {
   	, port: 5432
   	}
   }
-=======
-// , model: {
-//  defaultAdapter: 'memory'
-// }
-, model: {
-    defaultAdapter: 'postgres'
-  }
-, db: {
-	postgres: {
-	  user: 'testing'
-	, database: 'postgres'
-	, password: 'gap169'
-	, host: 'localhost'
-	, port: 5432
-	}
-}
->>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
 , sessions: {
   store: 'memory'
 , key: 'sid'

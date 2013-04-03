@@ -69,6 +69,10 @@ Event.add = function(params, callback)
             eventDict.activityid = params.activityid;
             eventDict.attendingusers = userIds.toString();
             var eventRecord = geddy.model.Event.create(eventDict);
+            console.log("USER IDS:");
+            console.log(userIds.toString());
+            console.log("EVENT RECORD:");
+            console.log(eventRecord);
             geddy.model.Event.save(eventRecord, function(err, eventModel)
             {
               if(err)
@@ -127,6 +131,8 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
+    console.log("GET EMAIL AND ID:");
+    console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
       //console.log('EMAIL found is: '+name);
@@ -162,6 +168,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     result = {};
     result.email = emails;
     result.id = userIds;
+    console.log(result);
     successCallback(result);
 }
 
