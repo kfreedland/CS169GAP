@@ -243,8 +243,10 @@ Event.invite = function(params, callback)
 
     if (!isValidEmail(emailAddr))
     {
+      console.log("ADDING BAD EMAIL");
       //email address is malformed
       badEmails.push(emailAddr);
+      console.log("bad emails = " + badEmails);
     } else {
 
       goodEmailsString += emailAddr + ", ";
@@ -351,7 +353,7 @@ function isValidEmail(email) {
   {
     return false;
   }
-  return check(email).isEmail();
+
 } 
 
 Event.changeDateTime = function(params, callback) 
