@@ -439,13 +439,7 @@ Event.getMyEvents = function (params, callback) {
       responseDict.errCode = 7;
       callback(responseDict);
     } else {
-      if (err){
-        responseDict.events = [];
-        // console.log("err exists: ");
-        // console.dir(err);
-        responseDict.errCode = 7;
-        callback(responseDict);
-      } else if (userModel){
+      if (userModel){
         // console.log("myevents = ");
         // console.dir(userModel.myevents);
         var myEvents = [];
@@ -456,8 +450,6 @@ Event.getMyEvents = function (params, callback) {
             geddy.model.Event.first({id: eventId}, function (err, eventModel){
               if (err){
                 responseDict.events = [];
-                console.log("err exists: ");
-                console.dir(err);
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
