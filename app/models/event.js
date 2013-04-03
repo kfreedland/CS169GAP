@@ -1,5 +1,7 @@
 var nodemailer = require("nodemailer")
-  , check = require("validator").check;
+  , check = require("validator").check
+  , blade = require("blade");
+
 var incorrectParams = {errCode: 6};
 var backendError = {errCode: 7};
 var badTimes = {errCode: 8};
@@ -43,7 +45,7 @@ var Event = function () {
 
 Event.add = function(params, callback)
 {
-  if(params.name && params.startdate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
+  if(params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
     var usernamesOrEmails = params.attendingusers.split(',');
     getEmailAndId(usernamesOrEmails, callback, function(emailAndId)
@@ -56,12 +58,12 @@ Event.add = function(params, callback)
       {
         if(activityRecord &&  activityRecord.name) //basic assertion that record exists
         {
-          if(params.startdate <= params.enddate && params.time1 <= params.time2)
+          if(params.begindate <= params.enddate && params.time1 <= params.time2)
           {
             //all required fields are valid
             eventDict = {};
             eventDict.name = params.name;
-            eventDict.startdate = params.startdate;
+            eventDict.begindate = params.begindate;
             eventDict.enddate = params.enddate;
             eventDict.time1 = params.time1;
             eventDict.time2 = params.time2;
@@ -370,30 +372,75 @@ Event.invite = function(params, callback)
           });
 
           //Append event data to message
-          message = message + "";
+          blade.compileFile('app/helpers/templates/bladeEmailTemplate.blade', function (err, tmpl) {
+            console.log("Compiled Blade File");
+            if (!err && tmpl){
+              //Look up activity info
+              geddy.model.Activity.first({id: eventModel.activityid}, function (err, activityModel) {
+                if (activityModel){
+                  //TODO Get Location
+                  reverseGeocodeAddressForActivity(activityModel, function(address) {
+                    //Convert time to human readable
+                    var time1 = convertMsToString(eventModel.time1);
+                    var time2 = convertMsToString(eventModel.time2);
+                    eventModel.time1 = time1;
+                    eventModel.time2 = time2;
+                    //Convert date to human readable
+                    var beginDate = new Date(eventModel.begindate);
+                    var endDate = new Date(eventModel.enddate);
+                    eventModel.begindate = beginDate.toDateString();
+                    eventModel.enddate = endDate.toDateString();
+                    var templateVars = {
+                      event: eventModel,
+                      activity: activityModel,
+                      message: message,
+                      location: address
+                    };
 
-          var mailOptions = {
-              from: "Group Activity Planner ✔ <groupactivityplanner@gmail.com>", // sender address
-              to: goodEmailsString, // list of receivers
-              subject: "You have been invited to an event!", // Subject line
-              text: message, // plaintext body
-              html: null // html body
-          };
+                    var templateHTML = tmpl(templateVars, function(err, html) {
+                        console.log("GOT HTML");
+                        if(err) throw err;
 
-          // send mail with defined transport object
-          smtpTransport.sendMail(mailOptions, function(error, response){
-              if(error){
-                  responseDict.errCode = 13;
-                  responseDict.message = "email failed";
-                  callback(responseDict);
-                  return;
-              }else{
-                  responseDict.errCode = 1;
-                  callback(responseDict);
-                  return;
-              }
+                        var templateHTML = null;
+                        if (html){
+                          templateHTML = html;
+                        }
 
-              smtpTransport.close();
+                        var mailOptions = {
+                            from: "Group Activity Planner ✔ <groupactivityplanner@gmail.com>", // sender address
+                            to: goodEmailsString, // list of receivers
+                            subject: "You have been invited to an event!", // Subject line
+                            text: null, // plaintext body
+                            html: templateHTML // html body
+                        };
+
+                        // send mail with defined transport object
+                        smtpTransport.sendMail(mailOptions, function(error, response){
+                            if(error){
+                                responseDict.errCode = 13;
+                                responseDict.message = "email failed";
+                                callback(responseDict);
+                                return;
+                            }else{
+                                responseDict.errCode = 1;
+                                callback(responseDict);
+                                return;
+                            }
+
+                            smtpTransport.close();
+
+                        });
+                    });
+                  });
+                }
+              });
+              
+            } else {
+              responseDict.errCode = 13;
+              responseDict.message = "email failed";
+              callback(responseDict);
+            }
+
 
           });
 
@@ -412,8 +459,6 @@ Event.invite = function(params, callback)
 };
 
 function isValidEmail(email) { 
-
-
   try
   {
     check(email).isEmail();
@@ -423,7 +468,56 @@ function isValidEmail(email) {
   {
     return false;
   }
+}
 
+function reverseGeocodeAddressForActivity(activityModel, callback) {
+  if (activityModel.latitude && activityModel.longitude){
+    var gm = require('googlemaps');
+    var util = require('util');
+
+    var latLong = activityModel.latitude + ',' + activityModel.longitude;
+    gm.reverseGeocode(latLong, function(err, data){
+      if (err){
+        callback(null);
+      }
+       else 
+      {
+        var address = '';
+        if (data.status == "OK") {
+          address = data.results[0].formatted_address;
+        }
+        callback(address);
+      }
+    });
+  } else {
+    callback(null);
+  }
+}
+function convertMsToString(time) {
+  // Create a Date object with that time as the milliseconds
+  var d = new Date(0,0,0,0,0,0,time);
+  var hours = d.getHours();
+  var hoursStr = hours.toString();
+  var minutes = d.getMinutes();
+  var minutesStr = minutes.toString();
+  var am_pm = 'AM';
+
+  // Change from 24-hr clock time to 12-hr clock time
+  if (hours === 12) {
+    am_pm = 'PM';
+  } else if (hours > 12) {
+    hours = hours % 12;
+    am_pm = 'PM';
+    hoursStr = hours.toString();
+  }
+  // Add the '0' before the minutes if less than 10 minutes
+  if (minutes < 10) {
+    minutesStr = '0' + minutesStr;
+  }
+
+  // Create the string in the proper format HH:MM(AM/PM)
+  var dateString = hoursStr + ':' + minutesStr + am_pm;
+  return dateString;
 }
 
 Event.changeDateTime = function(params, callback) 

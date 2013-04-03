@@ -29,8 +29,8 @@ describe('Event.invite valid emails', function()
             eventDict.highprice = '0';
             eventDict.lownumparticipants = '1';
             eventDict.highnumparticipants = undefined;
-            eventDict.latitude = undefined;
-            eventDict.longitude = undefined;
+            eventDict.latitude = '37.87';
+            eventDict.longitude = '-122.2705';
             eventDict.duration = '2';
 
             Activity.add(eventDict, function(err, response)
@@ -40,7 +40,7 @@ describe('Event.invite valid emails', function()
                             confirmPassword: 'MyPassword!',
                             familyName: 'LastName1',
                             givenName: 'FirstName1',
-                            email: 'greg@greg.com'});
+                            email: 'elayman123@gmail.com'});
                 User.add(user, function (answerDict) 
                 {
                     var eventData = {};
@@ -52,10 +52,10 @@ describe('Event.invite valid emails', function()
                             var d = new Date();
                             eventData.name ="jogging with friends";
                             eventData.activityid = activityRecord.id;
-                            eventData.time1 = 500;
-                            eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
-                            eventData.enddate = d.getTime() + 50000;
+                            eventData.time1 = 39600000;
+                            eventData.time2 = 43200000;
+                            eventData.begindate = d.getTime();
+                            eventData.enddate = d.getTime() + 86400000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
 
@@ -134,7 +134,7 @@ describe('Event.invite valid and invalid emails', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
@@ -215,7 +215,7 @@ describe('Event.invite empty email list', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
@@ -296,7 +296,7 @@ describe('Event.invite emails undefined', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
@@ -378,7 +378,7 @@ describe('Event.invite null message', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
@@ -459,7 +459,7 @@ describe('Event.invite invalid event id', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
@@ -541,7 +541,7 @@ describe('Event.invite null eventid', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;

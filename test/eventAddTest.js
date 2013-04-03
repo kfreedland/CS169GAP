@@ -118,7 +118,7 @@ describe('Event', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
@@ -179,7 +179,7 @@ describe('Event', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.id;
@@ -258,7 +258,7 @@ describe('Event', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = uId;
@@ -319,7 +319,7 @@ describe('Event', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 1000;
                             eventData.time2 = 500;
-                            eventData.startdate = d.getTime() + 50000;
+                            eventData.begindate = d.getTime() + 50000;
                             eventData.enddate = d.getTime();
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
@@ -380,7 +380,7 @@ describe('Event', function()
                             eventData.activityid = 'prettysurethisisntvalid';
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;

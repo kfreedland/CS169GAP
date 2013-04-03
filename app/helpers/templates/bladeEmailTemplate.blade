@@ -1,0 +1,18 @@
+!!! 5
+html
+    body
+        #content.center
+            h2
+                = event.name
+            = message
+            ul
+                = event.description
+            ul
+                = "Date: " + event.begindate + "-" + event.enddate
+            ul
+                = "Time: " + event.time1 + "-" + event.time2
+            - if (location)
+                ul
+                    = "Location: " + location
+        #content.center
+            h4 Group Activity Planner

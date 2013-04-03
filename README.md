@@ -98,7 +98,7 @@ CS169GAP
 		<li>5 - Auth Failed (for Login)</li>
 		<li>6 - Missing Required Parameter (for Create/Find Activity/Event)</li>
 		<li>7 - Backend Error - Probably retry</li>
-		<li>8 - Event dates/times are incorrect (startdate > enddate)</li>
+		<li>8 - Event dates/times are incorrect (begindate > enddate)</li>
 		<li>9 - User/Activity specified to add to the event does not exist</li>
 		<li>10 - EventID passed to backend does not correspond to a valid event </li>
 		<li>11 - Event date/time is invalid </li>

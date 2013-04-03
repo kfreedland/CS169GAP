@@ -51,7 +51,7 @@ describe('Event.changeDateTime change time1', function()
                             eventData.activityid = activityRecord.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
-                            eventData.startdate = d.getTime();
+                            eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
