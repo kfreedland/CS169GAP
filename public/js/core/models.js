@@ -657,7 +657,10 @@ Event.invite = function(params, callback)
   //chop off the ", " at the end of the string
   if(goodEmailsString.length > 2)
   {
-    goodEmailsString = goodEmailsString.substring(0,goodEmailsString.length-3);
+
+    console.log("goodEmailsString = " + goodEmailsString);
+    goodEmailsString = goodEmailsString.substring(0,goodEmailsString.length-2);
+    console.log("goodEmailsString truncated = " +goodEmailsString);
   } 
   else
   {
