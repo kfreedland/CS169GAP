@@ -165,6 +165,14 @@ var Activities = function () {
     });
   };
 
+  this.getActivityById = function (req, resp, params) {
+    var self = this;
+
+    geddy.model.Activity.getById(params.activityid, function (responseDict) {
+      self.respond(responseDict, {format: 'json'});
+    });
+  };
+
 /*
   this.show = function (req, resp, params) {
     var self = this;

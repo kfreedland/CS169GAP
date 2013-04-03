@@ -18,6 +18,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 11:</b>
+	//Added getActivityById Method to Activity
+
 <b>Changelog Entry 10:</b>
 	//Updated Run Configuration
 	
@@ -106,7 +109,27 @@ CS169GAP
 		<li>13 - Invite Email failed to send </li>
 	</ul>
 
-<h2>CREATE ACTIVITY AND SEARCH FOR ACTIVITY:</h2>
+<h2> ACTIVITIES </h2>
+
+<h6> GET ACTIVITY BY ID </h6>
+//Gets an activity for the given id
+
+<h3>Params: </h3>
+<ul>
+	{
+		</li>'activityid': [string, required]</li>
+	}
+</ul>
+
+<h3>Response </h3>
+<ul>
+	{
+		<li>'errCode': [1 if success, 6 if missing activityid, 7 if database error] </li>
+		<li>'activity': [JSON encoded Activity Model if errCode=1, null otherwise] </li>
+	}
+</ul>
+
+<h6>CREATE ACTIVITY AND SEARCH FOR ACTIVITY:</h6>
 //Creates activity in database with corresponding fields
 
 <h3>Params: </h3>

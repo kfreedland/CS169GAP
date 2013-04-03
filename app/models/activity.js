@@ -372,7 +372,28 @@ Activity.search = function search(params, myLat, myLong, callback)
       callback(activities);
     }
   });
-};    
+};  
+
+Activity.getById = function (activityID, callback){
+  if (activityID){
+    geddy.model.Activity.first({id: activityID}, function (err, activityModel) {
+      var responseDict = {};
+      if (!err && activityModel) {
+        responseDict.errCode = 1;
+        responseDict.activity = activityModel;
+      } else {
+        responseDict.errCode = 7;
+        responseDict.activity = null;
+      }
+      callback(responseDict);
+    });
+  } else {
+    var responseDict = {};
+    responseDict.errCode = 6;
+    responseDict.activity = null;
+    callback(responseDict);
+  }
+};
 
 Activity.TESTAPI_resetFixture = function (callback) {
   geddy.model.Activity.all(function (err, result) {

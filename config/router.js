@@ -49,6 +49,7 @@ router.get('/users/usernames').to('Users.getUsernames');
 router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
 router.get('/activities/activitydetail').to('Activities.detail');
+router.get('/activities/getactivitybyid').to('Activities.getActivityById');
 
 router.post('/events/create').to('Events.add');
 router.post('/events/invite').to('Events.invite');
