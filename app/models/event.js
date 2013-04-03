@@ -239,6 +239,8 @@ Event.invite = function(params, callback)
   for(var index in emailList)
   {
     var emailAddr = emailList[index];
+
+
     if (!isValidEmail(emailAddr))
     {
       //email address is malformed
@@ -338,8 +340,18 @@ Event.invite = function(params, callback)
 };
 
 function isValidEmail(email) { 
-  return check(email).isEmail();
 
+
+  try
+  {
+    check(email).isEmail();
+    return true;
+  } 
+  catch (error)
+  {
+    return false;
+  }
+  return check(email).isEmail();
 } 
 
 Event.changeDateTime = function(params, callback) 
