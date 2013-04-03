@@ -69,8 +69,6 @@ var Users = function () {
       params.authType = null;
       if (data) {
         params.user = data;
-        // TODO: Commented out since it breaks the code
-        //params.authType = authTypes[self.session.get('authType')].name;
       }
       self.respond(params, {
         format: 'html'

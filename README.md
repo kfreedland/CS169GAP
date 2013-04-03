@@ -128,14 +128,14 @@ CS169GAP
 <h2> EVENTS </h2>
 
 <h6><b>CREATE EVENT</b></h6>
-//Creates an event and returns it with the correspoding fileds
+//Creates an event and returns it with the corresponding fields
 <h3>Params: </h3>
 <ul>
 	{
-		<li>'name': [string]<li>
-		<li>'description': [string]</li>
-		<li>'time1': [int milliseconds since midnight</li>
-		<li>'time2': [int, milliseconds since midnight</li>
+		<li>'name': [string],</li>
+		<li>'description': [string],</li>
+		<li>'time1': [int milliseconds since midnight],</li>
+		<li>'time2': [int, milliseconds since midnight],</li>
 		<li>'begindate': [milliseconds since epoch, int],</li>
 		<li>'enddate': [milliseconds since epoch, int],</li>
 		<li>'attendingusers': [CSV string of user ids],</li>
@@ -150,11 +150,11 @@ CS169GAP
 <h3>Params: </h3>
 <ul>
 	{
-		<li>'eventid': [string]</li>
-		<li>'time1': [int milliseconds since midnight]</li>
-		<li>'time2': [int, milliseconds since midnight]</li>
+		<li>'eventid': [string],</li>
+		<li>'time1': [int milliseconds since midnight],</li>
+		<li>'time2': [int, milliseconds since midnight],</li>
 		<li>'begindate': [milliseconds since epoch, int],</li>
-		<li>'enddate': [milliseconds since epoch, int],</li>	
+		<li>'enddate': [milliseconds since epoch, int]</li>	
 	
 	}
 
@@ -177,8 +177,8 @@ CS169GAP
 <h3>Params: </h3>
 <ul>
 	{
-		<li>'eventid': [string]</li>
-		<li>'emails': [List of strings]</li>
+		<li>'eventid': [string],</li>
+		<li>'emails': [List of strings],</li>
 		<li>'message': [String]</li>
 
 	}

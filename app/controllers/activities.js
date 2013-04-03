@@ -155,7 +155,6 @@ var Activities = function () {
       params.authType = null;
       if (data) {
         params.user = data;
-        params.authType = authTypes[self.session.get('authType')].name;
       }
       self.respond(params, {
         format: 'html'
