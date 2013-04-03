@@ -338,6 +338,14 @@ Event.invite = function(params, callback)
           });
 
         }
+         else 
+        {
+        
+        responseDict.errCode = 10;
+        responseDict.message = "invalid eventid";
+        callback(responseDict);
+        return;
+        }
       }
 
     });

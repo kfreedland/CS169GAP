@@ -682,6 +682,8 @@ Event.invite = function(params, callback)
         //handle error
         responseDict.errCode = 10;
         responseDict.message = "invalid eventid";
+        callback(responseDict);
+        return;
       } 
       else 
       {
@@ -729,6 +731,14 @@ Event.invite = function(params, callback)
 
           });
 
+        }
+         else 
+        {
+        
+        responseDict.errCode = 10;
+        responseDict.message = "invalid eventid";
+        callback(responseDict);
+        return;
         }
       }
 
