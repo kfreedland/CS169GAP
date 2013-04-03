@@ -28,6 +28,7 @@ module.exports = {
       var userData = {
         givenName: profile.name.givenName || profile.username
       , familyName: profile.name.familyName
+      , email: profile.email
       };
       return userData;
     }
