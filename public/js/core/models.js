@@ -391,9 +391,13 @@ Event.invite = function(params, callback)
           var smtpTransport = nodemailer.createTransport("SMTP",{
               service: "Gmail",
               auth: {
-                  user: "groupactivityplanner@gmail.com",
-                  pass: "gapgapgap"
+                user: "groupactivityplanner.gap@gmail.com",
+                pass: "gapgapgap"
               }
+              // auth: {
+              //     user: "groupactivityplanner@gmail.com",
+              //     pass: "gapgapgap"
+              // }
           });
 
           //Append event data to message
@@ -713,8 +717,8 @@ Event.getMyEvents = function (params, callback) {
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
-                console.log("EVENT MODEL:");
-                console.log(eventModel);
+                //console.log("EVENT MODEL:");
+                //console.log(eventModel);
                 myEvents.push(eventModel);
               }
               if (index == eventIds.length - 1){
