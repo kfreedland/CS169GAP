@@ -431,6 +431,42 @@ function isValidEmail(email) {
 Event.changeDateTime = function(params, callback) 
 {
 
+  var self = this;
+
+  var respDict = {};
+
+  //eventid
+  if(!params.eventid)
+  {
+    responseDict.errCode = 6;
+    responseDict.message = "null eventid";
+    callback(responseDict);
+    return;
+  } else {
+    var eventID = params.eventid;
+  }
+
+  if (!params.time1 && !params.time2 && !params.begindate && !params.enddate )
+  {
+    responseDict.errCode = 6;
+    responseDict.message = "all date/time parameters are null";
+    callback(responseDict);
+    return;
+  }
+
+  //time1
+
+  //time2
+
+  //begindate
+
+  //enddate
+
+
+
+
+
+
 };
 
 Event.getMyEvents = function (params, callback) {
