@@ -52,7 +52,6 @@ router.get('/activities/activitydetail').to('Activities.detail');
 router.get('/activities/getactivitybyid').to('Activities.getActivityById');
 
 router.post('/events/create').to('Events.add');
-router.post('/events/invite').to('Events.invite');
 router.post('/events/changedatetime').to('Events.changeDateTime');
 router.get('/events/getmyevents').to('Events.getMyEvents');
 router.get('/events/createnew').to('Events.createNewEvent');
