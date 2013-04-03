@@ -53,6 +53,7 @@ function execute_test_code(mochaInstance, cb) {
     mochaInstance.addFile('./test/userTest.js');
     mochaInstance.addFile('./test/activityAddTest.js');
     mochaInstance.addFile('./test/activityFindTest.js');
+    mochaInstance.addFile('./test/getActivityByIdTest.js');
     mochaInstance.addFile('./test/eventAddTest.js');
     mochaInstance.addFile('./test/eventChangeDateTimeTest.js');
     mochaInstance.addFile('./test/eventInviteTest.js');
