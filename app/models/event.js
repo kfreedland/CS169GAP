@@ -151,7 +151,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, userIds, callback)
 {
-  console.log('running addUsersToEvent');
   userIds = userIds.split(',');
   geddy.model.Event.first({id: eventid}, function(err, eventRecord)
   {
