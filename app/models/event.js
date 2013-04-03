@@ -286,8 +286,8 @@ Event.invite = function(params, callback)
 
       if(err){
         //handle error
-        responseDict.errCode = 10;
-        responseDict.message = "invalid eventid";
+        responseDict.errCode = 7;
+        responseDict.message = "database error";
         callback(responseDict);
         return;
       } 
