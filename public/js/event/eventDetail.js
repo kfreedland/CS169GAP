@@ -36,11 +36,10 @@ function handleEventDetailResponse(jsonData) {
 function inviteMoreFriends(eventID) {
 	$('#inviteFriendsButton').click(function() {
 		var invitedFriends = $('#invitedFriends').val();
-		var friendList = invitedFriends.split(',');
-		var friendsData = {eventid: eventID, emails: friendList, message: ''};
+		var friendsData = {eventid: eventID, usernames: invitedFriends};
 		$.ajax({
 	        type: 'POST',
-	        url: '/events/invite',
+	        url: '/events/adduserstoevent',
 	        data: JSON.stringify(friendsData),
 	        contentType: "application/json",
 	        dataType: "json",

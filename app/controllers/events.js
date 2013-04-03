@@ -193,16 +193,17 @@ var Events = function () {
   };
 
   this.addUsersToEvent = function(req, resp, params) {
+    var self = this;
     if(params.usernames && typeof params.usernames == 'string' && params.eventid && typeof params.eventid == 'string')
     {
       geddy.model.Event.addUsersToEvent(params.eventid, params.usernames, function(resp)
       {
-        self.respond(resp);
+        self.respond(resp, {format: 'json'});
       });
     }
     else
     {
-      self.resp({errCode: 1});
+      self.resp({errCode: 1}, {format: 'json'});
     }
   }
   // Event Detail

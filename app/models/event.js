@@ -179,10 +179,18 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
   {
     if(eventRecord && eventRecord.attendingusers)
     {
+      console.log(usernames);
+
       var data = eventRecord.attendingusers.split(',').concat(usernames);
-      var newUids = data.id;
+      console.log(data);
+      var newUids = data;
+      console.log("NEWUID");
+      console.log(newUids);
       newUids = validateUserIds(newUids, eventid);
       eventRecord.attendingusers = newUids.toString();
+      console.log("EVENT RECORD");
+      console.log(eventRecord);
+      console.log(newUids);
       geddy.model.Event.save(eventRecord, function(err, result)
       {
         if(err)
@@ -214,15 +222,20 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
   idHash = {};
   idReturn = [];
   emailReturn = [];
+  console.log("ID ARRAY");
+  console.log(idArray)
   for(var key in idArray)
   {
     var id = idArray[key];
+    console.log("ID");
+    console.log(id);
     if(idHash[id])
     {
       continue;
     }
     else
     {
+      console.log("TEST4");
       idHash[id] = true;
       if(id.indexOf('@') >= 0)
       {
@@ -230,12 +243,16 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       }
       else
       {
+        console.log("TEST5");
         geddy.model.User.first({username: id}, function(err, userRecord)
         {
+          console.log("TEST6");
           if(userRecord && userRecord.username)
           {
+            console.log("TEST7");
             if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
             {
+              console.log("TEST8");
               if(userRecord.myevents)
               {
                 userRecord.myevents += ',' + eventid;
@@ -245,10 +262,13 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 userRecord.myevents = eventid;
               }
               userRecord.confirmPassword = userRecord.password;
+              console.log("TEST");
               geddy.model.User.save(userRecord, function(err, result)
               {
+                console.log("TEST2");
                 if(!err)
                 {
+                  console.log("TEST3");
                   emailReturn.push(userRecord.email);
                   idReturn.push(userRecord.username);
                 }
@@ -261,6 +281,8 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
   }
   toReturn.id = idReturn;
   toReturn.email = emailReturn;
+  console.log("TO RETURN:");
+  console.log(toReturn);
   return toReturn;
 }
 
