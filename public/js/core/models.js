@@ -399,15 +399,6 @@ var backendError = {errCode: 7};
 var badTimes = {errCode: 8};
 var badTableJoin = {errCode: 9};
 
-// create reusable transport method (opens pool of SMTP connections)
-var smtpTransport = nodemailer.createTransport("SMTP",{
-    service: "Gmail",
-    auth: {
-        user: "groupactivityplanner@gmail.com",
-        pass: "gapgapgap"
-    }
-});
-
 var Event = function () {
 
   this.defineProperties({
@@ -746,8 +737,7 @@ Event.invite = function(params, callback)
   } 
 
 
-
-  geddy.model.Event.first({id: eventID}, function (err, result) 
+  geddy.model.Event.first({id: eventID}, function (err, eventModel) 
     {
 
       if(err){
@@ -760,9 +750,21 @@ Event.invite = function(params, callback)
       else 
       {
 
-        if(result)
+        if(eventModel)
         {
           //invite all emails
+
+          // create reusable transport method (opens pool of SMTP connections)
+          var smtpTransport = nodemailer.createTransport("SMTP",{
+              service: "Gmail",
+              auth: {
+                  user: "groupactivityplanner@gmail.com",
+                  pass: "gapgapgap"
+              }
+          });
+
+          //Append event data to message
+          message = message + "";
 
           var mailOptions = {
               from: "Group Activity Planner ✔ <groupactivityplanner@gmail.com>", // sender address
@@ -821,6 +823,144 @@ function isValidEmail(email) {
 Event.changeDateTime = function(params, callback) 
 {
 
+  var self = this;
+
+  var responseDict = {};
+
+  //eventid
+  if(!params.eventid)
+  {
+    responseDict.errCode = 6;
+    responseDict.message = "null eventid";
+    callback(responseDict);
+    return;
+  } else {
+    var eventID = params.eventid;
+  }
+
+  if (!params.time1 && !params.time2 && !params.begindate && !params.enddate )
+  {
+    responseDict.errCode = 6;
+    responseDict.message = "all date/time parameters are null";
+    callback(responseDict);
+    return;
+  }
+
+  //time1
+  var newTime1 = undefined;
+  if(params.time1) {
+    newTime1 = parseFloat(params.time1);
+  }
+
+  //time2
+  var newTime2 = undefined;
+  if(params.time2) {
+    newTime2 = params.time2;
+  }
+
+  //begindate
+  var newBeginDate = undefined;
+  if(params.time2) {
+    newBeginDate = params.begindate;
+  }
+
+  //enddate
+  var newEndDate = undefined;
+  if(params.time2) {
+    newEndDate = params.enddate;
+  }
+
+
+  //get the event
+  geddy.model.Event.first({id: eventID}, function (err, eventModel) 
+    {
+
+      if (err){
+        //handle error
+        responseDict.errCode = 7;
+        responseDict.message = "database error";
+        callback(responseDict);
+        return;
+      } 
+      else 
+      {
+
+        if(!eventModel)
+        {
+          //event model for this id not found
+          responseDict.errCode = 10;
+          responseDict.message = "invalid eventid";
+          callback(responseDict);
+          return;
+
+        }
+        else
+        {
+
+          //set fields if neccesary
+          if (newTime1 !== undefined) {
+            eventModel.time1 = newTime1;
+          }
+
+          if (newTime2 !== undefined) {
+            eventModel.time2 = newTime2;
+          }
+
+          if (newBeginDate !== undefined) {
+            eventModel.begindate = newBeginDate;
+          }
+
+          if (newEndDate !== undefined) {
+            eventModel.enddate = newEndDate;
+          }
+        }
+
+        //check to see if fields are valid
+        if(eventModel.time1 >= evenModel.time2)
+        {
+          responseDict.errCode = 11;
+          responseDict.message = "invalid times";
+          callback(responseDict);
+          return;
+        }
+
+        if(eventModel.begindate >= evenModel.enddate)
+        {
+          responseDict.errCode = 11;
+          responseDict.message = "invalid dates";
+          callback(responseDict);
+          return;
+        }
+
+
+        //save model!
+        geddy.model.Event.save(eventModel, function(err, result)
+        {
+          if(err)
+          {
+            responseDict.errCode = 7;
+            responseDict.message = "database error";
+            callback(responseDict);
+            return;
+
+          } 
+          else if (result)
+          {
+            //save succeded
+            responseDict.errCode = 1;
+            callback(responseDict);
+            return;
+          } 
+          else
+          {
+            responseDict.errCode = 7;
+            responseDict.message = "database error";
+            callback(responseDict);
+            return;            
+          }
+        }
+      }
+    });
 };
 
 Event.getMyEvents = function (params, callback) {
