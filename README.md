@@ -2,8 +2,9 @@ CS169GAP
 ========
 <h1>RUN CONFIGURATION</h1>
 <b>Info needed to Run App:</b>
-	<p>Latest version has facebook passport auth, need the following command:</p> 
-	<p>sudo npm install passport-facebook</p>
+	<p>Run the following commands to install all dependencies</p> 
+	<p>sudo npm install</p>
+	<p>sudo npm install -g</p>
 	<p>Also need to create the database and tables: instructions found below</p>
 	
 	<p>To run the app on your local machine:</p>
@@ -17,6 +18,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 10:</b>
+	//Updated Run Configuration
+	
 <b>Changelog Entry 9:</b>
 	//Added getMyEvents API 
 	//Added response information for User API section
