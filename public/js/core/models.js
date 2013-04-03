@@ -550,8 +550,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     result.id = userIds;
     successCallback(result);
 }
-
-
 Event.addUsersToEvent = function(eventid, userIds, callback)
 {
   userIds = userIds.split(',');
@@ -622,7 +620,6 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
     }
   }
   return idReturn;
-}
 {
   for(var key in userIds)
   {
@@ -661,7 +658,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
   }
   callback({errCode: 1}); //success!
 }
-
+}
 
 //params requires eventid, emails, and message
 Event.invite = function(params, callback) 
@@ -754,8 +751,8 @@ Event.invite = function(params, callback)
 
       if(err){
         //handle error
-        responseDict.errCode = 10;
-        responseDict.message = "invalid eventid";
+        responseDict.errCode = 7;
+        responseDict.message = "database error";
         callback(responseDict);
         return;
       } 
@@ -836,6 +833,42 @@ function isValidEmail(email) {
 
 Event.changeDateTime = function(params, callback) 
 {
+
+  var self = this;
+
+  var respDict = {};
+
+  //eventid
+  if(!params.eventid)
+  {
+    responseDict.errCode = 6;
+    responseDict.message = "null eventid";
+    callback(responseDict);
+    return;
+  } else {
+    var eventID = params.eventid;
+  }
+
+  if (!params.time1 && !params.time2 && !params.begindate && !params.enddate )
+  {
+    responseDict.errCode = 6;
+    responseDict.message = "all date/time parameters are null";
+    callback(responseDict);
+    return;
+  }
+
+  //time1
+
+  //time2
+
+  //begindate
+
+  //enddate
+
+
+
+
+
 
 };
 
@@ -1021,18 +1054,6 @@ User.getUsernames = function(params, callback)
   });
 };
 
-User.getUsernames = function(params, callback)
-{
-  usernames = [];
-  geddy.model.User.all(function(err, result)
-  {
-    for(var recordId in result)
-    {
-      usernames.push(result.recordId.username);
-    }
-    callback(usernames);
-  });
-}
 User.TESTAPI_resetFixture = function (callback) {
   geddy.model.User.all(function (err, result) {
      // console.log("got all users models with error: " + err + " and result: " + result);
