@@ -152,7 +152,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, userIds, callback)
 {
-  console.log('running addUsersToEvent');
   userIds = userIds.split(',');
   geddy.model.Event.first({id: eventid}, function(err, eventRecord)
   {
@@ -196,7 +195,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       idHash[id] = true;
       geddy.model.User.first({id: id}, function(err, userRecord)
       {
-        if(userRecord && userRecord.name)
+        if(userRecord && userRecord.username)
         {
           if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
           {
@@ -208,7 +207,9 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
             {
               userRecord.myevents = eventid;
             }
-            geddy.model.Event.save(userRecord, function(err, result)
+            console.log('calling save');
+            console.dir(userRecord);
+            geddy.model.User.save(userRecord, function(err, result)
             {
               if(!err)
               {

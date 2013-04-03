@@ -194,7 +194,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       idHash[id] = true;
       geddy.model.User.first({id: id}, function(err, userRecord)
       {
-        if(userRecord && userRecord.name)
+        if(userRecord && userRecord.username)
         {
           if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
           {
@@ -206,7 +206,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
             {
               userRecord.myevents = eventid;
             }
-            geddy.model.Event.save(userRecord, function(err, result)
+            geddy.model.User.save(userRecord, function(err, result)
             {
               if(!err)
               {
