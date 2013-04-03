@@ -350,8 +350,6 @@ Event.invite = function(params, callback)
     return;
   } 
 
-
-
   geddy.model.Event.first({id: eventID}, function (err, result) 
     {
 
@@ -442,7 +440,7 @@ Event.changeDateTime = function(params, callback)
 
   var self = this;
 
-  var respDict = {};
+  var responseDict = {};
 
   //eventid
   if(!params.eventid)
@@ -464,12 +462,123 @@ Event.changeDateTime = function(params, callback)
   }
 
   //time1
+  var newTime1 = undefined;
+  if(params.time1) {
+    newTime1 = parseFloat(params.time1);
+  }
 
   //time2
+  var newTime2 = undefined;
+  if(params.time2) {
+    newTime2 = params.time2;
+  }
 
   //begindate
+  var newBeginDate = undefined;
+  if(params.time2) {
+    newBeginDate = params.begindate;
+  }
 
   //enddate
+  var newEndDate = undefined;
+  if(params.time2) {
+    newEndDate = params.enddate;
+  }
+
+
+  //get the event
+  geddy.model.Event.first({id: eventID}, function (err, eventModel) 
+    {
+
+      if (err){
+        //handle error
+        responseDict.errCode = 7;
+        responseDict.message = "database error";
+        callback(responseDict);
+        return;
+      } 
+      else 
+      {
+
+        if(!eventModel)
+        {
+          //event model for this id not found
+          responseDict.errCode = 10;
+          responseDict.message = "invalid eventid";
+          callback(responseDict);
+          return;
+
+        }
+        else
+        {
+
+          //set fields if neccesary
+          if (newTime1 !== undefined) {
+            eventModel.time1 = newTime1;
+          }
+
+          if (newTime2 !== undefined) {
+            eventModel.time2 = newTime2;
+          }
+
+          if (newBeginDate !== undefined) {
+            eventModel.begindate = newBeginDate;
+          }
+
+          if (newEndDate !== undefined) {
+            eventModel.enddate = newEndDate;
+          }
+        }
+
+        //check to see if fields are valid
+        if(eventModel.time1 >= evenModel.time2)
+        {
+          responseDict.errCode = 11;
+          responseDict.message = "invalid times";
+          callback(responseDict);
+          return;
+        }
+
+        if(eventModel.begindate >= evenModel.enddate)
+        {
+          responseDict.errCode = 11;
+          responseDict.message = "invalid dates";
+          callback(responseDict);
+          return;
+        }
+
+
+        //save model!
+        geddy.model.Event.save(eventModel, function(err, result)
+        {
+          if(err)
+          {
+            responseDict.errCode = 7;
+            responseDict.message = "database error";
+            callback(responseDict);
+            return;
+
+          } 
+          else if (result)
+          {
+            //save succeded
+            responseDict.errCode = 1;
+            callback(responseDict);
+            return;
+          } 
+          else
+          {
+            responseDict.errCode = 7;
+            responseDict.message = "database error";
+            callback(responseDict);
+            return;            
+          }
+        }
+      }
+    });
+
+
+
 
 
 
