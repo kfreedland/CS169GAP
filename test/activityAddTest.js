@@ -710,7 +710,7 @@ describe('Activity', function(){
 
 		    Activity.add(activityDict, function(response)
 		    {
-	    		var expected = {errCode: 6, message: "invalid participants"};
+	    		var expected = {errCode: 6, message: "invalid duration"};
 	    		assert.deepEqual(response,expected);
 	    		done();
 		    });
