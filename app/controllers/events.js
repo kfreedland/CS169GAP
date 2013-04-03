@@ -122,6 +122,16 @@ var Events = function () {
 
   this.changeDateTime = function (req, resp, params) {
 
+    var self = this;
+
+
+    geddy.model.Event.invite(params, function(responseDict) 
+    {
+
+      self.respond(responseDict, {format: 'json'});
+      
+    });
+
   };
 
   //Get My Events
