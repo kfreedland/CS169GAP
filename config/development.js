@@ -24,18 +24,18 @@ var config = {
 // , model: {
 //  defaultAdapter: 'memory'
 // }
-  , model: {
-      defaultAdapter: 'postgres'
-    }
-  , db: {
-  	postgres: {
-  	  user: 'testing'
-  	, database: 'postgres'
-  	, password: 'gap169'
-  	, host: 'localhost'
-  	, port: 5432
-  	}
+, model: {
+    defaultAdapter: 'postgres'
   }
+, db: {
+	postgres: {
+	  user: 'testing'
+	, database: 'postgres'
+	, password: 'gap169'
+	, host: 'localhost'
+	, port: 5432
+	}
+}
 , sessions: {
   store: 'memory'
 , key: 'sid'
