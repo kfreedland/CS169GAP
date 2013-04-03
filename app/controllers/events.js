@@ -202,6 +202,19 @@ var Events = function () {
     });
   };
 
+  this.addUsersToEvent = function(req, resp, params) {
+    if(params.usernames && typeof params.usernames == 'string' && params.eventid && typeof params.eventid == 'string')
+    {
+      geddy.model.Event.addUsersToEvent(params.eventid, params.usernames, function(resp)
+      {
+        self.respond(resp);
+      });
+    }
+    else
+    {
+      self.resp({errCode: 1});
+    }
+  }
   // Event Detail
   this.detail = function (req, resp, params) {
     var self = this

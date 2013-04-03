@@ -45,7 +45,7 @@ router.post('/').to('Auth.local');
 router.get('/users/profile').to('Users.profile');
 router.get('/users/usernames').to('Users.getUsernames');
 // router.post('/TESTAPI/unitTests').to('Main.unitTests');
-
+router.post('/events/addUsersToEvent').to('Events.addUsersToEvent');
 router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
 router.get('/activities/activitydetail').to('Activities.detail');
