@@ -17,15 +17,12 @@
 */
 
 var config = {
-  detailedErrors: false
+  detailedErrors: true
 , hostname: '0.0.0.0'
 , port: process.env.PORT
-
-// Using Postgres as the default, with only a Postgres DB
 , model: {
     defaultAdapter: 'postgres'
   }
-//gap2 database
 , db: {
     postgres: {
       user: 'gqfslnsegogdzu'
