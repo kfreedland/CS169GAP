@@ -46,7 +46,6 @@ describe('Event.invite valid emails', function()
 					var eventData = {};
 					User.first({username: 'foo'}, function(err, userRecord)
 					{
-						var uId = userRecord.id;
 
 						Activity.first({name: 'jogging'}, function(err, activityRecord)
 						{
@@ -60,7 +59,7 @@ describe('Event.invite valid emails', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 
-							Event.add(eventData, function(respDict)
+							Event.add(eventData, function(eventAddResponse)
 							{
 
 
@@ -72,20 +71,18 @@ describe('Event.invite valid emails', function()
 									paramDict = {};
 									paramDict.eventid = eventRecord.id;
 									paramDict.message = "you are invited to go jogging with friends!";
-									paramDict.emails = ["tlangner1@gmail.com"];
+									paramDict.emails = ["tlangner1@gmail.com", "elayman123@gmail.com"];
 
 
 									//INVITE
-									Event.invite(paramDict, function(respDict)
+									Event.invite(paramDict, function(eventInviteResponse)
 									{
 										var expected = {errCode: 1};
-										assert.deepEqual(respDict, expected);
+										assert.deepEqual(eventInviteResponse, expected);
 										done();
 
 									});
-
 								});
-
 							});
 						});
 					});

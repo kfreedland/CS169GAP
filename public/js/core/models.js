@@ -580,6 +580,7 @@ function addEventToUsers(eventId, userIds, callback)
             console.dir(err);
             callback(backendError);
           }
+
         });
       }
     });
@@ -587,6 +588,8 @@ function addEventToUsers(eventId, userIds, callback)
   callback({errCode: 1}); //success!
 }
 
+
+//params requires eventid, emails, and message
 Event.invite = function(params, callback) 
 {
   //send email containing "message" to list of emails
@@ -680,6 +683,7 @@ Event.invite = function(params, callback)
 
         if(result)
         {
+          console.log("GOT RESULT");
           //invite all emails
 
             // create reusable transport method (opens pool of SMTP connections)
@@ -702,11 +706,15 @@ Event.invite = function(params, callback)
           // send mail with defined transport object
           smtpTransport.sendMail(mailOptions, function(error, response){
               if(error){
+                  console.log("SENT MAIL WITH ERROR: ");
+                  console.dir(error);
                   responseDict.errCode = 13;
                   responseDict.message = "email failed";
                   callback(responseDict);
                   return;
               }else{
+                console.log("SENT MAIL WITH RESPONSE");
+                console.dir(response);
                   responseDict.errCode = 1;
                   callback(responseDict);
                   return;
