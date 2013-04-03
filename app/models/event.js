@@ -611,9 +611,9 @@ Event.changeDateTime = function(params, callback)
   }
 
   //begindate
-  var newbegindate;
+  var newBeginDate;
   if(params.begindate) {
-    newbegindate = parseFloat(params.begindate);
+    newBeginDate = parseFloat(params.begindate);
   }
 
   //enddate
@@ -652,19 +652,19 @@ Event.changeDateTime = function(params, callback)
         {
 
           //set fields if neccesary
-          if (newTime1) {
+          if ((typeof newTime1) == 'number') {
             eventModel.time1 = newTime1;
           }
 
-          if (newTime2) {
+          if ((typeof newTime2) == 'number') {
             eventModel.time2 = newTime2;
           }
 
-          if (newbegindate) {
-            eventModel.begindate = newbegindate;
+          if ((typeof newBeginDate) == 'number') {
+            eventModel.begindate = newBeginDate;
           }
 
-          if (newEndDate) {
+          if ((typeof newEndDate) == 'number') {
             eventModel.enddate = newEndDate;
           }
         }
