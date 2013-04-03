@@ -668,6 +668,11 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 {
                   emailReturn.push(userRecord.email);
                   idReturn.push(userRecord.username);
+                  if (idReturn.length >= idArray.length - 1){
+                    toReturn.id = idReturn;
+                    toReturn.email = emailReturn;
+                    return toReturn;
+                  }
                 }
               });
             }
@@ -676,9 +681,6 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       }
     }
   }
-  toReturn.id = idReturn;
-  toReturn.email = emailReturn;
-  return toReturn;
 }
 
 function addEventToUsers(eventid, userIds, callback)
