@@ -68,7 +68,7 @@ var Activities = function () {
 
     if (params.highNumParticipants)
     {
-      queryInfo.highNumParticipants = {lt: Math.ceil(parseFloat(params.highNumParticipants) * 1.1)}
+      queryInfo.highNumParticipants = {lt: Math.ceil(parseFloat(params.highNumParticipants) * 1.1)};
     }
 
     if (params.category && (typeof params.category == 'string'))
@@ -109,7 +109,7 @@ var Activities = function () {
       }
       self.respond(toReturn, {format: 'json'});
     });
-  }
+  };
   /*
   this.index = function (req, resp, params) {
     var self = this;

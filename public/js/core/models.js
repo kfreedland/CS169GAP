@@ -722,15 +722,14 @@ if (! _$jscoverage['models/event.js']) {
   _$jscoverage['models/event.js'][351] = 0;
   _$jscoverage['models/event.js'][352] = 0;
   _$jscoverage['models/event.js'][353] = 0;
-  _$jscoverage['models/event.js'][356] = 0;
+  _$jscoverage['models/event.js'][354] = 0;
   _$jscoverage['models/event.js'][357] = 0;
+  _$jscoverage['models/event.js'][358] = 0;
   _$jscoverage['models/event.js'][360] = 0;
   _$jscoverage['models/event.js'][361] = 0;
-  _$jscoverage['models/event.js'][362] = 0;
+  _$jscoverage['models/event.js'][364] = 0;
   _$jscoverage['models/event.js'][365] = 0;
   _$jscoverage['models/event.js'][366] = 0;
-  _$jscoverage['models/event.js'][367] = 0;
-  _$jscoverage['models/event.js'][368] = 0;
   _$jscoverage['models/event.js'][369] = 0;
   _$jscoverage['models/event.js'][370] = 0;
   _$jscoverage['models/event.js'][371] = 0;
@@ -741,23 +740,26 @@ if (! _$jscoverage['models/event.js']) {
   _$jscoverage['models/event.js'][376] = 0;
   _$jscoverage['models/event.js'][377] = 0;
   _$jscoverage['models/event.js'][378] = 0;
+  _$jscoverage['models/event.js'][379] = 0;
   _$jscoverage['models/event.js'][380] = 0;
   _$jscoverage['models/event.js'][381] = 0;
-  _$jscoverage['models/event.js'][386] = 0;
-  _$jscoverage['models/event.js'][393] = 0;
-  _$jscoverage['models/event.js'][394] = 0;
-  _$jscoverage['models/event.js'][395] = 0;
-  _$jscoverage['models/event.js'][396] = 0;
+  _$jscoverage['models/event.js'][382] = 0;
+  _$jscoverage['models/event.js'][384] = 0;
+  _$jscoverage['models/event.js'][385] = 0;
+  _$jscoverage['models/event.js'][390] = 0;
   _$jscoverage['models/event.js'][397] = 0;
   _$jscoverage['models/event.js'][398] = 0;
-  _$jscoverage['models/event.js'][413] = 0;
-  _$jscoverage['models/event.js'][414] = 0;
-  _$jscoverage['models/event.js'][416] = 0;
+  _$jscoverage['models/event.js'][399] = 0;
+  _$jscoverage['models/event.js'][400] = 0;
+  _$jscoverage['models/event.js'][401] = 0;
+  _$jscoverage['models/event.js'][417] = 0;
   _$jscoverage['models/event.js'][418] = 0;
   _$jscoverage['models/event.js'][420] = 0;
-  _$jscoverage['models/event.js'][421] = 0;
   _$jscoverage['models/event.js'][422] = 0;
+  _$jscoverage['models/event.js'][424] = 0;
+  _$jscoverage['models/event.js'][425] = 0;
   _$jscoverage['models/event.js'][426] = 0;
+  _$jscoverage['models/event.js'][430] = 0;
 }
 _$jscoverage['models/event.js'][1]++;
 var nodemailer = require("nodemailer"), check = require("validator").check;
@@ -773,8 +775,9 @@ _$jscoverage['models/event.js'][8]++;
 var Event = (function () {
   _$jscoverage['models/event.js'][10]++;
   this.defineProperties({name: {type: "string", required: true}, description: {type: "string"}, time1: {type: "number"}, time2: {type: "number"}, begindate: {type: "number"}, enddate: {type: "number"}, activityid: {type: "string"}, attendingusers: {type: "string"}});
-  _$jscoverage['models/event.js'][44]++;
-  Event.add = (function (params, callback) {
+});
+_$jscoverage['models/event.js'][44]++;
+Event.add = (function (params, callback) {
   _$jscoverage['models/event.js'][46]++;
   if (params.name && params.startdate && params.enddate && params.time1 && params.time2 && params.activityid && params.attendingusers) {
     _$jscoverage['models/event.js'][48]++;
@@ -859,31 +862,31 @@ var Event = (function () {
     callback(incorrectParams);
   }
 });
-  _$jscoverage['models/event.js'][122]++;
-  function invite(params, callback) {
-    _$jscoverage['models/event.js'][123]++;
-    callback();
+_$jscoverage['models/event.js'][122]++;
+function invite(params, callback) {
+  _$jscoverage['models/event.js'][123]++;
+  callback();
 }
-  _$jscoverage['models/event.js'][127]++;
-  function getEmailAndId(usernamesOrEmails, errorCallback, successCallback) {
-    _$jscoverage['models/event.js'][128]++;
-    emails = [];
-    _$jscoverage['models/event.js'][129]++;
-    userIds = [];
-    _$jscoverage['models/event.js'][130]++;
-    for (var key in usernamesOrEmails) {
-      _$jscoverage['models/event.js'][132]++;
-      var name = usernamesOrEmails[key];
-      _$jscoverage['models/event.js'][133]++;
-      if (name.indexOf("@") >= 0) {
-        _$jscoverage['models/event.js'][136]++;
-        emails.push(name);
-        _$jscoverage['models/event.js'][137]++;
-        continue;
-      }
-      else {
-        _$jscoverage['models/event.js'][141]++;
-        geddy.model.User.first({username: name}, (function (err, record) {
+_$jscoverage['models/event.js'][127]++;
+function getEmailAndId(usernamesOrEmails, errorCallback, successCallback) {
+  _$jscoverage['models/event.js'][128]++;
+  emails = [];
+  _$jscoverage['models/event.js'][129]++;
+  userIds = [];
+  _$jscoverage['models/event.js'][130]++;
+  for (var key in usernamesOrEmails) {
+    _$jscoverage['models/event.js'][132]++;
+    var name = usernamesOrEmails[key];
+    _$jscoverage['models/event.js'][133]++;
+    if (name.indexOf("@") >= 0) {
+      _$jscoverage['models/event.js'][136]++;
+      emails.push(name);
+      _$jscoverage['models/event.js'][137]++;
+      continue;
+    }
+    else {
+      _$jscoverage['models/event.js'][141]++;
+      geddy.model.User.first({username: name}, (function (err, record) {
   _$jscoverage['models/event.js'][143]++;
   if (err) {
     _$jscoverage['models/event.js'][145]++;
@@ -903,20 +906,19 @@ var Event = (function () {
     }
   }
 }));
-      }
+    }
 }
-    _$jscoverage['models/event.js'][163]++;
-    result = {};
-    _$jscoverage['models/event.js'][164]++;
-    result.email = emails;
-    _$jscoverage['models/event.js'][165]++;
-    result.id = userIds;
-    _$jscoverage['models/event.js'][166]++;
-    successCallback(result);
+  _$jscoverage['models/event.js'][163]++;
+  result = {};
+  _$jscoverage['models/event.js'][164]++;
+  result.email = emails;
+  _$jscoverage['models/event.js'][165]++;
+  result.id = userIds;
+  _$jscoverage['models/event.js'][166]++;
+  successCallback(result);
 }
-});
 _$jscoverage['models/event.js'][170]++;
-function addEventToUsers(eventid, uesrIds, callback) {
+function addEventToUsers(eventId, userIds, callback) {
   _$jscoverage['models/event.js'][171]++;
   for (var key in userIds) {
     _$jscoverage['models/event.js'][173]++;
@@ -932,11 +934,11 @@ function addEventToUsers(eventid, uesrIds, callback) {
     _$jscoverage['models/event.js'][182]++;
     if (record.myevents) {
       _$jscoverage['models/event.js'][184]++;
-      record.myevents += "," + eventid;
+      record.myevents += "," + eventId;
     }
     else {
       _$jscoverage['models/event.js'][188]++;
-      record.myevents = eventid;
+      record.myevents = eventId;
     }
     _$jscoverage['models/event.js'][190]++;
     record.confirmPassword = record.password;
@@ -1107,62 +1109,68 @@ Event.getMyEvents = (function (params, callback) {
   geddy.model.User.first({id: params.userId}, (function (err, userModel) {
   _$jscoverage['models/event.js'][353]++;
   if (err) {
-  }
-  else {
-    _$jscoverage['models/event.js'][356]++;
-    if (err) {
-      _$jscoverage['models/event.js'][357]++;
-      responseDict.events = [];
-      _$jscoverage['models/event.js'][360]++;
-      responseDict.errCode = 7;
-      _$jscoverage['models/event.js'][361]++;
-      callback(responseDict);
-    }
-    else {
-      _$jscoverage['models/event.js'][362]++;
-      if (userModel) {
-        _$jscoverage['models/event.js'][365]++;
-        var myEvents = [];
-        _$jscoverage['models/event.js'][366]++;
-        if (userModel.myevents) {
-          _$jscoverage['models/event.js'][367]++;
-          var eventIds = userModel.myevents.split(",");
-          _$jscoverage['models/event.js'][368]++;
-          for (var index in eventIds) {
-            _$jscoverage['models/event.js'][369]++;
-            var eventId = eventIds[index];
-            _$jscoverage['models/event.js'][370]++;
-            geddy.model.Event.first({id: eventId}, (function (err, eventModel) {
-  _$jscoverage['models/event.js'][371]++;
-  if (err) {
-    _$jscoverage['models/event.js'][372]++;
+    _$jscoverage['models/event.js'][354]++;
     responseDict.events = [];
-    _$jscoverage['models/event.js'][373]++;
-    console.log("err exists: ");
-    _$jscoverage['models/event.js'][374]++;
-    console.dir(err);
-    _$jscoverage['models/event.js'][375]++;
+    _$jscoverage['models/event.js'][357]++;
     responseDict.errCode = 7;
-    _$jscoverage['models/event.js'][376]++;
+    _$jscoverage['models/event.js'][358]++;
     callback(responseDict);
   }
   else {
+    _$jscoverage['models/event.js'][360]++;
+    if (err) {
+      _$jscoverage['models/event.js'][361]++;
+      responseDict.events = [];
+      _$jscoverage['models/event.js'][364]++;
+      responseDict.errCode = 7;
+      _$jscoverage['models/event.js'][365]++;
+      callback(responseDict);
+    }
+    else {
+      _$jscoverage['models/event.js'][366]++;
+      if (userModel) {
+        _$jscoverage['models/event.js'][369]++;
+        var myEvents = [];
+        _$jscoverage['models/event.js'][370]++;
+        if (userModel.myevents) {
+          _$jscoverage['models/event.js'][371]++;
+          var eventIds = userModel.myevents.split(",");
+          _$jscoverage['models/event.js'][372]++;
+          for (var index in eventIds) {
+            _$jscoverage['models/event.js'][373]++;
+            var eventId = eventIds[index];
+            _$jscoverage['models/event.js'][374]++;
+            geddy.model.Event.first({id: eventId}, (function (err, eventModel) {
+  _$jscoverage['models/event.js'][375]++;
+  if (err) {
+    _$jscoverage['models/event.js'][376]++;
+    responseDict.events = [];
     _$jscoverage['models/event.js'][377]++;
+    console.log("err exists: ");
+    _$jscoverage['models/event.js'][378]++;
+    console.dir(err);
+    _$jscoverage['models/event.js'][379]++;
+    responseDict.errCode = 7;
+    _$jscoverage['models/event.js'][380]++;
+    callback(responseDict);
+  }
+  else {
+    _$jscoverage['models/event.js'][381]++;
     if (eventModel) {
-      _$jscoverage['models/event.js'][378]++;
+      _$jscoverage['models/event.js'][382]++;
       myEvents.push(eventModel);
     }
   }
-  _$jscoverage['models/event.js'][380]++;
+  _$jscoverage['models/event.js'][384]++;
   if (index == eventIds.length - 1) {
-    _$jscoverage['models/event.js'][381]++;
+    _$jscoverage['models/event.js'][385]++;
     getEventsCallback(1, myEvents, callback);
   }
 }));
 }
         }
         else {
-          _$jscoverage['models/event.js'][386]++;
+          _$jscoverage['models/event.js'][390]++;
           getEventsCallback(1, myEvents, callback);
         }
       }
@@ -1170,39 +1178,37 @@ Event.getMyEvents = (function (params, callback) {
   }
 }));
 });
-_$jscoverage['models/event.js'][393]++;
+_$jscoverage['models/event.js'][397]++;
 function getEventsCallback(errCode, events, callback) {
-  _$jscoverage['models/event.js'][394]++;
+  _$jscoverage['models/event.js'][398]++;
   var responseDict = {};
-  _$jscoverage['models/event.js'][395]++;
+  _$jscoverage['models/event.js'][399]++;
   responseDict.errCode = 1;
-  _$jscoverage['models/event.js'][396]++;
+  _$jscoverage['models/event.js'][400]++;
   responseDict.events = events;
-  _$jscoverage['models/event.js'][397]++;
+  _$jscoverage['models/event.js'][401]++;
   callback(responseDict);
 }
-_$jscoverage['models/event.js'][398]++;
-;
-_$jscoverage['models/event.js'][413]++;
+_$jscoverage['models/event.js'][417]++;
 Event.TESTAPI_resetFixture = (function (callback) {
-  _$jscoverage['models/event.js'][414]++;
+  _$jscoverage['models/event.js'][418]++;
   geddy.model.Event.all((function (err, result) {
-  _$jscoverage['models/event.js'][416]++;
+  _$jscoverage['models/event.js'][420]++;
   for (var eventModel in result) {
-    _$jscoverage['models/event.js'][418]++;
+    _$jscoverage['models/event.js'][422]++;
     geddy.model.Event.remove(result[eventModel].id);
 }
-  _$jscoverage['models/event.js'][420]++;
+  _$jscoverage['models/event.js'][424]++;
   var responseDict = {};
-  _$jscoverage['models/event.js'][421]++;
+  _$jscoverage['models/event.js'][425]++;
   responseDict.errCode = 1;
-  _$jscoverage['models/event.js'][422]++;
+  _$jscoverage['models/event.js'][426]++;
   callback(responseDict);
 }));
 });
-_$jscoverage['models/event.js'][426]++;
+_$jscoverage['models/event.js'][430]++;
 Event = geddy.model.register("Event", Event);
-_$jscoverage['models/event.js'].source = ["var nodemailer = require(\"nodemailer\")","  , check = require(\"validator\").check;","var incorrectParams = {errCode: 6};","var backendError = {errCode: 7};","var badTimes = {errCode: 8};","var badTableJoin = {errCode: 9};","","var Event = function () {","","  this.defineProperties({","    name: {type: 'string', required: true},","    description: {type: 'string'},","    time1: {type: 'number'},","    time2: {type: 'number'},","    begindate: {type: 'number'},","    enddate: {type: 'number'},","    activityid: {type: 'string'},","    attendingusers: {type: 'string'}","  });","","  /*","  this.property('login', 'string', {required: true});","  this.property('password', 'string', {required: true});","  this.property('lastName', 'string');","  this.property('firstName', 'string');","","  this.validatesPresent('login');","  this.validatesFormat('login', /[a-z]+/, {message: 'Subdivisions!'});","  this.validatesLength('login', {min: 3});","  // Use with the name of the other parameter to compare with","  this.validatesConfirmed('password', 'confirmPassword');","  // Use with any function that returns a Boolean","  this.validatesWithFunction('password', function (s) {","      return s.length &gt; 0;","  });","","  // Can define methods for instances like this","  this.someMethod = function () {","    // Do some stuff","  };","  */","","","Event.add = function(params, callback)","{","  if(params.name &amp;&amp; params.startdate &amp;&amp; params.enddate &amp;&amp; params.time1  &amp;&amp; params.time2 &amp;&amp; params.activityid &amp;&amp; params.attendingusers)","  {","    var usernamesOrEmails = params.attendingusers.split(',');","    getEmailAndId(usernamesOrEmails, callback, function(emailAndId)","    {","      var emails = emailAndId.email;","      var userIds = emailAndId.id;","","      geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)","      {","        if(activityRecord &amp;&amp;  activityRecord.name) //basic assertion that record exists","        {","          if(params.startdate &lt;= params.enddate &amp;&amp; params.time1 &lt;= params.time2)","          {","            //all required fields are valid","            eventDict = {};","            eventDict.name = params.name;","            eventDict.startdate = params.startdate;","            eventDict.enddate = params.enddate;","            eventDict.time1 = params.time1;","            eventDict.time2 = params.time2;","            eventDict.description = params.description;","            eventDict.activityid = params.activityid;","            eventDict.attendingusers = userIds.toString();","            var eventRecord = geddy.model.Event.create(eventDict);","","            geddy.model.Event.save(eventRecord, function(err, result)","            {","              if(err)","              {","                callback(backendError);","              }","              else","              {","                //now we have to add the eventRecord to each user","                geddy.model.Event.first({attendingusers: userIds.toString()}, function(err, eventRecord)","                {","                  if(err)","                  {","                    callback(backendError);","                  }","                  else","                  {","                    addEventToUsers(eventRecord.id, userIds, function(respDict)","                    {","                      var message = \"People want you to join the following activity: \"+activityRecord.name;","                      invite({eventid: eventRecord.id, emails: emails , message: message}, function()","                      {","                        callback(respDict);","                      });","                    });","                  }","","                });","              }","            });","          }","          else","          {","            callback(badTimes);","          }","        }","        else","        {","          callback(badTableJoin);","        }","      });","    });","  }","  else","  {","    callback(incorrectParams);","  }","};","","function invite(params, callback)","{","  callback();","}","","function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)","{","  emails = [];","  userIds = [];","  for(var key in usernamesOrEmails)","  {","    var name = usernamesOrEmails[key];","    if(name.indexOf('@') &gt;= 0) //special characters cant be in usernames only in emails","    {","      //console.log('EMAIL found is: '+name);","      emails.push(name);","      continue;","    }","    else","    {","      geddy.model.User.first({username: name}, function(err, record)","      {","          if(err)","          {","            errorCallback(backendError);","          }","          else","          {","            if(record &amp;&amp; record.email &amp;&amp; record.id)","            {","              //console.log('EMAIL found is: '+record.email);","              emails.push(record.email);","              userIds.push(record.id);","            }","            else","            {","              errorCallback(badTableJoin);","            }","          }","        });","      }","    }","    result = {};","    result.email = emails;","    result.id = userIds;","    successCallback(result);","  }","}","function addEventToUsers(eventid, uesrIds, callback)","{","  for(var key in userIds)","  {","    var uid = userIds[key];","    geddy.model.User.first({id: uid}, function(err, record)","    {","      if(err)","      {","        callback(backendError);","      }","      else","      {","        if(record.myevents)","        {","          record.myevents += \",\"+eventid;","        }","        else","        {","          record.myevents = eventid;","        }","        record.confirmPassword = record.password;","        geddy.model.User.save(record, function(err, result)","        {","          if(err)","          {","            console.log(\"err \");","            console.dir(err);","            callback(backendError);","          }","        });","      }","    });","  }","  callback({errCode: 1}); //success!","}","","Event.invite = function(params, callback) ","{","  //send email containing \"message\" to list of emails","  var self = this;","  var responseDict = {};","","  var eventID = params.eventid;","  var emailList = params.emails;","  var message = params.message;","","  if (eventID === null || eventID === undefined ) ","  {","    //handle null eventid","    responseDict.errCode = 6;","    responseDict.message = \"null eventid\";","    callback(responseDict);","    return;","  } ","","  if (emailList === null || emailList === undefined || emailList === [] ) ","  {","    //handle empty emails","    responseDict.errCode = 6;","    responseDict.message = \"null emails\";","    callback(responseDict);","    return;","  } ","","  if (message === null || message === undefined ) ","  {","    //handle null eventid","    responseDict.errCode = 6;","    responseDict.message = \"null message\";","    callback(responseDict);","    return;","  } ","","  //check all emails for propper form","  var badEmails = [];","  var goodEmailsString = \"\";","  for(var index in emailList)","  {","    var emailAddr = emailList[index];","    if (!isValidEmail(emailAddr))","    {","      //email address is malformed","      badEmails.push(emailAddr);","    } else {","","      goodEmailsString += emailAddr + \", \";","","    }","  }","","  //some emails are bad","  if(badEmails.count &gt; 0 ){","","    responseDict.errCode = 12;","    responseDict.message = \"malformed emails\";","    responseDict.bademails = badEmails;","    callback(responseDict);","    return;","  }","","  //chop off the \", \" at the end of the string","  if(goodEmailsString.length &gt; 2)","  {","    goodEmailsString = goodEmailsString.substring(0,goodEmailsString.length-3);","  } ","  else","  {","","    responseDict.errCode = 6;","    responseDict.message = \"couldn't find any good emails\";","    callback(responseDict);","    return;","  } ","","","","  geddy.model.Event.first({id: eventID}, function (err, result) ","    {","","      if(err){","        //handle error","        responseDict.errCode = 10;","        responseDict.message = \"invalid eventid\";","      } ","      else ","      {","","        if(result)","        {","          //invite all emails","","            // create reusable transport method (opens pool of SMTP connections)","          var smtpTransport = nodemailer.createTransport(\"SMTP\",{","              service: \"Gmail\",","              auth: {","                  user: \"groupactivityplanner@gmail.com\",","                  pass: \"gapgapgap\"","              }","          });","","          var mailOptions = {","              from: \"Group Activity Planner &#226;&#156;&#148; &lt;groupactivityplanner@gmail.com&gt;\", // sender address","              to: goodEmailsString, // list of receivers","              subject: \"You have been invited to an event!\", // Subject line","              text: message, // plaintext body","              html: null // html body","          }","","          // send mail with defined transport object","          smtpTransport.sendMail(mailOptions, function(error, response){","              if(error){","                  responseDict.errCode = 13;","                  responseDict.message = \"email failed\";","                  callback(responseDict);","                  return;","              }else{","                  responseDict.errCode = 1;","                  callback(responseDict);","                  return;","              }","","              smtpTransport.close();","","          });","","        }","      }","","    });","}","","function isValidEmail(email) { ","  return check(email).isEmail();","","} ","","Event.changeDateTime = function(params, callback) ","{","","}","","Event.getMyEvents = function (params, callback) {","  geddy.model.User.first({id: params.userId}, function (err, userModel) {","    if (err){","","    } else {","      if (err){","        responseDict.events = [];","        // console.log(\"err exists: \");","        // console.dir(err);","        responseDict.errCode = 7;","        callback(responseDict);","      } else if (userModel){","        // console.log(\"myevents = \");","        // console.dir(userModel.myevents);","        var myEvents = [];","        if (userModel.myevents){","          var eventIds = userModel.myevents.split(',');","          for (var index in eventIds){","            var eventId = eventIds[index];","            geddy.model.Event.first({id: eventId}, function (err, eventModel){","              if (err){","                responseDict.events = [];","                console.log(\"err exists: \");","                console.dir(err);","                responseDict.errCode = 7;","                callback(responseDict);","              } else if (eventModel){","                myEvents.push(eventModel);","              }","              if (index == eventIds.length - 1){","                getEventsCallback(1, myEvents, callback);","              }","            });","          }","        } else {","          getEventsCallback(1, myEvents, callback);","        }","      }","    }","  });","};","","function getEventsCallback(errCode, events, callback){","  var responseDict = {};","  responseDict.errCode = 1;","  responseDict.events = events;","  callback(responseDict);","};","","  ","/*","// Can also define them on the prototype","Event.prototype.someOtherMethod = function () {","  // Do some other stuff","};","// Can also define static methods and properties","Event.someStaticMethod = function () {","  // Do some other stuff","};","Event.someStaticProperty = 'YYZ';","*/","","Event.TESTAPI_resetFixture = function (callback) {","  geddy.model.Event.all(function (err, result) {","    // console.log(\"got all activity models with error: \" + err + \" and result: \" + result);","    for (var eventModel in result){","      // console.log(\"trying to remove activityModel: \" + result[activityModel]);","      geddy.model.Event.remove(result[eventModel].id);","    }","    var responseDict = {};","    responseDict.errCode = 1;","    callback(responseDict); //\"SUCCESS\"","  });","};  ","","Event = geddy.model.register('Event', Event);",""];
+_$jscoverage['models/event.js'].source = ["var nodemailer = require(\"nodemailer\")","  , check = require(\"validator\").check;","var incorrectParams = {errCode: 6};","var backendError = {errCode: 7};","var badTimes = {errCode: 8};","var badTableJoin = {errCode: 9};","","var Event = function () {","","  this.defineProperties({","    name: {type: 'string', required: true},","    description: {type: 'string'},","    time1: {type: 'number'},","    time2: {type: 'number'},","    begindate: {type: 'number'},","    enddate: {type: 'number'},","    activityid: {type: 'string'},","    attendingusers: {type: 'string'}","  });","","  /*","  this.property('login', 'string', {required: true});","  this.property('password', 'string', {required: true});","  this.property('lastName', 'string');","  this.property('firstName', 'string');","","  this.validatesPresent('login');","  this.validatesFormat('login', /[a-z]+/, {message: 'Subdivisions!'});","  this.validatesLength('login', {min: 3});","  // Use with the name of the other parameter to compare with","  this.validatesConfirmed('password', 'confirmPassword');","  // Use with any function that returns a Boolean","  this.validatesWithFunction('password', function (s) {","      return s.length &gt; 0;","  });","","  // Can define methods for instances like this","  this.someMethod = function () {","    // Do some stuff","  };","  */","};","","Event.add = function(params, callback)","{","  if(params.name &amp;&amp; params.startdate &amp;&amp; params.enddate &amp;&amp; params.time1  &amp;&amp; params.time2 &amp;&amp; params.activityid &amp;&amp; params.attendingusers)","  {","    var usernamesOrEmails = params.attendingusers.split(',');","    getEmailAndId(usernamesOrEmails, callback, function(emailAndId)","    {","      var emails = emailAndId.email;","      var userIds = emailAndId.id;","","      geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)","      {","        if(activityRecord &amp;&amp;  activityRecord.name) //basic assertion that record exists","        {","          if(params.startdate &lt;= params.enddate &amp;&amp; params.time1 &lt;= params.time2)","          {","            //all required fields are valid","            eventDict = {};","            eventDict.name = params.name;","            eventDict.startdate = params.startdate;","            eventDict.enddate = params.enddate;","            eventDict.time1 = params.time1;","            eventDict.time2 = params.time2;","            eventDict.description = params.description;","            eventDict.activityid = params.activityid;","            eventDict.attendingusers = userIds.toString();","            var eventRecord = geddy.model.Event.create(eventDict);","","            geddy.model.Event.save(eventRecord, function(err, result)","            {","              if(err)","              {","                callback(backendError);","              }","              else","              {","                //now we have to add the eventRecord to each user","                geddy.model.Event.first({attendingusers: userIds.toString()}, function(err, eventRecord)","                {","                  if(err)","                  {","                    callback(backendError);","                  }","                  else","                  {","                    addEventToUsers(eventRecord.id, userIds, function(respDict)","                    {","                      var message = \"People want you to join the following activity: \"+activityRecord.name;","                      invite({eventid: eventRecord.id, emails: emails , message: message}, function()","                      {","                        callback(respDict);","                      });","                    });","                  }","","                });","              }","            });","          }","          else","          {","            callback(badTimes);","          }","        }","        else","        {","          callback(badTableJoin);","        }","      });","    });","  }","  else","  {","    callback(incorrectParams);","  }","};","","function invite(params, callback)","{","  callback();","}","","function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)","{","  emails = [];","  userIds = [];","  for(var key in usernamesOrEmails)","  {","    var name = usernamesOrEmails[key];","    if(name.indexOf('@') &gt;= 0) //special characters cant be in usernames only in emails","    {","      //console.log('EMAIL found is: '+name);","      emails.push(name);","      continue;","    }","    else","    {","      geddy.model.User.first({username: name}, function(err, record)","      {","          if(err)","          {","            errorCallback(backendError);","          }","          else","          {","            if(record &amp;&amp; record.email &amp;&amp; record.id)","            {","              //console.log('EMAIL found is: '+record.email);","              emails.push(record.email);","              userIds.push(record.id);","            }","            else","            {","              errorCallback(badTableJoin);","            }","          }","        });","      }","    }","    result = {};","    result.email = emails;","    result.id = userIds;","    successCallback(result);","}","","function addEventToUsers(eventId, userIds, callback)","{","  for(var key in userIds)","  {","    var uid = userIds[key];","    geddy.model.User.first({id: uid}, function(err, record)","    {","      if(err)","      {","        callback(backendError);","      }","      else","      {","        if(record.myevents)","        {","          record.myevents += \",\"+eventId;","        }","        else","        {","          record.myevents = eventId;","        }","        record.confirmPassword = record.password;","        geddy.model.User.save(record, function(err, result)","        {","          if(err)","          {","            console.log(\"err \");","            console.dir(err);","            callback(backendError);","          }","        });","      }","    });","  }","  callback({errCode: 1}); //success!","}","","Event.invite = function(params, callback) ","{","  //send email containing \"message\" to list of emails","  var self = this;","  var responseDict = {};","","  var eventID = params.eventid;","  var emailList = params.emails;","  var message = params.message;","","  if (eventID === null || eventID === undefined ) ","  {","    //handle null eventid","    responseDict.errCode = 6;","    responseDict.message = \"null eventid\";","    callback(responseDict);","    return;","  } ","","  if (emailList === null || emailList === undefined || emailList === [] ) ","  {","    //handle empty emails","    responseDict.errCode = 6;","    responseDict.message = \"null emails\";","    callback(responseDict);","    return;","  } ","","  if (message === null || message === undefined ) ","  {","    //handle null eventid","    responseDict.errCode = 6;","    responseDict.message = \"null message\";","    callback(responseDict);","    return;","  } ","","  //check all emails for propper form","  var badEmails = [];","  var goodEmailsString = \"\";","  for(var index in emailList)","  {","    var emailAddr = emailList[index];","    if (!isValidEmail(emailAddr))","    {","      //email address is malformed","      badEmails.push(emailAddr);","    } else {","","      goodEmailsString += emailAddr + \", \";","","    }","  }","","  //some emails are bad","  if(badEmails.count &gt; 0 ){","","    responseDict.errCode = 12;","    responseDict.message = \"malformed emails\";","    responseDict.bademails = badEmails;","    callback(responseDict);","    return;","  }","","  //chop off the \", \" at the end of the string","  if(goodEmailsString.length &gt; 2)","  {","    goodEmailsString = goodEmailsString.substring(0,goodEmailsString.length-3);","  } ","  else","  {","","    responseDict.errCode = 6;","    responseDict.message = \"couldn't find any good emails\";","    callback(responseDict);","    return;","  } ","","","","  geddy.model.Event.first({id: eventID}, function (err, result) ","    {","","      if(err){","        //handle error","        responseDict.errCode = 10;","        responseDict.message = \"invalid eventid\";","      } ","      else ","      {","","        if(result)","        {","          //invite all emails","","            // create reusable transport method (opens pool of SMTP connections)","          var smtpTransport = nodemailer.createTransport(\"SMTP\",{","              service: \"Gmail\",","              auth: {","                  user: \"groupactivityplanner@gmail.com\",","                  pass: \"gapgapgap\"","              }","          });","","          var mailOptions = {","              from: \"Group Activity Planner &#226;&#156;&#148; &lt;groupactivityplanner@gmail.com&gt;\", // sender address","              to: goodEmailsString, // list of receivers","              subject: \"You have been invited to an event!\", // Subject line","              text: message, // plaintext body","              html: null // html body","          };","","          // send mail with defined transport object","          smtpTransport.sendMail(mailOptions, function(error, response){","              if(error){","                  responseDict.errCode = 13;","                  responseDict.message = \"email failed\";","                  callback(responseDict);","                  return;","              }else{","                  responseDict.errCode = 1;","                  callback(responseDict);","                  return;","              }","","              smtpTransport.close();","","          });","","        }","      }","","    });","};","","function isValidEmail(email) { ","  return check(email).isEmail();","","} ","","Event.changeDateTime = function(params, callback) ","{","","};","","Event.getMyEvents = function (params, callback) {","  geddy.model.User.first({id: params.userId}, function (err, userModel) {","    if (err){","      responseDict.events = [];","      // console.log(\"err exists: \");","      // console.dir(err);","      responseDict.errCode = 7;","      callback(responseDict);","    } else {","      if (err){","        responseDict.events = [];","        // console.log(\"err exists: \");","        // console.dir(err);","        responseDict.errCode = 7;","        callback(responseDict);","      } else if (userModel){","        // console.log(\"myevents = \");","        // console.dir(userModel.myevents);","        var myEvents = [];","        if (userModel.myevents){","          var eventIds = userModel.myevents.split(',');","          for (var index in eventIds){","            var eventId = eventIds[index];","            geddy.model.Event.first({id: eventId}, function (err, eventModel){","              if (err){","                responseDict.events = [];","                console.log(\"err exists: \");","                console.dir(err);","                responseDict.errCode = 7;","                callback(responseDict);","              } else if (eventModel){","                myEvents.push(eventModel);","              }","              if (index == eventIds.length - 1){","                getEventsCallback(1, myEvents, callback);","              }","            });","          }","        } else {","          getEventsCallback(1, myEvents, callback);","        }","      }","    }","  });","};","","function getEventsCallback(errCode, events, callback){","  var responseDict = {};","  responseDict.errCode = 1;","  responseDict.events = events;","  callback(responseDict);","}","","  ","/*","// Can also define them on the prototype","Event.prototype.someOtherMethod = function () {","  // Do some other stuff","};","// Can also define static methods and properties","Event.someStaticMethod = function () {","  // Do some other stuff","};","Event.someStaticProperty = 'YYZ';","*/","","Event.TESTAPI_resetFixture = function (callback) {","  geddy.model.Event.all(function (err, result) {","    // console.log(\"got all activity models with error: \" + err + \" and result: \" + result);","    for (var eventModel in result){","      // console.log(\"trying to remove activityModel: \" + result[activityModel]);","      geddy.model.Event.remove(result[eventModel].id);","    }","    var responseDict = {};","    responseDict.errCode = 1;","    callback(responseDict); //\"SUCCESS\"","  });","};  ","","Event = geddy.model.register('Event', Event);",""];
 }());
 
 (function () {
@@ -1278,14 +1284,14 @@ if (! _$jscoverage['models/user.js']) {
   _$jscoverage['models/user.js'][79] = 0;
   _$jscoverage['models/user.js'][81] = 0;
   _$jscoverage['models/user.js'][83] = 0;
-  _$jscoverage['models/user.js'][86] = 0;
   _$jscoverage['models/user.js'][87] = 0;
-  _$jscoverage['models/user.js'][89] = 0;
-  _$jscoverage['models/user.js'][91] = 0;
-  _$jscoverage['models/user.js'][93] = 0;
+  _$jscoverage['models/user.js'][88] = 0;
+  _$jscoverage['models/user.js'][90] = 0;
+  _$jscoverage['models/user.js'][92] = 0;
   _$jscoverage['models/user.js'][94] = 0;
   _$jscoverage['models/user.js'][95] = 0;
-  _$jscoverage['models/user.js'][99] = 0;
+  _$jscoverage['models/user.js'][96] = 0;
+  _$jscoverage['models/user.js'][100] = 0;
 }
 _$jscoverage['models/user.js'][1]++;
 var passport = require("passport"), passportHelper = require("../helpers/passport/index"), cryptPass = passportHelper.cryptPass;
@@ -1394,24 +1400,24 @@ User.getUsernames = (function (params, callback) {
   callback(usernames);
 }));
 });
-_$jscoverage['models/user.js'][86]++;
+_$jscoverage['models/user.js'][87]++;
 User.TESTAPI_resetFixture = (function (callback) {
-  _$jscoverage['models/user.js'][87]++;
+  _$jscoverage['models/user.js'][88]++;
   geddy.model.User.all((function (err, result) {
-  _$jscoverage['models/user.js'][89]++;
+  _$jscoverage['models/user.js'][90]++;
   for (var userModel in result) {
-    _$jscoverage['models/user.js'][91]++;
+    _$jscoverage['models/user.js'][92]++;
     geddy.model.User.remove(result[userModel].id);
 }
-  _$jscoverage['models/user.js'][93]++;
-  var responseDict = {};
   _$jscoverage['models/user.js'][94]++;
-  responseDict.errCode = 1;
+  var responseDict = {};
   _$jscoverage['models/user.js'][95]++;
+  responseDict.errCode = 1;
+  _$jscoverage['models/user.js'][96]++;
   callback(responseDict);
 }));
 });
-_$jscoverage['models/user.js'][99]++;
+_$jscoverage['models/user.js'][100]++;
 User = geddy.model.register("User", User);
-_$jscoverage['models/user.js'].source = ["var passport = require('passport')","  , passportHelper = require('../helpers/passport/index')","  , cryptPass = passportHelper.cryptPass;","","var User = function () {","\tthis.property('username', 'string', {required: true});","    this.property('password', 'string', {required: true});","    this.property('familyName', 'string');","    this.property('givenName', 'string');","    this.property('email', 'string');","    this.property('myevents', 'string');","    this.validatesLength('username', {min: 3, max:128});","    this.validatesLength('password', {min: 8, max:128});","    this.validatesConfirmed('password', 'confirmPassword');","","    this.hasMany('Passports');","};","","User.add = function(user, callback){","    // Non-blocking uniqueness checks are hard","    User.first({username: user.username}, function(err, data) {","      var responseDict = {};","    if (data) {","      // console.log(\"USER EXISTS\");","      //Username Exists errCode=2","      responseDict.errCode = 2;","      callback(responseDict);","      //self.transfer('add');","    }","    else {","      // console.log(\"USER DOESNT EXIST\");","      if (!user.username || user.username.length === 0 || user.username.length &gt; 128) {","        // console.log(\"bad username block\");","        responseDict.errCode = 3; //\"ERR_BAD_USERNAME\"","        callback(responseDict);","      } else if (!user.password || user.password.length === 0 || user.password.length &gt; 128 ) {","        //|| user.confirmPassword != user.password){","        // console.log(\"bad password block with confirmPassword: \" + user.confirmPassword);","        //Check if password is not empty and &lt;128 chars","        responseDict.errCode = 4; //\"ERR_BAD_PASSWORD\"","        callback(responseDict);","      } else {","        if (user.isValid()) {","          user.password = cryptPass(user.password);","        }","        // console.log(\"user is : username: \" + user.username + \" and password: \" + user.password);","        user.save(function(err, data) {","          // console.log(\"Got Data: \" + data);","          if (err) {","            // params.errors = err;","            //Database Error errCode=7","            console.log(\"Error saving User: \");","            responseDict.message = \"\";","            for (var item in err){","              responseDict.message += err[item];","            }","            console.log(responseDict.message);","            responseDict.errCode = 7;","            callback(responseDict);","            // self.transfer('add');","          }","          else {","            //Success errCode=1","            responseDict.errCode = 1;","            callback(responseDict);","              // self.redirect({controller: self.name});","          }","        });","      }","    }","    });","};","","User.getUsernames = function(params, callback)","{","  usernames = [];","  geddy.model.User.all(function(err, result)","  {","    for(var recordId in result)","    {","      usernames.push(result.recordId.username);","    }","    callback(usernames);","  });","}","User.TESTAPI_resetFixture = function (callback) {","  geddy.model.User.all(function (err, result) {","     // console.log(\"got all users models with error: \" + err + \" and result: \" + result);","    for (var userModel in result){","       // console.log(\"trying to remove userModel: \" + result[userModel]);","      geddy.model.User.remove(result[userModel].id);","    }","    var responseDict = {};","  responseDict.errCode = 1;","    callback(responseDict); //\"SUCCESS\"","  });","};","","User = geddy.model.register('User', User);"];
+_$jscoverage['models/user.js'].source = ["var passport = require('passport')","  , passportHelper = require('../helpers/passport/index')","  , cryptPass = passportHelper.cryptPass;","","var User = function () {","\tthis.property('username', 'string', {required: true});","    this.property('password', 'string', {required: true});","    this.property('familyName', 'string');","    this.property('givenName', 'string');","    this.property('email', 'string');","    this.property('myevents', 'string');","    this.validatesLength('username', {min: 3, max:128});","    this.validatesLength('password', {min: 8, max:128});","    this.validatesConfirmed('password', 'confirmPassword');","","    this.hasMany('Passports');","};","","User.add = function(user, callback){","    // Non-blocking uniqueness checks are hard","    User.first({username: user.username}, function(err, data) {","      var responseDict = {};","    if (data) {","      // console.log(\"USER EXISTS\");","      //Username Exists errCode=2","      responseDict.errCode = 2;","      callback(responseDict);","      //self.transfer('add');","    }","    else {","      // console.log(\"USER DOESNT EXIST\");","      if (!user.username || user.username.length === 0 || user.username.length &gt; 128) {","        // console.log(\"bad username block\");","        responseDict.errCode = 3; //\"ERR_BAD_USERNAME\"","        callback(responseDict);","      } else if (!user.password || user.password.length === 0 || user.password.length &gt; 128 ) {","        //|| user.confirmPassword != user.password){","        // console.log(\"bad password block with confirmPassword: \" + user.confirmPassword);","        //Check if password is not empty and &lt;128 chars","        responseDict.errCode = 4; //\"ERR_BAD_PASSWORD\"","        callback(responseDict);","      } else {","        if (user.isValid()) {","          user.password = cryptPass(user.password);","        }","        // console.log(\"user is : username: \" + user.username + \" and password: \" + user.password);","        user.save(function(err, data) {","          // console.log(\"Got Data: \" + data);","          if (err) {","            // params.errors = err;","            //Database Error errCode=7","            console.log(\"Error saving User: \");","            responseDict.message = \"\";","            for (var item in err){","              responseDict.message += err[item];","            }","            console.log(responseDict.message);","            responseDict.errCode = 7;","            callback(responseDict);","            // self.transfer('add');","          }","          else {","            //Success errCode=1","            responseDict.errCode = 1;","            callback(responseDict);","              // self.redirect({controller: self.name});","          }","        });","      }","    }","    });","};","","User.getUsernames = function(params, callback)","{","  usernames = [];","  geddy.model.User.all(function(err, result)","  {","    for(var recordId in result)","    {","      usernames.push(result.recordId.username);","    }","    callback(usernames);","  });","};","","User.TESTAPI_resetFixture = function (callback) {","  geddy.model.User.all(function (err, result) {","     // console.log(\"got all users models with error: \" + err + \" and result: \" + result);","    for (var userModel in result){","       // console.log(\"trying to remove userModel: \" + result[userModel]);","      geddy.model.User.remove(result[userModel].id);","    }","    var responseDict = {};","  responseDict.errCode = 1;","    callback(responseDict); //\"SUCCESS\"","  });","};","","User = geddy.model.register('User', User);"];
 }());

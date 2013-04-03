@@ -82,7 +82,8 @@ User.getUsernames = function(params, callback)
     }
     callback(usernames);
   });
-}
+};
+
 User.TESTAPI_resetFixture = function (callback) {
   geddy.model.User.all(function (err, result) {
      // console.log("got all users models with error: " + err + " and result: " + result);
