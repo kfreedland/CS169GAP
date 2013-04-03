@@ -54,7 +54,7 @@ Event.add = function(params, callback)
 
       geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
-        if(activityRecord &&  activityRecord.name) //basic assertion that record exists
+        if(!err && activityRecord &&  activityRecord.name) //basic assertion that record exists
         {
           if(params.startdate <= params.enddate && params.time1 <= params.time2)
           {
@@ -130,7 +130,10 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
       {
           if(err)
           {
-            errorCallback(backendError);
+            if(key == 0)//this is the user who created it
+            {
+              callback(backendError);
+            }
           }
           else
           {
@@ -153,8 +156,76 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     result.id = userIds;
     successCallback(result);
 }
+Event.addUsersToEvent = function(eventid, userIds, callback)
+{
+  userIds = userIds.split(',');
+  geddy.model.Event.first({id: eventid}, function(err, eventRecord)
+  {
+    if(!err && eventRecord && eventRecord.attendingusers)
+    {
+      var newUids = eventRecord.attendingusers.split(',').concat(userIds)
+      newUids = validateUserIds(newUids, eventid);
+      eventRecord.attendingusers = newUids.toString();
+      geddy.model.Event.save(eventRecord, function(err, result)
+      {
+        if(err)
+        {
+          callback(backendError);
+        }
+        else
+        {
+          callback({errCode: 1});
+        }
+      });
+    }
+    else
+    {
+      callback(badTableJoin);
+    } 
+  });
+}
 
-function addEventToUsers(eventId, userIds, callback)
+function validateUserIds(idArray, eventid) //assumes valid usernames
+{
+  idHash = {};
+  idReturn = [];
+  for(var key in idArray)
+  {
+    var id = idArray[key];
+    if(idHash[id])
+    {
+      continue;
+    }
+    else
+    {
+      idHash[id] = true;
+      geddy.model.user.first({id: id}, function(err, userRecord)
+      {
+        if(!err && userRecord && userRecord.name)
+        {
+          if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
+          {
+            if(userRecord.myevents)
+            {
+              userRecord.myevents += ',' + eventid;
+            }
+            else
+            {
+              userRecord.myevents = eventid;
+            }
+            geddy.model.Event.save(userRecord, function(err, result)
+            {
+              if(!err)
+              {
+                idReturn.push(id);
+              }
+            });
+          }
+        }
+      });
+    }
+  }
+  return idReturn;
 {
   for(var key in userIds)
   {
