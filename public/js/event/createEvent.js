@@ -3,7 +3,6 @@ $(document).ready(function() {
 	// Remove the # in the front
 	var encodedDataFixed = encodedDataStr.slice(1);
 	var jsonData = $.parseJSON(window.atob(encodedDataFixed));
-	console.log(jsonData);
 
 	var name = jsonData.name;
 	var desc = jsonData.description;
@@ -19,6 +18,7 @@ $(document).ready(function() {
 	var highpart = jsonData.highnumparticipants;
 	var lowpart = jsonData.lownumparticipants;
 	var category = jsonData.category;
+	var id = jsonData.id;
 
 	// Calculate the address from the provided latitude and longitude, and insert it into the html
 	reverseGeocodeAddress(jsonData.latitude, jsonData.longitude, function(address) {
@@ -42,7 +42,50 @@ $(document).ready(function() {
 	$('#highNumPart').val(highpart);
 	$('#category').val(category);
 
-
-
-
+	createEvent(id);
 });
+
+function createEvent(activityId) {
+	$('#createEventButton').click(function() {
+		// Create JSON Dict for event data
+		var eventData = {};
+
+		var beginDate = $('#beginDate').val();
+		var endDate = $('#endDate').val();
+		var startTime = $('#startTimeEvent').val();
+		var endTime = $('#endTimeEvent').val();
+	    // Convert the dates and times to milliseconds
+		var epochStartDate = convertDateToEpoch(beginDate);
+		var epochEndDate = convertDateToEpoch(endDate);
+		var time1 = findMsFromMidnight(startTime);
+		var time2 = findMsFromMidnight(endTime);
+
+		eventData.name = $('#name').val();
+		eventData.activityid = activityId;
+		eventData.time1 = time1;
+	    eventData.time2 = time2;
+	    eventData.startdate = epochStartDate;
+	    eventData.enddate = epochEndDate;
+	    eventData.description = $('#activityDescription').val();
+
+		var invitedFriends = $('#invitedFriends').val();
+		eventData.attendingusers = invitedFriends;
+		$.ajax({
+	        type: 'POST',
+	        url: '/events/create',
+	        data: JSON.stringify(eventData),
+	        contentType: "application/json",
+	        dataType: "json",
+	        success: function(respData) {
+	        	console.log('success');
+	        	console.log(respData);
+	        	//handleCreateActivityResponse(respData);
+	        },
+	        failure: function(err) {
+	        	console.log('Failure');
+	        }
+	    });
+	});
+}
+
+

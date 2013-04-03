@@ -444,8 +444,6 @@ Event.add = function(params, callback)
     {
       var emails = emailAndId.email;
       var userIds = emailAndId.id;
-
-
       geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
         if(activityRecord &&  activityRecord.name) //basic assertion that record exists

@@ -11,6 +11,7 @@ $(document).ready(function() {
 			// Validate the dictionary object before sending it
 			// TODO: Write the success and failure functions
 			validateData(dataResp, function(validData) {
+				console.log(dataResp);
 				$.ajax({
 			        type: 'GET',
 			        url: '/activities/search',

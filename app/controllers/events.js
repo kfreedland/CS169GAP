@@ -18,9 +18,10 @@ var Events = function () {
 
   this.add = function (req, resp, params) 
   {
+    var self = this;
     geddy.model.Event.add(params, function(respDict)
     {
-      this.respond(respDict);
+      self.respond(respDict);
     });
   };
 
