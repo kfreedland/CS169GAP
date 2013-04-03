@@ -7,6 +7,8 @@ $(document).ready(function() {
         contentType: "application/json",
         dataType: "json",
         success: function(respData) {
+        	console.log("TEST");
+        	console.log(respData);
         	addMyEvents(respData.events);
         },
         failure: function(err) {
@@ -20,6 +22,8 @@ function addMyEvents(jsonResp) {
 	if (jsonResp.length === 0) {
 		$("#my_events").html('No events found.')
 	}
+
+	console.log(jsonResp);
 	// Loop through each activities entry in the dictionary
 	$.each(jsonResp, function(index, data) {
 		// Create variables for dynamic ids of certain divs
@@ -85,12 +89,12 @@ function addMyEvents(jsonResp) {
 	});
 }
 
-function addInvitedParticipants(participantsDivID, participantsList) {
+function addInvitedParticipants(participantsDivID, attendingUsers) {
 	var participantsStr = "Invited Participants: ";
-	$.each(participantsList, function(index, data) {
-		participantsStr = participantsStr + data + ', ';
-	});
-	console.log(participantsStr);
+	var participantsList = attendingUsers.split(',');
+	for (var key in participantsList) {
+		participantsStr = participantsStr + participantsList[key] + ', ';
+	}
 	$(participantsDivID).html(participantsStr);
 }
 

@@ -272,7 +272,7 @@ function addEventToUsers(eventid, userIds, callback)
           record.myevents = eventid;
         }
         record.confirmPassword = record.password;
-        //record.errors = null;
+        record.errors = null;
         geddy.model.User.save(record, function(err, result)
         {
           if(err)
@@ -716,11 +716,6 @@ Event.getMyEvents = function (params, callback) {
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
-<<<<<<< HEAD
-=======
-                //console.log("EVENT MODEL:");
-                //console.log(eventModel);
->>>>>>> 3f66a80e9bac11fe5df64e2a3bd4bc81294a0e3d
                 myEvents.push(eventModel);
               }
               if (index == eventIds.length - 1){

@@ -1,5 +1,7 @@
 var passport = require('../helpers/passport')
-  , requireAuth = passport.requireAuth;
+  , strategies = require('../helpers/passport/strategies')
+  , requireAuth = passport.requireAuth
+  , authTypes = geddy.mixin(strategies, {local: {name: 'local account'}});
 
 var Events = function () {
   this.before(requireAuth, {
@@ -168,6 +170,7 @@ var Events = function () {
       params.authType = null;
       if (data) {
         params.user = data;
+        params.authType = authTypes[self.session.get('authType')].name;
       }
       self.respond(params, {
         format: 'html'
@@ -194,6 +197,7 @@ var Events = function () {
       params.authType = null;
       if (data) {
         params.user = data;
+        params.authType = authTypes[self.session.get('authType')].name;
       }
       self.respond(params, {
         format: 'html'
@@ -220,6 +224,7 @@ var Events = function () {
       params.authType = null;
       if (data) {
         params.user = data;
+        params.authType = authTypes[self.session.get('authType')].name;
       }
       self.respond(params, {
         format: 'html'
