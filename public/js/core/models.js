@@ -333,8 +333,6 @@ Event.invite = function(params, callback)
   for(var index in emailList)
   {
     var emailAddr = emailList[index];
-
-
     if (!isValidEmail(emailAddr))
     {
       //email address is malformed
@@ -444,6 +442,8 @@ Event.invite = function(params, callback)
                         // send mail with defined transport object
                         smtpTransport.sendMail(mailOptions, function(error, response){
                             if(error){
+                                console.log("error");
+                                console.dir(error);
                                 responseDict.errCode = 13;
                                 responseDict.message = "email failed";
                                 callback(responseDict);
@@ -463,6 +463,8 @@ Event.invite = function(params, callback)
               });
               
             } else {
+              console.log("err =");
+              console.dir(err);
               responseDict.errCode = 13;
               responseDict.message = "email failed";
               callback(responseDict);
@@ -711,6 +713,8 @@ Event.getMyEvents = function (params, callback) {
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
+                console.log("EVENT MODEL:");
+                console.log(eventModel);
                 myEvents.push(eventModel);
               }
               if (index == eventIds.length - 1){
