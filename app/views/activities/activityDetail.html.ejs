@@ -1,13 +1,14 @@
-<!-- Include the activityDetail js -->
-<%- scriptLink('/js/activity/activityDetail.js', {type:'text/javascript'}) %>
-
 <!--Activity Detail Page -->
 <div data-role="page" class="activity_detail_page">
-
+  <!-- Include the activityDetail js -->
+  <%- scriptLink('/js/activity/activityDetail.js', {type:'text/javascript'}) %>
   <!--Navigation Bar-->
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div data-role="header">
+        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-left">
+          <a href="#" onClick="history.back()" id="back_button" name="back" value="Back" data-inline="true" data-theme="a" data-role="button">Back</a>
+        </div>
         <h1>
           Group Activity Planner
         </h1>
@@ -25,15 +26,22 @@
   </div>
 
   <div id="activity_detail_content" class="box" data-role="content">
-    <div id="add-to-my-event">
+    <!--<div id="add-to-my-event">
       <button id="add-to-my-event-button" value="Add To My Event" data-role="button">Add To My Events</button>
+    </div>-->
+    <div id="activity-header" class="ui-grid-a">
+      <div class="ui-block-a">
+        <h3 id="activity-title"></h3>
+      </div>
+      <div class="ui-block-b">
+        <button id="add-to-my-event-button" value="Add To My Event" data-role="button" data-mini="true" data-inline="true">Add To My Events</button>
+      </div>
     </div>
-    <div id="activity-title"></div>
-    <div id="activity-description"></div>
-    <div id="activity-num-participants"></div>
     <div id="activity-category"></div>
-    <div id="activity-time-range"></div>
     <div id="activity-address"></div>
+    <div id="activity-description"></div>
+    <div id="activity-time-range"></div>
     <div id="activity-price-range"></div>
+    <div id="activity-num-participants"></div>
   </div>
 </div><!-- End Page -->

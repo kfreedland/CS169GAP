@@ -44,17 +44,17 @@ router.get('/logout').to('Main.logout');
 router.post('/auth/local').to('Auth.local');
 router.get('/users/profile').to('Users.profile');
 
-router.post('/events/create').to('Events.add');
 // router.post('/TESTAPI/unitTests').to('Main.unitTests');
 
 router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
 router.get('/activities/activitydetail').to('Activities.detail');
 
-
+router.post('/events/create').to('Events.add');
 router.post('/events/invite').to('Events.invite');
 router.post('/events/changedatetime').to('Events.changeDateTime');
 router.get('/events/getmyevents').to('Events.getMyEvents');
+router.get('/events/createnew').to('Events.createNewEvent');
 
 // router.get('/auth/twitter').to('Auth.twitter');
 // router.get('/auth/twitter/callback').to('Auth.twitterCallback');
