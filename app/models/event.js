@@ -344,7 +344,7 @@ Event.invite = function(params, callback)
 
 
 
-  geddy.model.Event.first({id: eventID}, function (err, result) 
+  geddy.model.Event.first({id: eventID}, function (err, eventModel) 
     {
 
       if(err){
@@ -357,11 +357,11 @@ Event.invite = function(params, callback)
       else 
       {
 
-        if(result)
+        if(eventModel)
         {
           //invite all emails
 
-            // create reusable transport method (opens pool of SMTP connections)
+          // create reusable transport method (opens pool of SMTP connections)
           var smtpTransport = nodemailer.createTransport("SMTP",{
               service: "Gmail",
               auth: {
@@ -369,6 +369,9 @@ Event.invite = function(params, callback)
                   pass: "gapgapgap"
               }
           });
+
+          //Append event data to message
+          message = message + "";
 
           var mailOptions = {
               from: "Group Activity Planner ✔ <groupactivityplanner@gmail.com>", // sender address
@@ -438,13 +441,7 @@ Event.getMyEvents = function (params, callback) {
       responseDict.errCode = 7;
       callback(responseDict);
     } else {
-      if (err){
-        responseDict.events = [];
-        // console.log("err exists: ");
-        // console.dir(err);
-        responseDict.errCode = 7;
-        callback(responseDict);
-      } else if (userModel){
+      if (userModel){
         // console.log("myevents = ");
         // console.dir(userModel.myevents);
         var myEvents = [];
@@ -455,8 +452,6 @@ Event.getMyEvents = function (params, callback) {
             geddy.model.Event.first({id: eventId}, function (err, eventModel){
               if (err){
                 responseDict.events = [];
-                console.log("err exists: ");
-                console.dir(err);
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
