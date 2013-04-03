@@ -45,7 +45,7 @@ describe('Event.changeDateTime change time1', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -135,7 +135,7 @@ describe('Event.changeDateTime change time2', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -221,7 +221,7 @@ describe('Event.changeDateTime change time1 and time2', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -309,7 +309,7 @@ describe('Event.changeDateTime change startdate', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -400,7 +400,7 @@ describe('Event.changeDateTime change enddate', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -491,7 +491,7 @@ describe('Event.changeDateTime change startdate and enddate', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -582,7 +582,7 @@ describe('Event.changeDateTime change startdate and enddate, time1 and time2', f
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -679,7 +679,7 @@ describe('Event.changeDateTime all date/time fields null', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -764,7 +764,7 @@ describe('Event.changeDateTime eventid null', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -849,7 +849,7 @@ describe('Event.changeDateTime invalid eventid', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -935,7 +935,7 @@ describe('Event.changeDateTime new time1 invalid', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -1020,7 +1020,7 @@ describe('Event.changeDateTime new time2 invalid', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -1103,7 +1103,7 @@ describe('Event.changeDateTime invalid times', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -1188,7 +1188,7 @@ describe('Event.changeDateTime new startdate invalid', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -1274,7 +1274,7 @@ describe('Event.changeDateTime new enddate invalid', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};
@@ -1360,7 +1360,7 @@ describe('Event.changeDateTime invalid new dates', function()
 		                    confirmPassword: 'MyPassword!',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
-		                    email: 'elayman123@gmail.com'});
+		                    email: 'greg@gracken.com'});
 				User.add(user, function (answerDict) 
 				{
 					var eventData = {};

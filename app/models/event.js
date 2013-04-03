@@ -104,13 +104,13 @@ Event.add = function(params, callback)
   }
 };
 
-function getEmailAndId(idsOrEmails, errorCallback, successCallback)
+function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
   emails = [];
   userIds = [];
-  for(var key in idsOrEmails)
+  for(var key in usernamesOrEmails)
   {
-    var id = idsOrEmails[key];
+    var id = usernamesOrEmails[key];
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
       //console.log('EMAIL found is: '+name);
@@ -119,7 +119,7 @@ function getEmailAndId(idsOrEmails, errorCallback, successCallback)
     }
     else
     {
-      geddy.model.User.first({id: id}, function(err, record)
+      geddy.model.User.first({username: id}, function(err, record)
       {
           if(err)
           {
@@ -147,14 +147,14 @@ function getEmailAndId(idsOrEmails, errorCallback, successCallback)
     successCallback(result);
 }
 
-Event.addUsersToEvent = function(eventid, userIds, callback)
+Event.addUsersToEvent = function(eventid, usernames, callback)
 {
-  userIds = userIds.split(',');
+  usernames = usernames.split(',');
   geddy.model.Event.first({id: eventid}, function(err, eventRecord)
   {
     if(eventRecord && eventRecord.attendingusers)
     {
-      var data = eventRecord.attendingusers.split(',').concat(userIds);
+      var data = eventRecord.attendingusers.split(',').concat(usernames);
       var newUids = data.id;
       newUids = validateUserIds(newUids, eventid);
       eventRecord.attendingusers = newUids.toString();
@@ -203,9 +203,9 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       }
       else
       {
-        geddy.model.User.first({id: id}, function(err, userRecord)
+        geddy.model.User.first({username: id}, function(err, userRecord)
         {
-          if(userRecord && userRecord.username)
+          if(userRecord && userRecord.id)
           {
             if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
             {
@@ -222,7 +222,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 if(!err)
                 {
                   emailReturn.push(userRecord.email);
-                  idReturn.push(id);
+                  idReturn.push(userRecord.id);
                 }
               });
             }
@@ -517,8 +517,6 @@ Event.changeDateTime = function(params, callback)
         else
         {
 
-          console.log('start: '+ eventModel.time1+ ' end: '+eventModel.time2);
-
           //set fields if neccesary
           if (newTime1) {
             eventModel.time1 = newTime1;
@@ -529,7 +527,6 @@ Event.changeDateTime = function(params, callback)
           }
 
           if (newstartdate) {
-            console.log("changing startdate was: "+eventModel.startdate+" now is: "+newstartdate);
             eventModel.startdate = newstartdate;
           }
 
@@ -537,8 +534,7 @@ Event.changeDateTime = function(params, callback)
             eventModel.enddate = newEndDate;
           }
         }
-        
-        console.log('start: '+ eventModel.time1+ ' end: '+eventModel.time2);
+
         //check to see if fields are valid
         if(eventModel.time1 >= eventModel.time2)
         {
