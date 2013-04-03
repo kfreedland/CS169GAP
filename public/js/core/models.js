@@ -283,7 +283,7 @@ Activity.add = function (parameterDict, callback){
   //DURATION
   if(parameterDict.duration){
     activityDict.duration = parseFloat(parameterDict.duration);
-    if(activityDict.duration < 0 ){
+    if(activityDict.duration <= 0 ){
       respDict.errCode = 6;
       respDict.message = "invalid duration";
       callback(respDict);
@@ -445,6 +445,7 @@ Event.add = function(params, callback)
       var emails = emailAndId.email;
       var userIds = emailAndId.id;
 
+
       geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
         if(activityRecord &&  activityRecord.name) //basic assertion that record exists
@@ -462,8 +463,7 @@ Event.add = function(params, callback)
             eventDict.activityid = params.activityid;
             eventDict.attendingusers = userIds.toString();
             var eventRecord = geddy.model.Event.create(eventDict);
-
-            geddy.model.Event.save(eventRecord, function(err, result)
+            geddy.model.Event.save(eventRecord, function(err, eventModel)
             {
               if(err)
               {
@@ -471,25 +471,13 @@ Event.add = function(params, callback)
               }
               else
               {
-                //now we have to add the eventRecord to each user
-                geddy.model.Event.first({attendingusers: userIds.toString()}, function(err, eventRecord)
+                addEventToUsers(eventModel.id, userIds, function(respDict)
                 {
-                  if(err)
+                  var message = "People want you to join the following activity: "+activityRecord.name;
+                  invite({eventid: eventModel.id, emails: emails , message: message}, function()
                   {
-                    callback(backendError);
-                  }
-                  else
-                  {
-                    addEventToUsers(eventRecord.id, userIds, function(respDict)
-                    {
-                      var message = "People want you to join the following activity: "+activityRecord.name;
-                      invite({eventid: eventRecord.id, emails: emails , message: message}, function()
-                      {
-                        callback(respDict);
-                      });
-                    });
-                  }
-
+                    callback(respDict);
+                  });
                 });
               }
             });
@@ -582,11 +570,13 @@ function addEventToUsers(eventId, userIds, callback)
           record.myevents = eventId;
         }
         record.confirmPassword = record.password;
+        console.log("record: ");
+        console.dir(record);
         geddy.model.User.save(record, function(err, result)
         {
           if(err)
           {
-            console.log("err ");
+            console.log("Error Adding Event To User");
             console.dir(err);
             callback(backendError);
           }

@@ -159,8 +159,8 @@ describe('Event', function()
 		    Activity.add(eventDict, function(err, response)
 		    {
 		    	var user = User.create({username: 'theGracken',
-		                    password: 'MyPassword!',
-		                    confirmPassword: 'MyPassword!',
+		                    password: 'MyPasswordWOOT',
+		                    confirmPassword: 'MyPasswordWOOT',
 		                    familyName: 'LastName1',
 		                    givenName: 'FirstName1',
 		                    email: 'kfreedland@berkeley.edu'});
@@ -196,7 +196,7 @@ describe('Event', function()
 		});
 	});
 
-	describe('Event.add invalid start/enddate', function()
+	describe('Event.add invalid start/eventDictdate', function()
 	{
 		it('should return errCode:8', function(done)
 		{

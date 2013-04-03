@@ -19,7 +19,7 @@ var resetFixture = function (done){
 };
 
 describe('User', function(){
-	before(function(done) {
+	beforeEach(function(done) {
 		//Erase database
 		// console.log("Running resetFixture");
 		resetFixture(done);

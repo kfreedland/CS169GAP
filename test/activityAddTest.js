@@ -10,7 +10,7 @@ var resetFixture = function (done){
 
 
 describe('Activity', function(){
-	before(function(done) {
+	beforeEach(function(done) {
 		//Erase database
 		resetFixture(done);
 	});
