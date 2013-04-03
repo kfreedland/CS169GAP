@@ -255,14 +255,16 @@ describe('Event', function()
                                                 assert.deepEqual(eventResp2, expected);
 
                                                 Event.first({name: eventData2.name}, function (err, eventModel2) {
-                                                    Event.getMyEvents({userId: userRecord.id}, function (resp1)
+                                                    Event.getMyEvents({userId: userRecord.id}, function (getymyEventsResponse)
                                                     {
-                                                        assert.equal(resp1.errCode, 1);
+                                                        console.log("event response");
+                                                        console.dir(getymyEventsResponse);
+                                                        assert.equal(getymyEventsResponse.errCode, 1);
                                                         //Make sure we get 1 event back
-                                                        assert.equal(resp1.events.length, 2);
+                                                        assert.equal(getymyEventsResponse.events.length, 2);
                                                         //Check if first item equals the event we added
-                                                        assert.deepEqual(resp1.events[0].id, eventModel1.id);
-                                                        assert.deepEqual(resp1.events[1].id, eventModel2.id);
+                                                        assert.deepEqual(getymyEventsResponse.events[0].id, eventModel1.id);
+                                                        assert.deepEqual(getymyEventsResponse.events[1].id, eventModel2.id);
                                                         done();
                                                     });
                                                 });
