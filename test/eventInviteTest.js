@@ -76,6 +76,9 @@ describe('Event.invite valid emails', function()
 
 
 									//INVITE
+
+									console.log("Reached event.invite in test");
+
 									Event.invite(paramDict, function(respDict)
 									{
 										var expected = {errCode: 1};
