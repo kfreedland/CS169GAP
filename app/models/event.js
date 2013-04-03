@@ -440,9 +440,9 @@ Event.changeDateTime = function(params, callback)
     responseDict.message = "null eventid";
     callback(responseDict);
     return;
-  } else {
-    var eventID = params.eventid;
   }
+
+  var eventID = params.eventid;
 
   if (!params.time1 && !params.time2 && !params.begindate && !params.enddate )
   {
@@ -453,25 +453,25 @@ Event.changeDateTime = function(params, callback)
   }
 
   //time1
-  var newTime1 = undefined;
+  var newTime1;
   if(params.time1) {
     newTime1 = parseFloat(params.time1);
   }
 
   //time2
-  var newTime2 = undefined;
+  var newTime2;
   if(params.time2) {
     newTime2 = params.time2;
   }
 
   //begindate
-  var newBeginDate = undefined;
+  var newBeginDate;
   if(params.time2) {
     newBeginDate = params.begindate;
   }
 
   //enddate
-  var newEndDate = undefined;
+  var newEndDate;
   if(params.time2) {
     newEndDate = params.enddate;
   }
@@ -564,7 +564,7 @@ Event.changeDateTime = function(params, callback)
             callback(responseDict);
             return;            
           }
-        }
+        });
       }
     });
 };
