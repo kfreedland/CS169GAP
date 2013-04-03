@@ -25,12 +25,23 @@ var config = {
 , model: {
     defaultAdapter: 'postgres'
   }
+//thawing-hamlet database
+// , db: {
+//     postgres: {
+//       user: 'hhcxftfrwwfumx'
+//     , database: 'd7t748s19klgo1'
+//     , password: 'ZgZJDlEnjraoq-1XR23phpBhup'
+//     , host: 'ec2-54-243-62-232.compute-1.amazonaws.com'
+//     , port: 5432
+//     }
+//   }
+//gap2 database
 , db: {
     postgres: {
-      user: 'hhcxftfrwwfumx'
-    , database: 'd7t748s19klgo1'
-    , password: 'ZgZJDlEnjraoq-1XR23phpBhup'
-    , host: 'ec2-54-243-62-232.compute-1.amazonaws.com'
+      user: 'gqfslnsegogdzu'
+    , database: 'd2t1b76rgqatiu'
+    , password: 'd-kfQtcYYgKth2mzPG6W94E54N'
+    , host: 'ec2-54-243-48-107.compute-1.amazonaws.com'
     , port: 5432
     }
   }
