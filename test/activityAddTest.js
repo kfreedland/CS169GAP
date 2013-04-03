@@ -717,6 +717,34 @@ describe('Activity', function(){
 		});
 	});
 
+	describe('Activity.add time1 = 0', function(){
+		it('should return errCode:6', function(done){
+		    var activityDict = {};
+		    activityDict.name = 'jogging';
+		    activityDict.description = 'go for a run with some friends!';
+		    activityDict.category = 'Sports';
+		    activityDict.time1 = '0';
+		    activityDict.time2 = '5';
+		    activityDict.flag = 'startEnd';
+		    activityDict.begindate = undefined;
+		    activityDict.enddate = undefined;
+		    activityDict.lowprice = '0';
+		    activityDict.highprice = '0';
+		    activityDict.lownumparticipants = '5';
+		    activityDict.highnumparticipants = '6';
+		    activityDict.latitude = undefined;
+		    activityDict.longitude = undefined;
+		    activityDict.duration = '2';
+
+		    Activity.add(activityDict, function(response)
+		    {
+	    		var expected = {errCode: 1};
+	    		assert.deepEqual(response,expected);
+	    		done();
+		    });
+		});
+	});
+
 	describe('Activity.add duplicate activities', function(){
 		it('should return errCode:1', function(done){
 			var activityDict = {};
