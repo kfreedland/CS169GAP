@@ -23,12 +23,11 @@ module.exports = {
   }
 , facebook: {
     name: 'Facebook'
-  , keyField: ['id', 'email']
+  , keyField: 'id'
   , parseProfile: function (profile) {
       var userData = {
         givenName: profile.name.givenName || profile.username
       , familyName: profile.name.familyName
-      , email: profile.email
       };
       return userData;
     }

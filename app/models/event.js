@@ -73,6 +73,8 @@ Event.add = function(params, callback)
             {
               if(err)
               {
+                console.log("error in event.save in Event.add");
+                console.dir(err);
                 callback(backendError);
               }
               else
@@ -137,6 +139,8 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
       {
           if(err)
           {
+            console.log("error in user.first in Event.add");
+            console.dir(err);
             errorCallback(backendError);
           }
           else
@@ -176,6 +180,8 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
       {
         if(err)
         {
+          console.log("error in event.save in Event.addUsersToEvent");
+          console.dir(err);
           callback(backendError);
         }
         else
@@ -231,6 +237,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
               {
                 userRecord.myevents = eventid;
               }
+              userRecord.confirmPassword = userRecord.password;
               geddy.model.User.save(userRecord, function(err, result)
               {
                 if(!err)
@@ -259,6 +266,8 @@ function addEventToUsers(eventid, userIds, callback)
     {
       if(err)
       {
+        console.log("error in user.first in Event.addEventToUsers");
+        console.dir(err);
         callback(backendError);
       }
       else
@@ -277,6 +286,8 @@ function addEventToUsers(eventid, userIds, callback)
         {
           if(err)
           {
+            console.log("error in event.save in Event.addEventToUsers");
+            console.dir(err);
             callback(backendError);
           }
 
@@ -374,6 +385,8 @@ Event.invite = function(params, callback)
 
       if(err){
         //handle error
+        console.log("err");
+        console.dir(err);
         responseDict.errCode = 7;
         responseDict.message = "database error";
         callback(responseDict);
@@ -609,6 +622,8 @@ Event.changeDateTime = function(params, callback)
 
       if (err){
         //handle error
+        console.log("err change date time");
+        console.dir(err);
         responseDict.errCode = 7;
         responseDict.message = "database error";
         callback(responseDict);
@@ -670,6 +685,8 @@ Event.changeDateTime = function(params, callback)
         {
           if(err)
           {
+            console.log("error in Event.save in changeDateTime");
+            console.dir(err);
             responseDict.errCode = 7;
             responseDict.message = "database error";
             callback(responseDict);
@@ -698,6 +715,8 @@ Event.changeDateTime = function(params, callback)
 Event.getMyEvents = function (params, callback) {
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
     if (err){
+      console.log("error in getMyEvents");
+      console.dir(err);
       responseDict.events = [];
       // console.log("err exists: ");
       // console.dir(err);
@@ -712,13 +731,15 @@ Event.getMyEvents = function (params, callback) {
             var eventId = eventIds[index];
             geddy.model.Event.first({id: eventId}, function (err, eventModel){
               if (err){
+                console.log("error in event.first in getMyEvents");
+                console.dir(err);
                 responseDict.events = [];
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
                 myEvents.push(eventModel);
               }
-              if (index == eventIds.length - 1){
+              if (index == myEvents.length - 1){
                 getEventsCallback(1, myEvents, callback);
               }
             });
