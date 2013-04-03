@@ -5,15 +5,6 @@ var backendError = {errCode: 7};
 var badTimes = {errCode: 8};
 var badTableJoin = {errCode: 9};
 
-// create reusable transport method (opens pool of SMTP connections)
-var smtpTransport = nodemailer.createTransport("SMTP",{
-    service: "Gmail",
-    auth: {
-        user: "groupactivityplanner@gmail.com",
-        pass: "gapgapgap"
-    }
-});
-
 var Event = function () {
 
   this.defineProperties({
@@ -353,7 +344,7 @@ Event.invite = function(params, callback)
 
 
 
-  geddy.model.Event.first({id: eventID}, function (err, result) 
+  geddy.model.Event.first({id: eventID}, function (err, eventModel) 
     {
 
       if(err){
@@ -366,9 +357,21 @@ Event.invite = function(params, callback)
       else 
       {
 
-        if(result)
+        if(eventModel)
         {
           //invite all emails
+
+          // create reusable transport method (opens pool of SMTP connections)
+          var smtpTransport = nodemailer.createTransport("SMTP",{
+              service: "Gmail",
+              auth: {
+                  user: "groupactivityplanner@gmail.com",
+                  pass: "gapgapgap"
+              }
+          });
+
+          //Append event data to message
+          message = message + "";
 
           var mailOptions = {
               from: "Group Activity Planner ✔ <groupactivityplanner@gmail.com>", // sender address
