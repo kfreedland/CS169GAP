@@ -18,8 +18,6 @@ $(document).ready(function() {
 			        contentType: "application/json",
 			        dataType: "json",
 			        success: function(respData) {
-			        	console.log('Successful Find Activity Call');
-			        	console.log(respData);
 			        	handleFindActivityResponse(respData);
 			        },
 			        failure: function(err) {

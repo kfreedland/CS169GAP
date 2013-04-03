@@ -96,7 +96,8 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   #suggested_activities,
   #activity_detail_content,
   #profile_content,
-  #createEventPage {
+  #createEventPage,
+  #myevent_content {
     margin:0 auto;
     width: 50%;
     padding-top: 100px;

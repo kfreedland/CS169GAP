@@ -55,6 +55,7 @@ router.post('/events/invite').to('Events.invite');
 router.post('/events/changedatetime').to('Events.changeDateTime');
 router.get('/events/getmyevents').to('Events.getMyEvents');
 router.get('/events/createnew').to('Events.createNewEvent');
+router.get('/events/myevents').to('Events.myEvents');
 
 // router.get('/auth/twitter').to('Auth.twitter');
 // router.get('/auth/twitter/callback').to('Auth.twitterCallback');

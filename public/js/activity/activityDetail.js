@@ -12,7 +12,7 @@ $(document).ready(function() {
 function handleActivityDetailResponse(jsonData) {
 	$('#activity-title').html(jsonData.name);
 	$('#activity-description').html(jsonData.description);
-	var numParticipantsStr = 'For ' + jsonData.lownumparticipants + ' to ' + jsonData.highnumparticipants + ' people'
+	var numParticipantsStr = 'For ' + jsonData.lownumparticipants + ' to ' + jsonData.highnumparticipants + ' people';
 	$('#activity-num-participants').html(numParticipantsStr);
 	$('#activity-category').html('Category: ' + jsonData.category);
 	var priceRangeStr = 'Price Range: $' + jsonData.lowprice + ' to $' + jsonData.highprice;

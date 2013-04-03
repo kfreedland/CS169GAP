@@ -171,6 +171,31 @@ var Events = function () {
     });
   };
 
+  // My Events
+  this.myEvents = function (req, resp, params) {
+    var self = this
+      , User = geddy.model.User;
+
+    var localParams = params;
+    if (!localParams.errCode){
+      localParams.errCode = 0;
+    }
+    if (!localParams.methodType){
+      localParams.methodType = 0;
+    }
+    User.first({id: this.session.get('userId')}, function (err, data) {
+      var params = localParams;
+      params.user = null;
+      params.authType = null;
+      if (data) {
+        params.user = data;
+      }
+      self.respond(params, {
+        format: 'html'
+      , template: 'app/views/events/myEvents'
+      });
+    });
+  };
 
 };
 

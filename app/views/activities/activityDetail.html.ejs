@@ -14,7 +14,7 @@
         </h1>
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
           <% if (user) {%>
-            <p>Welcome: <a href="/users/profile"><%=user.givenName%> <%=user.familyName%></a>
+            <p>Welcome: <a href="/events/myevents"><%=user.givenName%> <%=user.familyName%></a>
             <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
           <% } else { %>
             <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
