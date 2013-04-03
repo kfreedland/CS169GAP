@@ -64,7 +64,7 @@ function createEvent(activityId) {
 		eventData.activityid = activityId;
 		eventData.time1 = time1;
 	    eventData.time2 = time2;
-	    eventData.startdate = epochStartDate;
+	    eventData.begindate = epochStartDate;
 	    eventData.enddate = epochEndDate;
 	    eventData.description = $('#activityDescription').val();
 
