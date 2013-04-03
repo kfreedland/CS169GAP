@@ -71,15 +71,16 @@ User.add = function(user, callback){
     });
 };
 
-User.getUsernames = function(params, callback)
+User.getUsernames = function(callback)
 {
   usernames = [];
   geddy.model.User.all(function(err, result)
   {
-    for(var recordId in result)
+    for(var key in result)
     {
-      usernames.push(result.recordId.username);
+      usernames.push(result[key].username);
     }
+    usernames.sort();
     callback(usernames);
   });
 };

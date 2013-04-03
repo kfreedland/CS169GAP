@@ -153,6 +153,14 @@ var Users = function () {
     });
   };
 
+  this.getUsernames = function(req, resp, params)
+  {
+    User.getUsernames(function(response)
+    {
+      self.respond(response);
+    });
+  }
+
 };
 
 exports.Users = Users;

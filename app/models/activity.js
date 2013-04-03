@@ -282,7 +282,7 @@ Activity.add = function (parameterDict, callback){
   //DURATION
   if(parameterDict.duration){
     activityDict.duration = parseFloat(parameterDict.duration);
-    if(activityDict.duration < 0 ){
+    if(activityDict.duration <= 0 ){
       respDict.errCode = 6;
       respDict.message = "invalid duration";
       callback(respDict);

@@ -24,7 +24,7 @@
 var Mocha = require('mocha');
 
 function run_tests(callback){
-    var mocha = new Mocha({reporter: 'spec', ui: 'bdd'});
+    var mocha = new Mocha({reporter: 'spec', ui: 'bdd', timeout: '10000'});
     execute_test_code(mocha, callback);
 }
 
@@ -45,7 +45,7 @@ function create_coverage_code(callback){
 }
 
 function run_test_coverage(callback){
-    var mocha = new Mocha({reporter: 'html-cov', ui: 'bdd'});
+    var mocha = new Mocha({reporter: 'html-cov', ui: 'bdd', timeout: '10000'});
     execute_test_code(mocha, callback);
 }
  
@@ -54,6 +54,8 @@ function execute_test_code(mochaInstance, cb) {
     mochaInstance.addFile('./test/activityAddTest.js');
     mochaInstance.addFile('./test/activityFindTest.js');
     mochaInstance.addFile('./test/eventAddTest.js');
+    mochaInstance.addFile('./test/eventChangeDateTimeTest.js');
+    mochaInstance.addFile('./test/eventInviteTest.js');
     mochaInstance.addFile('./test/getMyEventsTest.js');
     mochaInstance.options.ignoreLeaks = true;
     mochaInstance.run(function(failures) {

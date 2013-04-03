@@ -23,7 +23,7 @@ module.exports = {
   }
 , facebook: {
     name: 'Facebook'
-  , keyField: 'id'
+  , keyField: ['id', 'email']
   , parseProfile: function (profile) {
       var userData = {
         givenName: profile.name.givenName || profile.username

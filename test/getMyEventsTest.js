@@ -104,7 +104,7 @@ describe('Event', function()
                             confirmPassword: 'MyPassword!',
                             familyName: 'LastName1',
                             givenName: 'FirstName1',
-                            email: 'kfreedland@berkeley.edu'});
+                            email: 'greg@greg.com'});
                 User.add(user, function (answerDict) 
                 {
                     var eventData = {};
@@ -123,7 +123,7 @@ describe('Event', function()
                             eventData.startdate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = userRecord.username;
+                            eventData.attendingusers = userRecord.id;
 
                             Event.add(eventData, function(respDict)
                             {
@@ -192,14 +192,14 @@ describe('Event', function()
                             var expected = {errCode: 1};
 
                             var d = new Date();
-                            eventData.name = activityDict.name;
+                            eventData.name = 'datName';
                             eventData.activityid = model1.id;
                             eventData.time1 = 500;
                             eventData.time2 = 1000;
                             eventData.startdate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = activityDict.description;
-                            eventData.attendingusers = userRecord.username;
+                            eventData.attendingusers = userRecord.id;
                             
                             Event.add(eventData, function (eventResp1)
                             {
@@ -238,14 +238,14 @@ describe('Event', function()
                                             var expected2 = {errCode: 1};
 
                                             var d2 = new Date();
-                                            eventData2.name = activityDict.name;
+                                            eventData2.name = 'name2';
                                             eventData2.activityid = model2.id;
                                             eventData2.time1 = 500;
                                             eventData2.time2 = 1000;
                                             eventData2.startdate = d2.getTime();
                                             eventData2.enddate = d2.getTime() + 50000;
                                             eventData2.description = activityDict2.description;
-                                            eventData2.attendingusers = userRecord.username;
+                                            eventData2.attendingusers = userRecord.id;
                                             
                                             Event.add(eventData2, function (eventResp2)
                                             {
