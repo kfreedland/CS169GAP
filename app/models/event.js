@@ -255,7 +255,7 @@ Event.invite = function(params, callback)
   }
 
   //some emails are bad
-  if(badEmails.count > 0 ){
+  if(badEmails.length > 0 ){
 
     responseDict.errCode = 12;
     responseDict.message = "malformed emails";
