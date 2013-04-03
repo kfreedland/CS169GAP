@@ -41,7 +41,7 @@ router.get('/').to('Main.index');
 
 router.get('/login').to('Main.login');
 router.get('/logout').to('Main.logout');
-router.post('/auth/local').to('Auth.local');
+router.post('/').to('Auth.local');
 router.get('/users/profile').to('Users.profile');
 router.get('/users/usernames').to('Users.getUsernames');
 // router.post('/TESTAPI/unitTests').to('Main.unitTests');
