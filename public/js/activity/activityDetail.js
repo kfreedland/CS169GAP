@@ -6,6 +6,7 @@ $(document).ready(function() {
 	
 	var jsonData = $.parseJSON(window.atob(encodedDataFixed));
 	handleActivityDetailResponse(jsonData);
+	addToMyEventButton(encodedDataFixed);
 });
 
 function handleActivityDetailResponse(jsonData) {
@@ -13,7 +14,7 @@ function handleActivityDetailResponse(jsonData) {
 	$('#activity-description').html(jsonData.description);
 	var numParticipantsStr = 'For ' + jsonData.lownumparticipants + ' to ' + jsonData.highnumparticipants + ' people'
 	$('#activity-num-participants').html(numParticipantsStr);
-	$('#activity-category').html(jsonData.category);
+	$('#activity-category').html('Category: ' + jsonData.category);
 	var priceRangeStr = 'Price Range: $' + jsonData.lowprice + ' to $' + jsonData.highprice;
 	$('#activity-price-range').html(priceRangeStr);
 	
@@ -25,5 +26,12 @@ function handleActivityDetailResponse(jsonData) {
 	// Calculate the address from the provided latitude and longitude, and insert it into the html
 	reverseGeocodeAddress(jsonData.latitude, jsonData.longitude, function(address) {
 		$("#activity-address").append('<span class="row-address-name">' + address + '</span>');
+	});
+}
+
+// encodedData is the encoded json object
+function addToMyEventButton(encodedData) {
+	$('#add-to-my-event-button').click(function() {
+		window.location = '/events/createnew#' + encodedData;
 	});
 }

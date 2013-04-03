@@ -177,7 +177,7 @@ function handleFindActivityResponse(jsonResp) {
 		);
 
 		// Add on click functionality to the activity
-		$('"#' + activityID + '"').click(function() {
+		$('#' + activityID).click(function() {
 			window.location = '/activities/activitydetail#' + encodedData;
 		});
 
