@@ -5,6 +5,15 @@ var backendError = {errCode: 7};
 var badTimes = {errCode: 8};
 var badTableJoin = {errCode: 9};
 
+// create reusable transport method (opens pool of SMTP connections)
+var smtpTransport = nodemailer.createTransport("SMTP",{
+    service: "Gmail",
+    auth: {
+        user: "groupactivityplanner@gmail.com",
+        pass: "gapgapgap"
+    }
+});
+
 var Event = function () {
 
   this.defineProperties({
@@ -151,7 +160,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, userIds, callback)
 {
-  console.log('running addUsersToEvent');
   userIds = userIds.split(',');
   geddy.model.Event.first({id: eventid}, function(err, eventRecord)
   {
@@ -195,7 +203,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       idHash[id] = true;
       geddy.model.User.first({id: id}, function(err, userRecord)
       {
-        if(userRecord && userRecord.name)
+        if(userRecord && userRecord.username)
         {
           if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
           {
@@ -207,7 +215,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
             {
               userRecord.myevents = eventid;
             }
-            geddy.model.Event.save(userRecord, function(err, result)
+            geddy.model.User.save(userRecord, function(err, result)
             {
               if(!err)
               {
@@ -361,15 +369,6 @@ Event.invite = function(params, callback)
         if(result)
         {
           //invite all emails
-
-            // create reusable transport method (opens pool of SMTP connections)
-          var smtpTransport = nodemailer.createTransport("SMTP",{
-              service: "Gmail",
-              auth: {
-                  user: "groupactivityplanner@gmail.com",
-                  pass: "gapgapgap"
-              }
-          });
 
           var mailOptions = {
               from: "Group Activity Planner ✔ <groupactivityplanner@gmail.com>", // sender address

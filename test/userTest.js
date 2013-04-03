@@ -49,7 +49,7 @@ describe('User', function(){
                               familyName: 'LastName2',
                               givenName: 'FirstName2',
                               email: 'Bob@bob.com'});
-			User.add(user, function (answerDict) {
+			User.add(user, function (answerDict1) {
 				User.add(user, function (answerDict) {
 				    assert.deepEqual(answerDict, {'errCode': 2});
 					done();
@@ -72,9 +72,11 @@ describe('User', function(){
                               familyName: 'LastName192',
                               givenName: 'FirstName192',
                               email: 'Greg192@greg.com'});
-			User.add(user2, function (answerDict) {
-				assert.deepEqual(answerDict, {'errCode': 1});
-				done();
+			User.add(user1, function (answerDict1) {
+				User.add(user2, function (answerDict) {
+					assert.deepEqual(answerDict, {'errCode': 1});
+					done();
+				});
 			});
 		});
 	});
