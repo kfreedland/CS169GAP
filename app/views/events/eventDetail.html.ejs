@@ -1,22 +1,20 @@
-
-<!--Profile Page -->
-<div data-role="page" class="profile_page">
-<!-- Include the profile js -->
-<%- scriptLink('/js/users/profile.js', {type:'text/javascript'}) %>
-
+<!--Event Detail Page -->
+<div data-role="page" class="event_detail_page">
+  <!-- Include the eventDetail js -->
+  <%- scriptLink('/js/event/eventDetail.js', {type:'text/javascript'}) %>
   <!--Navigation Bar-->
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div data-role="header">
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-left">
-          <a href="/"  id="back_button" name="back" value="Back" data-inline="true" data-theme="a" data-role="button">Back</a>
+          <a href="#" onClick="history.back()" id="back_button" name="back" value="Back" data-inline="true" data-theme="a" data-role="button">Back</a>
         </div>
         <h1>
           Group Activity Planner
         </h1>
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
           <% if (user) {%>
-            <p>Welcome: <a href="/users/profile"><%=user.givenName%> <%=user.familyName%></a>
+            <p>Welcome: <a href="/events/myevents"><%=user.givenName%> <%=user.familyName%></a>
             <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
           <% } else { %>
             <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
@@ -27,15 +25,19 @@
     </div>
   </div>
 
-  <div id="profile_content" class="box" data-role="content">
-    <div id="my_profile">
-      <h2 id="profile_title">My Profile</h2>
-      <div id="username">Username: <%=user.username%></div>
-      <div id="name">Name: <%=user.givenName%> <%=user.familyName%></div>
-      <div id="email">Email: <%=user.email%></div>
+  <div id="event_detail_content" class="box" data-role="content">
+    <h3 id="event-title"></h3>
+    <div id="event-category"></div>
+    <div id="event-address"></div>
+    <div id="event-description"></div>
+    <div id="event-time-range"></div>
+    <div id="event-price-range"></div>
+    <div id="event-num-participants"></div>
+
+    <div id="invite_friends_right">
+      <label for="invitedFriends"><h3>Invite More Friends:</h3></label>
+      <textarea name="textarea" id="invitedFriends"></textarea>
     </div>
-    <div id="my_events">
-      <h2 id="my_events_title">My Events</h2>
-    </div>
+
   </div>
 </div><!-- End Page -->

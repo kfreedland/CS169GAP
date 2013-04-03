@@ -50,13 +50,13 @@ function run_test_coverage(callback){
 }
  
 function execute_test_code(mochaInstance, cb) {
-    // mochaInstance.addFile('./test/userTest.js');
-    // mochaInstance.addFile('./test/activityAddTest.js');
-    // mochaInstance.addFile('./test/activityFindTest.js');
-    // mochaInstance.addFile('./test/eventAddTest.js');
-    // mochaInstance.addFile('./test/eventChangeDateTimeTest.js');
+    mochaInstance.addFile('./test/userTest.js');
+    mochaInstance.addFile('./test/activityAddTest.js');
+    mochaInstance.addFile('./test/activityFindTest.js');
+    mochaInstance.addFile('./test/eventAddTest.js');
+    mochaInstance.addFile('./test/eventChangeDateTimeTest.js');
     mochaInstance.addFile('./test/eventInviteTest.js');
-    // mochaInstance.addFile('./test/getMyEventsTest.js');
+    mochaInstance.addFile('./test/getMyEventsTest.js');
     mochaInstance.options.ignoreLeaks = true;
     mochaInstance.run(function(failures) {
         cb(failures);
@@ -74,9 +74,7 @@ task('test', {async: true}, function(args) {
 
                 }else {
                     //This runs the runTestCoverage task and directs the output to the correct file
-                    jake.exec(['geddy jake runTestCoverage > ./coverage.html'], function () {
-                        complete();
-                    }, {printStdout: true});
+                    jake.exec(['geddy jake runTestCoverage > ./coverage.html'], {printStdout: true});
                 }
             })
         }

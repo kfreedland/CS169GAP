@@ -1,8 +1,8 @@
 
-<!--Profile Page -->
-<div data-role="page" class="profile_page">
-<!-- Include the profile js -->
-<%- scriptLink('/js/users/profile.js', {type:'text/javascript'}) %>
+<!--My Events Page -->
+<div data-role="page" class="myevents_page">
+<!-- Include the myevents js -->
+<%- scriptLink('/js/event/myEvents.js', {type:'text/javascript'}) %>
 
   <!--Navigation Bar-->
   <div class="navbar navbar-fixed-top">
@@ -27,15 +27,8 @@
     </div>
   </div>
 
-  <div id="profile_content" class="box" data-role="content">
-    <div id="my_profile">
-      <h2 id="profile_title">My Profile</h2>
-      <div id="username">Username: <%=user.username%></div>
-      <div id="name">Name: <%=user.givenName%> <%=user.familyName%></div>
-      <div id="email">Email: <%=user.email%></div>
-    </div>
-    <div id="my_events">
-      <h2 id="my_events_title">My Events</h2>
-    </div>
+  <div id="myevent_content" class="box" data-role="content">
+    <h2 id="my_events_title">My Events</h2>
+    <div id="my_events"></div>
   </div>
 </div><!-- End Page -->

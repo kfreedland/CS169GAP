@@ -47,16 +47,14 @@ Event.add = function(params, callback)
 {
   if(params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
-    var usernamesOrEmails = params.attendingusers.split(',');
-    getEmailAndId(usernamesOrEmails, callback, function(emailAndId)
+    var idsOrEmails = params.attendingusers.split(',');
+    getEmailAndId(idsOrEmails, callback, function(emailAndId)
     {
       var emails = emailAndId.email;
       var userIds = emailAndId.id;
-
-
       geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
-        if(activityRecord &&  activityRecord.name) //basic assertion that record exists
+        if(activityRecord && activityRecord.name) //basic assertion that record exists
         {
           if(params.begindate <= params.enddate && params.time1 <= params.time2)
           {
@@ -81,11 +79,18 @@ Event.add = function(params, callback)
               {
                 addEventToUsers(eventModel.id, userIds, function(respDict)
                 {
-                  var message = "People want you to join the following activity: "+activityRecord.name;
-                  Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
+                  if(params.noemail)
                   {
                     callback(respDict);
-                  });
+                  }
+                  else
+                  {
+                    var message = "People want you to join the following event: "+params.name;
+                    Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
+                    {
+                      callback(respDict);
+                    });
+                  }
                 });
               }
             });
@@ -123,7 +128,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     }
     else
     {
-      geddy.model.User.first({id: id}, function(err, record)
+      geddy.model.User.first({username: id}, function(err, record)
       {
           if(err)
           {
@@ -151,14 +156,15 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     successCallback(result);
 }
 
-Event.addUsersToEvent = function(eventid, userIds, callback)
+Event.addUsersToEvent = function(eventid, usernames, callback)
 {
-  userIds = userIds.split(',');
+  usernames = usernames.split(',');
   geddy.model.Event.first({id: eventid}, function(err, eventRecord)
   {
     if(eventRecord && eventRecord.attendingusers)
     {
-      var newUids = eventRecord.attendingusers.split(',').concat(userIds);
+      var data = eventRecord.attendingusers.split(',').concat(usernames);
+      var newUids = data.id;
       newUids = validateUserIds(newUids, eventid);
       eventRecord.attendingusers = newUids.toString();
       geddy.model.Event.save(eventRecord, function(err, result)
@@ -169,7 +175,11 @@ Event.addUsersToEvent = function(eventid, userIds, callback)
         }
         else
         {
-          callback({errCode: 1});
+          var message = "People want you to join the following event: "+eventRecord.name;
+          Event.invite({eventid: eventid, emails: data.email, message: message}, function(respDict)
+          {
+            callback({errCode: 1});
+          });
         }
       });
     }
@@ -182,8 +192,10 @@ Event.addUsersToEvent = function(eventid, userIds, callback)
 
 function validateUserIds(idArray, eventid) //assumes valid usernames
 {
+  toReturn = {};
   idHash = {};
   idReturn = [];
+  emailReturn = [];
   for(var key in idArray)
   {
     var id = idArray[key];
@@ -194,33 +206,43 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
     else
     {
       idHash[id] = true;
-      geddy.model.User.first({id: id}, function(err, userRecord)
+      if(id.indexOf('@') >= 0)
       {
-        if(userRecord && userRecord.username)
+        emailReturn.push(id);
+      }
+      else
+      {
+        geddy.model.User.first({username: id}, function(err, userRecord)
         {
-          if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
+          if(userRecord && userRecord.id)
           {
-            if(userRecord.myevents)
+            if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
             {
-              userRecord.myevents += ',' + eventid;
-            }
-            else
-            {
-              userRecord.myevents = eventid;
-            }
-            geddy.model.User.save(userRecord, function(err, result)
-            {
-              if(!err)
+              if(userRecord.myevents)
               {
-                idReturn.push(id);
+                userRecord.myevents += ',' + eventid;
               }
-            });
+              else
+              {
+                userRecord.myevents = eventid;
+              }
+              geddy.model.User.save(userRecord, function(err, result)
+              {
+                if(!err)
+                {
+                  emailReturn.push(userRecord.email);
+                  idReturn.push(userRecord.id);
+                }
+              });
+            }
           }
-        }
-      });
+        });
+      }
     }
   }
-  return idReturn;
+  toReturn.id = idReturn;
+  toReturn.email = emailReturn;
+  return toReturn;
 }
 
 function addEventToUsers(eventid, userIds, callback)
@@ -245,12 +267,11 @@ function addEventToUsers(eventid, userIds, callback)
           record.myevents = eventid;
         }
         record.confirmPassword = record.password;
+        //record.errors = null;
         geddy.model.User.save(record, function(err, result)
         {
           if(err)
           {
-            console.log("Error Adding Event To User");
-            console.dir(err);
             callback(backendError);
           }
 
@@ -555,19 +576,19 @@ Event.changeDateTime = function(params, callback)
   //time2
   var newTime2;
   if(params.time2) {
-    newTime2 = params.time2;
+    newTime2 = parseFloat(params.time2);
   }
 
   //begindate
-  var newBeginDate;
-  if(params.time2) {
-    newBeginDate = params.begindate;
+  var newbegindate;
+  if(params.begindate) {
+    newbegindate = parseFloat(params.begindate);
   }
 
   //enddate
   var newEndDate;
-  if(params.time2) {
-    newEndDate = params.enddate;
+  if(params.enddate) {
+    newEndDate = parseFloat(params.enddate);
   }
 
 
@@ -598,19 +619,19 @@ Event.changeDateTime = function(params, callback)
         {
 
           //set fields if neccesary
-          if (newTime1 !== undefined) {
+          if (newTime1) {
             eventModel.time1 = newTime1;
           }
 
-          if (newTime2 !== undefined) {
+          if (newTime2) {
             eventModel.time2 = newTime2;
           }
 
-          if (newBeginDate !== undefined) {
-            eventModel.begindate = newBeginDate;
+          if (newbegindate) {
+            eventModel.begindate = newbegindate;
           }
 
-          if (newEndDate !== undefined) {
+          if (newEndDate) {
             eventModel.enddate = newEndDate;
           }
         }
@@ -673,8 +694,6 @@ Event.getMyEvents = function (params, callback) {
       callback(responseDict);
     } else {
       if (userModel){
-        // console.log("myevents = ");
-        // console.dir(userModel.myevents);
         var myEvents = [];
         if (userModel.myevents){
           var eventIds = userModel.myevents.split(',');

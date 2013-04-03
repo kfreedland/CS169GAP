@@ -74,7 +74,7 @@ describe('Event', function()
         });
     });
 
-    describe('Event.add valid', function()
+    describe('Event.add valid - this tests invite through add as well', function()
     {
         it('should return errCode:1', function(done)
         {
@@ -182,7 +182,8 @@ describe('Event', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = userRecord.id;
+                            eventData.attendingusers = user.username;
+                            eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
                             {
@@ -198,7 +199,7 @@ describe('Event', function()
                                     {
                                         geddy.model.User.first({username: user1.username}, function(err, userRecord1)
                                         {
-                                            geddy.model.Event.addUsersToEvent(eventRecord.id, userRecord1.id, function (answerDict)
+                                            geddy.model.Event.addUsersToEvent(eventRecord.id, userRecord1.username, function (answerDict)
                                             {
                                                 assert.deepEqual(answerDict, {errCode: 1});
                                                 done();
@@ -261,7 +262,8 @@ describe('Event', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = uId;
+                            eventData.attendingusers = user.username;
+                            eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
                             {
@@ -323,6 +325,7 @@ describe('Event', function()
                             eventData.enddate = d.getTime();
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
+                            eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
                             {
@@ -384,6 +387,7 @@ describe('Event', function()
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
+                            eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
                             {

@@ -18,9 +18,12 @@ var Events = function () {
 
   this.add = function (req, resp, params) 
   {
-    geddy.model.Event.add(params, function(respDict)
+    var self = this;
+    geddy.model.Event.add(params, function createCallback(respDict)
     {
-      this.respond(respDict);
+      console.log('respDict is');
+      console.log(respDict);
+      self.respond(respDict, {format: 'json'});
     });
   };
 
@@ -141,12 +144,14 @@ var Events = function () {
     geddy.model.Event.getMyEvents({userId: self.session.get('userId')}, function(responseDict) {
       params.errCode = responseDict.errCode;
       params.events = responseDict.events;
+      console.log('RESPONSE FROM MY EVENTS');
+      console.log(responseDict);
       self.respond(responseDict, {format: 'json'});
     });
   };
 
   // Create New Event
-  this.detail = function (req, resp, params) {
+  this.createNewEvent = function (req, resp, params) {
     var self = this
       , User = geddy.model.User;
 
@@ -171,6 +176,57 @@ var Events = function () {
     });
   };
 
+  // My Events
+  this.myEvents = function (req, resp, params) {
+    var self = this
+      , User = geddy.model.User;
+
+    var localParams = params;
+    if (!localParams.errCode){
+      localParams.errCode = 0;
+    }
+    if (!localParams.methodType){
+      localParams.methodType = 0;
+    }
+    User.first({id: this.session.get('userId')}, function (err, data) {
+      var params = localParams;
+      params.user = null;
+      params.authType = null;
+      if (data) {
+        params.user = data;
+      }
+      self.respond(params, {
+        format: 'html'
+      , template: 'app/views/events/myEvents'
+      });
+    });
+  };
+
+  // Event Detail
+  this.detail = function (req, resp, params) {
+    var self = this
+      , User = geddy.model.User;
+
+    var localParams = params;
+    if (!localParams.errCode){
+      localParams.errCode = 0;
+    }
+    if (!localParams.methodType){
+      localParams.methodType = 0;
+    }
+    User.first({id: this.session.get('userId')}, function (err, data) {
+      var params = localParams;
+      params.user = null;
+      params.authType = null;
+      if (data) {
+        params.user = data;
+      }
+      self.respond(params, {
+        format: 'html'
+      , template: 'app/views/events/eventDetail'
+      });
+    });
+  };
 
 };
 

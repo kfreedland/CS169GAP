@@ -1,0 +1,118 @@
+<!--Create Event Page -->
+<div data-role="page" class="create_event_page">
+  <!-- Include the createEvent js -->
+  <%- scriptLink('/js/event/createEvent.js', {type:'text/javascript'}) %>
+  <!--Navigation Bar-->
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div data-role="header">
+        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-left">
+          <a href="#" onClick="history.back()" id="back_button" name="back" value="Back" data-inline="true" data-theme="a" data-role="button">Back</a>
+        </div>
+        <h1>
+          Group Activity Planner
+        </h1>
+        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
+          <% if (user) {%>
+            <p>Welcome: <a href="/users/profile"><%=user.givenName%> <%=user.familyName%></a>
+            <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+          <% } else { %>
+            <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
+            <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="create_event_page" class="box" data-role="content">
+		<div id="modify_left">
+			<center><h2>Create New Event</h2></center>
+			<div data-role="fieldcontain">
+			    <label for="name">Name:</label>
+			    <input type="text" name="name" id="name" value=""  />
+			</div>
+			<div data-role="fieldcontain">
+			    <label for="activityDescription">Description:</label>
+			  	<textarea name="textarea" id="activityDescription" value="" > </textarea>
+			</div>	
+
+
+	      	<!--Category-->
+	      	<div data-role="fieldcontain">
+			    <label for="category">Category:</label>
+			  	<input name="text" id="category" value="" readonly="readonly"/>
+			</div>	
+
+			<!-- Date Range -->
+		    <div data-role="fieldcontain">
+		    	<label for="beginDate">Start Date: </label>
+		        <input name="beginDate" id="beginDate" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
+		    </div>
+		    <div data-role="fieldcontain">
+		        <label for="endDate">End Date: </label>
+		        <input name="endDate" id="endDate" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
+		    </div>
+
+			<!--Time Range-->
+			<div id="startEndTime">
+				<div data-role="fieldcontain">
+			      <label for="startTimeEvent">Start Time: </label>
+			      <input name="start_time" id="startTimeEvent" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
+			    </div>
+			    <div data-role="fieldcontain">
+			      <label for="endTimeEvent">End Time: </label>
+			      <input name="end_time" id="endTimeEvent" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
+			    </div>
+			</div>
+			
+			<!--ADDRESS-->
+			<div id="address" data-role="fieldcontain" data-type="horizontal">
+				<label for="addressReadOnly">Address:</label>
+				<input type="text" name="text" id="addressReadOnly" readonly="readonly" value=""  />
+			</div>
+
+			<!-- Price Range -->
+		      <label>Price Range (Dollars): </label>
+		      <div class="ui-grid-c my-breakpoint">
+		        <div class="ui-block-a">
+		          <label for="lowPrice" class="grid_label">Min: </label>
+		        </div>
+		        <div class="ui-block-b">
+		          <input readonly="readonly" type="number" name="lowPrice" id="minPrice" value="" pattern="[0-9]*" min="0" max="9999999" />
+		        </div>
+		        <div class="ui-block-c">
+		          <label for="maxPrice" class="grid_label">Max: </label>
+		        </div>
+		        <div class="ui-block-d">
+		          <input readonly="readonly" type="number" name="highPrice" id="maxPrice" value="" pattern="[0-9]*" min="0" max="9999999" />
+		        </div>
+      		</div>
+
+      		<!---->
+	      	<label>Number of Participants: </label>
+		      <div class="ui-grid-c my-breakpoint">
+		        <div class="ui-block-a">
+		          <label for="lowNumPart" class="grid_label">Min: </label>
+		        </div>
+		        <div class="ui-block-b">
+		          <input readonly="readonly" type="number" name="lowNumPart" id="lowNumPart" value="" pattern="[0-9]*" min="0" max="9999999" />
+		        </div>
+		        <div class="ui-block-c">
+		          <label for="highNumPart" class="grid_label">Max: </label>
+		        </div>
+		        <div class="ui-block-d">
+		          <input readonly="readonly" type="number" name="highNumPart" id="highNumPart" value="" pattern="[0-9]*" min="0" max="9999999" />
+		        </div>
+      		</div>
+
+		</div>
+		<br>
+		<div id="invite_friends_right">
+			<label for="invitedFriends"><h2>Invite Friends:</h2></label>
+			<textarea name="textarea" id="invitedFriends"></textarea>
+		</div>
+
+		<input id="createEventButton" type="button" value="Create Event" data-role="button" data-icon="home" data-theme="b">
+	</div>
+</div>

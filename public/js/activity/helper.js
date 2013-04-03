@@ -1,3 +1,4 @@
+
 function pullAndReturnData(type, callback) {	
 	// Get the values from the form inputs
 	// Check for name and description if type is 'create'
@@ -289,6 +290,8 @@ function convertMsToString(time) {
 		hours = hours % 12;
 		am_pm = 'PM';
 		hoursStr = hours.toString();
+	} else if (hours === 0) {
+		hoursStr = '12';
 	}
 	// Add the '0' before the minutes if less than 10 minutes
 	if (minutes < 10) {

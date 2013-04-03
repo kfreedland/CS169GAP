@@ -123,7 +123,8 @@ describe('Event', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = userRecord.id;
+                            eventData.attendingusers = userRecord.username;
+                            eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
                             {
@@ -199,7 +200,8 @@ describe('Event', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = activityDict.description;
-                            eventData.attendingusers = userRecord.id;
+                            eventData.attendingusers = userRecord.username;
+                            eventData.noemail = true;
                             
                             Event.add(eventData, function (eventResp1)
                             {
@@ -245,7 +247,8 @@ describe('Event', function()
                                             eventData2.begindate = d2.getTime();
                                             eventData2.enddate = d2.getTime() + 50000;
                                             eventData2.description = activityDict2.description;
-                                            eventData2.attendingusers = userRecord.id;
+                                            eventData2.attendingusers = userRecord.username;
+                                            eventData2.noemail = true;
                                             
                                             Event.add(eventData2, function (eventResp2)
                                             {

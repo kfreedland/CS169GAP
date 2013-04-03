@@ -11,6 +11,7 @@ $(document).ready(function() {
 			// Validate the dictionary object before sending it
 			// TODO: Write the success and failure functions
 			validateData(dataResp, function(validData) {
+				console.log(dataResp);
 				$.ajax({
 			        type: 'GET',
 			        url: '/activities/search',
@@ -18,8 +19,6 @@ $(document).ready(function() {
 			        contentType: "application/json",
 			        dataType: "json",
 			        success: function(respData) {
-			        	console.log('Successful Find Activity Call');
-			        	console.log(respData);
 			        	handleFindActivityResponse(respData);
 			        },
 			        failure: function(err) {

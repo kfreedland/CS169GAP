@@ -16,6 +16,8 @@ var Activities = function () {
   **/
   this.search = function (req, resp, params)
   {
+    console.log('params');
+    console.log(params);
     // console.log("inSearch");
     var self = this;
     var hour = 3600000;
