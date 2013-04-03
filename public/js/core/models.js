@@ -433,7 +433,7 @@ var Event = function () {
     // Do some stuff
   };
   */
-
+};
 
 Event.add = function(params, callback)
 {
@@ -558,9 +558,9 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     result.email = emails;
     result.id = userIds;
     successCallback(result);
-  }
 }
-function addEventToUsers(eventid, uesrIds, callback)
+
+function addEventToUsers(eventId, userIds, callback)
 {
   for(var key in userIds)
   {
@@ -575,11 +575,11 @@ function addEventToUsers(eventid, uesrIds, callback)
       {
         if(record.myevents)
         {
-          record.myevents += ","+eventid;
+          record.myevents += ","+eventId;
         }
         else
         {
-          record.myevents = eventid;
+          record.myevents = eventId;
         }
         record.confirmPassword = record.password;
         geddy.model.User.save(record, function(err, result)
@@ -707,7 +707,7 @@ Event.invite = function(params, callback)
               subject: "You have been invited to an event!", // Subject line
               text: message, // plaintext body
               html: null // html body
-          }
+          };
 
           // send mail with defined transport object
           smtpTransport.sendMail(mailOptions, function(error, response){
@@ -730,7 +730,7 @@ Event.invite = function(params, callback)
       }
 
     });
-}
+};
 
 function isValidEmail(email) { 
   return check(email).isEmail();
@@ -740,7 +740,7 @@ function isValidEmail(email) {
 Event.changeDateTime = function(params, callback) 
 {
 
-}
+};
 
 Event.getMyEvents = function (params, callback) {
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
@@ -793,7 +793,7 @@ function getEventsCallback(errCode, events, callback){
   responseDict.errCode = 1;
   responseDict.events = events;
   callback(responseDict);
-};
+}
 
   
 /*
@@ -922,7 +922,8 @@ User.getUsernames = function(params, callback)
     }
     callback(usernames);
   });
-}
+};
+
 User.TESTAPI_resetFixture = function (callback) {
   geddy.model.User.all(function (err, result) {
      // console.log("got all users models with error: " + err + " and result: " + result);

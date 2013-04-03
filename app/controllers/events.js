@@ -50,9 +50,9 @@ var Events = function () {
 
     geddy.model.Event.first(params.id, function(err, event) {
       if (!event) {
-        var err = new Error();
-        err.statusCode = 400;
-        self.error(err);
+        var error = new Error();
+        error.statusCode = 400;
+        self.error(error);
       } else {
         self.respond({params: params, event: event.toObj()});
       }
@@ -64,9 +64,9 @@ var Events = function () {
 
     geddy.model.Event.first(params.id, function(err, event) {
       if (!event) {
-        var err = new Error();
-        err.statusCode = 400;
-        self.error(err);
+        var error = new Error();
+        error.statusCode = 400;
+        self.error(error);
       } else {
         self.respond({params: params, event: event});
       }

@@ -92,9 +92,9 @@ var Users = function () {
 
     geddy.model.User.first(params.id, function(err, user) {
       if (!user) {
-        var err = new Error();
-        err.statusCode = 400;
-        self.error(err);
+        var error = new Error();
+        error.statusCode = 400;
+        self.error(error);
       } else {
         user.password = '';
         self.respond({params: params, user: user.toObj()});
@@ -107,9 +107,9 @@ var Users = function () {
 
     geddy.model.User.first(params.id, function(err, user) {
       if (!user) {
-        var err = new Error();
-        err.statusCode = 400;
-        self.error(err);
+        var error = new Error();
+        error.statusCode = 400;
+        self.error(error);
       } else {
         self.respond({params: params, user: user.toObj()});
       }

@@ -39,7 +39,7 @@ var Main = function () {
       params.user = null;
       params.authType = null;
       if (data) {
-        console.log("Got User: " + data)
+        console.log("Got User: " + data);
         params.user = data;
         params.authType = authTypes[self.session.get('authType')].name;
       }
