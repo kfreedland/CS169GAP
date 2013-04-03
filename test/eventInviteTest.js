@@ -71,7 +71,7 @@ describe('Event.invite valid emails', function()
 									paramDict = {};
 									paramDict.eventid = eventRecord.id;
 									paramDict.message = "you are invited to go jogging with friends!";
-									paramDict.emails = ["tlangner1@gmail.com"];
+									paramDict.emails = ["fake@fake.com"];
 
 
 									//INVITE
