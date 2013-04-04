@@ -138,40 +138,42 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     {
       geddy.model.User.first({username: id}, function(err, record)
       {
-          if(err)
+        if(err)
+        {
+          console.log("error in user.first in Event.add");
+          console.dir(err);
+          errorCallback(backendError);
+        }
+        else
+        {
+          if(record && record.email && record.username)
           {
-            console.log("error in user.first in Event.add");
-            console.dir(err);
-            errorCallback(backendError);
+            //console.log('EMAIL found is: '+record.email);
+            emails.push(record.email);
+            userIds.push(record.username);
           }
           else
           {
-            if(record && record.email && record.username)
-            {
-              //console.log('EMAIL found is: '+record.email);
-              emails.push(record.email);
-              userIds.push(record.username);
-            }
-            else
-            {
-              errorCallback(badTableJoin);
-            }
+            errorCallback(badTableJoin);
           }
-        });
-      }
+        }
+      });
     }
-    // while(usernamesOrEmails.length != emails.length + userIds.length)
-    // {
-    //   console.log('waiting');
-    //   console.log(usernamesOrEmails);
-    //   console.log(emails);
-    //   console.log(userIds);
-    //   continue;
-    // }
-    result = {};
-    result.email = emails;
-    result.id = userIds;
-    successCallback(result);
+  }
+  // while(usernamesOrEmails.length != emails.length + userIds.length)
+  // {
+  //   console.log('waiting');
+  //   console.log(usernamesOrEmails);
+  //   console.log(emails);
+  //   console.log(userIds);
+  //   continue;
+  // }
+  result = {};
+  result.email = emails;
+  result.id = userIds;
+  console.log("RESULTS IS");
+  console.log(result);
+  successCallback(result);
 }
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
@@ -182,8 +184,11 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
     if(eventRecord && eventRecord.attendingusers)
     {
       var data = eventRecord.attendingusers.split(',').concat(usernames);
-      var newUids = data.id;
+      console.log("NEWUID");
+      console.log(data);
+      var newUids = data;
       newUids = validateUserIds(newUids, eventid);
+      console.log(newUids);
       eventRecord.attendingusers = newUids.toString();
       geddy.model.Event.save(eventRecord, function(err, result)
       {
@@ -218,13 +223,17 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
   emailReturn = [];
   for(var key in idArray)
   {
+    console.log("key");
+
     var id = idArray[key];
+    console.log(id);
     if(idHash[id])
     {
       continue;
     }
     else
     {
+      console.log("TEST2");
       idHash[id] = true;
       if(id.indexOf('@') >= 0)
       {
@@ -232,12 +241,22 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       }
       else
       {
+        console.log("TEST3");
+        console.log(id);
+        geddy.model.User.all(function(err, users) {
+          console.log("ALLLLL");
+          console.log(users);
+          console.dir(users);
+        });
         geddy.model.User.first({username: id}, function(err, userRecord)
         {
+          console.log("TEST4");
           if(userRecord && userRecord.username)
           {
+            console.log("TEST5");
             if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
             {
+              console.log("TEST6");
               if(userRecord.myevents)
               {
                 userRecord.myevents += ',' + eventid;
@@ -247,6 +266,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 userRecord.myevents = eventid;
               }
               userRecord.confirmPassword = userRecord.password;
+              console.log("TEST");
               geddy.model.User.save(userRecord, function(err, result)
               {
                 if(!err)
@@ -256,6 +276,8 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                   if (idReturn.length >= idArray.length - 1){
                     toReturn.id = idReturn;
                     toReturn.email = emailReturn;
+                    console.log("GOT TO TO RETURN");
+                    console.log(toReturn);
                     return toReturn;
                   }
                 }
