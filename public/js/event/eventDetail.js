@@ -11,11 +11,11 @@ $(document).ready(function() {
 
 function handleEventDetailResponse(jsonData) {
 	$('#event-title').html(jsonData.name);
-	$('#event-description').html('Description: ' + jsonData.description);
-	var numParticipantsStr = 'Number of Participants: For ' + jsonData.lownumparticipants + ' to ' + jsonData.highnumparticipants + ' people';
+	$('#event-description').html('<b>Description:</b> ' + jsonData.description);
+	var numParticipantsStr = '<b>Number of Participants:</b> For ' + jsonData.lownumparticipants + ' to ' + jsonData.highnumparticipants + ' people';
 	$('#event-num-participants').html(numParticipantsStr);
-	$('#event-category').html('Category: ' + jsonData.category);
-	var priceRangeStr = 'Price Range: $' + jsonData.lowprice + ' to $' + jsonData.highprice;
+	$('#event-category').html('<b>Category:</b> ' + jsonData.category);
+	var priceRangeStr = '<b>Price Range:</b> $' + jsonData.lowprice + ' to $' + jsonData.highprice;
 	$('#event-price-range').html(priceRangeStr);
 	
 	// Do some additional fixing of the event details
@@ -25,11 +25,11 @@ function handleEventDetailResponse(jsonData) {
 	// Do some additional fixing of the event details
 	var t1Str = convertMsToString(jsonData.time1);
 	var t2Str = convertMsToString(jsonData.time2);
-	$('#event-time-range').html('Time of Event: ' + t1Str + ' to ' + t2Str);
+	$('#event-time-range').html('<b>Time of Event:</b> ' + t1Str + ' to ' + t2Str);
 
 	// Calculate the address from the provided latitude and longitude, and insert it into the html
 	reverseGeocodeAddress(jsonData.latitude, jsonData.longitude, function(address) {
-		$("#event-address").append('<span class="row-address-name">Address: ' + address + '</span>');
+		$("#event-address").append('<span class="row-address-name"><b>Address:</b> ' + address + '</span>');
 	});
 }
 
