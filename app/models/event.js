@@ -323,15 +323,11 @@ function addEventToUsers(eventid, userIds, callback)
             console.dir(err);
             callback(backendError);
           }
-
-          if(key == userIds.length-1)
-          {
-            callback({errCode: 1}); //success!
-          }
         });
       }
     });
   }
+  callback({errCode: 1}); //success!
 }
 
 
