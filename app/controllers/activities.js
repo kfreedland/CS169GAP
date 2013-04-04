@@ -1,3 +1,8 @@
+var passport = require('../helpers/passport')
+  , strategies = require('../helpers/passport/strategies')
+  , requireAuth = passport.requireAuth
+  , authTypes = geddy.mixin(strategies, {local: {name: 'local account'}});
+
 var Activities = function () {
   this.respondsWith = ['html', 'json', 'xml', 'js', 'txt'];
   /** data is of the following form
@@ -157,6 +162,7 @@ var Activities = function () {
       params.authType = null;
       if (data) {
         params.user = data;
+        params.authType = authTypes[self.session.get('authType')].name;
       }
       self.respond(params, {
         format: 'html'

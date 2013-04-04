@@ -45,12 +45,13 @@ router.post('/').to('Auth.local');
 router.get('/users/profile').to('Users.profile');
 router.get('/users/usernames').to('Users.getUsernames');
 // router.post('/TESTAPI/unitTests').to('Main.unitTests');
-router.post('/events/addUsersToEvent').to('Events.addUsersToEvent');
+
 router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
 router.get('/activities/activitydetail').to('Activities.detail');
 router.get('/activities/getactivitybyid').to('Activities.getActivityById');
 
+router.post('/events/adduserstoevent').to('Events.addUsersToEvent');
 router.post('/events/create').to('Events.add');
 router.post('/events/changedatetime').to('Events.changeDateTime');
 router.get('/events/getmyevents').to('Events.getMyEvents');
