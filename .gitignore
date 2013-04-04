@@ -20,6 +20,7 @@ app-cov
 coverage.html
 ./app-cov/*
 app-cov
+app-cov/*
 app-backup
 app-backup/*
 
@@ -28,5 +29,3 @@ logs
 results
 
 npm-debug.log
-
-config/development.js

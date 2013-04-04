@@ -17,13 +17,20 @@
 */
 
 var config = {
-  detailedErrors: false
+  detailedErrors: true
 , hostname: '0.0.0.0'
 , port: process.env.PORT
-
-// Using Postgres as the default, with only a Postgres DB
 , model: {
     defaultAdapter: 'postgres'
+  }
+, db: {
+    postgres: {
+      user: 'gqfslnsegogdzu'
+    , database: 'd2t1b76rgqatiu'
+    , password: 'd-kfQtcYYgKth2mzPG6W94E54N'
+    , host: 'ec2-54-243-48-107.compute-1.amazonaws.com'
+    , port: 5432
+    }
   }
 //thawing-hamlet database
 // , db: {
@@ -35,16 +42,6 @@ var config = {
 //     , port: 5432
 //     }
 //   }
-//gap2 database
-, db: {
-    postgres: {
-      user: 'gqfslnsegogdzu'
-    , database: 'd2t1b76rgqatiu'
-    , password: 'd-kfQtcYYgKth2mzPG6W94E54N'
-    , host: 'ec2-54-243-48-107.compute-1.amazonaws.com'
-    , port: 5432
-    }
-  }
 , sessions: {
   store: 'memory'
 , key: 'sid'

@@ -69,10 +69,6 @@ Event.add = function(params, callback)
             eventDict.activityid = params.activityid;
             eventDict.attendingusers = userIds.toString();
             var eventRecord = geddy.model.Event.create(eventDict);
-            console.log("USER IDS:");
-            console.log(userIds.toString());
-            console.log("EVENT RECORD:");
-            console.log(eventRecord);
             geddy.model.Event.save(eventRecord, function(err, eventModel)
             {
               if(err)
@@ -131,7 +127,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
-    console.log("GET EMAIL AND ID:");
     console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
@@ -165,10 +160,17 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
         });
       }
     }
+    // while(usernamesOrEmails.length != emails.length + userIds.length)
+    // {
+    //   console.log('waiting');
+    //   console.log(usernamesOrEmails);
+    //   console.log(emails);
+    //   console.log(userIds);
+    //   continue;
+    // }
     result = {};
     result.email = emails;
     result.id = userIds;
-    console.log(result);
     successCallback(result);
 }
 
@@ -179,18 +181,10 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
   {
     if(eventRecord && eventRecord.attendingusers)
     {
-      console.log(usernames);
-
       var data = eventRecord.attendingusers.split(',').concat(usernames);
-      console.log(data);
-      var newUids = data;
-      console.log("NEWUID");
-      console.log(newUids);
+      var newUids = data.id;
       newUids = validateUserIds(newUids, eventid);
       eventRecord.attendingusers = newUids.toString();
-      console.log("EVENT RECORD");
-      console.log(eventRecord);
-      console.log(newUids);
       geddy.model.Event.save(eventRecord, function(err, result)
       {
         if(err)
@@ -222,20 +216,15 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
   idHash = {};
   idReturn = [];
   emailReturn = [];
-  console.log("ID ARRAY");
-  console.log(idArray)
   for(var key in idArray)
   {
     var id = idArray[key];
-    console.log("ID");
-    console.log(id);
     if(idHash[id])
     {
       continue;
     }
     else
     {
-      console.log("TEST4");
       idHash[id] = true;
       if(id.indexOf('@') >= 0)
       {
@@ -243,16 +232,12 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       }
       else
       {
-        console.log("TEST5");
         geddy.model.User.first({username: id}, function(err, userRecord)
         {
-          console.log("TEST6");
           if(userRecord && userRecord.username)
           {
-            console.log("TEST7");
             if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
             {
-              console.log("TEST8");
               if(userRecord.myevents)
               {
                 userRecord.myevents += ',' + eventid;
@@ -262,15 +247,17 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 userRecord.myevents = eventid;
               }
               userRecord.confirmPassword = userRecord.password;
-              console.log("TEST");
               geddy.model.User.save(userRecord, function(err, result)
               {
-                console.log("TEST2");
                 if(!err)
                 {
-                  console.log("TEST3");
                   emailReturn.push(userRecord.email);
                   idReturn.push(userRecord.username);
+                  if (idReturn.length >= idArray.length - 1){
+                    toReturn.id = idReturn;
+                    toReturn.email = emailReturn;
+                    return toReturn;
+                  }
                 }
               });
             }
@@ -279,11 +266,6 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       }
     }
   }
-  toReturn.id = idReturn;
-  toReturn.email = emailReturn;
-  console.log("TO RETURN:");
-  console.log(toReturn);
-  return toReturn;
 }
 
 function addEventToUsers(eventid, userIds, callback)
@@ -631,6 +613,7 @@ Event.changeDateTime = function(params, callback)
   if(params.time2) {
     newTime2 = parseFloat(params.time2);
   }
+  console.log("NEW TIME 2 = "+ newTime2);
 
   //begindate
   var newBeginDate;
@@ -680,6 +663,7 @@ Event.changeDateTime = function(params, callback)
 
           if ((typeof newTime2) == 'number') {
             eventModel.time2 = newTime2;
+            console.log("CHANGED TIME 2");
           }
 
           if ((typeof newBeginDate) == 'number') {
@@ -766,6 +750,8 @@ Event.getMyEvents = function (params, callback) {
                 responseDict.errCode = 7;
                 callback(responseDict);
               } else if (eventModel){
+                //console.log("EVENT MODEL:");
+                //console.log(eventModel);
                 myEvents.push(eventModel);
               }
               if (index == myEvents.length - 1){

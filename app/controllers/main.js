@@ -33,6 +33,9 @@ var Main = function () {
     }
     console.log("params.methodType =" + params.methodType + " and params.errCode =" + params.errCode);
     console.log("this.session.get('userId') = " + this.session.get('userId'));
+    if (!this.session.get('userId')){
+      this.session.set('userId', 0);
+    }
     geddy.model.User.first({id: this.session.get('userId')}, function (err, data) {
       var params = localParams;
       params.user = null;

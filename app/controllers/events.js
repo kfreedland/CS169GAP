@@ -1,7 +1,5 @@
 var passport = require('../helpers/passport')
-  , strategies = require('../helpers/passport/strategies')
-  , requireAuth = passport.requireAuth
-  , authTypes = geddy.mixin(strategies, {local: {name: 'local account'}});
+  , requireAuth = passport.requireAuth;
 
 var Events = function () {
   this.before(requireAuth, {
@@ -134,6 +132,8 @@ var Events = function () {
     geddy.model.Event.getMyEvents({userId: self.session.get('userId')}, function(responseDict) {
       params.errCode = responseDict.errCode;
       params.events = responseDict.events;
+      console.log('RESPONSE FROM MY EVENTS');
+      console.log(responseDict);
       self.respond(responseDict, {format: 'json'});
     });
   };
@@ -156,7 +156,6 @@ var Events = function () {
       params.authType = null;
       if (data) {
         params.user = data;
-        params.authType = authTypes[self.session.get('authType')].name;
       }
       self.respond(params, {
         format: 'html'
@@ -183,7 +182,6 @@ var Events = function () {
       params.authType = null;
       if (data) {
         params.user = data;
-        params.authType = authTypes[self.session.get('authType')].name;
       }
       self.respond(params, {
         format: 'html'
@@ -192,20 +190,6 @@ var Events = function () {
     });
   };
 
-  this.addUsersToEvent = function(req, resp, params) {
-    var self = this;
-    if(params.usernames && typeof params.usernames == 'string' && params.eventid && typeof params.eventid == 'string')
-    {
-      geddy.model.Event.addUsersToEvent(params.eventid, params.usernames, function(resp)
-      {
-        self.respond(resp, {format: 'json'});
-      });
-    }
-    else
-    {
-      self.resp({errCode: 1}, {format: 'json'});
-    }
-  }
   // Event Detail
   this.detail = function (req, resp, params) {
     var self = this
@@ -224,7 +208,6 @@ var Events = function () {
       params.authType = null;
       if (data) {
         params.user = data;
-        params.authType = authTypes[self.session.get('authType')].name;
       }
       self.respond(params, {
         format: 'html'
