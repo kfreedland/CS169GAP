@@ -754,7 +754,8 @@ Event.getMyEvents = function (params, callback) {
                 //console.log(eventModel);
                 myEvents.push(eventModel);
               }
-              if (index == myEvents.length - 1){
+              if (myEvents.length == eventIds.length){
+                console.log("index = " + index);
                 getEventsCallback(1, myEvents, callback);
               }
             });
