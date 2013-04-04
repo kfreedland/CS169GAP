@@ -22,6 +22,9 @@ app-cov
 app-cov/*
 app-backup
 app-backup/*
+test
+test/*
+config/secrets.json
 
 pids
 logs
