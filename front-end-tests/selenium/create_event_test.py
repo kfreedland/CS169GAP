@@ -19,7 +19,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 browser = webdriver.Firefox() # Get local session of firefox
-browser.get("localhost:4000") # Load page
+browser.get("gap2.herokuapp.com") # Load page
 assert "Group Activity Planner" in browser.title
 
 """

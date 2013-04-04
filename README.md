@@ -351,6 +351,7 @@ geddy jake test
 	<li>init.py is an example file that has some of API calls to make it work. As of right now the only browser that works is Firefox, so please have it installed</li>
 	<li>find_selenium_test.py is the find activity test that looks for activities most closely resembling the search query: 5-15 people, On March 15th, and All Day event.</li>
 	<li>create_selenium_test.py is the create activity test that creates a new activity</li>
+	<li>create_event_test.py is the create activity test that creates a new even from an existing activity</li>
 </ul>
 
 
