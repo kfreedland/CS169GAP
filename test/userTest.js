@@ -13,8 +13,10 @@ session.set = function(name, value){
 };
 
 var resetFixture = function (done){
-    User.TESTAPI_resetFixture(function(response){
-        done();
+    Activity.TESTAPI_resetFixture(function() {
+        User.TESTAPI_resetFixture(function(response){
+            done();
+        });
     });
 };
 

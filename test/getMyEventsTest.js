@@ -6,10 +6,12 @@ var assert = require("assert")
 
 var resetFixture = function (done)
 {
-    Event.TESTAPI_resetFixture(function()
-    {
-        User.TESTAPI_resetFixture(function(response){
-            done();
+    Activity.TESTAPI_resetFixture(function() {
+        Event.TESTAPI_resetFixture(function()
+        {
+            User.TESTAPI_resetFixture(function(response){
+                done();
+            });
         });
     });
 };
@@ -257,8 +259,8 @@ describe('Event', function()
                                                 Event.first({name: eventData2.name}, function (err, eventModel2) {
                                                     Event.getMyEvents({userId: userRecord.id}, function (getymyEventsResponse)
                                                     {
-                                                        console.log("event response");
-                                                        console.dir(getymyEventsResponse);
+                                                        // console.log("event response");
+                                                        // console.dir(getymyEventsResponse);
                                                         assert.equal(getymyEventsResponse.errCode, 1);
                                                         //Make sure we get 1 event back
                                                         assert.equal(getymyEventsResponse.events.length, 2);

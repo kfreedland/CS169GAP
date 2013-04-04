@@ -3,7 +3,7 @@ var passport = require('passport')
   , cryptPass = passportHelper.cryptPass;
 
 var User = function () {
-  this.adapter = 'postgres';
+
 	this.property('username', 'string', {required: true});
     this.property('password', 'string', {required: true});
     this.property('familyName', 'string');

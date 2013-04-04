@@ -4,7 +4,9 @@ var assert = require("assert")
 
 var resetFixture = function (done){
     Activity.TESTAPI_resetFixture(function(){
-        done();
+        User.TESTAPI_resetFixture(function() {
+            done();
+        });
     });
 };
 

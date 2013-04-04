@@ -423,8 +423,7 @@ var badTimes = {errCode: 8};
 var badTableJoin = {errCode: 9};
 
 var Event = function () {
-  this.adapter = 'postgres';
-  
+
   this.defineProperties({
     name: {type: 'string', required: true},
     description: {type: 'string'},
@@ -551,7 +550,14 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     {
       //console.log('EMAIL found is: '+name);
       emails.push(id);
-      continue;
+      if (emails.length === usernamesOrEmails.length){
+        result = {};
+        result.email = emails;
+        result.id = userIds;
+        successCallback(result);
+      } else {
+        continue;
+      }
     }
     else
     {
@@ -598,33 +604,35 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 Event.addUsersToEvent = function(eventid, usernames, callback)
 {
   usernames = usernames.split(',');
-  geddy.model.Event.first({id: eventid}, function(err, eventRecord)
+  geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
     if(eventRecord && eventRecord.attendingusers)
     {
       var data = eventRecord.attendingusers.split(',').concat(usernames);
       var newUids = data;
-      newUids = validateUserIds(newUids, eventid);
-      if (!newUids){
-        newUids = [];
-      }
-      eventRecord.attendingusers = newUids.toString();
-      geddy.model.Event.save(eventRecord, function(err, result)
-      {
-        if(err)
-        {
-          console.log("error in event.save in Event.addUsersToEvent");
-          console.dir(err);
-          callback(backendError);
+      validateUserIds(newUids, eventid, function (newUids){
+        // console.log("validateUserIds returned");
+        if (!newUids){
+          newUids = [];
         }
-        else
+        eventRecord.attendingusers = newUids.toString();
+        geddy.model.Event.save(eventRecord, function(err, result)
         {
-          var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
-          Event.invite({eventid: eventid, emails: data.email, message: message}, function(respDict)
+          if(err)
           {
-            callback({errCode: 1});
-          });
-        }
+            console.log("error in event.save in Event.addUsersToEvent");
+            console.dir(err);
+            callback(backendError);
+          }
+          else
+          {
+            var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
+            Event.invite({eventid: eventid, emails: data.email, message: message}, function(respDict)
+            {
+              callback({errCode: 1});
+            });
+          }
+        });
       });
     }
     else
@@ -634,14 +642,12 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
   });
 };
 
-function validateUserIds(idArray, eventid) //assumes valid usernames
+function validateUserIds(idArray, eventid, callback) //assumes valid usernames
 {
   toReturn = {};
   idHash = {};
   idReturn = [];
   emailReturn = [];
-  console.log("idArray =");
-  console.dir(idArray);
   for(var key in idArray)
   {
     var id = idArray[key];
@@ -655,6 +661,14 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       if(id.indexOf('@') >= 0)
       {
         emailReturn.push(id);
+        console.log("emailReturn.length = " + emailReturn.length);
+        console.log("idArray.length = " + idArray.length);
+        if (emailReturn.length >= idArray.length - 1){
+          // console.log("RETURNING FROM VALIDATE");
+          toReturn.id = idReturn;
+          toReturn.email = emailReturn;
+          callback(toReturn);
+        }
       }
       else
       {
@@ -673,17 +687,25 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 userRecord.myevents = eventid;
               }
               userRecord.confirmPassword = userRecord.password;
+              userRecord.errors = null;
               geddy.model.User.save(userRecord, function(err, result)
               {
                 if(!err)
                 {
                   emailReturn.push(userRecord.email);
                   idReturn.push(userRecord.username);
-                  if (idReturn.length >= idArray.length - 1){
+                  if (emailReturn.length >= idArray.length - 1){
+                    // console.log("RETURNING FROM VALIDATE");
                     toReturn.id = idReturn;
                     toReturn.email = emailReturn;
-                    return toReturn;
+                    callback(toReturn);
                   }
+                } else {
+                  console.log("emailReturn.length = " + emailReturn.length);
+                  console.log("idArray.length = " + idArray.length);
+                  console.log("error occurred");
+                  console.dir(err);
+                  callback(toReturn);
                 }
               });
             }
@@ -1005,7 +1027,8 @@ Event.changeDateTime = function(params, callback)
 {
 
   var self = this;
-
+  // console.log("params:");
+  // console.dir(params);
   var responseDict = {};
 
   //eventid
@@ -1034,6 +1057,7 @@ Event.changeDateTime = function(params, callback)
   }
 
   //time2
+  // console.log("params.time2 = " + params.time2);
   var newTime2;
   if(params.time2) {
     newTime2 = parseFloat(params.time2);
@@ -1085,7 +1109,7 @@ Event.changeDateTime = function(params, callback)
           if ((typeof newTime1) == 'number') {
             eventModel.time1 = newTime1;
           }
-
+          // console.log("newTime2 = " + newTime2);
           if ((typeof newTime2) == 'number') {
             eventModel.time2 = newTime2;
             // console.log("CHANGED TIME 2");
@@ -1108,6 +1132,9 @@ Event.changeDateTime = function(params, callback)
           callback(responseDict);
           return;
         }
+
+        // console.log("EVENT MODEL BEGIN DATE" + eventModel.begindate);
+        // console.log("EVENT MODEL END DATE" + eventModel.enddate);
 
         if(eventModel.begindate >= eventModel.enddate)
         {
@@ -1231,7 +1258,7 @@ Event = geddy.model.register('Event', Event);
 
 (function () {
 var Passport = function () {
-	this.adapter = 'postgres';
+
   this.property('authType', 'string');
   this.property('key', 'string');
 
@@ -1248,7 +1275,7 @@ var passport = require('passport')
   , cryptPass = passportHelper.cryptPass;
 
 var User = function () {
-  this.adapter = 'postgres';
+
 	this.property('username', 'string', {required: true});
     this.property('password', 'string', {required: true});
     this.property('familyName', 'string');

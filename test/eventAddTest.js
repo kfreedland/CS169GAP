@@ -3,11 +3,13 @@ var assert = require("assert")
   , Event = geddy.model.Event
   , Activity = geddy.model.Activity;
 
-var resetFixture = function (done)
-{
-    Event.TESTAPI_resetFixture(function()
-    {
-        done();
+var resetFixture = function (done){
+    Activity.TESTAPI_resetFixture(function(){
+        Event.TESTAPI_resetFixture(function() {
+            User.TESTAPI_resetFixture(function() {
+                done();
+            });
+        });
     });
 };
 

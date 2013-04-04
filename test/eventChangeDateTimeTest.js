@@ -5,7 +5,11 @@ var assert = require("assert")
 
 var resetFixture = function (done){
     Activity.TESTAPI_resetFixture(function(){
-        done();
+    	Event.TESTAPI_resetFixture(function() {
+    		User.TESTAPI_resetFixture(function() {
+    			done();
+    		});
+    	});
     });
 };
 
@@ -322,12 +326,12 @@ describe('Event.changeDateTime change begindate', function()
 						Activity.first({name: 'jogging'}, function(err, activityRecord)
 						{
 							var d = new Date();
-							eventData.name ="jogging with friends";
+							eventData.name ="Awesome event";
 							eventData.activityid = activityRecord.id;
 							eventData.time1 = 500;
 							eventData.time2 = 1000;
 							eventData.begindate = d.getTime();
-							eventData.enddate = d.getTime() + 50000;
+							eventData.enddate = eventData.begindate + 50000;
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
@@ -338,7 +342,7 @@ describe('Event.changeDateTime change begindate', function()
 
 								// now that event has been added, we can change the date/time
 
-								Event.first({name: "jogging with friends"}, function(err, eventRecord)
+								Event.first({name: eventData.name}, function(err, eventRecord)
 								{
 
 									paramDict = {};
@@ -347,6 +351,9 @@ describe('Event.changeDateTime change begindate', function()
 									paramDict.begindate = newbegindate;
 									//paramDict.enddate = newEndDate;
 									paramDict.eventid = eventRecord.id;
+
+
+									// console.log("begindate > enddate:" + (newbegindate > eventData.enddate));
 
 									//CHANGE DATE/TIME!
 									Event.changeDateTime(paramDict, function(changeDateResponse){

@@ -17,7 +17,7 @@
 */
 
 var config = {
-  detailedErrors: true
+  detailedErrors: false
 , hostname: '0.0.0.0'
 , port: process.env.PORT
 , model: {
