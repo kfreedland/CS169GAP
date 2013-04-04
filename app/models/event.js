@@ -8,7 +8,8 @@ var badTimes = {errCode: 8};
 var badTableJoin = {errCode: 9};
 
 var Event = function () {
-
+  this.adapter = 'postgres';
+  
   this.defineProperties({
     name: {type: 'string', required: true},
     description: {type: 'string'},
@@ -154,6 +155,12 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
               //console.log('EMAIL found is: '+record.email);
               emails.push(record.email);
               userIds.push(record.username);
+              if (emails.length === usernamesOrEmails.length){
+                result = {};
+                result.email = emails;
+                result.id = userIds;
+                successCallback(result);
+              }
             }
             else
             {
@@ -171,10 +178,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     //   console.log(userIds);
     //   continue;
     // }
-    result = {};
-    result.email = emails;
-    result.id = userIds;
-    successCallback(result);
 }
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
