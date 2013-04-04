@@ -52,6 +52,9 @@ Event.add = function(params, callback)
     {
       var emails = emailAndId.email;
       var userIds = emailAndId.id;
+      if (!userIds){
+        userIds = "";
+      }
       geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
         if(activityRecord && activityRecord.name) //basic assertion that record exists
@@ -127,7 +130,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
-    console.log(id);
+    // console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
       //console.log('EMAIL found is: '+name);
@@ -182,8 +185,11 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
     if(eventRecord && eventRecord.attendingusers)
     {
       var data = eventRecord.attendingusers.split(',').concat(usernames);
-      var newUids = data.id;
+      var newUids = data;
       newUids = validateUserIds(newUids, eventid);
+      if (!newUids){
+        newUids = [];
+      }
       eventRecord.attendingusers = newUids.toString();
       geddy.model.Event.save(eventRecord, function(err, result)
       {
@@ -216,6 +222,8 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
   idHash = {};
   idReturn = [];
   emailReturn = [];
+  console.log("idArray =");
+  console.dir(idArray);
   for(var key in idArray)
   {
     var id = idArray[key];
@@ -612,7 +620,7 @@ Event.changeDateTime = function(params, callback)
   if(params.time2) {
     newTime2 = parseFloat(params.time2);
   }
-  console.log("NEW TIME 2 = "+ newTime2);
+  // console.log("NEW TIME 2 = "+ newTime2);
 
   //begindate
   var newBeginDate;
@@ -662,7 +670,7 @@ Event.changeDateTime = function(params, callback)
 
           if ((typeof newTime2) == 'number') {
             eventModel.time2 = newTime2;
-            console.log("CHANGED TIME 2");
+            // console.log("CHANGED TIME 2");
           }
 
           if ((typeof newBeginDate) == 'number') {
@@ -754,7 +762,7 @@ Event.getMyEvents = function (params, callback) {
                 myEvents.push(eventModel);
               }
               if (myEvents.length == eventIds.length){
-                console.log("index = " + index);
+                // console.log("index = " + index);
                 getEventsCallback(1, myEvents, callback);
               }
             });
