@@ -302,11 +302,14 @@ function addEventToUsers(eventid, userIds, callback)
             callback(backendError);
           }
 
+          if(key == userIds.length-1)
+          {
+            callback({errCode: 1}); //success!
+          }
         });
       }
     });
   }
-  callback({errCode: 1}); //success!
 }
 
 
