@@ -254,11 +254,6 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 {
                   emailReturn.push(userRecord.email);
                   idReturn.push(userRecord.username);
-                  if (idReturn.length >= idArray.length - 1){
-                    toReturn.id = idReturn;
-                    toReturn.email = emailReturn;
-                    return toReturn;
-                  }
                 }
               });
             }
@@ -267,6 +262,9 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       }
     }
   }
+  toReturn.id = idReturn;
+  toReturn.email = emailReturn;
+  return toReturn;
 }
 
 function addEventToUsers(eventid, userIds, callback)
@@ -303,14 +301,11 @@ function addEventToUsers(eventid, userIds, callback)
             callback(backendError);
           }
 
-          if(key == userIds.length-1)
-          {
-            callback({errCode: 1}); //success!
-          }
         });
       }
     });
   }
+  callback({errCode: 1}); //success!
 }
 
 
@@ -617,7 +612,6 @@ Event.changeDateTime = function(params, callback)
   if(params.time2) {
     newTime2 = parseFloat(params.time2);
   }
-  console.log("NEW TIME 2 = "+ newTime2);
 
   //begindate
   var newBeginDate;
@@ -667,7 +661,6 @@ Event.changeDateTime = function(params, callback)
 
           if ((typeof newTime2) == 'number') {
             eventModel.time2 = newTime2;
-            console.log("CHANGED TIME 2");
           }
 
           if ((typeof newBeginDate) == 'number') {
