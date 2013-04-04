@@ -33,12 +33,81 @@ var geoSearchHelper = function (records, lat, myLong, callback)
     , idx;
   for (idx in records)
   {
+<<<<<<< HEAD
     var record = records[idx];
     //using a geo dist equation
     var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - myLong) * Math.cos(lat / 57.3), 2));
     record.distance = dist*100;
     returnRecords.push(record);
     count = count + 1;
+=======
+    var idsOrEmails = params.attendingusers.split(',');
+    getEmailAndId(idsOrEmails, callback, function(emailAndId)
+    {
+      var emails = emailAndId.email;
+      var userIds = emailAndId.id;
+      geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
+      {
+        if(activityRecord && activityRecord.name) //basic assertion that record exists
+        {
+          if(params.begindate <= params.enddate && params.time1 <= params.time2)
+          {
+            //all required fields are valid
+            eventDict = {};
+            eventDict.name = params.name;
+            eventDict.begindate = params.begindate;
+            eventDict.enddate = params.enddate;
+            eventDict.time1 = params.time1;
+            eventDict.time2 = params.time2;
+            eventDict.description = params.description;
+            eventDict.activityid = params.activityid;
+            eventDict.attendingusers = userIds.toString();
+            var eventRecord = geddy.model.Event.create(eventDict);
+            geddy.model.Event.save(eventRecord, function(err, eventModel)
+            {
+              if(err)
+              {
+                console.log("error in event.save in Event.add");
+                console.dir(err);
+                callback(backendError);
+              }
+              else
+              {
+                addEventToUsers(eventModel.id, userIds, function(respDict)
+                {
+                  if(params.noemail)
+                  {
+                    callback(respDict);
+                  }
+                  else
+                  {
+                    var inviter = "Somebody";
+                    if(params.inviter)
+                    {
+                      inviter = params.inviter;
+                    }
+                    var message = inviter+" wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
+                    Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
+                    {
+                      callback(respDict);
+                    });
+                  }
+                });
+              }
+            });
+          }
+          else
+          {
+            callback(badTimes);
+          }
+        }
+        else
+        {
+          callback(badTableJoin);
+        }
+      });
+    });
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
   }
   if (returnRecords.length > 0){
     returnRecords.sort(function (recA, recB) {return recA.distance - recB.distance;});
@@ -47,6 +116,7 @@ var geoSearchHelper = function (records, lat, myLong, callback)
   callback(returnRecords, count);
 };
 
+<<<<<<< HEAD
 Activity.add = function (parameterDict, callback){
 
   var self = this;
@@ -56,6 +126,199 @@ Activity.add = function (parameterDict, callback){
   // console.log("reached model create");
   // console.dir(parameterDict);
 
+=======
+function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
+{
+  emails = [];
+  userIds = [];
+  for(var key in usernamesOrEmails)
+  {
+    var id = usernamesOrEmails[key];
+    console.log(id);
+    if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
+    {
+      //console.log('EMAIL found is: '+name);
+      emails.push(id);
+      continue;
+    }
+    else
+    {
+      geddy.model.User.first({username: id}, function(err, record)
+      {
+          if(err)
+          {
+            console.log("error in user.first in Event.add");
+            console.dir(err);
+            errorCallback(backendError);
+          }
+          else
+          {
+            if(record && record.email && record.username)
+            {
+              //console.log('EMAIL found is: '+record.email);
+              emails.push(record.email);
+              userIds.push(record.username);
+            }
+            else
+            {
+              errorCallback(badTableJoin);
+            }
+          }
+        });
+      }
+    }
+    // while(usernamesOrEmails.length != emails.length + userIds.length)
+    // {
+    //   console.log('waiting');
+    //   console.log(usernamesOrEmails);
+    //   console.log(emails);
+    //   console.log(userIds);
+    //   continue;
+    // }
+    result = {};
+    result.email = emails;
+    result.id = userIds;
+    successCallback(result);
+}
+
+Event.addUsersToEvent = function(eventid, usernames, callback)
+{
+  usernames = usernames.split(',');
+  geddy.model.Event.first({id: eventid}, function(err, eventRecord)
+  {
+    if(eventRecord && eventRecord.attendingusers)
+    {
+      var data = eventRecord.attendingusers.split(',').concat(usernames);
+      var newUids = data.id;
+      newUids = validateUserIds(newUids, eventid);
+      eventRecord.attendingusers = newUids.toString();
+      geddy.model.Event.save(eventRecord, function(err, result)
+      {
+        if(err)
+        {
+          console.log("error in event.save in Event.addUsersToEvent");
+          console.dir(err);
+          callback(backendError);
+        }
+        else
+        {
+          var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
+          Event.invite({eventid: eventid, emails: data.email, message: message}, function(respDict)
+          {
+            callback({errCode: 1});
+          });
+        }
+      });
+    }
+    else
+    {
+      callback(badTableJoin);
+    } 
+  });
+};
+
+function validateUserIds(idArray, eventid) //assumes valid usernames
+{
+  toReturn = {};
+  idHash = {};
+  idReturn = [];
+  emailReturn = [];
+  for(var key in idArray)
+  {
+    var id = idArray[key];
+    if(idHash[id])
+    {
+      continue;
+    }
+    else
+    {
+      idHash[id] = true;
+      if(id.indexOf('@') >= 0)
+      {
+        emailReturn.push(id);
+      }
+      else
+      {
+        geddy.model.User.first({username: id}, function(err, userRecord)
+        {
+          if(userRecord && userRecord.username)
+          {
+            if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
+            {
+              if(userRecord.myevents)
+              {
+                userRecord.myevents += ',' + eventid;
+              }
+              else
+              {
+                userRecord.myevents = eventid;
+              }
+              userRecord.confirmPassword = userRecord.password;
+              geddy.model.User.save(userRecord, function(err, result)
+              {
+                if(!err)
+                {
+                  emailReturn.push(userRecord.email);
+                  idReturn.push(userRecord.username);
+                  if (idReturn.length >= idArray.length - 1){
+                    toReturn.id = idReturn;
+                    toReturn.email = emailReturn;
+                    return toReturn;
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
+    }
+  }
+}
+
+function addEventToUsers(eventid, userIds, callback)
+{
+  for(var key in userIds)
+  {
+    var uid = userIds[key];
+    geddy.model.User.first({username: uid}, function(err, record)
+    {
+      if(err)
+      {
+        console.log("error in user.first in Event.addEventToUsers");
+        console.dir(err);
+        callback(backendError);
+      }
+      else
+      {
+        if(record && record.myevents)
+        {
+          record.myevents += ","+eventid;
+        }
+        else
+        {
+          record.myevents = eventid;
+        }
+        record.confirmPassword = record.password;
+        record.errors = null;
+        geddy.model.User.save(record, function(err, result)
+        {
+          if(err)
+          {
+            console.log("error in event.save in Event.addEventToUsers");
+            console.dir(err);
+            callback(backendError);
+          }
+
+          if(key == userIds.length-1)
+          {
+            callback({errCode: 1}); //success!
+          }
+        });
+      }
+    });
+  }
+}
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
   var validCategories = ["Sports", "Entertainment", "Food", "Arts", "Nature"];
 
@@ -124,6 +387,7 @@ Activity.add = function (parameterDict, callback){
   } 
   else 
   {
+<<<<<<< HEAD
     activityDict.flag = parameterDict.flag;
   }
 
@@ -133,6 +397,10 @@ Activity.add = function (parameterDict, callback){
   {
     
     if(!parameterDict.time1) 
+=======
+    var emailAddr = emailList[index];
+    if (!isValidEmail(emailAddr))
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
     {
       respDict.errCode = 6;
       respDict.message = "null time1";
@@ -245,6 +513,7 @@ Activity.add = function (parameterDict, callback){
     }
   }
 
+<<<<<<< HEAD
   if (parameterDict.highnumparticipants)
    {
     
@@ -258,6 +527,19 @@ Activity.add = function (parameterDict, callback){
       return;
     }
   }
+=======
+      if(err){
+        //handle error
+        console.log("err");
+        console.dir(err);
+        responseDict.errCode = 7;
+        responseDict.message = "database error";
+        callback(responseDict);
+        return;
+      } 
+      else 
+      {
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
   if (parameterDict.lownumparticipants && parameterDict.highnumparticipants) 
   {
@@ -270,6 +552,21 @@ Activity.add = function (parameterDict, callback){
     }
   } 
 
+<<<<<<< HEAD
+=======
+          // create reusable transport method (opens pool of SMTP connections)
+          var smtpTransport = nodemailer.createTransport("SMTP",{
+              service: "Gmail",
+              auth: {
+                user: "groupactivityplanner.gap@gmail.com",
+                pass: "gapgapgap"
+              }
+              // auth: {
+              //     user: "groupactivityplanner@gmail.com",
+              //     pass: "gapgapgap"
+              // }
+          });
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
   //LATTITUDE LONGITUDE
   if (parameterDict.latitude) {
@@ -304,7 +601,24 @@ Activity.add = function (parameterDict, callback){
         // console.log("ACTIVITY DICT: ");
         // console.dir(activityDict);
 
+<<<<<<< HEAD
         var activityRecord = geddy.model.Activity.create(activityDict);
+=======
+                        // send mail with defined transport object
+                        smtpTransport.sendMail(mailOptions, function(error, response){
+                            if(error){
+                                console.log("error");
+                                console.dir(error);
+                                responseDict.errCode = 13;
+                                responseDict.message = "email failed";
+                                callback(responseDict);
+                                return;
+                            }else{
+                                responseDict.errCode = 1;
+                                callback(responseDict);
+                                return;
+                            }
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
         // console.log("ACTIVITY RECORD: ");
         // console.dir(activityRecord);
@@ -320,6 +634,15 @@ Activity.add = function (parameterDict, callback){
               respDict.message = "database error";
               callback(respDict);
             } else {
+<<<<<<< HEAD
+=======
+              console.log("err =");
+              console.dir(err);
+              responseDict.errCode = 13;
+              responseDict.message = "email failed";
+              callback(responseDict);
+            }
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
 
               respDict.errCode = 1;
@@ -364,11 +687,22 @@ Activity.search = function search(params, myLat, myLong, callback)
       // console.log("Calling geoSearchHelper");
       geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
       {
+<<<<<<< HEAD
         callback(returnRecords);
+=======
+        var address = '';
+        if (data.status == "OK") {
+          address = data.results[0].formatted_address;
+        }
+<<<<<<< HEAD
+        callback(address);
+=======
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
       });
     }
     else
     {
+<<<<<<< HEAD
       // console.log("Not using geoSearchHelper");
       callback(activities);
     }
@@ -385,6 +719,67 @@ Activity.getById = function (activityID, callback){
       } else {
         responseDict.errCode = 7;
         responseDict.activity = null;
+=======
+      callback(badTableJoin);
+    } 
+  });
+};
+
+function validateUserIds(idArray, eventid) //assumes valid usernames
+{
+  toReturn = {};
+  idHash = {};
+  idReturn = [];
+  emailReturn = [];
+  for(var key in idArray)
+  {
+    var id = idArray[key];
+    if(idHash[id])
+    {
+      continue;
+    }
+    else
+    {
+      idHash[id] = true;
+      if(id.indexOf('@') >= 0)
+      {
+        emailReturn.push(id);
+      }
+      else
+      {
+        geddy.model.User.first({username: id}, function(err, userRecord)
+        {
+          if(userRecord && userRecord.username)
+          {
+            if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
+            {
+              if(userRecord.myevents)
+              {
+                userRecord.myevents += ',' + eventid;
+              }
+              else
+              {
+                userRecord.myevents = eventid;
+              }
+              userRecord.confirmPassword = userRecord.password;
+              geddy.model.User.save(userRecord, function(err, result)
+              {
+                if(!err)
+                {
+                  emailReturn.push(userRecord.email);
+                  idReturn.push(userRecord.username);
+                  if (idReturn.length >= idArray.length - 1){
+                    toReturn.id = idReturn;
+                    toReturn.email = emailReturn;
+                    return toReturn;
+                  }
+                }
+              });
+            }
+          }
+        });
+>>>>>>> 5274943cd2899239aea1d1ab2f157c962bd8c4eb
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
       }
       callback(responseDict);
     });
@@ -462,6 +857,7 @@ Event.add = function(params, callback)
 {
   if(params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
+<<<<<<< HEAD
     var idsOrEmails = params.attendingusers.split(',');
     getEmailAndId(idsOrEmails, callback, function(emailAndId)
     {
@@ -531,6 +927,12 @@ Event.add = function(params, callback)
         }
       });
     });
+=======
+    responseDict.errCode = 6;
+    responseDict.message = "all date/time parameters are null";
+    callback(responseDict);
+    return;
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
   }
   else
   {
@@ -538,6 +940,7 @@ Event.add = function(params, callback)
   }
 };
 
+<<<<<<< HEAD
 function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
   emails = [];
@@ -585,6 +988,27 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
     result.id = userIds;
     successCallback(result);
 }
+=======
+  //time2
+  var newTime2;
+  if(params.time2) {
+    newTime2 = parseFloat(params.time2);
+  }
+  console.log("NEW TIME 2 = "+ newTime2);
+
+  //begindate
+  var newBeginDate;
+  if(params.begindate) {
+    newBeginDate = parseFloat(params.begindate);
+  }
+
+  //enddate
+  var newEndDate;
+  if(params.enddate) {
+    newEndDate = parseFloat(params.enddate);
+  }
+
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
 {
@@ -593,11 +1017,25 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
   {
     if(eventRecord && eventRecord.attendingusers)
     {
+<<<<<<< HEAD
       var data = eventRecord.attendingusers.split(',').concat(usernames);
       var newUids = data.id;
       newUids = validateUserIds(newUids, eventid);
       eventRecord.attendingusers = newUids.toString();
       geddy.model.Event.save(eventRecord, function(err, result)
+=======
+
+      if (err){
+        //handle error
+        console.log("err change date time");
+        console.dir(err);
+        responseDict.errCode = 7;
+        responseDict.message = "database error";
+        callback(responseDict);
+        return;
+      } 
+      else 
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
       {
         if(err)
         {
@@ -610,6 +1048,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
         }
         else
         {
+<<<<<<< HEAD
           var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
           Event.invite({eventid: eventid, emails: data.email, message: message}, function(respDict)
           {
@@ -674,6 +1113,25 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 }
               });
             }
+=======
+
+          //set fields if neccesary
+          if ((typeof newTime1) == 'number') {
+            eventModel.time1 = newTime1;
+          }
+
+          if ((typeof newTime2) == 'number') {
+            eventModel.time2 = newTime2;
+            console.log("CHANGED TIME 2");
+          }
+
+          if ((typeof newBeginDate) == 'number') {
+            eventModel.begindate = newBeginDate;
+          }
+
+          if ((typeof newEndDate) == 'number') {
+            eventModel.enddate = newEndDate;
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
           }
         });
       }
@@ -684,6 +1142,7 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
   return toReturn;
 }
 
+<<<<<<< HEAD
 function addEventToUsers(eventid, userIds, callback)
 {
   for(var key in userIds)
@@ -703,6 +1162,10 @@ function addEventToUsers(eventid, userIds, callback)
       else
       {
         if(record && record.myevents)
+=======
+        //check to see if fields are valid
+        if(eventModel.time1 >= eventModel.time2)
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
         {
           record.myevents += ","+eventid;
         }
@@ -717,11 +1180,35 @@ function addEventToUsers(eventid, userIds, callback)
           if(err)
           {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             console.log("error in event.save in Event.addEventToUsers");
             console.dir(err);
 >>>>>>> d0ce555af7493099be5ad26278a7b2aec8da958d
             callback(backendError);
+=======
+            console.log("error in Event.save in changeDateTime");
+            console.dir(err);
+            responseDict.errCode = 7;
+            responseDict.message = "database error";
+            callback(responseDict);
+            return;
+
+          } 
+          else if (result)
+          {
+            //save succeded
+            responseDict.errCode = 1;
+            callback(responseDict);
+            return;
+          } 
+          else
+          {
+            responseDict.errCode = 7;
+            responseDict.message = "database error";
+            callback(responseDict);
+            return;            
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
           }
 
         });
@@ -731,6 +1218,50 @@ function addEventToUsers(eventid, userIds, callback)
   callback({errCode: 1}); //success!
 }
 
+<<<<<<< HEAD
+=======
+Event.getMyEvents = function (params, callback) {
+  geddy.model.User.first({id: params.userId}, function (err, userModel) {
+    if (err){
+      console.log("error in getMyEvents");
+      console.dir(err);
+      responseDict.events = [];
+      // console.log("err exists: ");
+      // console.dir(err);
+      responseDict.errCode = 7;
+      callback(responseDict);
+    } else {
+      if (userModel){
+        var myEvents = [];
+        if (userModel.myevents){
+          var eventIds = userModel.myevents.split(',');
+          for (var index in eventIds){
+            var eventId = eventIds[index];
+            geddy.model.Event.first({id: eventId}, function (err, eventModel){
+              if (err){
+                console.log("error in event.first in getMyEvents");
+                console.dir(err);
+                responseDict.events = [];
+                responseDict.errCode = 7;
+                callback(responseDict);
+              } else if (eventModel){
+                //console.log("EVENT MODEL:");
+                //console.log(eventModel);
+                myEvents.push(eventModel);
+              }
+              if (index == myEvents.length - 1){
+                getEventsCallback(1, myEvents, callback);
+              }
+            });
+          }
+        } else {
+          getEventsCallback(1, myEvents, callback);
+        }
+      }
+    }
+  });
+};
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
 //params requires eventid, emails, and message
 Event.invite = function(params, callback) 
@@ -752,6 +1283,7 @@ Event.invite = function(params, callback)
     return;
   } 
 
+<<<<<<< HEAD
   if (emailList === null || emailList === undefined || emailList === [] ) 
   {
     //handle empty emails
@@ -760,6 +1292,12 @@ Event.invite = function(params, callback)
     callback(responseDict);
     return;
   } 
+=======
+(function () {
+var Passport = function () {
+  this.property('authType', 'string');
+  this.property('key', 'string');
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
   if (message === null || message === undefined ) 
   {
@@ -770,6 +1308,7 @@ Event.invite = function(params, callback)
     return;
   } 
 
+<<<<<<< HEAD
   //check all emails for propper form
   var badEmails = [];
   var goodEmailsString = "";
@@ -781,6 +1320,85 @@ Event.invite = function(params, callback)
       //email address is malformed
       badEmails.push(emailAddr);
     } else {
+=======
+Passport = geddy.model.register('Passport', Passport);
+
+}());
+
+(function () {
+var passport = require('passport')
+  , passportHelper = require('../helpers/passport/index')
+  , cryptPass = passportHelper.cryptPass;
+
+var User = function () {
+	this.property('username', 'string', {required: true});
+    this.property('password', 'string', {required: true});
+    this.property('familyName', 'string');
+    this.property('givenName', 'string');
+    this.property('email', 'string');
+    this.property('myevents', 'string');
+    this.validatesLength('username', {min: 3, max:128});
+    this.validatesLength('password', {min: 8, max:128});
+    this.validatesConfirmed('password', 'confirmPassword');
+
+    this.hasMany('Passports');
+};
+
+User.add = function(user, callback){
+    // Non-blocking uniqueness checks are hard
+    User.first({username: user.username}, function(err, data) {
+      var responseDict = {};
+    if (data) {
+      // console.log("USER EXISTS");
+      //Username Exists errCode=2
+      responseDict.errCode = 2;
+      callback(responseDict);
+      //self.transfer('add');
+    }
+    else {
+      // console.log("USER DOESNT EXIST");
+      if (!user.username || user.username.length === 0 || user.username.length > 128) {
+        // console.log("bad username block");
+        responseDict.errCode = 3; //"ERR_BAD_USERNAME"
+        callback(responseDict);
+      } else if (!user.password || user.password.length === 0 || user.password.length > 128 ) {
+        //|| user.confirmPassword != user.password){
+        // console.log("bad password block with confirmPassword: " + user.confirmPassword);
+        //Check if password is not empty and <128 chars
+        responseDict.errCode = 4; //"ERR_BAD_PASSWORD"
+        callback(responseDict);
+      } else {
+        if (user.isValid()) {
+          user.password = cryptPass(user.password);
+        }
+        // console.log("user is : username: " + user.username + " and password: " + user.password);
+        user.save(function(err, data) {
+          // console.log("Got Data: " + data);
+          if (err) {
+            // params.errors = err;
+            //Database Error errCode=7
+            console.log("Error saving User: ");
+            responseDict.message = "";
+            for (var item in err){
+              responseDict.message += err[item];
+            }
+            console.log(responseDict.message);
+            responseDict.errCode = 7;
+            callback(responseDict);
+            // self.transfer('add');
+          }
+          else {
+            //Success errCode=1
+            responseDict.errCode = 1;
+            callback(responseDict);
+              // self.redirect({controller: self.name});
+          }
+        });
+      }
+    }
+    });
+};
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
       goodEmailsString += emailAddr + ", ";
 
@@ -806,6 +1424,7 @@ Event.invite = function(params, callback)
   else
   {
 
+<<<<<<< HEAD
     responseDict.errCode = 6;
     responseDict.message = "null emails";
     callback(responseDict);
@@ -892,6 +1511,27 @@ Event.invite = function(params, callback)
                     var templateHTML = tmpl(templateVars, function(err, html) {
                         //console.log("GOT HTML");
                         if(err) throw err;
+=======
+  this.defineProperties({
+    name: {type: 'string', required: 'true'},
+    description: {type: 'string'},
+    category: {type: 'string'},
+    flag: {type: 'string', required: 'true'},
+    time1: {type: 'number'},
+    time2: {type: 'number'},
+    begindate: {type: 'number'},
+    enddate: {type: 'number'},
+    lowprice: {type: 'number'},
+    highprice: {type: 'number'},
+    lownumparticipants: {type: 'number'},
+    highnumparticipants: {type: 'number'},
+    latitude: {type: 'number'},
+    longitude: {type: 'number'},
+    duration: {type: 'number'}
+  });
+
+};
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
                         var templateHTML = null;
                         if (html){
@@ -906,6 +1546,7 @@ Event.invite = function(params, callback)
                             html: templateHTML // html body
                         };
 
+<<<<<<< HEAD
                         // send mail with defined transport object
                         smtpTransport.sendMail(mailOptions, function(error, response){
                             if(error){
@@ -920,9 +1561,13 @@ Event.invite = function(params, callback)
                                 callback(responseDict);
                                 return;
                             }
+=======
+  var self = this;
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
                             smtpTransport.close();
 
+<<<<<<< HEAD
                         });
                     });
                   });
@@ -936,6 +1581,10 @@ Event.invite = function(params, callback)
               responseDict.message = "email failed";
               callback(responseDict);
             }
+=======
+  // console.log("reached model create");
+  // console.dir(parameterDict);
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
 
 
           });
@@ -1134,6 +1783,7 @@ Event.changeDateTime = function(params, callback)
         }
 
 
+<<<<<<< HEAD
         //save model!
         geddy.model.Event.save(eventModel, function(err, result)
         {
@@ -1219,6 +1869,33 @@ Event.getMyEvents = function (params, callback) {
           getEventsCallback(1, myEvents, callback);
         }
       }
+=======
+
+  //NUMBER OF PARTICIPANTS
+  if (parameterDict.lownumparticipants) 
+  {
+    activityDict.lownumparticipants = parseFloat(parameterDict.lownumparticipants);
+    if(activityDict.lownumparticipants <= 0 )
+    {
+      respDict.errCode = 6;
+      respDict.message = "invalid participants";
+      callback(respDict);
+      return;
+    }
+  }
+
+  if (parameterDict.highnumparticipants)
+   {
+    
+    activityDict.highnumparticipants = parseFloat(parameterDict.highnumparticipants);
+    
+    if(activityDict.highnumparticipants <= 0 )
+    {
+      respDict.errCode = 6;
+      respDict.message = "invalid participants";
+      callback(respDict);
+      return;
+>>>>>>> 42043f37f739f90fd8ab78e57d0f1645ad009bdc
     }
   });
 };

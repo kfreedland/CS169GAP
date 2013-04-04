@@ -253,11 +253,6 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
                 {
                   emailReturn.push(userRecord.email);
                   idReturn.push(userRecord.username);
-                  if (idReturn.length >= idArray.length - 1){
-                    toReturn.id = idReturn;
-                    toReturn.email = emailReturn;
-                    return toReturn;
-                  }
                 }
               });
             }
@@ -266,6 +261,9 @@ function validateUserIds(idArray, eventid) //assumes valid usernames
       }
     }
   }
+  toReturn.id = idReturn;
+  toReturn.email = emailReturn;
+  return toReturn;
 }
 
 function addEventToUsers(eventid, userIds, callback)
@@ -613,7 +611,6 @@ Event.changeDateTime = function(params, callback)
   if(params.time2) {
     newTime2 = parseFloat(params.time2);
   }
-  console.log("NEW TIME 2 = "+ newTime2);
 
   //begindate
   var newBeginDate;
@@ -663,7 +660,6 @@ Event.changeDateTime = function(params, callback)
 
           if ((typeof newTime2) == 'number') {
             eventModel.time2 = newTime2;
-            console.log("CHANGED TIME 2");
           }
 
           if ((typeof newBeginDate) == 'number') {
@@ -754,7 +750,8 @@ Event.getMyEvents = function (params, callback) {
                 //console.log(eventModel);
                 myEvents.push(eventModel);
               }
-              if (index == myEvents.length - 1){
+              if (myEvents.length == eventIds.length){
+                console.log("index = " + index);
                 getEventsCallback(1, myEvents, callback);
               }
             });
