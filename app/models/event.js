@@ -130,19 +130,36 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
+    id.trim();
     // console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
-      //console.log('EMAIL found is: '+name);
-      emails.push(id);
-      if (emails.length === usernamesOrEmails.length){
-        result = {};
-        result.email = emails;
-        result.id = userIds;
-        successCallback(result);
-      } else {
-        continue;
-      }
+      geddy.model.User.first({email: id}, function(err, record)
+      {
+        if(record && record.email && record.username)
+        {
+          emails.push(record.email);
+          userIds.push(record.username);
+          if (emails.length === usernamesOrEmails.length)
+          {
+            result = {};
+            result.email = emails;
+            result.id = userIds;
+            successCallback(result);
+          }
+        }
+        else
+        {
+          emails.push(id);
+          if (emails.length === usernamesOrEmails.length)
+          {
+            result = {};
+            result.email = emails;
+            result.id = userIds;
+            successCallback(result);
+          } 
+        }
+      });
     }
     else
     {
@@ -176,14 +193,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
         });
       }
     }
-    // while(usernamesOrEmails.length != emails.length + userIds.length)
-    // {
-    //   console.log('waiting');
-    //   console.log(usernamesOrEmails);
-    //   console.log(emails);
-    //   console.log(userIds);
-    //   continue;
-    // }
 }
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
@@ -245,15 +254,58 @@ function validateUserIds(idArray, eventid, callback) //assumes valid usernames
       idHash[id] = true;
       if(id.indexOf('@') >= 0)
       {
-        emailReturn.push(id);
-        console.log("emailReturn.length = " + emailReturn.length);
-        console.log("idArray.length = " + idArray.length);
-        if (emailReturn.length >= idArray.length - 1){
-          // console.log("RETURNING FROM VALIDATE");
-          toReturn.id = idReturn;
-          toReturn.email = emailReturn;
-          callback(toReturn);
-        }
+        geddy.model.User.first({username: id}, function(err, userRecord)
+        {
+          if(userRecord && userRecord.username)
+          {
+            if(!(userRecord.myevents) || (userRecord.myevents.search(eventid) < 0))
+            {
+              if(userRecord.myevents)
+              {
+                userRecord.myevents += ',' + eventid;
+              }
+              else
+              {
+                userRecord.myevents = eventid;
+              }
+              userRecord.confirmPassword = userRecord.password;
+              userRecord.errors = null;
+              geddy.model.User.save(userRecord, function(err, result)
+              {
+                if(!err)
+                {
+                  emailReturn.push(userRecord.email);
+                  idReturn.push(userRecord.username);
+                  if (emailReturn.length >= idArray.length - 1){
+                    // console.log("RETURNING FROM VALIDATE");
+                    toReturn.id = idReturn;
+                    toReturn.email = emailReturn;
+                    callback(toReturn);
+                  }
+                } else {
+                  console.log("emailReturn.length = " + emailReturn.length);
+                  console.log("idArray.length = " + idArray.length);
+                  console.log("error occurred");
+                  console.dir(err);
+                  callback(toReturn);
+                }
+              });
+            }
+          }
+          else
+          {
+            emailReturn.push(id);
+            console.log("emailReturn.length = " + emailReturn.length);
+            console.log("idArray.length = " + idArray.length);
+            if (emailReturn.length >= idArray.length - 1)
+            {
+              // console.log("RETURNING FROM VALIDATE");
+              toReturn.id = idReturn;
+              toReturn.email = emailReturn;
+              callback(toReturn);
+            }
+          }
+        });
       }
       else
       {
