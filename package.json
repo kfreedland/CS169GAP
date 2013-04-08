@@ -12,7 +12,8 @@
     "nodemailer": "0.4.1",
     "validator": "0.4.28",
     "blade": "3.0.3",
-    "googlemaps": "0.1.7"
+    "googlemaps": "0.1.7",
+    "socket.io": "0.9.14"
   },
   "engines": {
     "node": "0.8.x",

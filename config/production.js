@@ -32,6 +32,7 @@ var config = {
     , port: 5432
     }
   }
+, socketIo: true
 //thawing-hamlet database
 // , db: {
 //     postgres: {

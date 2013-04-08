@@ -49,3 +49,12 @@
     </div>
   </body>
 </html>
+
+<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost:8000');
+  socket.on('bob-event', function (data) {
+    console.log(data);
+    // socket.emit('my other event', { my: 'data' });
+  });
+</script>
