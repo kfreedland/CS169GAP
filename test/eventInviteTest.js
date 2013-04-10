@@ -67,7 +67,7 @@ describe('Event.invite valid emails', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 86400000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = userRecord.email;
+                            eventData.attendingusers = userRecord.email+", bob@bob.com ";
 
                             Event.add(eventData, function(eventAddResponse)
                             {
