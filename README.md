@@ -18,6 +18,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 12:</b>
+	//Added Section for Running Socket.IO
+
 <b>Changelog Entry 11:</b>
 	//Added getActivityById Method to Activity
 
@@ -353,5 +356,27 @@ geddy jake test
 	<li>create_selenium_test.py is the create activity test that creates a new activity</li>
 	<li>create_event_test.py is the create activity test that creates a new even from an existing activity</li>
 </ul>
+
+
+<b> Running Socket.IO </b>
+FRONTEND
+var href = document.location.protocol + document.location.hostname + ':8000';
+console.log('href =' + href);
+var socket = io.connect(href);
+	socket.on('bobEvent', function (data) {
+	console.log(data);
+	socket.emit('bobReturn', { my: 'data' });
+});
+BACKEND
+geddy.io = require('socket.io').listen(8000);
+geddy.io.sockets.on('connection', function(socket) {
+
+	socket.emit('bobEvent', {message:"This is a bob event."});
+
+	socket.on('bobReturn', function (message){
+          console.log("GOT BOB RETURN!!!");
+    });
+});
+
 
 
