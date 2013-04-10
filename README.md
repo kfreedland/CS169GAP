@@ -18,6 +18,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b>Changelog Entry 13:</b>
+	//Updated getMyEvents API for past events
+
 <b>Changelog Entry 12:</b>
 	//Added Section for Running Socket.IO
 
@@ -236,7 +239,8 @@ CS169GAP
 <h3>Response: </h3>
 <ul>
 	<li>'errCode': [1 = success] </li>
-	<li>'events': [Contains list of events for the current user]</li>
+	<li>'currentEvents': [Contains list of current events for the current user]</li>
+	<li>'pastEvents': [Contains list of past events for the current user]</li>
 
 	OR
 	<li>Redirect to /login if User Not Authenticated</li>

@@ -69,7 +69,8 @@ describe('Event', function()
                         Event.getMyEvents({userId: userModel.id}, function (resp1)
                         {
                             assert.equal(resp1.errCode, 1);
-                            assert.equal(resp1.events.length, 0);
+                            assert.equal(resp1.currentEvents.length, 0);
+                            assert.equal(resp1.pastEvents.length, 0);
                             done();
                         });
                     });
@@ -142,9 +143,91 @@ describe('Event', function()
                                     {
                                         assert.equal(resp1.errCode, 1);
                                         //Make sure we get 1 event back
-                                        assert.equal(resp1.events.length, 1);
+                                        assert.equal(resp1.currentEvents.length, 1);
                                         //Check if first item equals the event we added
-                                        assert.deepEqual(resp1.events[0].id, eventModel.id);
+                                        assert.deepEqual(resp1.currentEvents[0].id, eventModel.id);
+                                        assert.equal(resp1.pastEvents.length, 0);
+                                        done();
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+
+    describe('Event.getMyEvents 1 pastEvent', function()
+    {
+        it('should return response with length=1', function(done)
+        {
+            var eventDict = {};
+            eventDict.name = 'jogging';
+            eventDict.description = 'go for a run with some friends!';
+            eventDict.category = 'Sports';
+            eventDict.time1 = undefined;
+            eventDict.time2 = undefined;
+            eventDict.flag = 'anyTime';
+            eventDict.begindate = undefined;
+            eventDict.enddate = undefined;
+            eventDict.lowprice = '0';
+            eventDict.highprice = '0';
+            eventDict.lownumparticipants = '1';
+            eventDict.highnumparticipants = undefined;
+            eventDict.latitude = undefined;
+            eventDict.longitude = undefined;
+            eventDict.duration = '2';
+
+            Activity.add(eventDict, function(err, response)
+            {
+                var user = User.create({username: 'foo',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg@greg.com'});
+                User.add(user, function (answerDict) 
+                {
+                    var eventData = {};
+                    var expected = {errCode: 1};
+                    User.first({username: 'foo'}, function(err, userRecord)
+                    {
+                        var uId = userRecord.id;
+
+                        Activity.first({name: 'jogging'}, function(err, activityRecord)
+                        {
+                            var d = new Date();
+                            eventData.name ="magical orgy";
+                            eventData.activityid = activityRecord.id;
+                            eventData.time1 = 500;
+                            eventData.time2 = 1000;
+                            eventData.begindate = d.getTime() - 99999999;
+                            eventData.enddate = d.getTime() - 9999999;
+                            eventData.description = 'my Event';
+                            eventData.attendingusers = userRecord.username;
+                            eventData.noemail = true;
+
+                            Event.add(eventData, function(respDict)
+                            {
+                                assert.deepEqual(respDict, expected);
+                                Event.first({name: eventData.name}, function (err, eventModel) {
+                                    var d = new Date();
+                                    var begindate = d.getTime();
+                                    var enddate = d.getTime()+500;
+                                    eventData.begindate = begindate;
+                                    eventData.enddate = enddate;
+
+                                    Event.getMyEvents({userId: userRecord.id}, function (resp1)
+                                    {
+                                        assert.equal(resp1.errCode, 1);
+                                        //Make sure we get 0 current events back
+                                        assert.equal(resp1.currentEvents.length, 0);
+                                        //Make sure we get 1 past event back
+                                        assert.equal(resp1.pastEvents.length, 1);
+                                        //Check if first item equals the event we added
+                                        assert.deepEqual(resp1.pastEvents[0].id, eventModel.id);
                                         done();
                                     });
                                 });
@@ -263,10 +346,11 @@ describe('Event', function()
                                                         // console.dir(getymyEventsResponse);
                                                         assert.equal(getymyEventsResponse.errCode, 1);
                                                         //Make sure we get 1 event back
-                                                        assert.equal(getymyEventsResponse.events.length, 2);
+                                                        assert.equal(getymyEventsResponse.currentEvents.length, 2);
                                                         //Check if first item equals the event we added
-                                                        assert.deepEqual(getymyEventsResponse.events[0].id, eventModel1.id);
-                                                        assert.deepEqual(getymyEventsResponse.events[1].id, eventModel2.id);
+                                                        assert.deepEqual(getymyEventsResponse.currentEvents[0].id, eventModel1.id);
+                                                        assert.deepEqual(getymyEventsResponse.currentEvents[1].id, eventModel2.id);
+                                                        assert.equal(getymyEventsResponse.pastEvents.length, 0);
                                                         done();
                                                     });
                                                 });

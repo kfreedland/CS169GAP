@@ -816,51 +816,57 @@ Event.changeDateTime = function(params, callback)
 
 Event.getMyEvents = function (params, callback) {
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
+    var currentEvents = []
+        ,  pastEvents = [];
     if (err){
       console.log("error in getMyEvents");
       console.dir(err);
-      responseDict.events = [];
       // console.log("err exists: ");
       // console.dir(err);
-      responseDict.errCode = 7;
-      callback(responseDict);
+      getEventsCallback(7, currentEvents, pastEvents, callback);
     } else {
       if (userModel){
-        var myEvents = [];
         if (userModel.myevents){
           var eventIds = userModel.myevents.split(',');
           for (var index in eventIds){
             var eventId = eventIds[index];
-            geddy.model.Event.first({id: eventId}, function (err, eventModel){
+            geddy.model.Event.first({id: eventId}, function (err, eventModel)
+            {
               if (err){
                 console.log("error in event.first in getMyEvents");
                 console.dir(err);
-                responseDict.events = [];
-                responseDict.errCode = 7;
-                callback(responseDict);
+                getEventsCallback(7, currentEvents, pastEvents, callback);
               } else if (eventModel){
                 //console.log("EVENT MODEL:");
                 //console.log(eventModel);
-                myEvents.push(eventModel);
+                var currentDate = new Date();
+                if (eventModel.enddate < currentDate.getTime())
+                {
+                  pastEvents.push(eventModel);
+                } else {
+                  currentEvents.push(eventModel);
+                }
               }
-              if (myEvents.length == eventIds.length){
+              if ((currentEvents.length + pastEvents.length) == eventIds.length)
+              {
                 // console.log("index = " + index);
-                getEventsCallback(1, myEvents, callback);
+                getEventsCallback(1, currentEvents, pastEvents, callback);
               }
             });
           }
         } else {
-          getEventsCallback(1, myEvents, callback);
+          getEventsCallback(1, currentEvents, pastEvents, callback);
         }
       }
     }
   });
 };
 
-function getEventsCallback(errCode, events, callback){
+function getEventsCallback(errCode, currentEvents, pastEvents, callback){
   var responseDict = {};
   responseDict.errCode = 1;
-  responseDict.events = events;
+  responseDict.pastEvents = pastEvents;
+  responseDict.currentEvents = currentEvents;
   callback(responseDict);
 }
 
