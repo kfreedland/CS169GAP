@@ -36,6 +36,7 @@ var config = {
 	, port: 5432
 	}
 }
+, socketIo: true
 , sessions: {
   store: 'memory'
 , key: 'sid'
