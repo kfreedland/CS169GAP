@@ -123,6 +123,7 @@ Event.add = function(params, callback)
   }
 };
 
+//first time you create an event gets all emails and ids
 function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
   emails = [];
@@ -236,6 +237,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
   });
 };
 
+//validates and returns a list of userids and emails to be added
 function validateUserIds(idArray, eventid, callback) //assumes valid usernames
 {
   toReturn = {};
@@ -254,7 +256,7 @@ function validateUserIds(idArray, eventid, callback) //assumes valid usernames
       idHash[id] = true;
       if(id.indexOf('@') >= 0)
       {
-        geddy.model.User.first({username: id}, function(err, userRecord)
+        geddy.model.User.first({email: id}, function(err, userRecord)
         {
           if(userRecord && userRecord.username)
           {
