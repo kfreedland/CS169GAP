@@ -33,6 +33,7 @@ var config = {
     }
   }
 , socketIo: true
+, realtime: true
 //thawing-hamlet database
 // , db: {
 //     postgres: {
