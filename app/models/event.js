@@ -96,7 +96,7 @@ Event.add = function(params, callback)
                       inviter = params.inviter;
                     }
                     var message = inviter+" wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
-                    Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
+                    Event.invite({eventid: eventModel.id, emails: emails, userIds: userIds, message: message}, function()
                     {
                       callback(respDict);
                     });
@@ -204,8 +204,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
     if(eventRecord && eventRecord.attendingusers)
     {
       var data = eventRecord.attendingusers.split(',').concat(usernames);
-      var newUids = data;
-      validateUserIds(newUids, eventid, function (newUids){
+      validateUserIds(data, eventid, function (newUids){
         // console.log("validateUserIds returned");
         if (!newUids){
           newUids = [];
@@ -222,7 +221,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
           else
           {
             var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
-            Event.invite({eventid: eventid, emails: data.email, message: message}, function(respDict)
+            Event.invite({eventid: eventid, emails: newUids.email, userIds: newUids.id, message: message}, function(respDict)
             {
               callback({errCode: 1});
             });
@@ -406,6 +405,7 @@ Event.invite = function(params, callback)
   var eventID = params.eventid;
   var emailList = params.emails;
   var message = params.message;
+  var userIds = params.userIds;
 
   if (eventID === null || eventID === undefined ) 
   {
@@ -494,6 +494,16 @@ Event.invite = function(params, callback)
 
         if(eventModel)
         {
+          //Send real-time notifications
+          for (var key in userIds)
+          {
+            var userId = userids[key];
+            var eventName = userId + 'InviteEvent';
+            console.log("Emitting event: " + eventName);
+            geddy.io.sockets.emit(eventName, {eventId: eventID, eventName: eventModel.name});
+          }
+
+
           //invite all emails
 
           // create reusable transport method (opens pool of SMTP connections)

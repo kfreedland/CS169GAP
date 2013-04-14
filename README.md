@@ -393,5 +393,14 @@ Event names: '{username}InviteEvent'
 Backend will emit the event when that particular user is invited to a new event.
 Frontend will listen to event and update the unseen notifications badge.
 
+Event will contain the following information:
+<h6><b>Event</b></h6>
+<ul>
+	{
+		<li>'eventName': [string],</li>
+		<li>'eventId': [string]</li>
+	}
+</ul>
+
 
 
