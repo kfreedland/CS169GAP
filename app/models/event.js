@@ -131,7 +131,9 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
+    console.log("id before trim:" + id + '.');
     id.trim();
+    console.log("id after trim:" + id + '.');
     // console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
@@ -497,7 +499,7 @@ Event.invite = function(params, callback)
           //Send real-time notifications
           for (var key in userIds)
           {
-            var userId = userids[key];
+            var userId = userIds[key];
             var eventName = userId + 'InviteEvent';
             console.log("Emitting event: " + eventName);
             geddy.io.sockets.emit(eventName, {eventId: eventID, eventName: eventModel.name});
