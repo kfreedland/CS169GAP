@@ -22,12 +22,15 @@
             <script type='text/javascript'>
               var userName = '<%= user.username %>';
 
-              var href = document.location.protocol + document.location.hostname + ':8000';
-              console.log('href =' + href);
+              var href = document.location.protocol + document.location.hostname;// + ':8000';
+              console.log('href = ' + href);
               var socket = io.connect(href);
-                var eventName = userName + 'InviteEvent';
-                console.log("Listening for " + eventName);
-                socket.on(eventName, function (data) {
+              //var socket = io.connect(href, {
+              //     transports: ['xhr-polling']
+              // });
+              var eventName = userName + 'InviteEvent';
+              console.log("Listening for " + eventName);
+              socket.on(eventName, function (data) {
                 console.log("GOT THE EVENT:" + data);
               });
             </script>
