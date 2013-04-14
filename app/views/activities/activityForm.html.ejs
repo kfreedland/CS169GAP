@@ -21,6 +21,7 @@
 
             <script type='text/javascript'>
               var userName = '<%= user.username %>';
+
               var href = document.location.protocol + document.location.hostname + ':8000';
               console.log('href =' + href);
               var socket = io.connect(href);
