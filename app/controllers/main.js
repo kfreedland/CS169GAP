@@ -25,17 +25,6 @@ var Main = function () {
     var self = this;
 
 
-    geddy.io.sockets.on('connection', function(socket) {
-      setTimeout(function(){ 
-        socket.on('bobReturn', function (message){
-          console.log("GOT BOB RETURN!!!");
-        });
-        socket.emit('bobEvent', {message:"This is a bob event from main."});
-      }, 500);
-      
-    });
-
-
     var localParams = params;
     if (!localParams.errCode){
       localParams.errCode = 0;

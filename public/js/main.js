@@ -26,11 +26,3 @@ $('#createActivityButton').live("click tap", function() {
 	// }
 	return true;
 });
-
-var href = document.location.protocol + document.location.hostname + ':8000';
-console.log('href =' + href);
-var socket = io.connect(href);
-	socket.on('bobEvent', function (data) {
-	console.log(data);
-	socket.emit('bobReturn', { my: 'data' });
-});

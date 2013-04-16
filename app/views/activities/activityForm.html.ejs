@@ -18,6 +18,22 @@
           <% if (user) {%>
             <p>Welcome: <a href="/events/myevents"><%=user.givenName%> <%=user.familyName%></a>
             <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+
+            <script type='text/javascript'>
+              var userName = '<%= user.username %>';
+
+              var href = document.location.protocol + document.location.hostname;// + ':8000';
+              console.log('href = ' + href);
+              var socket = io.connect(href);
+              //var socket = io.connect(href, {
+              //     transports: ['xhr-polling']
+              // });
+              var eventName = userName + 'InviteEvent';
+              console.log("Listening for " + eventName);
+              socket.on(eventName, function (data) {
+                console.log("GOT THE EVENT:" + data);
+              });
+            </script>
           <% } else { %>
             <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
             <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
@@ -43,8 +59,15 @@
               <!-- display activity created successfully when redirected -->
               <% if (params.errCode){ %>
                 <div class="errorMessage" >
-                <% if (params.errCode == 1 && params.methodType == 'createActivity'){ %>
-                   <p> Activity successfully created. </p>
+                <% if (params.errCode == 1) { %>
+                  <% if (params.methodType == 'createActivity'){ %>
+                    <p> Activity successfully created. </p>
+                  <% } else { %>
+                    <script type='text/javascript'>
+                      console.log("PATH IS " + window.location.pathname);
+                      // window.location.reload(true);
+                    </script>
+                  <% } %>
                 <% } %>
                 </div>
               <% } %>

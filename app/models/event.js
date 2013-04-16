@@ -96,7 +96,7 @@ Event.add = function(params, callback)
                       inviter = params.inviter;
                     }
                     var message = inviter+" wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
-                    Event.invite({eventid: eventModel.id, emails: emails , message: message}, function()
+                    Event.invite({eventid: eventModel.id, emails: emails, userIds: userIds, message: message}, function()
                     {
                       callback(respDict);
                     });
@@ -123,6 +123,7 @@ Event.add = function(params, callback)
   }
 };
 
+//first time you create an event gets all emails and ids
 function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
   emails = [];
@@ -130,7 +131,9 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
+    console.log("id before trim:" + id + '.');
     id.trim();
+    console.log("id after trim:" + id + '.');
     // console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
@@ -203,8 +206,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
     if(eventRecord && eventRecord.attendingusers)
     {
       var data = eventRecord.attendingusers.split(',').concat(usernames);
-      var newUids = data;
-      validateUserIds(newUids, eventid, function (newUids){
+      validateUserIds(data, eventid, function (newUids){
         // console.log("validateUserIds returned");
         if (!newUids){
           newUids = [];
@@ -221,7 +223,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
           else
           {
             var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
-            Event.invite({eventid: eventid, emails: data.email, message: message}, function(respDict)
+            Event.invite({eventid: eventid, emails: newUids.email, userIds: newUids.id, message: message}, function(respDict)
             {
               callback({errCode: 1});
             });
@@ -236,6 +238,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
   });
 };
 
+//validates and returns a list of userids and emails to be added
 function validateUserIds(idArray, eventid, callback) //assumes valid usernames
 {
   toReturn = {};
@@ -254,7 +257,7 @@ function validateUserIds(idArray, eventid, callback) //assumes valid usernames
       idHash[id] = true;
       if(id.indexOf('@') >= 0)
       {
-        geddy.model.User.first({username: id}, function(err, userRecord)
+        geddy.model.User.first({email: id}, function(err, userRecord)
         {
           if(userRecord && userRecord.username)
           {
@@ -404,6 +407,7 @@ Event.invite = function(params, callback)
   var eventID = params.eventid;
   var emailList = params.emails;
   var message = params.message;
+  var userIds = params.userIds;
 
   if (eventID === null || eventID === undefined ) 
   {
@@ -492,6 +496,16 @@ Event.invite = function(params, callback)
 
         if(eventModel)
         {
+          //Send real-time notifications
+          for (var key in userIds)
+          {
+            var userId = userIds[key];
+            var eventName = userId + 'InviteEvent';
+            console.log("Emitting event: " + eventName);
+            geddy.io.sockets.emit(eventName, {eventId: eventID, eventName: eventModel.name});
+          }
+
+
           //invite all emails
 
           // create reusable transport method (opens pool of SMTP connections)
