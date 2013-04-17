@@ -14,6 +14,7 @@ var Event = function () {
     description: {type: 'string'},
     time1: {type: 'number'},
     time2: {type: 'number'},
+    comments: {type: 'string'},
     begindate: {type: 'number'},
     enddate: {type: 'number'},
     activityid: {type: 'string'},

@@ -173,6 +173,7 @@ CS169GAP
 		<li>'enddate': [milliseconds since epoch, int],</li>
 		<li>'attendingusers': [CSV string of user ids],</li>
 		<li>'activity':[activity recordID corresponding to this event]</li>
+		<li>'inviter':'Firstname Lastname' String of user who invited everyone </li>
 	}
 </ul>
 
@@ -330,6 +331,16 @@ CREATE TABLE events (
 	enddate float8,
 	activityid text,
 	attendingusers text,
+	comments text,
+	created_at timestamptz,
+	updated_at timestamptz,
+	id text
+);
+
+
+CREATE TABLE comments (
+	userid text,
+	text text,
 	created_at timestamptz,
 	updated_at timestamptz,
 	id text
