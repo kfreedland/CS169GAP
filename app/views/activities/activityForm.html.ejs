@@ -16,14 +16,22 @@
         </h1>
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
           <% if (user) {%>
-            <p>Welcome: 
-                <a href="/events/myevents">
-                  <%=user.givenName%> <%=user.familyName%> 
-                  <div color="red"> 
-                    <%=user.mynotifications%>
-                  </div>
-                </a>
-            <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+            <div id="container">
+                <div id="welcome_container">
+                  <p>Welcome: 
+                    <div id="username_container">
+                      <a href="/events/myevents">
+                        <%=user.givenName%> <%=user.familyName%>
+                        <div id="notifications_container"> 
+                          <%=user.mynotifications%>
+                        </div>
+                      </a>
+                    </div>
+                  </p>
+                </div>
+                <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+            </div>
+            
 
             <script type='text/javascript'>
               var userName = '<%= user.username %>';

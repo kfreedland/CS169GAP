@@ -919,6 +919,12 @@ Event.invite = function(params, callback)
             console.log("Emitting event: " + eventName);
             geddy.io.sockets.emit(eventName, {eventId: eventID, eventName: eventModel.name});
           }
+          //Update user's notification number
+          geddy.model.User.first({id: userId}, function (err, userModel){
+            if (!err && userModel){
+              userModel.mynotifications += 1;
+            }
+          });
 
 
           //invite all emails
@@ -1354,6 +1360,7 @@ var User = function () {
     this.property('givenName', 'string');
     this.property('email', 'string');
     this.property('myevents', 'string');
+    this.property('mynotifications', 'number');
     this.validatesLength('username', {min: 3, max:128});
     this.validatesLength('password', {min: 8, max:128});
     this.validatesConfirmed('password', 'confirmPassword');
