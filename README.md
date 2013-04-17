@@ -18,6 +18,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b> Changelog Entry 15:</b>
+	//Edited database creation statements for mynotifications field on users
+
 <b> Changelog Entry 14:</b>
 	//Updated Real-Time Invite Notifications Spec in doc
 
@@ -290,6 +293,7 @@ CREATE TABLE users (
 	created_at timestamptz,
 	updated_at timestamptz,
 	myevents text,
+	mynotifications float8,
 	id text
 );
 

@@ -504,6 +504,12 @@ Event.invite = function(params, callback)
             console.log("Emitting event: " + eventName);
             geddy.io.sockets.emit(eventName, {eventId: eventID, eventName: eventModel.name});
           }
+          //Update user's notification number
+          geddy.model.User.first({id: userId}, function (err, userModel){
+            if (!err && userModel){
+              userModel.mynotifications += 1;
+            }
+          });
 
 
           //invite all emails

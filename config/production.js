@@ -23,15 +23,26 @@ var config = {
 , model: {
     defaultAdapter: 'postgres'
   }
+//gap3 database
 , db: {
-    postgres: {
-      user: 'gqfslnsegogdzu'
-    , database: 'd2t1b76rgqatiu'
-    , password: 'd-kfQtcYYgKth2mzPG6W94E54N'
-    , host: 'ec2-54-243-48-107.compute-1.amazonaws.com'
-    , port: 5432
-    }
+  postgres: {
+    user: 'opmzgednrndpue'
+  , database: 'd7e8an15dsl5cn'
+  , password: 'ZtQZAJBAy6To9Dciw-Rt3HsfOh'
+  , host: 'ec2-54-243-223-227.compute-1.amazonaws.com'
+  , port: 5432
   }
+}
+//gap2 database
+// , db: {
+//     postgres: {
+//       user: 'gqfslnsegogdzu'
+//     , database: 'd2t1b76rgqatiu'
+//     , password: 'd-kfQtcYYgKth2mzPG6W94E54N'
+//     , host: 'ec2-54-243-48-107.compute-1.amazonaws.com'
+//     , port: 5432
+//     }
+//   }
 , socketIo: true
 , realtime: true
 //thawing-hamlet database
