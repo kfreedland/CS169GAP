@@ -238,6 +238,86 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
   });
 };
 
+
+Event.removeUserFromEvent = function(eventID, userID, callback)
+{
+  
+  geddy.model.User.first({id: userID}, function(err, userRecord) {
+
+    if(err)
+    {
+      //database error
+
+    } 
+    else if (userRecord)
+    {
+
+      var userName = userRecord.username;
+      //remove username from event attendingusers
+      geddy.Model.Event.first({id: eventID} , function(err, eventRecord){
+
+        if(eventRecord){
+
+          var attendingUsersString = eventRecord.attendingusers;
+          var attendingUsersList = attendingUsersString.split(",");
+          var usernameIndex = attendingUsersList.indexOf(userRecord)
+          if(usernnameIndex >= 0){
+            attendingUsersList.splice(usernameIndex,1);
+            attendingUsersString = attendingUsersList.join(",");
+            eventRecord.attendingusers = attendingUsersString;
+            eventRecord.save ( function(err, data) {
+
+              if(err){
+                //database error
+              } else {
+               //succeeded in removing username from attending users
+
+
+
+                //remove event from user
+                var events = userRecord.myevents;
+                var eventList = events.split(",");
+                var eventIndex = eventList.indexOf(eventID);
+                if(eventIndex != -1)
+                {
+                  eventList.splice(eventIndex,1);
+                  var eventString = eventList.join(",");
+                  userRecord.myevents = eventString;
+                  userRecord.save(function(err, data) {
+
+                    if(err){
+                      //database error
+                    } else {
+                      //succeeded in everything
+                    }
+
+                  });
+
+                } else {
+
+                  //couldn't find eventID in user
+
+                }
+
+              }
+            
+           });
+
+          }
+
+        } else {
+          //event does not exist
+        }
+
+      });
+
+    } else {
+
+      //user does not exist
+
+    });
+};
+
 //validates and returns a list of userids and emails to be added
 function validateUserIds(idArray, eventid, callback) //assumes valid usernames
 {
@@ -395,6 +475,8 @@ function addEventToUsers(eventid, userIds, callback)
   }
   callback({errCode: 1}); //success!
 }
+
+
 
 
 //params requires eventid, emails, and message
