@@ -73,7 +73,7 @@ var actions = new (function () {
           var responseDict = {};
 
           // FIXME: hack until Passport defers to resp.redirect
-          console.log("GOT TO CREATE CALLBACK");
+          // console.log("GOT TO CREATE CALLBACK");
           resp.end = function () {};
           resp.setHeader = function (headerName, val) {
             resp.redirect(val);
@@ -100,7 +100,7 @@ var actions = new (function () {
                     self.session.set('userId', user.id);
                     // self.session.set('user', user);
                     self.session.set('authType', authType);
-                    // console.log("No Error so about to redirect to successRedirect: " + successRedirect);
+                    // console.log("passport.authenticate No Error so about to redirect to successRedirect: " + successRedirect);
                     self.redirect(successRedirect + '?errCode=1');
                     //Success errCode = 1 
                   }
@@ -133,7 +133,7 @@ var actions = new (function () {
             // console.log("Good credentials. Setting session and Redirecting to successRedirect: " + successRedirect);
             self.session.set('userId', user.id);
             self.session.set('authType', 'local');
-
+            // console.log("this.local No Error so about to redirect to successRedirect: " + successRedirect);
             self.redirect(successRedirect + '?errCode=1');
             //Success errCode = 1
           }

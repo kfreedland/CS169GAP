@@ -7,7 +7,10 @@ $(document).ready(function() {
         contentType: "application/json",
         dataType: "json",
         success: function(respData) {
-        	addMyEvents(respData.events);
+        	//console.log(respData.events.length);
+        	//console.log(respData.events);
+        	addMyEvents(respData.pastEvents, "past");
+        	addMyEvents(respData.currentEvents, "current");
         },
         failure: function(err) {
         	console.log('Failure');
@@ -15,10 +18,10 @@ $(document).ready(function() {
     });
 });
 
-function addMyEvents(jsonResp) {
+function addMyEvents(jsonResp, htmlID) {
 	var geocoder = new google.maps.Geocoder();
 	if (jsonResp.length === 0) {
-		$("#my_events").html('No events found.')
+		$("#my_events_" + htmlID).html('No events found.')
 	}
 
 	console.log(jsonResp);
@@ -27,13 +30,13 @@ function addMyEvents(jsonResp) {
 		// Create variables for dynamic ids of certain divs
 		var index = parseInt(index) + 1;
 		var index = index.toString();
-		var eventID = "event-" + index;
-		var eventPrice = 'event-price-' + index;
-		var eventParticipants = 'event-participants-' + index;
-		var eventTime = 'event-time-' + index;
+		var eventID = 'event_'  + htmlID + index;
+		var eventPrice = 'event-price_'  + htmlID + index;
+		var eventParticipants = 'event-participants_'  + htmlID + index;
+		var eventTime = 'event-time_'  + htmlID + index;
 
 		// Append the html to the list_activities div
-		$("#my_events").append(
+		$("#my_events_"  + htmlID).append(
 			'<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c" id="' + eventID + '">' +
 			'<div class="button_result">' +
 			'<div class="button_result_left">' +
@@ -42,12 +45,12 @@ function addMyEvents(jsonResp) {
 			'<div class="row-description">' + data.description + '</div>' +
 			'<div class="row-num-participants" id="' + eventParticipants + '"></div>' +
 			'<div class="row-time-range" id="' + eventTime + '"></div>' +
-			'<div class="row-participants" id="event-participants' + index + '"></div>' +
+			'<div class="row-participants" id="event-participants_' + htmlID + index + '"></div>' +
 			'</div>' +
 
 			'<div class = "button_result_right">' +
-			'<div class="row-category" id="event-category-' + index + '"></div><br>' +
-			'<div class="row-address" id="event-address-' + index + '"></div><br>' +
+			'<div class="row-category" id="event-category_' + htmlID + index + '"></div><br>' +
+			'<div class="row-address" id="event-address_' + htmlID + index + '"></div><br>' +
 			'<div class="row-price-range" id ="' + eventPrice + '"></div>' +
 			
 			'</div>' +
@@ -61,7 +64,7 @@ function addMyEvents(jsonResp) {
 		$('#' + eventTime).html('Time of Event: ' + t1Str + ' to ' + t2Str);
 
 		// Add the invited participants
-		var participantsDivID = '#event-participants' + index;
+		var participantsDivID = '#event-participants_' + htmlID + index;
 		addInvitedParticipants(participantsDivID, data.attendingusers);
 
 		// Get the Activity Details

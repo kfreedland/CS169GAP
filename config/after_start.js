@@ -2,18 +2,13 @@
 //Setup io
 
  // var io = require('socket.io').listen(8000);
-geddy.io = require('socket.io').listen(8000);
-geddy.io.sockets.on('connection', function(socket) {
-	// socket.emit('hello', {message: 'world'});
-	// socket.on('message', function(message) {
-	// 	geddy.log.notice(message);
-	// 	geddy.log.notice("BOOOOO");
-	// });
-
-
-	socket.emit('bobEvent', {message:"This is a bob event."});
-
-	socket.on('bobReturn', function (message){
-          console.log("GOT BOB RETURN!!!");
-    });
+// var port = process.env.PORT || 4000;
+// geddy.io = require('socket.io').listen(port);
+//Configue io to work with heroku
+geddy.io.configure(function () { 
+	geddy.io.set("transports", ["xhr-polling"]); 
+	geddy.io.set("polling duration", 10); 
 });
+// geddy.io.sockets.on('connection', function(socket) {
+// 	geddy.socket = socket;
+// });

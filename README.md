@@ -18,6 +18,15 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b> Changelog Entry 16: </b>
+	//Edited database creation for comments
+	
+<b> Changelog Entry 15:</b>
+	//Edited database creation statements for mynotifications field on users
+
+<b> Changelog Entry 14:</b>
+	//Updated Real-Time Invite Notifications Spec in doc
+
 <b>Changelog Entry 13:</b>
 	//Updated getMyEvents API for past events
 
@@ -288,6 +297,7 @@ CREATE TABLE users (
 	created_at timestamptz,
 	updated_at timestamptz,
 	myevents text,
+	mynotifications float8,
 	id text
 );
 
@@ -392,6 +402,23 @@ geddy.io.sockets.on('connection', function(socket) {
           console.log("GOT BOB RETURN!!!");
     });
 });
+
+
+//Events For Invite
+Every user will register/listen to an invite event with the following structure:
+Event names: '{username}InviteEvent'
+
+Backend will emit the event when that particular user is invited to a new event.
+Frontend will listen to event and update the unseen notifications badge.
+
+Event will contain the following information:
+<h6><b>Event</b></h6>
+<ul>
+	{
+		<li>'eventName': [string],</li>
+		<li>'eventId': [string]</li>
+	}
+</ul>
 
 
 

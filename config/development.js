@@ -37,6 +37,7 @@ var config = {
 // 	}
 // }
 , socketIo: true
+, realtime: true
 , sessions: {
   store: 'memory'
 , key: 'sid'
