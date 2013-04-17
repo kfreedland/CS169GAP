@@ -70,4 +70,5 @@ router.resource('users');
 //router.resource('activities');
 
 router.resource('events');
+router.resource('comments');
 exports.router = router;

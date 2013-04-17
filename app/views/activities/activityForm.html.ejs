@@ -16,18 +16,29 @@
         </h1>
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
           <% if (user) {%>
-            <p>Welcome: <a href="/events/myevents"><%=user.givenName%> <%=user.familyName%></a>
-            <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+            <div id="container">
+                <div id="welcome_container">
+                  <p>Welcome: 
+                    <div id="username_container">
+                      <a href="/events/myevents">
+                        <%=user.givenName%> <%=user.familyName%>
+                        <div id="notifications_container"> 
+                          <%=user.mynotifications%>
+                        </div>
+                      </a>
+                    </div>
+                  </p>
+                </div>
+                <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
+            </div>
+            
 
             <script type='text/javascript'>
               var userName = '<%= user.username %>';
 
-              var href = document.location.protocol + document.location.hostname;// + ':8000';
+              var href = document.location.protocol + document.location.hostname;
               console.log('href = ' + href);
               var socket = io.connect(href);
-              //var socket = io.connect(href, {
-              //     transports: ['xhr-polling']
-              // });
               var eventName = userName + 'InviteEvent';
               console.log("Listening for " + eventName);
               socket.on(eventName, function (data) {
