@@ -203,6 +203,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
 {
+  console.log("adding users: " + " to event");
   usernames = usernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
@@ -217,7 +218,9 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
         var usernamesAndEmailsList = [];
         usernamesAndEmailsList.push(newUids.usernames);
         usernamesAndEmailsList.push(newUids.emails);
-        eventRecord.attendingusers = newUids.toString();
+        console.log("newUids = " + usernamesAndEmailsList);
+        console.log("About to add attendingusers: " + usernamesAndEmailsList.toString());
+        eventRecord.attendingusers = usernamesAndEmailsList.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
         {
           if(err)
