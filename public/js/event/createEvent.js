@@ -47,6 +47,11 @@ $(document).ready(function() {
 
 function createEvent(activityId) {
 	$('#createEventButton').click(function() {
+		$.mobile.loading( 'show' , {
+			text: 'Creating Event',
+			textVisible: true,
+			theme: 'a'
+		});
 		// Create JSON Dict for event data
 		var eventData = {};
 
@@ -73,8 +78,7 @@ function createEvent(activityId) {
 
 		var invitedFriends = $('#invitedFriends').val();
 		eventData.attendingusers = invitedFriends;
-		console.log("EVENT DATA:");
-		console.log(eventData);
+		
 		$.ajax({
 	        type: 'POST',
 	        url: '/events/create',

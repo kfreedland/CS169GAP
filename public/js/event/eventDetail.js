@@ -39,8 +39,6 @@ function inviteMoreFriends(eventID) {
 	$('#inviteFriendsButton').click(function() {
 		var invitedFriends = $('#invitedFriends').val();
 		var friendsData = {eventid: eventID, usernames: invitedFriends};
-		console.log("FRIENDS DATA:");
-		console.log(friendsData);
 		$.ajax({
 	        type: 'POST',
 	        url: '/events/adduserstoevent',

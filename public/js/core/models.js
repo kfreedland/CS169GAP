@@ -1163,7 +1163,11 @@ function addEventToUsers(eventid, userIds, callback)
       }
     });
   }
-  callback({errCode: 1}); //success!
+  setTimeout(function() {
+    console.log("CALLBACK CALLED");
+    callback({errCode: 1}); //success!
+  }, 4000);
+  
 }
 
 
