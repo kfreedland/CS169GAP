@@ -653,6 +653,19 @@ function getCommentsCallback(errCode, comments, callback){
   callback(responseDict);
 }
 
+Comment.TESTAPI_resetFixture = function (callback) {
+  geddy.model.Comment.all(function (err, result) {
+    // console.log("got all activity models with error: " + err + " and result: " + result);
+    for (var commentModel in result){
+      // console.log("trying to remove activityModel: " + result[activityModel]);
+      geddy.model.Comment.remove(result[commentModel].id);
+    }
+    var responseDict = {};
+    responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};  
+
 /*
 // Can also define them on the prototype
 Comment.prototype.someOtherMethod = function () {
@@ -875,6 +888,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
 {
+  console.log("adding users: " + " to event");
   usernames = usernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
@@ -889,7 +903,9 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
         var usernamesAndEmailsList = [];
         usernamesAndEmailsList.push(newUids.usernames);
         usernamesAndEmailsList.push(newUids.emails);
-        eventRecord.attendingusers = newUids.toString();
+        console.log("newUids = " + usernamesAndEmailsList);
+        console.log("About to add attendingusers: " + usernamesAndEmailsList.toString());
+        eventRecord.attendingusers = usernamesAndEmailsList.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
         {
           if(err)
@@ -930,27 +946,33 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     return;
   }
   
-  geddy.model.User.first({username: userID}, function(err, userRecord) {
+  geddy.model.User.first({id: userID}, function(err, userRecord) {
 
     if(err)
     {
       //database error
+      console.log("error looking up user");
       removeUserFromEventCallBack(7, callback);
       return;
 
     } 
     else if (userRecord)
     {
+
+      console.log("found user");
       var userName = userRecord.username;
       //remove username from event attendingusers
       geddy.model.Event.first({id: eventID} , function(err, eventRecord){
 
         if(eventRecord){
 
+          console.log("Found event");
           var attendingUsersString = eventRecord.attendingusers;
           var attendingUsersList = attendingUsersString.split(",");
-          var usernameIndex = attendingUsersList.indexOf(userRecord);
+          var usernameIndex = attendingUsersList.indexOf(userRecord.username);
+          console.log("usernameIndex = " + usernameIndex);
           if(usernameIndex >= 0){
+            console.log("Found username in event.attendingusers");
             attendingUsersList.splice(usernameIndex,1);
             attendingUsersString = attendingUsersList.join(",");
             eventRecord.attendingusers = attendingUsersString;
@@ -958,11 +980,14 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
               if(err){
                 //database error
+                console.log("error saving event");
+
                 removeUserFromEventCallBack(7, callback);
                 return;
 
               } else {
-               //succeeded in removing username from attending users
+                //succeeded in removing username from attending users
+                console.log("succeeded in removing username from attending users");
 
 
                 //remove event from user
@@ -974,10 +999,13 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
                   eventList.splice(eventIndex,1);
                   var eventString = eventList.join(",");
                   userRecord.myevents = eventString;
+                  userRecord.errors = null;
                   userRecord.save(function(err, data) {
 
                     if(err){
                       //database error
+                      console.log("Got error saving userRecord: ");
+                      console.dir(err);
                       removeUserFromEventCallBack(7, callback);
                       return;
 
@@ -987,18 +1015,17 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
                       removeUserFromEventCallBack(1, callback);
                       return;
                     }
-
                   });
-
+                } else {
+                  console.log("eventIndex == -1");
+                }
               }
-            }
-            
-           });
-
+            });
           }
-
         } else {
           //event does not exist
+          console.log("event does not exist in database");
+
           removeUserFromEventCallBack(10, callback);
           return;
 
@@ -1009,6 +1036,8 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     } else {
 
       //user does not exist
+      console.log("user does not exist in database");
+
       removeUserFromEventCallBack(10, callback);
       return;
     }

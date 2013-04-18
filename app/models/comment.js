@@ -238,6 +238,19 @@ function getCommentsCallback(errCode, comments, callback){
   callback(responseDict);
 }
 
+Comment.TESTAPI_resetFixture = function (callback) {
+  geddy.model.Comment.all(function (err, result) {
+    // console.log("got all activity models with error: " + err + " and result: " + result);
+    for (var commentModel in result){
+      // console.log("trying to remove activityModel: " + result[activityModel]);
+      geddy.model.Comment.remove(result[commentModel].id);
+    }
+    var responseDict = {};
+    responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};  
+
 /*
 // Can also define them on the prototype
 Comment.prototype.someOtherMethod = function () {

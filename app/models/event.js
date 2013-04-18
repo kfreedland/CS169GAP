@@ -216,8 +216,12 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
           newUids = {};
         }
         var usernamesAndEmailsList = [];
-        usernamesAndEmailsList.push(newUids.usernames);
-        usernamesAndEmailsList.push(newUids.emails);
+        if (newUids.usernames){
+          usernamesAndEmailsList.concat(newUids.usernames);
+        }
+        if (newUids.emails){
+          usernamesAndEmailsList.concat(newUids.emails);
+        }
         console.log("newUids = " + usernamesAndEmailsList);
         console.log("About to add attendingusers: " + usernamesAndEmailsList.toString());
         eventRecord.attendingusers = usernamesAndEmailsList.toString();
@@ -261,7 +265,7 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     return;
   }
   
-  geddy.model.User.first({username: userID}, function(err, userRecord) {
+  geddy.model.User.first({id: userID}, function(err, userRecord) {
 
     if(err)
     {
@@ -281,14 +285,13 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
         if(eventRecord){
 
-          console.log("found event, event = ");
-          console.dir(eventRecord);
-
-
+          console.log("Found event");
           var attendingUsersString = eventRecord.attendingusers;
           var attendingUsersList = attendingUsersString.split(",");
-          var usernameIndex = attendingUsersList.indexOf(userRecord);
+          var usernameIndex = attendingUsersList.indexOf(userRecord.username);
+          console.log("usernameIndex = " + usernameIndex);
           if(usernameIndex >= 0){
+            console.log("Found username in event.attendingusers");
             attendingUsersList.splice(usernameIndex,1);
             attendingUsersString = attendingUsersList.join(",");
             eventRecord.attendingusers = attendingUsersString;
@@ -315,10 +318,13 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
                   eventList.splice(eventIndex,1);
                   var eventString = eventList.join(",");
                   userRecord.myevents = eventString;
+                  userRecord.errors = null;
                   userRecord.save(function(err, data) {
 
                     if(err){
                       //database error
+                      console.log("Got error saving userRecord: ");
+                      console.dir(err);
                       removeUserFromEventCallBack(7, callback);
                       return;
 
@@ -328,16 +334,13 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
                       removeUserFromEventCallBack(1, callback);
                       return;
                     }
-
                   });
-
+                } else {
+                  console.log("eventIndex == -1");
+                }
               }
-            }
-            
-           });
-
+            });
           }
-
         } else {
           //event does not exist
           console.log("event does not exist in database");

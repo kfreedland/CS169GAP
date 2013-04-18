@@ -7,8 +7,12 @@ var assert = require("assert")
 
 var resetFixture = function (done){
     Activity.TESTAPI_resetFixture(function(){
-        User.TESTAPI_resetFixture(function() {
-            done();
+        Event.TESTAPI_resetFixture(function() {
+            Comment.TESTAPI_resetFixture(function() {
+                User.TESTAPI_resetFixture(function() {
+                    done();
+                });
+            });
         });
     });
 };

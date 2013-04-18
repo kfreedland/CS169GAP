@@ -1,14 +1,15 @@
 var assert = require("assert")
   , User = geddy.model.User
   , Activity = geddy.model.Activity
-  , Event = geddy.model.Event
-  , Comment = geddy.model.Comment;
+  , Event = geddy.model.Event;
 
 
 var resetFixture = function (done){
     Activity.TESTAPI_resetFixture(function(){
-        User.TESTAPI_resetFixture(function() {
-            done();
+        Event.TESTAPI_resetFixture(function() {
+            User.TESTAPI_resetFixture(function() {
+                done();
+            });
         });
     });
 };
@@ -69,18 +70,16 @@ describe('Event Remove User', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = user.username;
+                            eventData.attendingusers = userRecord.username;
                             eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
                             {
                                 geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
-
-
                                     geddy.model.Event.removeUserFromEvent(eventRecord.id, userRecord.id, function(removeUserResponse){
 
-                                        assert.deepEqual(addCommentResponse, {errCode: 1});
+                                        assert.deepEqual(removeUserResponse, {errCode: 1});
                                         done();
 
                                     });
