@@ -215,15 +215,13 @@ CS169GAP
 <h6><b>INVITE FRIENDS TO AN EVENT</b></h6>
 //Sends email to emails provided
 
-<h3>URL: </h3> /events/invite
+<h3>URL: </h3> /events/adduserstoevent
 
 <h3>Params: </h3>
 <ul>
 	{
 		<li>'eventid': [string],</li>
-		<li>'emails': [List of strings],</li>
-		<li>'message': [String]</li>
-
+		<li>'usernames': [CSV string of usernames]</li>
 	}
 </ul>
 
