@@ -25,7 +25,7 @@ describe('Comment', function()
         resetFixture(done);
     });
 
-  describe('Comment.get comments for event', function()
+  describe('Comment.getComment - add and get 1 comment from 1 event', function()
     {
         it('should return errCode:1', function(done)
         {
@@ -45,58 +45,48 @@ describe('Comment', function()
             eventDict.latitude = undefined;
             eventDict.longitude = undefined;
             eventDict.duration = '2';
-
             Activity.add(eventDict, function(err, response)
             {
                 var user = User.create({username: 'foo',
-                            password: 'MyPassword!',
-                            confirmPassword: 'MyPassword!',
-                            familyName: 'LastName1',
-                            givenName: 'FirstName1',
-                            email: 'greg@greg.com'});
+                    password: 'MyPassword!',
+                    confirmPassword: 'MyPassword!',
+                    familyName: 'LastName1',
+                    givenName: 'FirstName1',
+                    email: 'greg@greg.com'});
                 User.add(user, function (answerDict) 
                 {
-                    var user1 = User.create({username: 'blahbyblah',
-                                password: 'MyPassword!',
-                                confirmPassword: 'MyPassword!',
-                                familyName: 'LastName1',
-                                givenName: 'FirstName1',
-                                email: 'greg@greg.com'});
-                    geddy.model.User.add(user1, function(aDict)
+                    var eventData = {};
+                    User.first({username: 'foo'}, function(err, userRecord)
                     {
-                        var eventData = {};
-                        var expected = {errCode: 1};
-                        User.first({username: 'foo'}, function(err, userRecord)
+                        var uId = userRecord.id;
+
+                        Activity.first({name: 'jogging'}, function(err, activityRecord)
                         {
-                            User.first({username: 'blahbyblah'}, function(err, userRecord1)
+                            var d = new Date();
+                            eventData.name ="Jogging with friends!";
+                            eventData.activityid = activityRecord.id;
+                            eventData.time1 = 500;
+                            eventData.time2 = 1000;
+                            eventData.begindate = d.getTime();
+                            eventData.enddate = d.getTime() + 50000;
+                            eventData.description = 'my Event';
+                            eventData.attendingusers = user.username;
+                            eventData.noemail = true;
+
+                            eventData.inviterId = userRecord.id;
+                            geddy.model.Event.add(eventData, function(respDict)
                             {
-                                var uId = userRecord.id;
-
-                                Activity.first({name: 'jogging'}, function(err, activityRecord)
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
-                                    var d = new Date();
-                                    eventData.name ="Jogging with friends!";
-                                    eventData.activityid = activityRecord.id;
-                                    eventData.time1 = 500;
-                                    eventData.time2 = 1000;
-                                    eventData.begindate = d.getTime();
-                                    eventData.enddate = d.getTime() + 50000;
-                                    eventData.description = 'my Event';
-                                    eventData.attendingusers = user.username + "," + user1.username;
-                                    eventData.noemail = true;
+                                    geddy.model.Comment.addComment(eventRecord.id, userRecord.id, "sample comment", function (addCommentResponse){
 
-                                    Event.add(eventData, function(respDict)
-                                    {
-                                        geddy.model.Event.first({name: eventData.name}, function (err, eventRecord)
-                                        {
-                                        	geddy.model.Comment.addComment(eventRecord.id, userRecord1.id, "sample comment", function (addCommentResponse){
-                                                geddy.model.Comment.getCommentsForEvent(eventRecord.id, function (getCommentsResponse){
-                                                    assert.deepEqual(getCommentsResponse.errCode, 1);
-                                                    assert.deepEqual(getCommentsResponse.comments.length, 1);
-                                                    done();  
+                                        console.log("about to get comments with addCommentResponse ");
+                                        console.dir(addCommentResponse);
+                                        geddy.model.Comment.getCommentsForEvent(eventRecord.id, function (getCommentsResponse){
 
-                                                });
-                                        	}); 
+                                            assert.deepEqual(getCommentsResponse.errCode, 1);
+                                            assert.deepEqual(getCommentsResponse.comments[0].text, "sample comment");
+                                            done();
                                         });
                                     });
                                 });
@@ -107,4 +97,6 @@ describe('Comment', function()
             });
         });
     });
+
+
 });

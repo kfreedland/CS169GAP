@@ -50,8 +50,8 @@ describe('Event.invite valid emails', function()
                             confirmPassword: 'MyPassword!',
                             familyName: 'LastName1',
                             givenName: 'FirstName1',
-                            email: 'elayman123@gmail.com'});
-                User.add(user, function (answerDict) 
+                            email: 'bob@bob.com'});
+User.add(user, function (answerDict) 
                 {
                     var eventData = {};
                     User.first({username: 'foo'}, function(err, userRecord)
@@ -69,7 +69,8 @@ describe('Event.invite valid emails', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email+", bob@bob.com ";
 
-                            Event.add(eventData, function(eventAddResponse)
+                            eventData.inviterId = userRecord.id;
+Event.add(eventData, function(eventAddResponse)
                             {
 
 
@@ -149,7 +150,8 @@ describe('Event.invite valid and invalid emails', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
 
-                            Event.add(eventData, function(eventAddResponse)
+                            eventData.inviterId = userRecord.id;
+Event.add(eventData, function(eventAddResponse)
                             {
 
 
@@ -230,7 +232,8 @@ describe('Event.invite empty email list', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
 
-                            Event.add(eventData, function(eventAddResponse)
+                            eventData.inviterId = userRecord.id;
+Event.add(eventData, function(eventAddResponse)
                             {
 
 
@@ -311,7 +314,8 @@ describe('Event.invite emails undefined', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
 
-                            Event.add(eventData, function(eventAddResponse)
+                            eventData.inviterId = userRecord.id;
+Event.add(eventData, function(eventAddResponse)
                             {
 
 
@@ -393,7 +397,8 @@ describe('Event.invite null message', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
 
-                            Event.add(eventData, function(eventAddResponse)
+                            eventData.inviterId = userRecord.id;
+Event.add(eventData, function(eventAddResponse)
                             {
 
 
@@ -474,7 +479,8 @@ describe('Event.invite invalid event id', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
 
-                            Event.add(eventData, function(eventAddResponse)
+                            eventData.inviterId = userRecord.id;
+Event.add(eventData, function(eventAddResponse)
                             {
 
 
@@ -556,7 +562,8 @@ describe('Event.invite null eventid', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
 
-                            Event.add(eventData, function(eventAddResponse)
+                            eventData.inviterId = userRecord.id;
+Event.add(eventData, function(eventAddResponse)
                             {
 
 

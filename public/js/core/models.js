@@ -502,8 +502,8 @@ Comment.addComment = function(eventID, userID, text, callback)
           commentDict.text = text;
           commentDict.userid = userID;
           var commentRecord = geddy.model.Comment.create(commentDict);
-          console.log("created comment record:");
-          console.dir(commentRecord);
+          // console.log("created comment record:");
+          // console.dir(commentRecord);
           geddy.model.Comment.save(commentRecord, function(err, result){
 
             if (err){
@@ -520,11 +520,12 @@ Comment.addComment = function(eventID, userID, text, callback)
               var comments = eventRecord.comments;
               if (!comments){
                 console.log("event's comments are null");
-                comments = "";
+                eventRecord.comments = commentRecord.id;
+              } else {
+                var commentList = comments.split(',');
+                commentList.push(commentRecord.id);
+                eventRecord.comments = commentList.join(',');
               }
-              var commentList = comments.split(',');
-              commentList.push(commentRecord.id);
-              eventRecord.comments = commentList.join(',');
 
               eventRecord.save(function(err, result){
 
@@ -549,9 +550,7 @@ Comment.addComment = function(eventID, userID, text, callback)
               //comment.save failed
               console.log("comment.save returned nothing  ");
               addCommentCallback(7, callback);
-
-
-
+              return;
             }
 
           });
@@ -601,6 +600,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
       //get comments
       var commentIDsString = eventRecord.comments;
+      console.log("commentIDsString = " + commentIDsString);
       var commentIDsList = commentIDsString.split(',');
 
       var commentListToReturn = [];
@@ -608,6 +608,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
       for (var index in commentIDsList){
 
         var currentCommentID = commentIDsList[index];
+        console.log("currentCommentID = " + currentCommentID);
         geddy.model.Comment.first({id:currentCommentID}, function(err, commentRecord){
 
           if(err){
@@ -620,14 +621,17 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
             //add comment to list
             commentListToReturn.push(commentRecord);
-
-            if(commentListToReturn.length == commentIDsList.length){
-
+            console.log("commentListToReturn.length = " + commentListToReturn.length);
+            console.log("commentIDsList.length = " + commentIDsList.length);
+            if(commentListToReturn.length >= commentIDsList.length){
+              console.log("About to call getCommentsCallback");
               //return 
               getCommentsCallback(1, commentListToReturn, callback);
               return;
 
             }
+          } else {
+            console.log("Didn't get a commentRecord");
           }
         });
 
@@ -650,6 +654,8 @@ function getCommentsCallback(errCode, comments, callback){
   var responseDict = {};
   responseDict.errCode = errCode;
   responseDict.comments = comments;
+  console.log("Calling callback with responseDict: ");
+  console.dir(responseDict);
   callback(responseDict);
 }
 
@@ -731,7 +737,7 @@ var Event = function () {
 
 Event.add = function(params, callback)
 {
-  if(params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
+  if(params.inviterId && params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
     var idsOrEmails = params.attendingusers.split(',');
     getEmailAndId(idsOrEmails, callback, function(emailAndId)
@@ -768,25 +774,28 @@ Event.add = function(params, callback)
               }
               else
               {
-                addEventToUsers(eventModel.id, userIds, function(respDict)
+                //find inviter info
+                geddy.model.User.first({id: params.inviterId}, function(err, inviterRecord)
                 {
-                  if(params.noemail)
+                  var intviterUsername = inviterRecord.username;
+                  var inviterFullName = inviterRecord.givenName +" " + inviterRecord.familyName;
+                  userIds.push(intviterUsername);
+
+                  addEventToUsers(eventModel.id, userIds, function(respDict)
                   {
-                    callback(respDict);
-                  }
-                  else
-                  {
-                    var inviter = "Somebody";
-                    if(params.inviter)
-                    {
-                      inviter = params.inviter;
-                    }
-                    var message = inviter+" wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
-                    Event.invite({eventid: eventModel.id, emails: emails, userIds: userIds, message: message}, function()
+                    if(params.noemail)
                     {
                       callback(respDict);
-                    });
-                  }
+                    }
+                    else
+                    {
+                      var message = inviterFullName + " wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
+                      Event.invite({eventid: eventModel.id, emails: emails, userIds: userIds, message: message}, function()
+                      {
+                        callback(respDict);
+                      });
+                    }
+                  });
                 });
               }
             });
@@ -901,8 +910,12 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
           newUids = {};
         }
         var usernamesAndEmailsList = [];
-        usernamesAndEmailsList.push(newUids.usernames);
-        usernamesAndEmailsList.push(newUids.emails);
+        if (newUids.usernames){
+          usernamesAndEmailsList.concat(newUids.usernames);
+        }
+        if (newUids.emails){
+          usernamesAndEmailsList.concat(newUids.emails);
+        }
         console.log("newUids = " + usernamesAndEmailsList);
         console.log("About to add attendingusers: " + usernamesAndEmailsList.toString());
         eventRecord.attendingusers = usernamesAndEmailsList.toString();
@@ -1181,12 +1194,13 @@ function addEventToUsers(eventid, userIds, callback)
     var uid = userIds[key];
     geddy.model.User.first({username: uid}, function(err, userRecord)
     {
-      numberOfUsersAdded++;
+      
       if(err)
       {
         console.log("error in user.first in Event.addEventToUsers");
         console.dir(err);
         callback(backendError);
+        return;
       }
       else
       {
@@ -1202,15 +1216,18 @@ function addEventToUsers(eventid, userIds, callback)
         userRecord.errors = null;
         geddy.model.User.save(userRecord, function(err, result)
         {
+          numberOfUsersAdded++;
           if(err)
           {
             console.log("error in event.save in Event.addEventToUsers");
             console.dir(err);
             callback(backendError);
+            return;
           } else if (numberOfUsersAdded >= userIds.length)
           {
             console.log("numberOfUsersAdded >= userIds.length");
             callback({errCode: 1}); //success!
+            return;
           }
         });
       }
@@ -1414,6 +1431,7 @@ Event.invite = function(params, callback)
               responseDict.errCode = 13;
               responseDict.message = "email failed";
               callback(responseDict);
+              return;
             }
 
 
