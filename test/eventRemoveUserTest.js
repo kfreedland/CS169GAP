@@ -71,7 +71,7 @@ describe('Event Remove User', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = user.username;
                             eventData.noemail = true;
-
+                            eventData.inviterId = userRecord.id;
                             Event.add(eventData, function(respDict)
                             {
                                 geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)

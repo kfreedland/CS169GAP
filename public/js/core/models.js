@@ -1,675 +1,21 @@
 (function () {
-/*jslint white: false */
-/*jslint indent: 2 */
-
-var Activity = function () {
-
-  this.defineProperties({
-    name: {type: 'string', required: 'true'},
-    description: {type: 'string'},
-    category: {type: 'string'},
-    flag: {type: 'string', required: 'true'},
-    time1: {type: 'number'},
-    time2: {type: 'number'},
-    begindate: {type: 'number'},
-    enddate: {type: 'number'},
-    lowprice: {type: 'number'},
-    highprice: {type: 'number'},
-    lownumparticipants: {type: 'number'},
-    highnumparticipants: {type: 'number'},
-    latitude: {type: 'number'},
-    longitude: {type: 'number'},
-    duration: {type: 'number'}
-  });
-
-};
-
-var geoSearchHelper = function (records, lat, myLong, callback)
-{
-  var consDist = 69.1
-    , consAng = 57.3
-    , returnRecords = []
-    , count = 0
-    , idx;
-  for (idx in records)
-  {
-    var record = records[idx];
-    //using a geo dist equation
-    var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - myLong) * Math.cos(lat / 57.3), 2));
-    record.distance = dist*100;
-    returnRecords.push(record);
-    count = count + 1;
-  }
-  if (returnRecords.length > 0){
-    returnRecords.sort(function (recA, recB) {return recA.distance - recB.distance;});
-  }
-  // console.dir(returnRecords);
-  callback(returnRecords, count);
-};
-
-Activity.add = function (parameterDict, callback){
-
-  var self = this;
-
-  var respDict = {};
-
-  // console.log("reached model create");
-  // console.dir(parameterDict);
-
-
-  var validCategories = ["Sports", "Entertainment", "Food", "Arts", "Nature"];
-
-  var activityDict = {};
-
-  //make sure required fields are defineed
-
-  //NAME
-  if (!parameterDict.name) 
-  {
-    respDict.errCode = 6;
-    respDict.message = "null name";
-    callback(respDict);
-    return;
-  } 
-  else 
-  {
-    activityDict.name = parameterDict.name;
-  } 
-
-
-  //DESCRIPTION
-  if(parameterDict.description)
-  {
-    activityDict.description = parameterDict.description;
-  }
-
-
-  //CATEGORY
-  if(!parameterDict.category) 
-  {
-    respDict.errCode = 6;
-    respDict.message = "null category";
-    callback(respDict);
-    return;
-  } 
-  else if (validCategories.indexOf(parameterDict.category) === -1) 
-  {
-    respDict.errCode = 6;
-    respDict.message = "invalid category";
-    callback(respDict);
-    return; 
-  } 
-  else 
-  {
-    activityDict.category = parameterDict.category;
-  }
-
-  //FLAG
-  if (!parameterDict.flag) 
-  {
-    respDict.errCode = 6;
-    respDict.message = "null flag";
-    callback(respDict);
-    return;
-  } 
-  else if (parameterDict.flag !== 'startEnd' && parameterDict.flag !== 'openClose' 
-      && parameterDict.flag !== 'anyTime' &&  parameterDict.flag !== 'dayTime' && 
-      parameterDict.flag !== 'nightTime') 
-  {
-    respDict.errCode = 6;
-    respDict.message = "invalid flag";
-    callback(respDict);
-    return;
-
-  } 
-  else 
-  {
-    activityDict.flag = parameterDict.flag;
-  }
-
-
-  //TIME 1 TIME 2
-  if (parameterDict.flag === 'startEnd' || parameterDict.flag === 'openClose') 
-  {
-    
-    if(!parameterDict.time1) 
-    {
-      respDict.errCode = 6;
-      respDict.message = "null time1";
-      callback(respDict);
-      return;
-
-    } 
-    else if(!parameterDict.time2) 
-    {
-      respDict.errCode = 6;
-      respDict.message = "null time2";
-      callback(respDict);
-      return;
-    
-    } 
-    else 
-    {
-      activityDict.time1 = parseFloat(parameterDict.time1);
-      activityDict.time2 = parseFloat(parameterDict.time2);
-
-      if(activityDict.time1 > activityDict.time2)
-      {
-        respDict.errCode = 6;
-        respDict.message = "invalid times";
-        callback(respDict);
-        return;
-      }
-    }
-  } 
-
-
-  //BEGIN DATE AND END DATE
-  if (parameterDict.begindate) 
-  {
-    parameterDict.begindate = parseFloat(parameterDict.begindate);
-  } 
-  if (parameterDict.enddate) 
-  {
-    parameterDict.enddate = parseFloat(parameterDict.enddate);
-  } 
-
-  if(parameterDict.begindate && parameterDict.enddate) 
-  {
-
-    if (parameterDict.begindate > parameterDict.enddate) 
-    {
-      respDict.errCode = 6;
-      respDict.message = "invalid dates";
-      callback(respDict);
-      return;
-    }
-  }
-
-
-  //PRICES
-  // console.log("LOWPRICE = " + parameterDict.lowprice);
-  // console.log("HIGHPRICE = " + parameterDict.highprice);
-  if ((parameterDict.lowprice) === "0" || (parameterDict.lowprice === 0))
-  {
-    activityDict.lowprice = 0;
-
-  } else if (!parameterDict.lowprice) 
-  {
-    respDict.errCode = 6;
-    respDict.message = "null lowprice";
-    callback(respDict);
-    return;
-
-  } 
-  else 
-  {
-    activityDict.lowprice = parseFloat(parameterDict.lowprice);
-  }
-  if ((parameterDict.highprice === "0") || (parameterDict.highprice === 0))
-  {
-    activityDict.highprice = 0;
-    
-  } else if (!parameterDict.highprice) 
-  {
-    respDict.errCode = 6;
-    respDict.message = "null highprice";
-    callback(respDict);
-    return; 
-
-  } 
-  else 
-  {
-    activityDict.highprice = parseFloat(parameterDict.highprice);
-  }
-
-  if (activityDict.lowprice > activityDict.highprice) 
-  {
-    respDict.errCode = 6;
-    respDict.message = "invalid prices";
-    callback(respDict);
-    return;
-  }
-
-
-  //NUMBER OF PARTICIPANTS
-  if (parameterDict.lownumparticipants) 
-  {
-    activityDict.lownumparticipants = parseFloat(parameterDict.lownumparticipants);
-    if(activityDict.lownumparticipants <= 0 )
-    {
-      respDict.errCode = 6;
-      respDict.message = "invalid participants";
-      callback(respDict);
-      return;
-    }
-  }
-
-  if (parameterDict.highnumparticipants)
-   {
-    
-    activityDict.highnumparticipants = parseFloat(parameterDict.highnumparticipants);
-    
-    if(activityDict.highnumparticipants <= 0 )
-    {
-      respDict.errCode = 6;
-      respDict.message = "invalid participants";
-      callback(respDict);
-      return;
-    }
-  }
-
-  if (parameterDict.lownumparticipants && parameterDict.highnumparticipants) 
-  {
-    if(activityDict.lownumparticipants > activityDict.highnumparticipants)
-    {
-      respDict.errCode = 6;
-      respDict.message = "invalid participants";
-      callback(respDict);
-      return;
-    }
-  } 
-
-
-  //LATTITUDE LONGITUDE
-  if (parameterDict.latitude) {
-    activityDict.latitude = parseFloat(parameterDict.latitude);
-  }
-  if (parameterDict.longitude) {
-    activityDict.longitude = parseFloat(parameterDict.longitude);
-  }
-
-
-  //DURATION
-  if(parameterDict.duration){
-    activityDict.duration = parseFloat(parameterDict.duration);
-    if(activityDict.duration <= 0 ){
-      respDict.errCode = 6;
-      respDict.message = "invalid duration";
-      callback(respDict);
-      return;
-    }
-  }
-
-  //Make sure does not exist
-   geddy.model.Activity.first(activityDict,
-    function (err, result) {
-      if (result){
-        respDict.errCode = 10;
-        respDict.message = "That Activity already exists.";
-        callback(respDict);
-      } else {
-        // console.log("activity does not exists yet, so we continue to create it");
-        //all checks pass
-        // console.log("ACTIVITY DICT: ");
-        // console.dir(activityDict);
-
-        var activityRecord = geddy.model.Activity.create(activityDict);
-
-        // console.log("ACTIVITY RECORD: ");
-        // console.dir(activityRecord);
-
-        geddy.model.Activity.save(activityRecord, 
-          function (err, result){
-            if(err){
-              console.log("ERROR in Activity SAVE");
-              for (var item in err){
-                console.log(item + " : " + err.item);
-              }
-              respDict.errCode = 7;
-              respDict.message = "database error";
-              callback(respDict);
-            } else {
-
-
-              respDict.errCode = 1;
-              callback(respDict);
-            }
-          });
-      }
-  });  
-};
-
-Activity.search = function search(params, myLat, myLong, callback)
-{
-  /** data is of the following form
-  Name: string
-  time1: time
-  time2: time
-  flag: string startEnd, openClose, anyTime, dayTime, nightTime
-  begin_date: date
-  end_date: date
-  low_price: int
-  high_price: int
-  low_num_participants: int
-  high_num_participants: int
-  latitude: number
-  longitude: number
-  **/
-  var respDict = {};
-  //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
-  if (typeof params !== 'object')
-  {
-    respDict.errCode = 7;
-    callback(respDict);
-  }
-  Activity.all(params, function (err, activities)
-  {
-    if(err)
-    {
-      throw err;
-    }
-    if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
-    {
-      // console.log("Calling geoSearchHelper");
-      geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
-      {
-        callback(returnRecords);
-      });
-    }
-    else
-    {
-      // console.log("Not using geoSearchHelper");
-      callback(activities);
-    }
-  });
-};  
-
-Activity.getById = function (activityID, callback){
-  if (activityID){
-    geddy.model.Activity.first({id: activityID}, function (err, activityModel) {
-      var responseDict = {};
-      if (!err && activityModel) {
-        responseDict.errCode = 1;
-        responseDict.activity = activityModel;
-      } else {
-        responseDict.errCode = 7;
-        responseDict.activity = null;
-      }
-      callback(responseDict);
-    });
-  } else {
-    var responseDict = {};
-    responseDict.errCode = 6;
-    responseDict.activity = null;
-    callback(responseDict);
-  }
-};
-
-Activity.TESTAPI_resetFixture = function (callback) {
-  geddy.model.Activity.all(function (err, result) {
-    // console.log("got all activity models with error: " + err + " and result: " + result);
-    for (var activityModel in result){
-      // console.log("trying to remove activityModel: " + result[activityModel]);
-      geddy.model.Activity.remove(result[activityModel].id);
-    }
-    var responseDict = {};
-  responseDict.errCode = 1;
-    callback(responseDict); //"SUCCESS"
-  });
-};   
-
-Activity = geddy.model.register('Activity', Activity);
-}());
-
-(function () {
-var Comment = function () {
-
-  this.defineProperties({
-    userid: {type: 'string'},
-    text: {type: 'string'}
-  });
-
-
-  /*
-  this.property('login', 'string', {required: true});
-  this.property('password', 'string', {required: true});
-  this.property('lastName', 'string');
-  this.property('firstName', 'string');
-
-  this.validatesPresent('login');
-  this.validatesFormat('login', /[a-z]+/, {message: 'Subdivisions!'});
-  this.validatesLength('login', {min: 3});
-  // Use with the name of the other parameter to compare with
-  this.validatesConfirmed('password', 'confirmPassword');
-  // Use with any function that returns a Boolean
-  this.validatesWithFunction('password', function (s) {
-      return s.length > 0;
-  });
-
-  // Can define methods for instances like this
-  this.someMethod = function () {
-    // Do some stuff
-  };
-  */
-
-};
-
-
-Comment.addComment = function(eventID, userID, text, callback)
-{
-
-  if(!eventID){
-    addCommentCallback(6, callback);
-    return;
-  }
-
-  if(!userID){
-    addCommentCallBack(6, callback);
-    return;
-  }
-
-  if(!text){
-    addCommentCallBack(6, callback);
-    return;
-  }
-
-  if(text == ''){
-    addCommentCallBack(6, callback);
-    return;
-  }
-
-  //check if userid is valid
-  geddy.model.User.first({id:userID}, function(err,userRecord){
-
-    if(err){
-
-      //database error
       console.log("err in looking up user");
-      addCommentCallback(7, callback);
-      return;
-
-    } else if (userRecord){
-
       console.log("successfully found user");
 
-      //create comment and add it to event
-      geddy.model.Event.first({id:eventID}, function(err, eventRecord){
-
-        if(err){
-
-          //database error
           console.log("err in looking up eventID");
-          addCommentCallback(7, callback);
-          return;
-
-        } else if (eventRecord){
-
           console.log("successfully found event");
 
-          //create comment and add to event
-          var commentDict = {};
-          commentDict.text = text;
-          commentDict.userid = userID;
-          var commentRecord = geddy.model.Comment.create(commentDict);
           console.log("created comment record:");
           console.dir(commentRecord);
-          geddy.model.Comment.save(commentRecord, function(err, result){
-
-            if (err){
-              console.log("Got error saving comment:");
-              console.dir(err);
-
-              addCommentCallback(7, callback);
               return;
-
-            } else if (commentRecord){
-              //add to event
 
               console.log("successfully saved Comment");
-              var comments = eventRecord.comments;
-              if (!comments){
                 console.log("event's comments are null");
-                comments = "";
-              }
-              var commentList = comments.split(',');
-              commentList.push(commentRecord.id);
-              eventRecord.comments = commentList.join(',');
-
-              eventRecord.save(function(err, result){
-
-                if(err){
-
-                  //database error
                   console.log("err in saving event with Comment");
-                  addCommentCallback(7, callback);
-                  return;
-
-                } else {
-
-                  //succeeded
                   console.log("saving event with comment succeeded");
-                  addCommentCallback(1, callback);
-                  return;
-                }
-
-              });
-            } else {
-
-              //comment.save failed
-              console.log("comment.save returned nothing  ");
-              addCommentCallback(7, callback);
-
-
-
-            }
-
-          });
-
-        } else {
-
-          //event doesn't exist
           console.log("event doesn't exist");
-          addCommentCallback(10, callback);
-          return;
-        }
-
-      });
-
-    } else {
-
-      //user does not exist
       console.log("user doesn't exist");
-      addCommentCallback(10, callback);
-      return;
-    }
-
-  });
-
-}
-
-function addCommentCallback(errCode, callback){
-  var responseDict = {};
-  responseDict.errCode = errCode;
-  callback(responseDict);
-}
-
-
-Comment.getCommentsForEvent = function(eventID, callback)
-{
-
   //get event
-  geddy.model.Event.first({id:eventID}, function(err, eventRecord){
-
-    if(err){
-
-      //database error
-      getCommentsCallback(7, null, callback);
-      return;
-
-    } else if (eventRecord){
-
-      //get comments
-      var commentIDsString = eventRecord.comments;
-      var commentIDsList = commentIDsString.split(',');
-
-      var commentListToReturn = [];
-
-      for (var index in commentIDsList){
-
-        var currentCommentID = commentIDsList[index];
-        geddy.model.Comment.first({id:currentCommentID}, function(err, commentRecord){
-
-          if(err){
-
-            //database error
-            getCommentsCallback(7, null, callback);
-            return;
-
-          } else if (commentRecord){
-
-            //add comment to list
-            commentListToReturn.push(commentRecord);
-
-            if(commentListToReturn.length == commentIDsList.length){
-
-              //return 
-              getCommentsCallback(1, commentListToReturn, callback);
-              return;
-
-            }
-          }
-        });
-
-      }
-
-    } else {
-
-      //event doesn't exist
-      getCommentsCallback(10, null, callback);
-      return;
-
-    }
-
-  });
-
-}
-
-
-function getCommentsCallback(errCode, comments, callback){
-  var responseDict = {};
-  responseDict.errCode = errCode;
-  responseDict.comments = comments;
-  callback(responseDict);
-}
-
-/*
-// Can also define them on the prototype
-Comment.prototype.someOtherMethod = function () {
-  // Do some other stuff
-};
-// Can also define static methods and properties
-Comment.someStaticMethod = function () {
-  // Do some other stuff
-};
-Comment.someStaticProperty = 'YYZ';
-*/
-
-Comment = geddy.model.register('Comment', Comment);
-
-}());
-
-(function () {
 var nodemailer = require("nodemailer")
   , check = require("validator").check
   , blade = require("blade");
@@ -718,7 +64,7 @@ var Event = function () {
 
 Event.add = function(params, callback)
 {
-  if(params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
+  if(params.inviterId && params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
     var idsOrEmails = params.attendingusers.split(',');
     getEmailAndId(idsOrEmails, callback, function(emailAndId)
@@ -755,25 +101,28 @@ Event.add = function(params, callback)
               }
               else
               {
-                addEventToUsers(eventModel.id, userIds, function(respDict)
+                //find inviter info
+                geddy.model.User.first({id: params.inviterId}, function(err, inviterRecord)
                 {
-                  if(params.noemail)
+                  var intviterUsername = inviterRecord.username;
+                  var inviterFullName = inviterRecord.givenName +" " + inviterRecord.familyName;
+                  userIds.push(intviterUsername);
+
+                  addEventToUsers(eventModel.id, userIds, function(respDict)
                   {
-                    callback(respDict);
-                  }
-                  else
-                  {
-                    var inviter = "Somebody";
-                    if(params.inviter)
-                    {
-                      inviter = params.inviter;
-                    }
-                    var message = inviter+" wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
-                    Event.invite({eventid: eventModel.id, emails: emails, userIds: userIds, message: message}, function()
+                    if(params.noemail)
                     {
                       callback(respDict);
-                    });
-                  }
+                    }
+                    else
+                    {
+                      var message = inviterFullName + " wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
+                      Event.invite({eventid: eventModel.id, emails: emails, userIds: userIds, message: message}, function()
+                      {
+                        callback(respDict);
+                      });
+                    }
+                  });
                 });
               }
             });
@@ -875,7 +224,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
 {
-  console.log("adding users: " + " to event");
   usernames = usernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
@@ -890,9 +238,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
         var usernamesAndEmailsList = [];
         usernamesAndEmailsList.push(newUids.usernames);
         usernamesAndEmailsList.push(newUids.emails);
-        console.log("newUids = " + usernamesAndEmailsList);
-        console.log("About to add attendingusers: " + usernamesAndEmailsList.toString());
-        eventRecord.attendingusers = usernamesAndEmailsList.toString();
+        eventRecord.attendingusers = newUids.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
         {
           if(err)
@@ -1863,3 +1209,659 @@ User.TESTAPI_resetFixture = function (callback) {
 };
 
 User = geddy.model.register('User', User);}());
+
+(function () {
+/*jslint white: false */
+/*jslint indent: 2 */
+
+var Activity = function () {
+
+  this.defineProperties({
+    name: {type: 'string', required: 'true'},
+    description: {type: 'string'},
+    category: {type: 'string'},
+    flag: {type: 'string', required: 'true'},
+    time1: {type: 'number'},
+    time2: {type: 'number'},
+    begindate: {type: 'number'},
+    enddate: {type: 'number'},
+    lowprice: {type: 'number'},
+    highprice: {type: 'number'},
+    lownumparticipants: {type: 'number'},
+    highnumparticipants: {type: 'number'},
+    latitude: {type: 'number'},
+    longitude: {type: 'number'},
+    duration: {type: 'number'}
+  });
+
+};
+
+var geoSearchHelper = function (records, lat, myLong, callback)
+{
+  var consDist = 69.1
+    , consAng = 57.3
+    , returnRecords = []
+    , count = 0
+    , idx;
+  for (idx in records)
+  {
+    var record = records[idx];
+    //using a geo dist equation
+    var dist = Math.sqrt(Math.pow(record.latitude - lat, 2) + Math.pow((record.longitude - myLong) * Math.cos(lat / 57.3), 2));
+    record.distance = dist*100;
+    returnRecords.push(record);
+    count = count + 1;
+  }
+  if (returnRecords.length > 0){
+    returnRecords.sort(function (recA, recB) {return recA.distance - recB.distance;});
+  }
+  // console.dir(returnRecords);
+  callback(returnRecords, count);
+};
+
+Activity.add = function (parameterDict, callback){
+
+  var self = this;
+
+  var respDict = {};
+
+  // console.log("reached model create");
+  // console.dir(parameterDict);
+
+
+  var validCategories = ["Sports", "Entertainment", "Food", "Arts", "Nature"];
+
+  var activityDict = {};
+
+  //make sure required fields are defineed
+
+  //NAME
+  if (!parameterDict.name) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null name";
+    callback(respDict);
+    return;
+  } 
+  else 
+  {
+    activityDict.name = parameterDict.name;
+  } 
+
+
+  //DESCRIPTION
+  if(parameterDict.description)
+  {
+    activityDict.description = parameterDict.description;
+  }
+
+
+  //CATEGORY
+  if(!parameterDict.category) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null category";
+    callback(respDict);
+    return;
+  } 
+  else if (validCategories.indexOf(parameterDict.category) === -1) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "invalid category";
+    callback(respDict);
+    return; 
+  } 
+  else 
+  {
+    activityDict.category = parameterDict.category;
+  }
+
+  //FLAG
+  if (!parameterDict.flag) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null flag";
+    callback(respDict);
+    return;
+  } 
+  else if (parameterDict.flag !== 'startEnd' && parameterDict.flag !== 'openClose' 
+      && parameterDict.flag !== 'anyTime' &&  parameterDict.flag !== 'dayTime' && 
+      parameterDict.flag !== 'nightTime') 
+  {
+    respDict.errCode = 6;
+    respDict.message = "invalid flag";
+    callback(respDict);
+    return;
+
+  } 
+  else 
+  {
+    activityDict.flag = parameterDict.flag;
+  }
+
+
+  //TIME 1 TIME 2
+  if (parameterDict.flag === 'startEnd' || parameterDict.flag === 'openClose') 
+  {
+    
+    if(!parameterDict.time1) 
+    {
+      respDict.errCode = 6;
+      respDict.message = "null time1";
+      callback(respDict);
+      return;
+
+    } 
+    else if(!parameterDict.time2) 
+    {
+      respDict.errCode = 6;
+      respDict.message = "null time2";
+      callback(respDict);
+      return;
+    
+    } 
+    else 
+    {
+      activityDict.time1 = parseFloat(parameterDict.time1);
+      activityDict.time2 = parseFloat(parameterDict.time2);
+
+      if(activityDict.time1 > activityDict.time2)
+      {
+        respDict.errCode = 6;
+        respDict.message = "invalid times";
+        callback(respDict);
+        return;
+      }
+    }
+  } 
+
+
+  //BEGIN DATE AND END DATE
+  if (parameterDict.begindate) 
+  {
+    parameterDict.begindate = parseFloat(parameterDict.begindate);
+  } 
+  if (parameterDict.enddate) 
+  {
+    parameterDict.enddate = parseFloat(parameterDict.enddate);
+  } 
+
+  if(parameterDict.begindate && parameterDict.enddate) 
+  {
+
+    if (parameterDict.begindate > parameterDict.enddate) 
+    {
+      respDict.errCode = 6;
+      respDict.message = "invalid dates";
+      callback(respDict);
+      return;
+    }
+  }
+
+
+  //PRICES
+  // console.log("LOWPRICE = " + parameterDict.lowprice);
+  // console.log("HIGHPRICE = " + parameterDict.highprice);
+  if ((parameterDict.lowprice) === "0" || (parameterDict.lowprice === 0))
+  {
+    activityDict.lowprice = 0;
+
+  } else if (!parameterDict.lowprice) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null lowprice";
+    callback(respDict);
+    return;
+
+  } 
+  else 
+  {
+    activityDict.lowprice = parseFloat(parameterDict.lowprice);
+  }
+  if ((parameterDict.highprice === "0") || (parameterDict.highprice === 0))
+  {
+    activityDict.highprice = 0;
+    
+  } else if (!parameterDict.highprice) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "null highprice";
+    callback(respDict);
+    return; 
+
+  } 
+  else 
+  {
+    activityDict.highprice = parseFloat(parameterDict.highprice);
+  }
+
+  if (activityDict.lowprice > activityDict.highprice) 
+  {
+    respDict.errCode = 6;
+    respDict.message = "invalid prices";
+    callback(respDict);
+    return;
+  }
+
+
+  //NUMBER OF PARTICIPANTS
+  if (parameterDict.lownumparticipants) 
+  {
+    activityDict.lownumparticipants = parseFloat(parameterDict.lownumparticipants);
+    if(activityDict.lownumparticipants <= 0 )
+    {
+      respDict.errCode = 6;
+      respDict.message = "invalid participants";
+      callback(respDict);
+      return;
+    }
+  }
+
+  if (parameterDict.highnumparticipants)
+   {
+    
+    activityDict.highnumparticipants = parseFloat(parameterDict.highnumparticipants);
+    
+    if(activityDict.highnumparticipants <= 0 )
+    {
+      respDict.errCode = 6;
+      respDict.message = "invalid participants";
+      callback(respDict);
+      return;
+    }
+  }
+
+  if (parameterDict.lownumparticipants && parameterDict.highnumparticipants) 
+  {
+    if(activityDict.lownumparticipants > activityDict.highnumparticipants)
+    {
+      respDict.errCode = 6;
+      respDict.message = "invalid participants";
+      callback(respDict);
+      return;
+    }
+  } 
+
+
+  //LATTITUDE LONGITUDE
+  if (parameterDict.latitude) {
+    activityDict.latitude = parseFloat(parameterDict.latitude);
+  }
+  if (parameterDict.longitude) {
+    activityDict.longitude = parseFloat(parameterDict.longitude);
+  }
+
+
+  //DURATION
+  if(parameterDict.duration){
+    activityDict.duration = parseFloat(parameterDict.duration);
+    if(activityDict.duration <= 0 ){
+      respDict.errCode = 6;
+      respDict.message = "invalid duration";
+      callback(respDict);
+      return;
+    }
+  }
+
+  //Make sure does not exist
+   geddy.model.Activity.first(activityDict,
+    function (err, result) {
+      if (result){
+        respDict.errCode = 10;
+        respDict.message = "That Activity already exists.";
+        callback(respDict);
+      } else {
+        // console.log("activity does not exists yet, so we continue to create it");
+        //all checks pass
+        // console.log("ACTIVITY DICT: ");
+        // console.dir(activityDict);
+
+        var activityRecord = geddy.model.Activity.create(activityDict);
+
+        // console.log("ACTIVITY RECORD: ");
+        // console.dir(activityRecord);
+
+        geddy.model.Activity.save(activityRecord, 
+          function (err, result){
+            if(err){
+              console.log("ERROR in Activity SAVE");
+              for (var item in err){
+                console.log(item + " : " + err.item);
+              }
+              respDict.errCode = 7;
+              respDict.message = "database error";
+              callback(respDict);
+            } else {
+
+
+              respDict.errCode = 1;
+              callback(respDict);
+            }
+          });
+      }
+  });  
+};
+
+Activity.search = function search(params, myLat, myLong, callback)
+{
+  /** data is of the following form
+  Name: string
+  time1: time
+  time2: time
+  flag: string startEnd, openClose, anyTime, dayTime, nightTime
+  begin_date: date
+  end_date: date
+  low_price: int
+  high_price: int
+  low_num_participants: int
+  high_num_participants: int
+  latitude: number
+  longitude: number
+  **/
+  var respDict = {};
+  //we want to just return values based on the name if they supply a name so we shouldnt look at max/min values just matching vals or none
+  if (typeof params !== 'object')
+  {
+    respDict.errCode = 7;
+    callback(respDict);
+  }
+  Activity.all(params, function (err, activities)
+  {
+    if(err)
+    {
+      throw err;
+    }
+    if(myLat && myLong && (typeof myLat == 'number') && (typeof myLong == 'number'))
+    {
+      // console.log("Calling geoSearchHelper");
+      geoSearchHelper(activities, myLat, myLong, function (returnRecords, count)
+      {
+        callback(returnRecords);
+      });
+    }
+    else
+    {
+      // console.log("Not using geoSearchHelper");
+      callback(activities);
+    }
+  });
+};  
+
+Activity.getById = function (activityID, callback){
+  if (activityID){
+    geddy.model.Activity.first({id: activityID}, function (err, activityModel) {
+      var responseDict = {};
+      if (!err && activityModel) {
+        responseDict.errCode = 1;
+        responseDict.activity = activityModel;
+      } else {
+        responseDict.errCode = 7;
+        responseDict.activity = null;
+      }
+      callback(responseDict);
+    });
+  } else {
+    var responseDict = {};
+    responseDict.errCode = 6;
+    responseDict.activity = null;
+    callback(responseDict);
+  }
+};
+
+Activity.TESTAPI_resetFixture = function (callback) {
+  geddy.model.Activity.all(function (err, result) {
+    // console.log("got all activity models with error: " + err + " and result: " + result);
+    for (var activityModel in result){
+      // console.log("trying to remove activityModel: " + result[activityModel]);
+      geddy.model.Activity.remove(result[activityModel].id);
+    }
+    var responseDict = {};
+  responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};   
+
+Activity = geddy.model.register('Activity', Activity);
+}());
+
+(function () {
+var Comment = function () {
+
+  this.defineProperties({
+    userid: {type: 'string'},
+    text: {type: 'string'}
+  });
+
+
+  /*
+  this.property('login', 'string', {required: true});
+  this.property('password', 'string', {required: true});
+  this.property('lastName', 'string');
+  this.property('firstName', 'string');
+
+  this.validatesPresent('login');
+  this.validatesFormat('login', /[a-z]+/, {message: 'Subdivisions!'});
+  this.validatesLength('login', {min: 3});
+  // Use with the name of the other parameter to compare with
+  this.validatesConfirmed('password', 'confirmPassword');
+  // Use with any function that returns a Boolean
+  this.validatesWithFunction('password', function (s) {
+      return s.length > 0;
+  });
+
+  // Can define methods for instances like this
+  this.someMethod = function () {
+    // Do some stuff
+  };
+  */
+
+};
+
+
+Comment.addComment = function(eventID, userID, text, callback)
+{
+
+  if(!eventID){
+    addCommentCallback(6, callback);
+    return;
+  }
+
+  if(!userID){
+    addCommentCallBack(6, callback);
+    return;
+  }
+
+  if(!text){
+    addCommentCallBack(6, callback);
+    return;
+  }
+
+  if(text == ''){
+    addCommentCallBack(6, callback);
+    return;
+  }
+
+  //check if userid is valid
+  geddy.model.User.first({id:userID}, function(err,userRecord){
+
+    if(err){
+
+      //database error
+      addCommentCallback(7, callback);
+      return;
+
+    } else if (userRecord){
+
+      //create comment and add it to event
+      geddy.model.Event.first({id:eventID}, function(err, eventRecord){
+
+        if(err){
+
+          //database error
+          addCommentCallback(7, callback);
+          return;
+
+        } else if (eventRecord){
+
+          //create comment and add to event
+          var commentDict = {};
+          commentDict.text = text;
+          commentDict.userid = userID;
+          var commentRecord = geddy.model.Comment.create(commentDict);
+          geddy.model.Comment.save(commentRecord, function(err, result){
+
+            if (err){
+              console.log("Got error saving comment:");
+              console.dir(err);
+
+              addCommentCallback(7, callback);
+
+            } else if (commentRecord){
+              //add to event
+              var comments = eventRecord.comments;
+              if (!comments){
+                comments = "";
+              }
+              var commentList = comments.split(',');
+              commentList.push(commentRecord.id);
+              eventRecord.comments = commentList.join(',');
+
+              eventRecord.save(function(err, result){
+
+                if(err){
+
+                  //database error
+                  addCommentCallback(7, callback);
+                  return;
+
+                } else {
+
+                  //succeeded
+                  addCommentCallback(1, callback);
+                  return;
+                }
+
+              });
+            } else {
+
+              //comment.save failed
+              console.log("comment.save returned nothing  ");
+              console.dir(err);
+
+              addCommentCallback(7, callback);
+
+
+
+            }
+
+          });
+
+        } else {
+
+          //event doesn't exist
+          addCommentCallback(10, callback);
+          return;
+        }
+
+      });
+
+    } else {
+
+      //user does not exist
+      addCommentCallback(10, callback);
+      return;
+    }
+
+  });
+
+}
+
+function addCommentCallback(errCode, callback){
+  var responseDict = {};
+  responseDict.errCode = errCode;
+  callback(responseDict);
+}
+
+
+Comment.getCommentsForEvent = function(eventID, callback)
+{
+
+  geddy.model.Event.first({id:eventID}, function(err, eventRecord){
+
+    if(err){
+
+      //database error
+      getCommentsCallback(7, null, callback);
+      return;
+
+    } else if (eventRecord){
+
+      //get comments
+      var commentIDsString = eventRecord.comments;
+      var commentIDsList = commentIDsString.split(',');
+
+      var commentListToReturn = [];
+
+      for (var index in commentIDsList){
+
+        var currentCommentID = commentIDsList[index];
+        geddy.model.Comment.first({id:currentCommentID}, function(err, commentRecord){
+
+          if(err){
+
+            //database error
+            getCommentsCallback(7, null, callback);
+            return;
+
+          } else if (commentRecord){
+
+            //add comment to list
+            commentListToReturn.push(commentRecord);
+
+            if(commentListToReturn.length == commentIDsList.length){
+
+              //return 
+              getCommentsCallback(1, commentListToReturn, callback);
+              return;
+
+            }
+          }
+        });
+
+      }
+
+    } else {
+
+      //event doesn't exist
+      getCommentsCallback(10, null, callback);
+      return;
+
+    }
+
+  });
+
+}
+
+
+function getCommentsCallback(errCode, comments, callback){
+  var responseDict = {};
+  responseDict.errCode = errCode;
+  responseDict.comments = comments;
+  callback(responseDict);
+}
+
+/*
+// Can also define them on the prototype
+Comment.prototype.someOtherMethod = function () {
+  // Do some other stuff
+};
+// Can also define static methods and properties
+Comment.someStaticMethod = function () {
+  // Do some other stuff
+};
+Comment.someStaticProperty = 'YYZ';
+*/
+
+Comment = geddy.model.register('Comment', Comment);
+
+}());

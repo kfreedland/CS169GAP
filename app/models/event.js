@@ -46,7 +46,7 @@ var Event = function () {
 
 Event.add = function(params, callback)
 {
-  if(params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
+  if(params.inviterId && params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
   {
     var idsOrEmails = params.attendingusers.split(',');
     getEmailAndId(idsOrEmails, callback, function(emailAndId)
@@ -83,25 +83,28 @@ Event.add = function(params, callback)
               }
               else
               {
-                addEventToUsers(eventModel.id, userIds, function(respDict)
+                //find inviter info
+                geddy.model.User.first({id: params.inviterId}, function(err, inviterRecord)
                 {
-                  if(params.noemail)
+                  var intviterUsername = inviterRecord.username;
+                  var inviterFullName = inviterRecord.givenName +" " + inviterRecord.familyName;
+                  userIds.push(intviterUsername);
+
+                  addEventToUsers(eventModel.id, userIds, function(respDict)
                   {
-                    callback(respDict);
-                  }
-                  else
-                  {
-                    var inviter = "Somebody";
-                    if(params.inviter)
-                    {
-                      inviter = params.inviter;
-                    }
-                    var message = inviter+" wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
-                    Event.invite({eventid: eventModel.id, emails: emails, userIds: userIds, message: message}, function()
+                    if(params.noemail)
                     {
                       callback(respDict);
-                    });
-                  }
+                    }
+                    else
+                    {
+                      var message = inviterFullName + " wants you to join the following event: " + params.name + " if you haven't signed up with Group Activity Planner check it out!";
+                      Event.invite({eventid: eventModel.id, emails: emails, userIds: userIds, message: message}, function()
+                      {
+                        callback(respDict);
+                      });
+                    }
+                  });
                 });
               }
             });
@@ -266,17 +269,24 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     if(err)
     {
       //database error
+      console.log("error looking up user");
       removeUserFromEventCallBack(7, callback);
       return;
 
     } 
     else if (userRecord)
     {
+
+      console.log("found user");
       var userName = userRecord.username;
       //remove username from event attendingusers
       geddy.model.Event.first({id: eventID} , function(err, eventRecord){
 
         if(eventRecord){
+
+          console.log("found event, event = ");
+          console.dir(eventRecord);
+
 
           var attendingUsersString = eventRecord.attendingusers;
           var attendingUsersList = attendingUsersString.split(",");
@@ -289,11 +299,14 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
               if(err){
                 //database error
+                console.log("error saving event");
+
                 removeUserFromEventCallBack(7, callback);
                 return;
 
               } else {
-               //succeeded in removing username from attending users
+                //succeeded in removing username from attending users
+                console.log("succeeded in removing username from attending users");
 
 
                 //remove event from user
@@ -330,6 +343,8 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
         } else {
           //event does not exist
+          console.log("event does not exist in database");
+
           removeUserFromEventCallBack(10, callback);
           return;
 
@@ -340,6 +355,8 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     } else {
 
       //user does not exist
+      console.log("user does not exist in database");
+
       removeUserFromEventCallBack(10, callback);
       return;
     }

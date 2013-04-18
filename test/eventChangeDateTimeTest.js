@@ -68,6 +68,7 @@ describe('Event.changeDateTime change time1', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -159,6 +160,7 @@ describe('Event.changeDateTime change time2', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -246,6 +248,7 @@ describe('Event.changeDateTime change time1 and time2', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -335,6 +338,7 @@ describe('Event.changeDateTime change begindate', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -430,6 +434,7 @@ describe('Event.changeDateTime change enddate', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -522,6 +527,7 @@ describe('Event.changeDateTime change begindate and enddate', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -613,6 +619,7 @@ describe('Event.changeDateTime change begindate and enddate, time1 and time2', f
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -711,6 +718,7 @@ describe('Event.changeDateTime all date/time fields null', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -797,6 +805,7 @@ describe('Event.changeDateTime eventid null', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -883,6 +892,7 @@ describe('Event.changeDateTime invalid eventid', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -970,6 +980,7 @@ describe('Event.changeDateTime new time1 invalid', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -1056,6 +1067,7 @@ describe('Event.changeDateTime new time2 invalid', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -1140,6 +1152,7 @@ describe('Event.changeDateTime invalid times', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -1226,6 +1239,7 @@ describe('Event.changeDateTime new begindate invalid', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -1313,7 +1327,7 @@ describe('Event.changeDateTime new enddate invalid', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
-							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
@@ -1401,6 +1415,7 @@ describe('Event.changeDateTime invalid new dates', function()
 							eventData.description = 'my Event';
 							eventData.attendingusers = userRecord.email;
 							eventData.noemail = true;
+							eventData.inviterId = userRecord.id;
 
 							Event.add(eventData, function(eventAddResponse)
 							{
