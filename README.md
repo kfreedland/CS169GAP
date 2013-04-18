@@ -234,7 +234,7 @@ CS169GAP
 	<li>'message': [string] further explains any error code </li>
 </ul>
 
-<h6><b>Get My Events</b></h6>
+<h6><b>GET MY EVENTS</b></h6>
 //Returns a list of events for the current user
 
 <h3>URL: </h3> /events/getmyevents
@@ -255,6 +255,71 @@ CS169GAP
 	OR
 	<li>Redirect to /login if User Not Authenticated</li>
 </ul>
+
+<h6><b>REMOVE USER FROM EVENT </b></h6>
+//removes a user from attending on an event and removes event from user's myevents
+
+<h3>URL: </h3> /events/removeuser
+
+
+<h3>Params:</h3>
+<ul>
+	{
+	<li>'eventid': [string],</li>
+	<li>'userid': [string],</li>
+	}
+</ul>
+
+<h3>Response: </h3>
+<ul>
+	<li>'errCode': [1 = success, 6 = missing required param, 7 = backend error, 10 invalid eventid/userid] </li>
+</ul>
+
+
+<h6><b>ADD COMMENT </b></h6>
+//adds a comment to an events list of comments
+
+<h3>URL: </h3> /comments/add
+
+
+<h3>Params: </h3>
+<ul>
+	{
+	<li>'eventid': [string],</li>
+	<li>'userid': [List of strings],</li>
+	<li>'text': [String]</li>
+	}
+</ul>
+
+<h3>Response: </h3>
+<ul>
+	<li>'errCode': [1 = success, 6 = missing required param or null comment, 7 = backend error, 10 invalid userid/eventid] </li>
+</ul>
+
+<h6><b>GET COMMENTS FOR EVENT </b></h6>
+//Returns a list of comments for a given event
+
+<h3>URL: </h3> /comments/getcommentsforevent
+
+
+<h3>Params: </h3>
+<ul>
+	{
+	<li>'eventid': [string],</li>
+	}
+</ul>
+
+<h3>Response: </h3>
+<ul>
+	<li>'errCode': [1 = success, 6 = missing required param, 7 = backend error, 10 invalid eventid] </li>
+	<li>'comments': json ist of comment models from this event </li>
+
+</ul>
+
+
+
+
+
 
 
 

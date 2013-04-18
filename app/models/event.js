@@ -240,14 +240,26 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
 };
 
 
-Event.removeUserFromEvent = function(eventID, userID, callback)
+Event.removeUser = function(eventID, userID, callback)
 {
+
+  if(!eventID){
+    removeUserFromEventCallBack(6, callback);
+    return;
+  }
+
+  if(!userID){
+    removeUserFromEventCallBack(6, callback);
+    return;
+  }
   
   geddy.model.User.first({id: userID}, function(err, userRecord) {
 
     if(err)
     {
       //database error
+      removeUserFromEventCallBack(7, callback);
+      return;
 
     } 
     else if (userRecord)
@@ -270,9 +282,11 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
               if(err){
                 //database error
+                removeUserFromEventCallBack(7, callback);
+                return;
+
               } else {
                //succeeded in removing username from attending users
-
 
 
                 //remove event from user
@@ -288,17 +302,17 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
                     if(err){
                       //database error
+                      removeUserFromEventCallBack(7, callback);
+                      return;
+
+
                     } else {
                       //succeeded in everything
+                      removeUserFromEventCallBack(1, callback);
+                      return;
                     }
 
                   });
-
-                } else {
-
-                  //couldn't find eventID in user
-
-                }
 
               }
             
@@ -308,6 +322,9 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
         } else {
           //event does not exist
+          removeUserFromEventCallBack(10, callback);
+          return;
+
         }
 
       });
@@ -315,9 +332,19 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     } else {
 
       //user does not exist
+      removeUserFromEventCallBack(10, callback);
+      return;
 
     });
 };
+
+function removeUserFromEventCallBack(errCode, callback){
+  var responseDict = {};
+  responseDict.errCode = errCode;
+  callback(responseDict);
+}
+
+
 
 //validates and returns a list of userids and emails to be added
 function validateUserIds(idArray, eventid, callback) //assumes valid usernames
@@ -967,7 +994,7 @@ Event.getMyEvents = function (params, callback) {
 
 function getEventsCallback(errCode, currentEvents, pastEvents, callback){
   var responseDict = {};
-  responseDict.errCode = 1;
+  responseDict.errCode = errCode;
   responseDict.pastEvents = pastEvents;
   responseDict.currentEvents = currentEvents;
   callback(responseDict);

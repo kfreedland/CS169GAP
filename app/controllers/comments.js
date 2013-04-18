@@ -94,6 +94,30 @@ var Comments = function () {
     });
   };
 
+
+  this.getCommentsForEvent = function(req, resp, params) {
+
+    var self = this;
+
+    geddy.model.Comment.getCommentsForEvent(params.eventid, function(responseDict){
+
+      self.respond(responseDict, {format: 'json'});
+    });
+
+  }
+
+  this.addComment = function(req,resp,params) {
+
+    var self = this;
+
+    geddy.model.Comment.addComment(params.eventid, params.userid, params.text, function(responseDict){
+
+      self.respond(responseDict, {format:'json'});
+
+    });
+
+  }
+
 };
 
 exports.Comments = Comments;
