@@ -425,7 +425,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
       }
       else
       {
-        geddy.model.User.first({username: id}, function(err, userRecord)
+        geddy.model.User.first({username: usernameOrEmail}, function(err, userRecord)
         {
           if(userRecord && userRecord.username)
           {

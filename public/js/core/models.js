@@ -496,19 +496,22 @@ Comment.addComment = function(eventID, userID, text, callback)
           commentDict.text = text;
           commentDict.userid = userID;
           var commentRecord = geddy.model.Comment.create(commentDict);
-          geddy.model.Comment.save(commentRecord, function(err, commentModel){
+          geddy.model.Comment.save(commentRecord, function(err, result){
 
             if (err){
               console.log("Got error saving comment:");
               console.dir(err);
-            } else if (commentModel){
+
+              addCommentCallback(7, callback);
+
+            } else if (commentRecord){
               //add to event
               var comments = eventRecord.comments;
               if (!comments){
                 comments = "";
               }
               var commentList = comments.split(',');
-              commentList.push(commentModel.id);
+              commentList.push(commentRecord.id);
               eventRecord.comments = commentList.join(',');
 
               eventRecord.save(function(err, result){
@@ -527,6 +530,16 @@ Comment.addComment = function(eventID, userID, text, callback)
                 }
 
               });
+            } else {
+
+              //comment.save failed
+              console.log("comment.save returned nothing  ");
+              console.dir(err);
+
+              addCommentCallback(7, callback);
+
+
+
             }
 
           });
@@ -918,7 +931,7 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
           var attendingUsersString = eventRecord.attendingusers;
           var attendingUsersList = attendingUsersString.split(",");
-          var usernameIndex = attendingUsersList.indexOf(userRecord)
+          var usernameIndex = attendingUsersList.indexOf(userRecord);
           if(usernameIndex >= 0){
             attendingUsersList.splice(usernameIndex,1);
             attendingUsersString = attendingUsersList.join(",");
@@ -1069,7 +1082,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
       }
       else
       {
-        geddy.model.User.first({username: id}, function(err, userRecord)
+        geddy.model.User.first({username: usernameOrEmail}, function(err, userRecord)
         {
           if(userRecord && userRecord.username)
           {
@@ -1256,34 +1269,10 @@ Event.invite = function(params, callback)
         if(eventModel)
         {
           //Send real-time notifications
-          for (var key in userIds)
-          {
-            var userId = userIds[key];
-            var eventName = userId + 'InviteEvent';
-            console.log("Emitting event: " + eventName);
-            geddy.io.sockets.emit(eventName, {eventId: eventID, eventName: eventModel.name});
-          }
-          //Update user's notification number
-          geddy.model.User.first({username: userId}, function (err, userModel){
-            console.log("About to increment mynotifications");
-            if (!err && userModel){
-              console.log("userModel exists and no err so incrementing mynotifications");
-              if (userModel.mynotifications){
-                userModel.mynotifications += 1;
-              } else {
-                userModel.mynotifications = 1;
-              }
-              console.log("mynotifications = " + userModel.mynotifications);
-              userModel.errors = null;
-              userModel.save(function (err, result){
-                //do nothing
-                if (err){
-                  console.log("Got error when saving user after updating notification number: ");
-                  console.dir(err);
-                }
-              });
-            }
-          });
+          var params = {};
+          params.userIds = userIds;
+          params.eventModel = eventModel;
+          emitEventForUserIds(params);
 
 
           //invite all emails
@@ -1391,6 +1380,38 @@ Event.invite = function(params, callback)
 
     });
 };
+
+function emitEventForUserIds (params) {
+  for (var key in params.userIds)
+  {
+    var userId = params.userIds[key];
+    var eventName = userId + 'InviteEvent';
+    console.log("Emitting event: " + eventName);
+    geddy.io.sockets.emit(eventName, {eventId: params.eventModel.id, eventName: params.eventModel.name});
+
+    //Update user's notification number
+    geddy.model.User.first({username: userId}, function (err, userModel){
+      console.log("About to increment mynotifications");
+      if (!err && userModel){
+        console.log("userModel exists and no err so incrementing mynotifications");
+        if (userModel.mynotifications){
+          userModel.mynotifications += 1;
+        } else {
+          userModel.mynotifications = 1;
+        }
+        console.log("mynotifications = " + userModel.mynotifications);
+        userModel.errors = null;
+        userModel.save(function (err, result){
+          //do nothing
+          if (err){
+            console.log("Got error when saving user after updating notification number: ");
+            console.dir(err);
+          }
+        });
+      }
+    });
+  }
+}
 
 function isValidEmail(email) { 
   try
