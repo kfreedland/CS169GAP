@@ -180,9 +180,8 @@ CS169GAP
 		<li>'time2': [int, milliseconds since midnight],</li>
 		<li>'begindate': [milliseconds since epoch, int],</li>
 		<li>'enddate': [milliseconds since epoch, int],</li>
-		<li>'attendingusers': [CSV string of user ids],</li>
+		<li>'attendingusers': [CSV string of user ids, not including creator of event],</li>
 		<li>'activity':[activity recordID corresponding to this event]</li>
-		<li>'inviter':'Firstname Lastname' String of user who invited everyone </li>
 	}
 </ul>
 

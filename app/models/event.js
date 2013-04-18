@@ -63,7 +63,22 @@ Event.add = function(params, callback)
           if(params.begindate <= params.enddate && params.time1 <= params.time2)
           {
             //all required fields are valid
-            eventDict = {};
+            var eventDict = {};
+            var usersToAdd = [];
+            console.dir(emailAndId.records);
+            for(var key in emailAndId.records)
+            {
+              var record = emailAndId.records[key];
+              console.log("record: "+record);
+              if(record.username)
+              {
+                usersToAdd.push(record.username);
+              }
+              else
+              {
+                usersToAdd.push(record.email);
+              }
+            }
             eventDict.name = params.name;
             eventDict.begindate = params.begindate;
             eventDict.enddate = params.enddate;
@@ -71,7 +86,7 @@ Event.add = function(params, callback)
             eventDict.time2 = params.time2;
             eventDict.description = params.description;
             eventDict.activityid = params.activityid;
-            eventDict.attendingusers = userIds.toString();
+            eventDict.attendingusers = usersToAdd.toString();
             var eventRecord = geddy.model.Event.create(eventDict);
             geddy.model.Event.save(eventRecord, function(err, eventModel)
             {
@@ -131,8 +146,9 @@ Event.add = function(params, callback)
 //first time you create an event gets all emails and ids
 function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
-  emails = [];
-  userIds = [];
+  var emails = [];
+  var userIds = [];
+  var records = [];
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
@@ -146,6 +162,10 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
       {
         if(record && record.email && record.username)
         {
+          var entry = {};
+          entry.username = record.username;
+          entry.email = record.email;
+          records.push(entry);
           emails.push(record.email);
           userIds.push(record.username);
           if (emails.length === usernamesOrEmails.length)
@@ -153,17 +173,22 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
             result = {};
             result.email = emails;
             result.id = userIds;
+            result.records = records;
             successCallback(result);
           }
         }
         else
         {
+          var entry = {};
+          entry.email = id;
+          records.push(entry);
           emails.push(id);
           if (emails.length === usernamesOrEmails.length)
           {
             result = {};
             result.email = emails;
             result.id = userIds;
+            result.records = records;
             successCallback(result);
           } 
         }
@@ -183,6 +208,10 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
           {
             if(record && record.email && record.username)
             {
+              var entry = {};
+              entry.username = record.username;
+              entry.email = record.email;
+              records.push(entry);
               //console.log('EMAIL found is: '+record.email);
               emails.push(record.email);
               userIds.push(record.username);
@@ -190,6 +219,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
                 result = {};
                 result.email = emails;
                 result.id = userIds;
+                result.records = records;
                 successCallback(result);
               }
             }
@@ -381,6 +411,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
   for(var key in usernameOrEmailArray)
   {
     var usernameOrEmail = usernameOrEmailArray[key];
+    usernameOrEmail = usernameOrEmail.trim();
     //This removes duplicate identifiers
     if(usernameOrEmailHash[usernameOrEmail])
     {

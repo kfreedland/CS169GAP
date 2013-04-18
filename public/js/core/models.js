@@ -1,21 +1,4 @@
 (function () {
-      console.log("err in looking up user");
-      console.log("successfully found user");
-
-          console.log("err in looking up eventID");
-          console.log("successfully found event");
-
-          console.log("created comment record:");
-          console.dir(commentRecord);
-              return;
-
-              console.log("successfully saved Comment");
-                console.log("event's comments are null");
-                  console.log("err in saving event with Comment");
-                  console.log("saving event with comment succeeded");
-          console.log("event doesn't exist");
-      console.log("user doesn't exist");
-  //get event
 var nodemailer = require("nodemailer")
   , check = require("validator").check
   , blade = require("blade");
@@ -81,7 +64,22 @@ Event.add = function(params, callback)
           if(params.begindate <= params.enddate && params.time1 <= params.time2)
           {
             //all required fields are valid
-            eventDict = {};
+            var eventDict = {};
+            var usersToAdd = [];
+            console.dir(emailAndId.records);
+            for(var key in emailAndId.records)
+            {
+              var record = emailAndId.records[key];
+              console.log("record: "+record);
+              if(record.username)
+              {
+                usersToAdd.push(record.username);
+              }
+              else
+              {
+                usersToAdd.push(record.email);
+              }
+            }
             eventDict.name = params.name;
             eventDict.begindate = params.begindate;
             eventDict.enddate = params.enddate;
@@ -89,7 +87,7 @@ Event.add = function(params, callback)
             eventDict.time2 = params.time2;
             eventDict.description = params.description;
             eventDict.activityid = params.activityid;
-            eventDict.attendingusers = userIds.toString();
+            eventDict.attendingusers = usersToAdd.toString();
             var eventRecord = geddy.model.Event.create(eventDict);
             geddy.model.Event.save(eventRecord, function(err, eventModel)
             {
@@ -149,8 +147,9 @@ Event.add = function(params, callback)
 //first time you create an event gets all emails and ids
 function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 {
-  emails = [];
-  userIds = [];
+  var emails = [];
+  var userIds = [];
+  var records = [];
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
@@ -164,6 +163,10 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
       {
         if(record && record.email && record.username)
         {
+          var entry = {};
+          entry.username = record.username;
+          entry.email = record.email;
+          records.push(entry);
           emails.push(record.email);
           userIds.push(record.username);
           if (emails.length === usernamesOrEmails.length)
@@ -171,17 +174,22 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
             result = {};
             result.email = emails;
             result.id = userIds;
+            result.records = records;
             successCallback(result);
           }
         }
         else
         {
+          var entry = {};
+          entry.email = id;
+          records.push(entry);
           emails.push(id);
           if (emails.length === usernamesOrEmails.length)
           {
             result = {};
             result.email = emails;
             result.id = userIds;
+            result.records = records;
             successCallback(result);
           } 
         }
@@ -201,6 +209,10 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
           {
             if(record && record.email && record.username)
             {
+              var entry = {};
+              entry.username = record.username;
+              entry.email = record.email;
+              records.push(entry);
               //console.log('EMAIL found is: '+record.email);
               emails.push(record.email);
               userIds.push(record.username);
@@ -208,6 +220,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
                 result = {};
                 result.email = emails;
                 result.id = userIds;
+                result.records = records;
                 successCallback(result);
               }
             }
@@ -224,6 +237,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
 {
+  console.log("adding users: " + " to event");
   usernames = usernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
@@ -238,7 +252,9 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
         var usernamesAndEmailsList = [];
         usernamesAndEmailsList.push(newUids.usernames);
         usernamesAndEmailsList.push(newUids.emails);
-        eventRecord.attendingusers = newUids.toString();
+        console.log("newUids = " + usernamesAndEmailsList);
+        console.log("About to add attendingusers: " + usernamesAndEmailsList.toString());
+        eventRecord.attendingusers = usernamesAndEmailsList.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
         {
           if(err)
@@ -284,17 +300,24 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     if(err)
     {
       //database error
+      console.log("error looking up user");
       removeUserFromEventCallBack(7, callback);
       return;
 
     } 
     else if (userRecord)
     {
+
+      console.log("found user");
       var userName = userRecord.username;
       //remove username from event attendingusers
       geddy.model.Event.first({id: eventID} , function(err, eventRecord){
 
         if(eventRecord){
+
+          console.log("found event, event = ");
+          console.dir(eventRecord);
+
 
           var attendingUsersString = eventRecord.attendingusers;
           var attendingUsersList = attendingUsersString.split(",");
@@ -307,11 +330,14 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
               if(err){
                 //database error
+                console.log("error saving event");
+
                 removeUserFromEventCallBack(7, callback);
                 return;
 
               } else {
-               //succeeded in removing username from attending users
+                //succeeded in removing username from attending users
+                console.log("succeeded in removing username from attending users");
 
 
                 //remove event from user
@@ -348,6 +374,8 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
         } else {
           //event does not exist
+          console.log("event does not exist in database");
+
           removeUserFromEventCallBack(10, callback);
           return;
 
@@ -358,6 +386,8 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     } else {
 
       //user does not exist
+      console.log("user does not exist in database");
+
       removeUserFromEventCallBack(10, callback);
       return;
     }
@@ -382,6 +412,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
   for(var key in usernameOrEmailArray)
   {
     var usernameOrEmail = usernameOrEmailArray[key];
+    usernameOrEmail = usernameOrEmail.trim();
     //This removes duplicate identifiers
     if(usernameOrEmailHash[usernameOrEmail])
     {
@@ -1687,10 +1718,13 @@ Comment.addComment = function(eventID, userID, text, callback)
     if(err){
 
       //database error
+      console.log("err in looking up user");
       addCommentCallback(7, callback);
       return;
 
     } else if (userRecord){
+
+      console.log("successfully found user");
 
       //create comment and add it to event
       geddy.model.Event.first({id:eventID}, function(err, eventRecord){
@@ -1698,16 +1732,21 @@ Comment.addComment = function(eventID, userID, text, callback)
         if(err){
 
           //database error
+          console.log("err in looking up eventID");
           addCommentCallback(7, callback);
           return;
 
         } else if (eventRecord){
+
+          console.log("successfully found event");
 
           //create comment and add to event
           var commentDict = {};
           commentDict.text = text;
           commentDict.userid = userID;
           var commentRecord = geddy.model.Comment.create(commentDict);
+          console.log("created comment record:");
+          console.dir(commentRecord);
           geddy.model.Comment.save(commentRecord, function(err, result){
 
             if (err){
@@ -1715,11 +1754,15 @@ Comment.addComment = function(eventID, userID, text, callback)
               console.dir(err);
 
               addCommentCallback(7, callback);
+              return;
 
             } else if (commentRecord){
               //add to event
+
+              console.log("successfully saved Comment");
               var comments = eventRecord.comments;
               if (!comments){
+                console.log("event's comments are null");
                 comments = "";
               }
               var commentList = comments.split(',');
@@ -1731,12 +1774,14 @@ Comment.addComment = function(eventID, userID, text, callback)
                 if(err){
 
                   //database error
+                  console.log("err in saving event with Comment");
                   addCommentCallback(7, callback);
                   return;
 
                 } else {
 
                   //succeeded
+                  console.log("saving event with comment succeeded");
                   addCommentCallback(1, callback);
                   return;
                 }
@@ -1746,8 +1791,6 @@ Comment.addComment = function(eventID, userID, text, callback)
 
               //comment.save failed
               console.log("comment.save returned nothing  ");
-              console.dir(err);
-
               addCommentCallback(7, callback);
 
 
@@ -1759,6 +1802,7 @@ Comment.addComment = function(eventID, userID, text, callback)
         } else {
 
           //event doesn't exist
+          console.log("event doesn't exist");
           addCommentCallback(10, callback);
           return;
         }
@@ -1768,6 +1812,7 @@ Comment.addComment = function(eventID, userID, text, callback)
     } else {
 
       //user does not exist
+      console.log("user doesn't exist");
       addCommentCallback(10, callback);
       return;
     }
@@ -1786,6 +1831,7 @@ function addCommentCallback(errCode, callback){
 Comment.getCommentsForEvent = function(eventID, callback)
 {
 
+  //get event
   geddy.model.Event.first({id:eventID}, function(err, eventRecord){
 
     if(err){
