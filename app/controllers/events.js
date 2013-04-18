@@ -1,4 +1,4 @@
-var passport = require('../helpers/passport')
+  var passport = require('../helpers/passport')
   , strategies = require('../helpers/passport/strategies')
   , requireAuth = passport.requireAuth
   , authTypes = geddy.mixin(strategies, {local: {name: 'local account'}});
@@ -203,9 +203,21 @@ var Events = function () {
     }
     else
     {
-      self.resp({errCode: 1}, {format: 'json'});
+      self.respond({errCode: 1}, {format: 'json'});
     }
   }
+
+  this.removeUser = function(req, resp, params) {
+
+    var self = this;
+
+    geddy.model.removeUserFromEvent(params.eventid, params.userid, function(responseDict){
+
+      self.respond(responseDict, {format:'json'});
+    });
+
+  }
+
   // Event Detail
   this.detail = function (req, resp, params) {
     var self = this
