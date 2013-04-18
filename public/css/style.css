@@ -38,6 +38,32 @@ label {
   width: 72%;
 }
 
+.badge {
+  background: radial-gradient( 1px -11px, circle, white 8%, red 26px );
+  background: -moz-radial-gradient( 1px -11px, circle, white 8%, red 26px );
+  background: -ms-radial-gradient( 1px -11px, circle, white 8%, red 26px );
+  background: -o-radial-gradient( 1px -11px, circle, white 8%, red 26px );,
+  background: -webkit-radial-gradient( 1px -11px, circle, white 8%, red 26px );
+  background-color: red;
+  border: 2px solid white;
+  border-radius: 12px;
+  box-shadow: 1px 1px 1px black;
+  color: white;
+  font: bold 10px Helvetica, Verdana, Tahoma;
+  height: 12px;
+  padding: 2px 3px 0 3px;
+  text-align: center;
+  min-width: 8px;
+  position: absolute;
+  left: 22px;
+  top: 0px;
+}
+
+.badgeContainer {
+  position: relative;
+  padding: 5px 10px;
+}
+
 /* Fix Bootstrap's Styling */
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
   height: 35px;

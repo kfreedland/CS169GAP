@@ -618,6 +618,9 @@ Event.invite = function(params, callback)
           geddy.model.User.first({id: userId}, function (err, userModel){
             if (!err && userModel){
               userModel.mynotifications += 1;
+              userModel.save(function (err, result){
+                //do nothing
+              });
             }
           });
 
@@ -987,6 +990,11 @@ Event.getMyEvents = function (params, callback) {
         } else {
           getEventsCallback(1, currentEvents, pastEvents, callback);
         }
+        //Reset mynotifications counter
+        userModel.mynotifications = 0;
+        userModel.save(function (err, result){
+          //do nothing
+        });
       }
     }
   });
