@@ -61,6 +61,7 @@ Comment.addComment = function(eventID, userID, text, callback)
 
       //database error
       addCommentCallback(7, callback);
+      return;
 
     } else if (userRecord){
 
@@ -71,7 +72,7 @@ Comment.addComment = function(eventID, userID, text, callback)
 
           //database error
           addCommentCallback(7, callback);
-
+          return;
 
         } else if (eventRecord){
 
@@ -101,13 +102,13 @@ Comment.addComment = function(eventID, userID, text, callback)
 
                   //database error
                   addCommentCallback(7, callback);
-
+                  return;
 
                 } else {
 
                   //succeeded
                   addCommentCallback(1, callback);
-
+                  return;
                 }
 
               });
@@ -119,7 +120,7 @@ Comment.addComment = function(eventID, userID, text, callback)
 
           //event doesn't exist
           addCommentCallback(10, callback);
-
+          return;
         }
 
       });
@@ -128,7 +129,7 @@ Comment.addComment = function(eventID, userID, text, callback)
 
       //user does not exist
       addCommentCallback(10, callback);
-
+      return;
     }
 
   });
@@ -151,6 +152,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
       //database error
       getCommentsCallback(7, null, callback);
+      return;
 
     } else if (eventRecord){
 
@@ -169,6 +171,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
             //database error
             getCommentsCallback(7, null, callback);
+            return;
 
           } else if (commentRecord){
 
@@ -191,6 +194,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
       //event doesn't exist
       getCommentsCallback(10, null, callback);
+      return;
 
     }
 
@@ -200,10 +204,10 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
 
 function getCommentsCallback(errCode, comments, callback){
-var responseDict = {};
-responseDict.errCode = errCode;
-responseDict.comments = comments;
-callback(responseDict);
+  var responseDict = {};
+  responseDict.errCode = errCode;
+  responseDict.comments = comments;
+  callback(responseDict);
 }
 
 /*

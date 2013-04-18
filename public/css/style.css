@@ -256,14 +256,6 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     left: 70px;
   }
 
-  #notifications_container {
-    top: 0px;
-    width: 100%;
-    position: absolute;
-    color: red;
-    text-align: right;
-    z-index: 10;
-  }
   #logout_button {
     position: absolute;
     right: 0;
