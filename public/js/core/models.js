@@ -420,6 +420,7 @@ var Comment = function () {
     text: {type: 'string'}
   });
 
+
   /*
   this.property('login', 'string', {required: true});
   this.property('password', 'string', {required: true});
@@ -443,6 +444,174 @@ var Comment = function () {
   */
 
 };
+
+
+Comment.addComment = function(eventID, userID, text, callback)
+{
+
+  if(!eventID){
+    addCommentCallback(6, callback);
+    return;
+  }
+
+  if(!userID){
+    addCommentCallBack(6, callback);
+    return;
+  }
+
+  if(!text){
+    addCommentCallBack(6, callback);
+    return;
+  }
+
+  if(text == ''){
+    addCommentCallBack(6, callback);
+    return;
+  }
+
+  //check if userid is valid
+  geddy.model.User.first({id:userID}, function(err,userRecord){
+
+    if(err){
+
+      //database error
+      addCommentCallback(7, callback);
+
+    } else if (userRecord){
+
+      //create comment and add it to event
+      geddy.model.Event.first({id:eventID}, function(err, eventRecord){
+
+        if(err){
+
+          //database error
+          addCommentCallback(7, callback);
+
+
+        } else if (eventRecord){
+
+          //create comment and add to event
+          var commentDict = {};
+          commentDict.text = text;
+          commentDict.userid = userID;
+          var commentRecord = geddy.model.Comment.create(commentDict);
+          geddy.model.Comment.save(commentRecord, function(err, commentModel){
+
+            //add to event
+            var comments = eventRecord.comments;
+            var commentList = comments.split(',');
+            commentList.push(commentModel.id);
+            eventRecord.comments = commentList.join(',');
+
+            eventRecord.save(function(err, result){
+
+              if(err){
+
+                //database error
+                addCommentCallback(7, callback);
+
+
+              } else {
+
+                //succeeded
+                addCommentCallback(1, callback);
+
+              }
+
+            });
+
+          });
+
+        } else {
+
+          //event doesn't exist
+          addCommentCallback(10, callback);
+
+        }
+
+      });
+
+    } else {
+
+      //user does not exist
+      addCommentCallback(10, callback);
+
+    }
+
+  });
+
+}
+
+function addCommentCallback(errCode, callback){
+var responseDict = {};
+responseDict.errCode = errCode;
+callback(responseDict);
+}
+
+
+Comment.getCommentsForEvent = function(eventID, callback)
+{
+
+  geddy.model.Event.first({id:eventID}, function(err, eventRecord){
+
+    if(err){
+
+      //database error
+      getCommentsCallback(7, null, callback);
+
+    } else if (eventRecord){
+
+      //get comments
+      var commentIDsString = eventRecord.comments;
+      var commentIDsList = commentIDsString.split(',');
+
+      var commentListToReturn = [];
+
+      for (var index in commentIDsList){
+
+        var currentCommentID = commentIDsList[index];
+        geddy.model.Comment.first({id:currentCommentID}, function(err, commentRecord){
+
+          if(err){
+
+            //database error
+            getCommentsCallback(7, null, callback);
+
+          } else if (commentRecord){
+
+            //add comment to list
+            commentListToReturn.push(commentRecord);
+
+            if(commentListToReturn.length == commentIDsList.length){
+
+              //return 
+              getCommentsCallback(1, commentListToReturn, callback);
+              return;
+
+            }
+          }
+        });
+
+      }
+
+    } else {
+
+      //event doesn't exist
+      getCommentsCallback(10, null, callback);
+
+    }
+
+  });
+
+}
+
+
+function getCommentsCallback(errCode, comments, callback){
+var responseDict = {};
+responseDict.errCode = errCode;
+responseDict.comments = comments;
+callback(responseDict);
+}
 
 /*
 // Can also define them on the prototype
@@ -702,6 +871,114 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
   });
 };
 
+
+Event.removeUser = function(eventID, userID, callback)
+{
+
+  if(!eventID){
+    removeUserFromEventCallBack(6, callback);
+    return;
+  }
+
+  if(!userID){
+    removeUserFromEventCallBack(6, callback);
+    return;
+  }
+  
+  geddy.model.User.first({id: userID}, function(err, userRecord) {
+
+    if(err)
+    {
+      //database error
+      removeUserFromEventCallBack(7, callback);
+      return;
+
+    } 
+    else if (userRecord)
+    {
+
+      var userName = userRecord.username;
+      //remove username from event attendingusers
+      geddy.Model.Event.first({id: eventID} , function(err, eventRecord){
+
+        if(eventRecord){
+
+          var attendingUsersString = eventRecord.attendingusers;
+          var attendingUsersList = attendingUsersString.split(",");
+          var usernameIndex = attendingUsersList.indexOf(userRecord)
+          if(usernnameIndex >= 0){
+            attendingUsersList.splice(usernameIndex,1);
+            attendingUsersString = attendingUsersList.join(",");
+            eventRecord.attendingusers = attendingUsersString;
+            eventRecord.save ( function(err, data) {
+
+              if(err){
+                //database error
+                removeUserFromEventCallBack(7, callback);
+                return;
+
+              } else {
+               //succeeded in removing username from attending users
+
+
+                //remove event from user
+                var events = userRecord.myevents;
+                var eventList = events.split(",");
+                var eventIndex = eventList.indexOf(eventID);
+                if(eventIndex != -1)
+                {
+                  eventList.splice(eventIndex,1);
+                  var eventString = eventList.join(",");
+                  userRecord.myevents = eventString;
+                  userRecord.save(function(err, data) {
+
+                    if(err){
+                      //database error
+                      removeUserFromEventCallBack(7, callback);
+                      return;
+
+
+                    } else {
+                      //succeeded in everything
+                      removeUserFromEventCallBack(1, callback);
+                      return;
+                    }
+
+                  });
+
+              }
+            }
+            
+           });
+
+          }
+
+        } else {
+          //event does not exist
+          removeUserFromEventCallBack(10, callback);
+          return;
+
+        }
+
+      });
+
+    } else {
+
+      //user does not exist
+      removeUserFromEventCallBack(10, callback);
+      return;
+    }
+  });
+};
+
+function removeUserFromEventCallBack(errCode, callback){
+  var responseDict = {};
+  responseDict.errCode = errCode;
+  callback(responseDict);
+}
+
+
+
 //validates and returns a list of userids and emails to be added
 function validateUserIds(idArray, eventid, callback) //assumes valid usernames
 {
@@ -859,6 +1136,8 @@ function addEventToUsers(eventid, userIds, callback)
   }
   callback({errCode: 1}); //success!
 }
+
+
 
 
 //params requires eventid, emails, and message
@@ -1356,7 +1635,7 @@ Event.getMyEvents = function (params, callback) {
 
 function getEventsCallback(errCode, currentEvents, pastEvents, callback){
   var responseDict = {};
-  responseDict.errCode = 1;
+  responseDict.errCode = errCode;
   responseDict.pastEvents = pastEvents;
   responseDict.currentEvents = currentEvents;
   callback(responseDict);

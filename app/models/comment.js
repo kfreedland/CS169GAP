@@ -174,7 +174,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
               return;
 
             }
-
+          }
         });
 
       }

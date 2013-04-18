@@ -315,6 +315,7 @@ Event.removeUser = function(eventID, userID, callback)
                   });
 
               }
+            }
             
            });
 
@@ -334,8 +335,8 @@ Event.removeUser = function(eventID, userID, callback)
       //user does not exist
       removeUserFromEventCallBack(10, callback);
       return;
-
-    });
+    }
+  });
 };
 
 function removeUserFromEventCallBack(errCode, callback){

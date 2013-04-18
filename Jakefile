@@ -77,8 +77,17 @@ function execute_test_code(mochaInstance, cb) {
     mochaInstance.addFile('./test/eventAddTest.js');
     mochaInstance.addFile('./test/eventChangeDateTimeTest.js');
     mochaInstance.addFile('./test/eventInviteTest.js');
+    mochaInstance.addFile('./test/eventRemoveUserTest.js');
     mochaInstance.addFile('./test/getMyEventsTest.js');
+    mochaInstance.addFile('./test/commentAddTest.js');
+    mochaInstance.addFile('./test/getCommentsForEventTest.js');
     mochaInstance.options.ignoreLeaks = true;
+    //Set up socket io because geddy isn't initialized correctly
+    geddy.io = require('socket.io').listen(5000);
+    geddy.io.configure(function () { 
+        geddy.io.set("transports", ["xhr-polling"]); 
+        geddy.io.set("polling duration", 10); 
+    });
     mochaInstance.run(function(failures) {
         cb(failures);
     });
