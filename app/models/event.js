@@ -243,9 +243,8 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
 };
 
 
-Event.removeUser = function(eventID, userID, callback)
+Event.removeUserFromEvent = function(eventID, userID, callback)
 {
-
   if(!eventID){
     removeUserFromEventCallBack(6, callback);
     return;
@@ -256,7 +255,7 @@ Event.removeUser = function(eventID, userID, callback)
     return;
   }
   
-  geddy.model.User.first({id: userID}, function(err, userRecord) {
+  geddy.model.User.first({username: userID}, function(err, userRecord) {
 
     if(err)
     {
@@ -267,7 +266,6 @@ Event.removeUser = function(eventID, userID, callback)
     } 
     else if (userRecord)
     {
-
       var userName = userRecord.username;
       //remove username from event attendingusers
       geddy.model.Event.first({id: eventID} , function(err, eventRecord){

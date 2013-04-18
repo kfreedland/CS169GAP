@@ -7,6 +7,7 @@ $(document).ready(function() {
 	var jsonData = $.parseJSON(window.atob(encodedDataFixed));
 	handleEventDetailResponse(jsonData);
 	inviteMoreFriends(jsonData.id);
+	removeEvent(jsonData);
 });
 
 function handleEventDetailResponse(jsonData) {
@@ -55,3 +56,4 @@ function inviteMoreFriends(eventID) {
 	    });
 	});
 }
+

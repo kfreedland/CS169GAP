@@ -1,8 +1,33 @@
 <!--Event Detail Page -->
 <div data-role="page" class="event_detail_page">
+  <script type='text/javascript'>
+    function removeEvent(jsonData) {
+      console.log("BLAHHHH");
+      console.log(jsonData);
+      var userName = '<%= user.username %>';
+      $("#removeEventButton").click(function() {
+        eventUserData = {};
+        eventUserData.eventid = jsonData.id;
+        eventUserData.userid = userName;
+        console.log(eventUserData);
+        $.ajax({
+            type: 'GET',
+            url: '/events/removeuser',
+            data: eventUserData,
+            contentType: "application/json",
+            dataType: "json",
+            success: function(respData) {
+              window.location = '/events/myevents';
+            },
+            failure: function(err) {
+                console.log('Failure');
+            }
+        });
+      });
+    }
+  </script>
   <!-- Include the eventDetail js -->
   <%- scriptLink('/js/event/eventDetail.js', {type:'text/javascript'}) %>
-  <%- scriptLink('/js/event/removeEvent.js', {type:'text/javascript'}) %>
   <!--Navigation Bar-->
   <%- partial('../main/navBar', {form: {type: 'navbar'}, params: params, user: user}) %>
 

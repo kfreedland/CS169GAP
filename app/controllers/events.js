@@ -211,8 +211,9 @@ var Events = function () {
 
     var self = this;
 
-    geddy.model.removeUserFromEvent(params.eventid, params.userid, function(responseDict){
-
+    geddy.model.Event.removeUserFromEvent(params.eventid, params.userid, function(responseDict){
+      console.log('RespDict for remove user is:');
+      console.log(responseDict);
       self.respond(responseDict, {format:'json'});
     });
 
