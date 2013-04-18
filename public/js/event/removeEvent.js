@@ -1,16 +1,18 @@
 $(document).ready(function() {
-	$("#deleteButton").click(deleteEvent());
+	$("#removeEventButton").click(function() {
+        removeEvent();
+    });
 });
 
-function deleteEvent() {
+function removeEvent() {
     $.ajax({
         type: 'GET',
-        url: '/events/getmyevents',
+        url: '',
         data: {},
         contentType: "application/json",
         dataType: "json",
         success: function(respData) {
-            location.reload();
+            window.location = '/events/myevents';
         },
         failure: function(err) {
             console.log('Failure');

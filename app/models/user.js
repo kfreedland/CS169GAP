@@ -10,6 +10,7 @@ var User = function () {
     this.property('givenName', 'string');
     this.property('email', 'string');
     this.property('myevents', 'string');
+    this.property('mynotifications', 'number');
     this.validatesLength('username', {min: 3, max:128});
     this.validatesLength('password', {min: 8, max:128});
     this.validatesConfirmed('password', 'confirmPassword');

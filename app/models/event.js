@@ -14,6 +14,7 @@ var Event = function () {
     description: {type: 'string'},
     time1: {type: 'number'},
     time2: {type: 'number'},
+    comments: {type: 'string'},
     begindate: {type: 'number'},
     enddate: {type: 'number'},
     activityid: {type: 'string'},
@@ -504,6 +505,12 @@ Event.invite = function(params, callback)
             console.log("Emitting event: " + eventName);
             geddy.io.sockets.emit(eventName, {eventId: eventID, eventName: eventModel.name});
           }
+          //Update user's notification number
+          geddy.model.User.first({id: userId}, function (err, userModel){
+            if (!err && userModel){
+              userModel.mynotifications += 1;
+            }
+          });
 
 
           //invite all emails

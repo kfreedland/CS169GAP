@@ -2,11 +2,19 @@
 <div data-role="page" class="event_detail_page">
   <!-- Include the eventDetail js -->
   <%- scriptLink('/js/event/eventDetail.js', {type:'text/javascript'}) %>
+  <%- scriptLink('/js/event/removeEvent.js', {type:'text/javascript'}) %>
   <!--Navigation Bar-->
   <%- partial('../main/navBar', {form: {type: 'navbar'}, params: params, user: user}) %>
 
   <div id="event_detail_content" class="box" data-role="content">
-    <h3 id="event-title"></h3>
+    <div id="event-header" class="ui-grid-a">
+      <div class="ui-block-a">
+        <h3 id="event-title"></h3>
+      </div>
+      <div class="ui-block-b">
+        <button id="removeEventButton" value="Remove From My Events" data-role="button" data-mini="true" data-inline="true" data-icon="delete">Remove From My Events</button>
+      </div>
+    </div>
     <div id="event-category"></div>
     <div id="event-address"></div>
     <div id="event-description"></div>

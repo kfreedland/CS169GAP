@@ -75,9 +75,9 @@ $(document).ready(function() {
 */
 function fixPriceRange(lowPrice, highPrice, priceDivId) {
 	if (lowPrice === 0 && highPrice === 0) {
-		$('#' + priceDivId).html('Price Range: Free');
+		$('#' + priceDivId).html('<b>Price Range:</b> Free');
 	} else if (lowPrice === highPrice) {
-		$('#' + priceDivId).html('Price Range: $' + lowPrice);
+		$('#' + priceDivId).html('<b>Price Range:</b> $' + lowPrice);
 	}
 }
 
@@ -112,17 +112,17 @@ function addTimeRange(flag, time1, time2, timeDivId) {
 	if (flag === "startEnd") {
 		var t1Str = convertMsToString(time1);
 		var t2Str = convertMsToString(time2);
-		$('#' + timeDivId).html('Suggested Time: ' + t1Str + ' to ' + t2Str);
+		$('#' + timeDivId).html('<b>Suggested Time:</b> ' + t1Str + ' to ' + t2Str);
 	} else if (flag === "openClose") {
 		var t1Str = convertMsToString(time1);
 		var t2Str = convertMsToString(time2);
-		$('#' + timeDivId).html('Opens: ' + t1Str + '   Closes: ' + t2Str);
+		$('#' + timeDivId).html('<b>Opens:</b> ' + t1Str + '   <b>Closes:</b> ' + t2Str);
 	} else if (flag === "anyTime") {
-		$('#' + timeDivId).html('Suggested Time: Any Time');
+		$('#' + timeDivId).html('<b>Suggested Time:</b> Any Time');
 	} else if (flag === "dayTime") {
-		$('#' + timeDivId).html('Suggested Time: Day Time');
+		$('#' + timeDivId).html('<b>Suggested Time:</b> Day Time');
 	} else if (flag === "nightTime") {
-		$('#' + timeDivId).html('Suggested Time: Night Time');
+		$('#' + timeDivId).html('<b>Suggested Time:</b> Night Time');
 	}
 }
 

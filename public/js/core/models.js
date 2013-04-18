@@ -413,6 +413,54 @@ Activity = geddy.model.register('Activity', Activity);
 }());
 
 (function () {
+var Comment = function () {
+
+  this.defineProperties({
+    userid: {type: 'string'},
+    text: {type: 'string'}
+  });
+
+  /*
+  this.property('login', 'string', {required: true});
+  this.property('password', 'string', {required: true});
+  this.property('lastName', 'string');
+  this.property('firstName', 'string');
+
+  this.validatesPresent('login');
+  this.validatesFormat('login', /[a-z]+/, {message: 'Subdivisions!'});
+  this.validatesLength('login', {min: 3});
+  // Use with the name of the other parameter to compare with
+  this.validatesConfirmed('password', 'confirmPassword');
+  // Use with any function that returns a Boolean
+  this.validatesWithFunction('password', function (s) {
+      return s.length > 0;
+  });
+
+  // Can define methods for instances like this
+  this.someMethod = function () {
+    // Do some stuff
+  };
+  */
+
+};
+
+/*
+// Can also define them on the prototype
+Comment.prototype.someOtherMethod = function () {
+  // Do some other stuff
+};
+// Can also define static methods and properties
+Comment.someStaticMethod = function () {
+  // Do some other stuff
+};
+Comment.someStaticProperty = 'YYZ';
+*/
+
+Comment = geddy.model.register('Comment', Comment);
+
+}());
+
+(function () {
 var nodemailer = require("nodemailer")
   , check = require("validator").check
   , blade = require("blade");
@@ -429,6 +477,7 @@ var Event = function () {
     description: {type: 'string'},
     time1: {type: 'number'},
     time2: {type: 'number'},
+    comments: {type: 'string'},
     begindate: {type: 'number'},
     enddate: {type: 'number'},
     activityid: {type: 'string'},
@@ -919,6 +968,12 @@ Event.invite = function(params, callback)
             console.log("Emitting event: " + eventName);
             geddy.io.sockets.emit(eventName, {eventId: eventID, eventName: eventModel.name});
           }
+          //Update user's notification number
+          geddy.model.User.first({id: userId}, function (err, userModel){
+            if (!err && userModel){
+              userModel.mynotifications += 1;
+            }
+          });
 
 
           //invite all emails
@@ -1354,6 +1409,7 @@ var User = function () {
     this.property('givenName', 'string');
     this.property('email', 'string');
     this.property('myevents', 'string');
+    this.property('mynotifications', 'number');
     this.validatesLength('username', {min: 3, max:128});
     this.validatesLength('password', {min: 8, max:128});
     this.validatesConfirmed('password', 'confirmPassword');

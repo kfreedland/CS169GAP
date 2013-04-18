@@ -18,6 +18,12 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b> Changelog Entry 16: </b>
+	//Edited database creation for comments
+	
+<b> Changelog Entry 15:</b>
+	//Edited database creation statements for mynotifications field on users
+
 <b> Changelog Entry 14:</b>
 	//Updated Real-Time Invite Notifications Spec in doc
 
@@ -176,6 +182,7 @@ CS169GAP
 		<li>'enddate': [milliseconds since epoch, int],</li>
 		<li>'attendingusers': [CSV string of user ids],</li>
 		<li>'activity':[activity recordID corresponding to this event]</li>
+		<li>'inviter':'Firstname Lastname' String of user who invited everyone </li>
 	}
 </ul>
 
@@ -290,6 +297,7 @@ CREATE TABLE users (
 	created_at timestamptz,
 	updated_at timestamptz,
 	myevents text,
+	mynotifications float8,
 	id text
 );
 
@@ -333,6 +341,16 @@ CREATE TABLE events (
 	enddate float8,
 	activityid text,
 	attendingusers text,
+	comments text,
+	created_at timestamptz,
+	updated_at timestamptz,
+	id text
+);
+
+
+CREATE TABLE comments (
+	userid text,
+	text text,
 	created_at timestamptz,
 	updated_at timestamptz,
 	id text
