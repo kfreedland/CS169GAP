@@ -60,10 +60,13 @@ Comment.addComment = function(eventID, userID, text, callback)
     if(err){
 
       //database error
+      console.log("err in looking up user");
       addCommentCallback(7, callback);
       return;
 
     } else if (userRecord){
+
+      console.log("successfully found user");
 
       //create comment and add it to event
       geddy.model.Event.first({id:eventID}, function(err, eventRecord){
@@ -71,16 +74,21 @@ Comment.addComment = function(eventID, userID, text, callback)
         if(err){
 
           //database error
+          console.log("err in looking up eventID");
           addCommentCallback(7, callback);
           return;
 
         } else if (eventRecord){
+
+          console.log("successfully found event");
 
           //create comment and add to event
           var commentDict = {};
           commentDict.text = text;
           commentDict.userid = userID;
           var commentRecord = geddy.model.Comment.create(commentDict);
+          console.log("created comment record:");
+          console.dir(commentRecord);
           geddy.model.Comment.save(commentRecord, function(err, result){
 
             if (err){
@@ -88,11 +96,15 @@ Comment.addComment = function(eventID, userID, text, callback)
               console.dir(err);
 
               addCommentCallback(7, callback);
+              return;
 
             } else if (commentRecord){
               //add to event
+
+              console.log("successfully saved Comment");
               var comments = eventRecord.comments;
               if (!comments){
+                console.log("event's comments are null");
                 comments = "";
               }
               var commentList = comments.split(',');
@@ -104,12 +116,14 @@ Comment.addComment = function(eventID, userID, text, callback)
                 if(err){
 
                   //database error
+                  console.log("err in saving event with Comment");
                   addCommentCallback(7, callback);
                   return;
 
                 } else {
 
                   //succeeded
+                  console.log("saving event with comment succeeded");
                   addCommentCallback(1, callback);
                   return;
                 }
@@ -119,8 +133,6 @@ Comment.addComment = function(eventID, userID, text, callback)
 
               //comment.save failed
               console.log("comment.save returned nothing  ");
-              console.dir(err);
-
               addCommentCallback(7, callback);
 
 
@@ -132,6 +144,7 @@ Comment.addComment = function(eventID, userID, text, callback)
         } else {
 
           //event doesn't exist
+          console.log("event doesn't exist");
           addCommentCallback(10, callback);
           return;
         }
@@ -141,6 +154,7 @@ Comment.addComment = function(eventID, userID, text, callback)
     } else {
 
       //user does not exist
+      console.log("user doesn't exist");
       addCommentCallback(10, callback);
       return;
     }
@@ -159,6 +173,7 @@ function addCommentCallback(errCode, callback){
 Comment.getCommentsForEvent = function(eventID, callback)
 {
 
+  //get event
   geddy.model.Event.first({id:eventID}, function(err, eventRecord){
 
     if(err){

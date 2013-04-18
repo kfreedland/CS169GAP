@@ -13,7 +13,7 @@ var resetFixture = function (done){
     });
 };
 
-describe('Comment', function()
+describe('Event Remove User', function()
 {
     beforeEach(function(done) 
     {
@@ -21,7 +21,8 @@ describe('Comment', function()
         resetFixture(done);
     });
 
-  describe('Event.removeUser normal', function()
+
+  describe('Event.RemoveUserFromEvent normal', function()
     {
         it('should return errCode:1', function(done)
         {
@@ -73,32 +74,17 @@ describe('Comment', function()
                             eventData.inviterId = userRecord.id;
                             Event.add(eventData, function(respDict)
                             {
-                                var user1 = User.create({username: 'blahbyblah',
-                                password: 'MyPassword!',
-                                confirmPassword: 'MyPassword!',
-                                familyName: 'LastName1',
-                                givenName: 'FirstName1',
-                                email: 'greg@greg.com'});
-                                geddy.model.User.add(user1, function(aDict)
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
-                                    geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
-                                    {
-                                        geddy.model.User.first({username: user1.username}, function(err, userRecord1)
-                                        {
-                                            geddy.model.Event.addUsersToEvent(eventRecord.id, userRecord1.username, function (answerDict)
-                                            {
 
-                                                geddy.model.Event.removeUser(eventRecord.id, userRecord1.id, function(removeResponse){
 
-                                                    assert.deepEqual(removeResponse, {errCode: 1});
-                                                    done();
+                                    geddy.model.Event.removeUserFromEvent(eventRecord.id, userRecord.id, function(removeUserResponse){
 
-                                                });
+                                        assert.deepEqual(addCommentResponse, {errCode: 1});
+                                        done();
 
-                                                
-                                            });
-                                        });
                                     });
+
                                 });
                             });
                         });

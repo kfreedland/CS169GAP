@@ -206,6 +206,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
 {
+  console.log("adding users: " + " to event");
   usernames = usernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
@@ -217,7 +218,12 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
         if (!newUids){
           newUids = {};
         }
-        eventRecord.attendingusers = newUids.toString();
+        var usernamesAndEmailsList = [];
+        usernamesAndEmailsList.push(newUids.usernames);
+        usernamesAndEmailsList.push(newUids.emails);
+        console.log("newUids = " + usernamesAndEmailsList);
+        console.log("About to add attendingusers: " + usernamesAndEmailsList.toString());
+        eventRecord.attendingusers = usernamesAndEmailsList.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
         {
           if(err)
@@ -263,17 +269,24 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     if(err)
     {
       //database error
+      console.log("error looking up user");
       removeUserFromEventCallBack(7, callback);
       return;
 
     } 
     else if (userRecord)
     {
+
+      console.log("found user");
       var userName = userRecord.username;
       //remove username from event attendingusers
       geddy.model.Event.first({id: eventID} , function(err, eventRecord){
 
         if(eventRecord){
+
+          console.log("found event, event = ");
+          console.dir(eventRecord);
+
 
           var attendingUsersString = eventRecord.attendingusers;
           var attendingUsersList = attendingUsersString.split(",");
@@ -286,11 +299,14 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
               if(err){
                 //database error
+                console.log("error saving event");
+
                 removeUserFromEventCallBack(7, callback);
                 return;
 
               } else {
-               //succeeded in removing username from attending users
+                //succeeded in removing username from attending users
+                console.log("succeeded in removing username from attending users");
 
 
                 //remove event from user
@@ -327,6 +343,8 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
         } else {
           //event does not exist
+          console.log("event does not exist in database");
+
           removeUserFromEventCallBack(10, callback);
           return;
 
@@ -337,6 +355,8 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     } else {
 
       //user does not exist
+      console.log("user does not exist in database");
+
       removeUserFromEventCallBack(10, callback);
       return;
     }
@@ -397,7 +417,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
                   usernameReturn.push(userRecord.username);
                   if (emailReturn.length >= usernameOrEmailArray.length - 1){
                     // console.log("RETURNING FROM VALIDATE");
-                    toReturn.id = usernameReturn;
+                    toReturn.usernames = usernameReturn;
                     toReturn.email = emailReturn;
                     callback(toReturn);
                   }
@@ -419,7 +439,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
             if (emailReturn.length >= usernameOrEmailArray.length - 1)
             {
               // console.log("RETURNING FROM VALIDATE");
-              toReturn.id = usernameReturn;
+              toReturn.usernames = usernameReturn;
               toReturn.email = emailReturn;
               callback(toReturn);
             }
@@ -452,7 +472,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
                   usernameReturn.push(userRecord.username);
                   if (emailReturn.length >= usernameOrEmailArray.length - 1){
                     // console.log("RETURNING FROM VALIDATE");
-                    toReturn.id = usernameReturn;
+                    toReturn.usernames = usernameReturn;
                     toReturn.email = emailReturn;
                     callback(toReturn);
                   }
@@ -474,11 +494,13 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
 
 function addEventToUsers(eventid, userIds, callback)
 {
+  var numberOfUsersAdded = 0;
   for(var key in userIds)
   {
     var uid = userIds[key];
-    geddy.model.User.first({username: uid}, function(err, record)
+    geddy.model.User.first({username: uid}, function(err, userRecord)
     {
+      numberOfUsersAdded++;
       if(err)
       {
         console.log("error in user.first in Event.addEventToUsers");
@@ -487,29 +509,32 @@ function addEventToUsers(eventid, userIds, callback)
       }
       else
       {
-        if(record && record.myevents)
+        if(userRecord && userRecord.myevents)
         {
-          record.myevents += ","+eventid;
+          userRecord.myevents += ","+eventid;
         }
         else
         {
-          record.myevents = eventid;
+          userRecord.myevents = eventid;
         }
-        record.confirmPassword = record.password;
-        record.errors = null;
-        geddy.model.User.save(record, function(err, result)
+        userRecord.confirmPassword = userRecord.password;
+        userRecord.errors = null;
+        geddy.model.User.save(userRecord, function(err, result)
         {
           if(err)
           {
             console.log("error in event.save in Event.addEventToUsers");
             console.dir(err);
             callback(backendError);
+          } else if (numberOfUsersAdded >= userIds.length)
+          {
+            console.log("numberOfUsersAdded >= userIds.length");
+            callback({errCode: 1}); //success!
           }
         });
       }
     });
   }
-  callback({errCode: 1}); //success!
 }
 
 
