@@ -93,9 +93,9 @@ function fixPriceRange(lowPrice, highPrice, priceDivId) {
 */
 function fixParticipantsRange(lowNumParticipants, highNumParticipants, participantsDivId) {
 	if (lowNumParticipants === 1 && highNumParticipants === 1) {
-		$('#' + participantsDivId).html('For 1 person');
+		$('#' + participantsDivId).html('<b>Number of Participants:</b> For 1 person');
 	} else if (lowNumParticipants === highNumParticipants) {
-		$('#' + participantsDivId).html('For ' + lowNumParticipants + ' people');
+		$('#' + participantsDivId).html('<b>Number of Participants:</b> For ' + lowNumParticipants + ' people');
 	}
 }
 
