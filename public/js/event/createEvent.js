@@ -67,9 +67,14 @@ function createEvent(activityId) {
 	    eventData.begindate = epochStartDate;
 	    eventData.enddate = epochEndDate;
 	    eventData.description = $('#activityDescription').val();
+	    var fullname = $('.full_name').text();
+	    fullname = fullname.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+	    eventData.inviter = fullname;
 
 		var invitedFriends = $('#invitedFriends').val();
 		eventData.attendingusers = invitedFriends;
+		console.log("EVENT DATA:");
+		console.log(eventData);
 		$.ajax({
 	        type: 'POST',
 	        url: '/events/create',

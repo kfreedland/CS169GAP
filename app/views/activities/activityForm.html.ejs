@@ -21,7 +21,9 @@
                 <p>Welcome: 
                   <div id="username_container">
                     <a href="/events/myevents">
-                      <%=user.givenName%> <%=user.familyName%>
+                      <span class="full_name">
+                        <%=user.givenName%> <%=user.familyName%>
+                      </span>
                       <span class="badgeContainer">
                         <img src="/img/facebook-blank-photo.jpg" width="25" id="blankPhoto">
                         <span class="badge"></span>
@@ -50,7 +52,7 @@
               socket.on(eventName, function (data) {
                 console.log("GOT THE EVENT:" + data);
                 console.log(data);
-                
+
                 console.log("USER NOTIFICATIONS");
                 console.log('<%=user.mynotifications%>');
                 badgeNum += 1;

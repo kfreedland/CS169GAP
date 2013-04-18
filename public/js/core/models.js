@@ -551,9 +551,9 @@ Comment.addComment = function(eventID, userID, text, callback)
 }
 
 function addCommentCallback(errCode, callback){
-var responseDict = {};
-responseDict.errCode = errCode;
-callback(responseDict);
+  var responseDict = {};
+  responseDict.errCode = errCode;
+  callback(responseDict);
 }
 
 
@@ -753,6 +753,7 @@ Event.add = function(params, callback)
         }
         else
         {
+          console.log("BAD TABLE JOIN IN ACTIVITY.ADD activityrecord && activityrecord.name");
           callback(badTableJoin);
         }
       });
@@ -831,6 +832,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
             }
             else
             {
+              console.log("BAD TABLE JOIN IN getEmailAndId record && record.email && record.username");
               errorCallback(badTableJoin);
             }
           }
@@ -874,6 +876,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
     }
     else
     {
+      console.log("BAD TABLE JOIN IN EVENT.addUsersToEvent eventRecord && eventRecord.name");
       callback(badTableJoin);
     } 
   });
