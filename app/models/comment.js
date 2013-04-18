@@ -81,19 +81,22 @@ Comment.addComment = function(eventID, userID, text, callback)
           commentDict.text = text;
           commentDict.userid = userID;
           var commentRecord = geddy.model.Comment.create(commentDict);
-          geddy.model.Comment.save(commentRecord, function(err, commentModel){
+          geddy.model.Comment.save(commentRecord, function(err, result){
 
             if (err){
               console.log("Got error saving comment:");
               console.dir(err);
-            } else if (commentModel){
+
+              addCommentCallback(7, callback);
+
+            } else if (commentRecord){
               //add to event
               var comments = eventRecord.comments;
               if (!comments){
                 comments = "";
               }
               var commentList = comments.split(',');
-              commentList.push(commentModel.id);
+              commentList.push(commentRecord.id);
               eventRecord.comments = commentList.join(',');
 
               eventRecord.save(function(err, result){
@@ -112,6 +115,16 @@ Comment.addComment = function(eventID, userID, text, callback)
                 }
 
               });
+            } else {
+
+              //comment.save failed
+              console.log("comment.save returned nothing  ");
+              console.dir(err);
+
+              addCommentCallback(7, callback);
+
+
+
             }
 
           });
