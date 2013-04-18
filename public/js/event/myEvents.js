@@ -11,6 +11,9 @@ $(document).ready(function() {
         	//console.log(respData.events);
         	addMyEvents(respData.pastEvents, "past");
         	addMyEvents(respData.currentEvents, "current");
+
+        	// Reset the notification number
+        	$('.badge').hide();
         },
         failure: function(err) {
         	console.log('Failure');

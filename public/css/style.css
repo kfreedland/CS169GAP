@@ -61,7 +61,7 @@ label {
 
 .badgeContainer {
   position: relative;
-  padding: 5px 10px;
+  padding: 5px;
 }
 
 /* Fix Bootstrap's Styling */
@@ -238,13 +238,13 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   }
 
   #container {
-    width: 275px;
+    width: 300px;
     height: 55px;
     position: relative;
   }
 
   #welcome_container{
-    width: 70%;
+    width: 100%;
     position: absolute;
     top: 15px;
     left: 0;

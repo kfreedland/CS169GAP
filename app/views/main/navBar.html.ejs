@@ -32,14 +32,25 @@
               var badgeNum = 0;
               var userName = '<%= user.username %>';
 
-              var href = document.location.protocol + document.location.hostname;// + ':8000';
+              var href = document.location.protocol + document.location.hostname;
               console.log('href = ' + href);
               var socket = io.connect(href);
               var eventName = userName + 'InviteEvent';
               console.log("Listening for " + eventName);
+
+              <% if (user.mynotifications) { %>
+                badgeNum = <%= user.mynotifications %>;
+                if (badgeNum > 0){
+                  $('.badge').html(badgeNum);
+                  $('.badge').show();
+                }
+              <% } %>
+
               socket.on(eventName, function (data) {
                 console.log("GOT THE EVENT:" + data);
-
+                console.log(data);
+                
+                console.log("USER NOTIFICATIONS: <%=user.mynotifications%>");
                 badgeNum += 1;
                 $('.badge').html(badgeNum);
                 $('.badge').show();
