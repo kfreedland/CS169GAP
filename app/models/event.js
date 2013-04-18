@@ -203,6 +203,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
 {
+  console.log("addUsersToEvent Model Called");
   usernames = usernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
@@ -214,7 +215,11 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
         if (!newUids){
           newUids = {};
         }
+        var usernamesAndEmailsList = [];
+        usernamesAndEmailsList.push(newUids.usernames);
+        usernamesAndEmailsList.push(newUids.emails);
         eventRecord.attendingusers = newUids.toString();
+        console.log("SAVING EVENT");
         geddy.model.Event.save(eventRecord, function(err, result)
         {
           if(err)
@@ -225,9 +230,11 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
           }
           else
           {
+            console.log("EVENT INVITING");
             var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
             Event.invite({eventid: eventid, emails: newUids.email, userIds: newUids.id, message: message}, function(respDict)
             {
+              console.log("DONE INVITING");
               callback({errCode: 1});
             });
           }
@@ -394,7 +401,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
                   usernameReturn.push(userRecord.username);
                   if (emailReturn.length >= usernameOrEmailArray.length - 1){
                     // console.log("RETURNING FROM VALIDATE");
-                    toReturn.id = usernameReturn;
+                    toReturn.usernames = usernameReturn;
                     toReturn.email = emailReturn;
                     callback(toReturn);
                   }
@@ -416,7 +423,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
             if (emailReturn.length >= usernameOrEmailArray.length - 1)
             {
               // console.log("RETURNING FROM VALIDATE");
-              toReturn.id = usernameReturn;
+              toReturn.usernames = usernameReturn;
               toReturn.email = emailReturn;
               callback(toReturn);
             }
@@ -449,7 +456,7 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
                   usernameReturn.push(userRecord.username);
                   if (emailReturn.length >= usernameOrEmailArray.length - 1){
                     // console.log("RETURNING FROM VALIDATE");
-                    toReturn.id = usernameReturn;
+                    toReturn.usernames = usernameReturn;
                     toReturn.email = emailReturn;
                     callback(toReturn);
                   }
@@ -471,11 +478,13 @@ function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes vali
 
 function addEventToUsers(eventid, userIds, callback)
 {
+  var numberOfUsersAdded = 0;
   for(var key in userIds)
   {
     var uid = userIds[key];
-    geddy.model.User.first({username: uid}, function(err, record)
+    geddy.model.User.first({username: uid}, function(err, userRecord)
     {
+      numberOfUsersAdded++;
       if(err)
       {
         console.log("error in user.first in Event.addEventToUsers");
@@ -484,33 +493,32 @@ function addEventToUsers(eventid, userIds, callback)
       }
       else
       {
-        if(record && record.myevents)
+        if(userRecord && userRecord.myevents)
         {
-          record.myevents += ","+eventid;
+          userRecord.myevents += ","+eventid;
         }
         else
         {
-          record.myevents = eventid;
+          userRecord.myevents = eventid;
         }
-        record.confirmPassword = record.password;
-        record.errors = null;
-        geddy.model.User.save(record, function(err, result)
+        userRecord.confirmPassword = userRecord.password;
+        userRecord.errors = null;
+        geddy.model.User.save(userRecord, function(err, result)
         {
           if(err)
           {
             console.log("error in event.save in Event.addEventToUsers");
             console.dir(err);
             callback(backendError);
+          } else if (numberOfUsersAdded >= userIds.length)
+          {
+            console.log("numberOfUsersAdded >= userIds.length");
+            callback({errCode: 1}); //success!
           }
         });
       }
     });
   }
-  setTimeout(function() {
-    console.log("CALLBACK CALLED");
-    callback({errCode: 1}); //success!
-  }, 4000);
-  
 }
 
 

@@ -73,33 +73,14 @@ describe('Comment', function()
 
                             Event.add(eventData, function(respDict)
                             {
-                                var user1 = User.create({username: 'blahbyblah',
-                                password: 'MyPassword!',
-                                confirmPassword: 'MyPassword!',
-                                familyName: 'LastName1',
-                                givenName: 'FirstName1',
-                                email: 'greg@greg.com'});
-                                geddy.model.User.add(user1, function(aDict)
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
-                                    geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
-                                    {
-                                        geddy.model.User.first({username: user1.username}, function(err, userRecord1)
-                                        {
-                                            geddy.model.Event.addUsersToEvent(eventRecord.id, userRecord1.username, function (answerDict)
-                                            {
+                                	geddy.model.Comment.addComment(eventRecord.id, userRecord.id, "sample comment", function(addCommentResponse){
 
-                              
-                                            	geddy.model.Comment.addComment(eventRecord.id, userRecord1.id, "sample comment", function(addCommentResponse){
+                                		assert.deepEqual(addCommentResponse, {errCode: 1});
+                                    	done();
 
-
-                                            		assert.deepEqual(addCommentResponse, {errCode: 1});
-                                                	done();
-
-                                            	});
-                                                
-                                            });
-                                        });
-                                    });
+                                	});
                                 });
                             });
                         });
@@ -108,5 +89,160 @@ describe('Comment', function()
             });
         });
     });
+
+
+  describe('Comment.addComment - null eventID', function()
+    {
+        it('should return errCode:6', function(done)
+        {
+            var eventDict = {};
+            eventDict.name = 'jogging';
+            eventDict.description = 'go for a run with some friends!';
+            eventDict.category = 'Sports';
+            eventDict.time1 = undefined;
+            eventDict.time2 = undefined;
+            eventDict.flag = 'anyTime';
+            eventDict.begindate = undefined;
+            eventDict.enddate = undefined;
+            eventDict.lowprice = '0';
+            eventDict.highprice = '0';
+            eventDict.lownumparticipants = '1';
+            eventDict.highnumparticipants = undefined;
+            eventDict.latitude = undefined;
+            eventDict.longitude = undefined;
+            eventDict.duration = '2';
+
+            Activity.add(eventDict, function(err, response)
+            {
+                var user = User.create({username: 'foo',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg@greg.com'});
+                User.add(user, function (answerDict) 
+                {
+                    var eventData = {};
+                    var expected = {errCode: 1};
+                    User.first({username: 'foo'}, function(err, userRecord)
+                    {
+                        var uId = userRecord.id;
+
+                        Activity.first({name: 'jogging'}, function(err, activityRecord)
+                        {
+                            var d = new Date();
+                            eventData.name ="Jogging with friends!";
+                            eventData.activityid = activityRecord.id;
+                            eventData.time1 = 500;
+                            eventData.time2 = 1000;
+                            eventData.begindate = d.getTime();
+                            eventData.enddate = d.getTime() + 50000;
+                            eventData.description = 'my Event';
+                            eventData.attendingusers = user.username;
+                            eventData.noemail = true;
+
+                            Event.add(eventData, function(respDict)
+                            {
+                                
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+                                {
+                                	//var eventid = eventRecord.id;
+                                	var eventid = null;
+                                	var userid = userRecord.id;
+                                	var commentText = "sample comment";
+                  
+                                	geddy.model.Comment.addComment(eventid, userid, commentText, function(addCommentResponse){
+
+
+                                		assert.deepEqual(addCommentResponse, {errCode: 6});
+                                    	done();
+                                	});
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+	
+  describe('Comment.addComment - undefined eventID', function()
+    {
+        it('should return errCode:6', function(done)
+        {
+            var eventDict = {};
+            eventDict.name = 'jogging';
+            eventDict.description = 'go for a run with some friends!';
+            eventDict.category = 'Sports';
+            eventDict.time1 = undefined;
+            eventDict.time2 = undefined;
+            eventDict.flag = 'anyTime';
+            eventDict.begindate = undefined;
+            eventDict.enddate = undefined;
+            eventDict.lowprice = '0';
+            eventDict.highprice = '0';
+            eventDict.lownumparticipants = '1';
+            eventDict.highnumparticipants = undefined;
+            eventDict.latitude = undefined;
+            eventDict.longitude = undefined;
+            eventDict.duration = '2';
+
+            Activity.add(eventDict, function(err, response)
+            {
+                var user = User.create({username: 'foo',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg@greg.com'});
+                User.add(user, function (answerDict) 
+                {
+                    var eventData = {};
+                    var expected = {errCode: 1};
+                    User.first({username: 'foo'}, function(err, userRecord)
+                    {
+                        var uId = userRecord.id;
+
+                        Activity.first({name: 'jogging'}, function(err, activityRecord)
+                        {
+                            var d = new Date();
+                            eventData.name ="Jogging with friends!";
+                            eventData.activityid = activityRecord.id;
+                            eventData.time1 = 500;
+                            eventData.time2 = 1000;
+                            eventData.begindate = d.getTime();
+                            eventData.enddate = d.getTime() + 50000;
+                            eventData.description = 'my Event';
+                            eventData.attendingusers = user.username;
+                            eventData.noemail = true;
+
+                            Event.add(eventData, function(respDict)
+                            {
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+                                {
+                                	//var eventid = eventRecord.id;
+                                	var eventid = null;
+                                	var userid = userRecord.id;
+                                	var commentText = "sample comment";
+                  
+                                	geddy.model.Comment.addComment(eventid, userid, commentText, function(addCommentResponse){
+
+
+                                		assert.deepEqual(addCommentResponse, {errCode: 6});
+                                    	done();
+
+                                	});
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+
+
 
 });

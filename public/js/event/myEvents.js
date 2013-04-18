@@ -68,6 +68,8 @@ function addMyEvents(jsonResp, htmlID) {
 
 		// Add the invited participants
 		var participantsDivID = '#event-participants_' + htmlID + index;
+		console.log("DATA ATTENDING USERS");
+		console.log(data);
 		addInvitedParticipants(participantsDivID, data.attendingusers);
 
 		// Get the Activity Details
@@ -95,6 +97,8 @@ function addMyEvents(jsonResp, htmlID) {
 
 function addInvitedParticipants(participantsDivID, attendingUsers) {
 	var participantsStr = "Invited Participants: ";
+	console.log("ATTENDING USERS:");
+	console.log(attendingUsers);
 	var participantsList = attendingUsers.split(',');
 	for (var key in participantsList) {
 		participantsStr = participantsStr + participantsList[key] + ', ';
