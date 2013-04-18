@@ -211,6 +211,15 @@ function validateData(data, callback) {
 	callback(data);
 }
 
+function addInvitedParticipants(participantsDivID, attendingUsers) {
+	var participantsStr = "<b>Invited Participants:</b> ";
+	var participantsList = attendingUsers.split(',');
+	for (var key in participantsList) {
+		participantsStr = participantsStr + participantsList[key] + ', ';
+	}
+	$(participantsDivID).html(participantsStr);
+}
+
 /*********************************************
 	Helper Time Functions
 *********************************************/
