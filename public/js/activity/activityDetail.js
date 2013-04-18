@@ -11,11 +11,11 @@ $(document).ready(function() {
 
 function handleActivityDetailResponse(jsonData) {
 	$('#activity-title').html(jsonData.name);
-	$('#activity-description').html(jsonData.description);
+	$('#activity-description').html('<b>Description:</b> ' + jsonData.description);
 	var numParticipantsStr = 'For ' + jsonData.lownumparticipants + ' to ' + jsonData.highnumparticipants + ' people';
 	$('#activity-num-participants').html(numParticipantsStr);
-	$('#activity-category').html('Category: ' + jsonData.category);
-	var priceRangeStr = 'Price Range: $' + jsonData.lowprice + ' to $' + jsonData.highprice;
+	$('#activity-category').html('<b>Category:</b> ' + jsonData.category);
+	var priceRangeStr = '<b>Price Range:</b> $' + jsonData.lowprice + ' to $' + jsonData.highprice;
 	$('#activity-price-range').html(priceRangeStr);
 	
 	// Do some additional fixing of the activity details
@@ -25,7 +25,7 @@ function handleActivityDetailResponse(jsonData) {
 
 	// Calculate the address from the provided latitude and longitude, and insert it into the html
 	reverseGeocodeAddress(jsonData.latitude, jsonData.longitude, function(address) {
-		$("#activity-address").append('<span class="row-address-name">' + address + '</span>');
+		$("#activity-address").append('<span class="row-address-name"><b>Address:</b> ' + address + '</span>');
 	});
 }
 
