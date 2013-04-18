@@ -497,28 +497,36 @@ Comment.addComment = function(eventID, userID, text, callback)
           var commentRecord = geddy.model.Comment.create(commentDict);
           geddy.model.Comment.save(commentRecord, function(err, commentModel){
 
-            //add to event
-            var comments = eventRecord.comments;
-            var commentList = comments.split(',');
-            commentList.push(commentModel.id);
-            eventRecord.comments = commentList.join(',');
-
-            eventRecord.save(function(err, result){
-
-              if(err){
-
-                //database error
-                addCommentCallback(7, callback);
-
-
-              } else {
-
-                //succeeded
-                addCommentCallback(1, callback);
-
+            if (err){
+              console.log("Got error saving comment:");
+              console.dir(err);
+            } else if (commentModel){
+              //add to event
+              var comments = eventRecord.comments;
+              if (!comments){
+                comments = "";
               }
+              var commentList = comments.split(',');
+              commentList.push(commentModel.id);
+              eventRecord.comments = commentList.join(',');
 
-            });
+              eventRecord.save(function(err, result){
+
+                if(err){
+
+                  //database error
+                  addCommentCallback(7, callback);
+
+
+                } else {
+
+                  //succeeded
+                  addCommentCallback(1, callback);
+
+                }
+
+              });
+            }
 
           });
 
@@ -764,9 +772,9 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   for(var key in usernamesOrEmails)
   {
     var id = usernamesOrEmails[key];
-    console.log("id before trim:" + id + '.');
+    // console.log("id before trim:" + id + '.');
     id.trim();
-    console.log("id after trim:" + id + '.');
+    // console.log("id after trim:" + id + '.');
     // console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
     {
@@ -899,14 +907,14 @@ Event.removeUser = function(eventID, userID, callback)
 
       var userName = userRecord.username;
       //remove username from event attendingusers
-      geddy.Model.Event.first({id: eventID} , function(err, eventRecord){
+      geddy.model.Event.first({id: eventID} , function(err, eventRecord){
 
         if(eventRecord){
 
           var attendingUsersString = eventRecord.attendingusers;
           var attendingUsersList = attendingUsersString.split(",");
           var usernameIndex = attendingUsersList.indexOf(userRecord)
-          if(usernnameIndex >= 0){
+          if(usernameIndex >= 0){
             attendingUsersList.splice(usernameIndex,1);
             attendingUsersString = attendingUsersList.join(",");
             eventRecord.attendingusers = attendingUsersString;

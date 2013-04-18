@@ -21,7 +21,7 @@ describe('Comment', function()
         resetFixture(done);
     });
 
-  describe('Comment.addComment normal - adds user to event first', function()
+  describe('Comment.get comments for event', function()
     {
         it('should return errCode:1', function(done)
         {
@@ -81,18 +81,16 @@ describe('Comment', function()
                                 email: 'greg@greg.com'});
                                 geddy.model.User.add(user1, function(aDict)
                                 {
-                                    geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+                                    geddy.model.Event.first({name: eventData.name}, function (err, eventRecord)
                                     {
-                                        geddy.model.User.first({username: user1.username}, function(err, userRecord1)
+                                        geddy.model.User.first({username: user1.username}, function (err, userRecord1)
                                         {
                                             geddy.model.Event.addUsersToEvent(eventRecord.id, userRecord1.username, function (answerDict)
                                             {
-
-                              
-                                            	geddy.model.Comment.addComment(eventRecord.id, userRecord1.id, "sample comment", function(addCommentResponse){
+                                            	geddy.model.Comment.addComment(eventRecord.id, userRecord1.id, "sample comment", function (addCommentResponse){
 
 
-                                                    geddy.model.Comment.getCommentsForEvent(eventRecord.id, function(getCommentsResponse){
+                                                    geddy.model.Comment.getCommentsForEvent(eventRecord.id, function (getCommentsResponse){
 
                                                         assert.deepEqual(getCommentsResponse.errCode, 1);
                                                         assert.deepEqual(getCommentsResponse.comments.length, 1);
