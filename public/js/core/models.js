@@ -737,15 +737,20 @@ var Event = function () {
 
 Event.add = function(params, callback)
 {
-  if(params.inviterId && params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid && params.attendingusers)
+  if(params.inviterId && params.name && params.begindate && params.enddate && params.time1  && params.time2 && params.activityid)
   {
-    var idsOrEmails = params.attendingusers.split(',');
+    var idsOrEmails = [];
+    if(params.attendingusers)
+    {
+      idsOrEmails = params.attendingusers.split(',');
+    }
+    
     getEmailAndId(idsOrEmails, callback, function(emailAndId)
     {
       var emails = emailAndId.email;
       var userIds = emailAndId.id;
       if (!userIds){
-        userIds = "";
+        userIds = [];
       }
       geddy.model.Activity.first({id: params.activityid}, function(err, activityRecord)
       {
@@ -753,49 +758,49 @@ Event.add = function(params, callback)
         {
           if(params.begindate <= params.enddate && params.time1 <= params.time2)
           {
-            //all required fields are valid
-            var eventDict = {};
-            var usersToAdd = [];
-            console.dir(emailAndId.records);
-            for(var key in emailAndId.records)
-            {
-              var record = emailAndId.records[key];
-              console.log("record: "+record);
-              if(record.username)
-              {
-                usersToAdd.push(record.username);
-              }
-              else
-              {
-                usersToAdd.push(record.email);
-              }
-            }
-            eventDict.name = params.name;
-            eventDict.begindate = params.begindate;
-            eventDict.enddate = params.enddate;
-            eventDict.time1 = params.time1;
-            eventDict.time2 = params.time2;
-            eventDict.description = params.description;
-            eventDict.activityid = params.activityid;
-            eventDict.attendingusers = usersToAdd.toString();
-            var eventRecord = geddy.model.Event.create(eventDict);
-            geddy.model.Event.save(eventRecord, function(err, eventModel)
-            {
-              if(err)
-              {
-                console.log("error in event.save in Event.add");
-                console.dir(err);
-                callback(backendError);
-              }
-              else
-              {
-                //find inviter info
-                geddy.model.User.first({id: params.inviterId}, function(err, inviterRecord)
-                {
-                  var intviterUsername = inviterRecord.username;
-                  var inviterFullName = inviterRecord.givenName +" " + inviterRecord.familyName;
-                  userIds.push(intviterUsername);
 
+            geddy.model.User.first({id: params.inviterId}, function(err, inviterRecord)
+            {
+              var intviterUsername = inviterRecord.username;
+              var inviterFullName = inviterRecord.givenName +" " + inviterRecord.familyName;
+              var usersToAdd = [];
+              usersToAdd.push(inviterRecord.id);
+              userIds.push(intviterUsername);
+              //all required fields are valid
+              var eventDict = {};
+              console.dir(emailAndId.records);
+              for(var key in emailAndId.records)
+              {
+                var record = emailAndId.records[key];
+                console.log("record: "+record);
+                if(record.username)
+                {
+                  usersToAdd.push(record.username);
+                }
+                else
+                {
+                  usersToAdd.push(record.email);
+                }
+              }
+              eventDict.name = params.name;
+              eventDict.begindate = params.begindate;
+              eventDict.enddate = params.enddate;
+              eventDict.time1 = params.time1;
+              eventDict.time2 = params.time2;
+              eventDict.description = params.description;
+              eventDict.activityid = params.activityid;
+              eventDict.attendingusers = usersToAdd.toString();
+              var eventRecord = geddy.model.Event.create(eventDict);
+              geddy.model.Event.save(eventRecord, function(err, eventModel)
+              {
+                if(err)
+                {
+                  console.log("error in event.save in Event.add");
+                  console.dir(err);
+                  callback(backendError);
+                }
+                else
+                {
                   addEventToUsers(eventModel.id, userIds, function(respDict)
                   {
                     if(params.noemail)
@@ -811,8 +816,8 @@ Event.add = function(params, callback)
                       });
                     }
                   });
-                });
-              }
+                }
+              });
             });
           }
           else
