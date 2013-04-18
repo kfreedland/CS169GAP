@@ -22,6 +22,7 @@ var Events = function () {
   {
     var self = this;
     params.inviterId = this.session.get('userId');
+    console.log("inviterId = " + params.inviterId);
     geddy.model.Event.add(params, function createCallback(respDict)
     {
       console.log('respDict is');
