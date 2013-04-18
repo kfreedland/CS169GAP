@@ -134,7 +134,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   {
     var id = usernamesOrEmails[key];
     // console.log("id before trim:" + id + '.');
-    id.trim();
+    id = id.trim();
     // console.log("id after trim:" + id + '.');
     // console.log(id);
     if(id.indexOf('@') >= 0) //special characters cant be in usernames only in emails
@@ -619,11 +619,23 @@ Event.invite = function(params, callback)
             geddy.io.sockets.emit(eventName, {eventId: eventID, eventName: eventModel.name});
           }
           //Update user's notification number
-          geddy.model.User.first({id: userId}, function (err, userModel){
+          geddy.model.User.first({username: userId}, function (err, userModel){
+            console.log("About to increment mynotifications");
             if (!err && userModel){
-              userModel.mynotifications += 1;
+              console.log("userModel exists and no err so incrementing mynotifications");
+              if (userModel.mynotifications){
+                userModel.mynotifications += 1;
+              } else {
+                userModel.mynotifications = 1;
+              }
+              console.log("mynotifications = " + userModel.mynotifications);
+              userModel.errors = null;
               userModel.save(function (err, result){
                 //do nothing
+                if (err){
+                  console.log("Got error when saving user after updating notification number: ");
+                  console.dir(err);
+                }
               });
             }
           });
@@ -986,19 +998,20 @@ Event.getMyEvents = function (params, callback) {
               }
               if ((currentEvents.length + pastEvents.length) == eventIds.length)
               {
+                //Reset mynotifications counter
+                userModel.mynotifications = 0;
+                userModel.errors = null;
+                userModel.save(function (err, result){
+                  //Return now
+                  getEventsCallback(1, currentEvents, pastEvents, callback);
+                });
                 // console.log("index = " + index);
-                getEventsCallback(1, currentEvents, pastEvents, callback);
               }
             });
           }
         } else {
           getEventsCallback(1, currentEvents, pastEvents, callback);
         }
-        //Reset mynotifications counter
-        userModel.mynotifications = 0;
-        userModel.save(function (err, result){
-          //do nothing
-        });
       }
     }
   });

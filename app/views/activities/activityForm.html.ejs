@@ -26,9 +26,6 @@
                         <img src="/img/facebook-blank-photo.jpg" width="25" id="blankPhoto">
                         <span class="badge"></span>
                       </span>
-                      <div id="notifications_container"> 
-                        <%=user.mynotifications%>
-                      </div>
                     </a>
                   </div>
                 </p>
@@ -47,12 +44,20 @@
               var eventName = userName + 'InviteEvent';
               console.log("Listening for " + eventName);
 
+              <% if (user.mynotifications) { %>
+                badgeNum = <%= user.mynotifications %>;
+                if (badgeNum > 0){
+                  $('.badge').html(badgeNum);
+                  $('.badge').show();
+                }
+              <% } %>
+
               socket.on(eventName, function (data) {
                 console.log("GOT THE EVENT:" + data);
                 console.log(data);
                 
-                console.log("USER NOTIFICATIONS");
-                console.log('<%=user.mynotifications%>');
+                console.log("USER NOTIFICATIONS: <%=user.mynotifications%>");
+
                 badgeNum += 1;
                 $('.badge').html(badgeNum);
                 $('.badge').show();
