@@ -1,14 +1,13 @@
 <!--Event Detail Page -->
 <div data-role="page" class="event_detail_page">
   <script type='text/javascript'>
-    function removeEvent(jsonData) {
-      console.log("BLAHHHH");
-      console.log(jsonData);
-      var userName = '<%= user.username %>';
+    var username = '<%= user.username %>';
+    
+    function removeEvent(jsonData) {  
       $("#removeEventButton").click(function() {
         eventUserData = {};
         eventUserData.eventid = jsonData.id;
-        eventUserData.userid = userName;
+        eventUserData.userid = username;
         console.log(eventUserData);
         $.ajax({
             type: 'GET',
@@ -25,6 +24,30 @@
         });
       });
     }
+
+    function addComment(jsonData) {
+      $('#addCommentButton').click(function() {
+        commentData = {};
+        commentData.eventid = jsonData.id;
+        commentData.userid = username;
+        commentData.text = $('#commentTextarea').val();
+        console.log(commentData);
+        $.ajax({
+              type: 'GET',
+              url: '/comments/add',
+              data: commentData,
+              contentType: "application/json",
+              dataType: "json",
+              success: function(respData) {
+                console.log('Success');
+                console.log(respData);
+              },
+              failure: function(err) {
+                console.log('Failure');
+              }
+          });
+        });
+      }
   </script>
   <!-- Include the eventDetail js -->
   <%- scriptLink('/js/event/eventDetail.js', {type:'text/javascript'}) %>
@@ -60,7 +83,7 @@
     <div id="comments_box">
       <h3>Comments</h3>
       <div id="add_comment">
-        <textarea name="textarea" id="comment_textarea">Add a comment!</textarea>
+        <textarea name="textarea" id="commentTextarea">Add a comment!</textarea>
       </div>
     </div>
 

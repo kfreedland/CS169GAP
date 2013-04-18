@@ -8,6 +8,7 @@ $(document).ready(function() {
 	handleEventDetailResponse(jsonData);
 	inviteMoreFriends(jsonData.id);
 	removeEvent(jsonData);
+	addComment(jsonData);
 });
 
 function handleEventDetailResponse(jsonData) {
@@ -56,4 +57,3 @@ function inviteMoreFriends(eventID) {
 	    });
 	});
 }
-
