@@ -73,33 +73,14 @@ describe('Comment', function()
 
                             Event.add(eventData, function(respDict)
                             {
-                                var user1 = User.create({username: 'blahbyblah',
-                                password: 'MyPassword!',
-                                confirmPassword: 'MyPassword!',
-                                familyName: 'LastName1',
-                                givenName: 'FirstName1',
-                                email: 'greg@greg.com'});
-                                geddy.model.User.add(user1, function(aDict)
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
-                                    geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
-                                    {
-                                        geddy.model.User.first({username: user1.username}, function(err, userRecord1)
-                                        {
-                                            geddy.model.Event.addUsersToEvent(eventRecord.id, userRecord1.username, function (addUserResponse)
-                                            {
+                                	geddy.model.Comment.addComment(eventRecord.id, userRecord.id, "sample comment", function(addCommentResponse){
 
-                              
-                                            	geddy.model.Comment.addComment(eventRecord.id, userRecord1.id, "sample comment", function(addCommentResponse){
+                                		assert.deepEqual(addCommentResponse, {errCode: 1});
+                                    	done();
 
-
-                                            		assert.deepEqual(addCommentResponse, {errCode: 1});
-                                                	done();
-
-                                            	});
-                                                
-                                            });
-                                        });
-                                    });
+                                	});
                                 });
                             });
                         });
@@ -162,38 +143,20 @@ describe('Comment', function()
 
                             Event.add(eventData, function(respDict)
                             {
-                                var user1 = User.create({username: 'blahbyblah',
-                                password: 'MyPassword!',
-                                confirmPassword: 'MyPassword!',
-                                familyName: 'LastName1',
-                                givenName: 'FirstName1',
-                                email: 'greg@greg.com'});
-                                geddy.model.User.add(user1, function(aDict)
+                                
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
-                                    geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
-                                    {
-                                        geddy.model.User.first({username: user1.username}, function(err, userRecord1)
-                                        {
-                                            geddy.model.Event.addUsersToEvent(eventRecord.id, userRecord1.username, function (answerDict)
-                                            {
+                                	//var eventid = eventRecord.id;
+                                	var eventid = null;
+                                	var userid = userRecord.id;
+                                	var commentText = "sample comment";
+                  
+                                	geddy.model.Comment.addComment(eventid, userid, commentText, function(addCommentResponse){
 
 
-                                            	//var eventid = eventRecord.id;
-                                            	var eventid = null;
-                                            	var userid = userRecord1.id;
-                                            	var commentText = "sample comment";
-                              
-                                            	geddy.model.Comment.addComment(eventID, userid, commentText, function(addCommentResponse){
-
-
-                                            		assert.deepEqual(addCommentResponse, {errCode: 6});
-                                                	done();
-
-                                            	});
-                                                
-                                            });
-                                        });
-                                    });
+                                		assert.deepEqual(addCommentResponse, {errCode: 6});
+                                    	done();
+                                	});
                                 });
                             });
                         });
@@ -256,38 +219,20 @@ describe('Comment', function()
 
                             Event.add(eventData, function(respDict)
                             {
-                                var user1 = User.create({username: 'blahbyblah',
-                                password: 'MyPassword!',
-                                confirmPassword: 'MyPassword!',
-                                familyName: 'LastName1',
-                                givenName: 'FirstName1',
-                                email: 'greg@greg.com'});
-                                geddy.model.User.add(user1, function(aDict)
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
-                                    geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
-                                    {
-                                        geddy.model.User.first({username: user1.username}, function(err, userRecord1)
-                                        {
-                                            geddy.model.Event.addUsersToEvent(eventRecord.id, userRecord1.username, function (answerDict)
-                                            {
+                                	//var eventid = eventRecord.id;
+                                	var eventid = null;
+                                	var userid = userRecord.id;
+                                	var commentText = "sample comment";
+                  
+                                	geddy.model.Comment.addComment(eventid, userid, commentText, function(addCommentResponse){
 
 
-                                            	//var eventid = eventRecord.id;
-                                            	var eventid = null;
-                                            	var userid = userRecord1.id;
-                                            	var commentText = "sample comment";
-                              
-                                            	geddy.model.Comment.addComment(eventID, userid, commentText, function(addCommentResponse){
+                                		assert.deepEqual(addCommentResponse, {errCode: 6});
+                                    	done();
 
-
-                                            		assert.deepEqual(addCommentResponse, {errCode: 6});
-                                                	done();
-
-                                            	});
-                                                
-                                            });
-                                        });
-                                    });
+                                	});
                                 });
                             });
                         });
