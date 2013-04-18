@@ -856,7 +856,7 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
       validateUserIds(data, eventid, function (newUids){
         // console.log("validateUserIds returned");
         if (!newUids){
-          newUids = [];
+          newUids = {};
         }
         eventRecord.attendingusers = newUids.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
@@ -993,25 +993,28 @@ function removeUserFromEventCallBack(errCode, callback){
 
 
 //validates and returns a list of userids and emails to be added
-function validateUserIds(idArray, eventid, callback) //assumes valid usernames
+function validateUserIds(usernameOrEmailArray, eventid, callback) //assumes valid usernames
 {
   toReturn = {};
-  idHash = {};
-  idReturn = [];
+  usernameOrEmailHash = {};
+  usernameReturn = [];
   emailReturn = [];
-  for(var key in idArray)
+  for(var key in usernameOrEmailArray)
   {
-    var id = idArray[key];
-    if(idHash[id])
+    var usernameOrEmail = usernameOrEmailArray[key];
+    //This removes duplicate identifiers
+    if(usernameOrEmailHash[usernameOrEmail])
     {
       continue;
     }
     else
     {
-      idHash[id] = true;
-      if(id.indexOf('@') >= 0)
+      //Set hash to true so we don't add this usernameOrEmail again
+      usernameOrEmailHash[usernameOrEmail] = true;
+      //If it has @, it is an email
+      if(usernameOrEmail.indexOf('@') >= 0)
       {
-        geddy.model.User.first({email: id}, function(err, userRecord)
+        geddy.model.User.first({email: usernameOrEmail}, function(err, userRecord)
         {
           if(userRecord && userRecord.username)
           {
@@ -1032,16 +1035,16 @@ function validateUserIds(idArray, eventid, callback) //assumes valid usernames
                 if(!err)
                 {
                   emailReturn.push(userRecord.email);
-                  idReturn.push(userRecord.username);
-                  if (emailReturn.length >= idArray.length - 1){
+                  usernameReturn.push(userRecord.username);
+                  if (emailReturn.length >= usernameOrEmailArray.length - 1){
                     // console.log("RETURNING FROM VALIDATE");
-                    toReturn.id = idReturn;
+                    toReturn.id = usernameReturn;
                     toReturn.email = emailReturn;
                     callback(toReturn);
                   }
                 } else {
                   console.log("emailReturn.length = " + emailReturn.length);
-                  console.log("idArray.length = " + idArray.length);
+                  console.log("usernameOrEmailArray.length = " + usernameOrEmailArray.length);
                   console.log("error occurred");
                   console.dir(err);
                   callback(toReturn);
@@ -1051,13 +1054,13 @@ function validateUserIds(idArray, eventid, callback) //assumes valid usernames
           }
           else
           {
-            emailReturn.push(id);
+            emailReturn.push(usernameOrEmail);
             console.log("emailReturn.length = " + emailReturn.length);
-            console.log("idArray.length = " + idArray.length);
-            if (emailReturn.length >= idArray.length - 1)
+            console.log("usernameOrEmailArray.length = " + usernameOrEmailArray.length);
+            if (emailReturn.length >= usernameOrEmailArray.length - 1)
             {
               // console.log("RETURNING FROM VALIDATE");
-              toReturn.id = idReturn;
+              toReturn.id = usernameReturn;
               toReturn.email = emailReturn;
               callback(toReturn);
             }
@@ -1087,16 +1090,16 @@ function validateUserIds(idArray, eventid, callback) //assumes valid usernames
                 if(!err)
                 {
                   emailReturn.push(userRecord.email);
-                  idReturn.push(userRecord.username);
-                  if (emailReturn.length >= idArray.length - 1){
+                  usernameReturn.push(userRecord.username);
+                  if (emailReturn.length >= usernameOrEmailArray.length - 1){
                     // console.log("RETURNING FROM VALIDATE");
-                    toReturn.id = idReturn;
+                    toReturn.id = usernameReturn;
                     toReturn.email = emailReturn;
                     callback(toReturn);
                   }
                 } else {
                   console.log("emailReturn.length = " + emailReturn.length);
-                  console.log("idArray.length = " + idArray.length);
+                  console.log("usernameOrEmailArray.length = " + usernameOrEmailArray.length);
                   console.log("error occurred");
                   console.dir(err);
                   callback(toReturn);
