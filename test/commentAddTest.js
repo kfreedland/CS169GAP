@@ -71,7 +71,8 @@ describe('Comment', function()
                             eventData.attendingusers = user.username;
                             eventData.noemail = true;
 
-                            Event.add(eventData, function(respDict)
+                            eventData.inviterId = userRecord.id;
+Event.add(eventData, function(respDict)
                             {
                                 var user1 = User.create({username: 'blahbyblah',
                                 password: 'MyPassword!',

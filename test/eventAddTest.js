@@ -123,6 +123,7 @@ describe('Event', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
+                            eventData.inviterId = userRecord.id;
                             eventData.attendingusers = userRecord.email;
 
                             Event.add(eventData, function(respDict)
@@ -186,6 +187,7 @@ describe('Event', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = user.username;
                             eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
 
                             Event.add(eventData, function(respDict)
                             {
@@ -266,6 +268,7 @@ describe('Event', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = user.username;
                             eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
 
                             Event.add(eventData, function(respDict)
                             {
@@ -328,6 +331,7 @@ describe('Event', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
                             eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
 
                             Event.add(eventData, function(respDict)
                             {
@@ -390,6 +394,7 @@ describe('Event', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = userRecord.email;
                             eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
 
                             Event.add(eventData, function(respDict)
                             {

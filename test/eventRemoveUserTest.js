@@ -70,7 +70,7 @@ describe('Comment', function()
                             eventData.description = 'my Event';
                             eventData.attendingusers = user.username;
                             eventData.noemail = true;
-
+                            eventData.inviterId = userRecord.id;
                             Event.add(eventData, function(respDict)
                             {
                                 var user1 = User.create({username: 'blahbyblah',
