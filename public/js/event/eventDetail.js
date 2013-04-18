@@ -24,8 +24,7 @@ function handleEventDetailResponse(jsonData) {
 	// Do some additional fixing of the event details
 	fixPriceRange(parseInt(jsonData.lowprice), parseInt(jsonData.highprice), 'event-price-range');
 	fixParticipantsRange(parseInt(jsonData.lownumparticipants), parseInt(jsonData.highnumparticipants), 'event-num-participants');
-
-	// Do some additional fixing of the event details
+	addInvitedParticipants('#event-participants', jsonData.attendingusers);
 	var t1Str = convertMsToString(jsonData.time1);
 	var t2Str = convertMsToString(jsonData.time2);
 	$('#event-time-range').html('<b>Time of Event:</b> ' + t1Str + ' to ' + t2Str);
@@ -49,8 +48,7 @@ function inviteMoreFriends(eventID) {
 	        success: function(respData) {
 	        	console.log('Success');
 	        	console.log(respData);
-	        	// TODO: Need to show confirmation that friend was invited
-	        	//location.reload();
+	        	window.location = '/events/myevents';
 	        },
 	        failure: function(err) {
 	        	console.log('Failure');

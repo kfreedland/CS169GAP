@@ -70,16 +70,16 @@ function run_test_coverage(callback){
 }
  
 function execute_test_code(mochaInstance, cb) {
-    mochaInstance.addFile('./test/userTest.js');
-    mochaInstance.addFile('./test/activityAddTest.js');
-    mochaInstance.addFile('./test/activityFindTest.js');
-    mochaInstance.addFile('./test/getActivityByIdTest.js');
-    mochaInstance.addFile('./test/eventAddTest.js');
-    mochaInstance.addFile('./test/eventChangeDateTimeTest.js');
-    mochaInstance.addFile('./test/eventInviteTest.js');
-    mochaInstance.addFile('./test/eventRemoveUserTest.js');
-    mochaInstance.addFile('./test/getMyEventsTest.js');
-    mochaInstance.addFile('./test/commentAddTest.js');
+    // mochaInstance.addFile('./test/userTest.js');
+    // mochaInstance.addFile('./test/activityAddTest.js');
+    // mochaInstance.addFile('./test/activityFindTest.js');
+    // mochaInstance.addFile('./test/getActivityByIdTest.js');
+    // mochaInstance.addFile('./test/eventAddTest.js');
+    // mochaInstance.addFile('./test/eventChangeDateTimeTest.js');
+    // mochaInstance.addFile('./test/eventInviteTest.js');
+    // mochaInstance.addFile('./test/eventRemoveUserTest.js');
+    // mochaInstance.addFile('./test/getMyEventsTest.js');
+    // mochaInstance.addFile('./test/commentAddTest.js');
     mochaInstance.addFile('./test/getCommentsForEventTest.js');
     mochaInstance.options.ignoreLeaks = true;
     //Set up socket io because geddy isn't initialized correctly

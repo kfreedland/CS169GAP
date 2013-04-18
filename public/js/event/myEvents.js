@@ -7,8 +7,6 @@ $(document).ready(function() {
         contentType: "application/json",
         dataType: "json",
         success: function(respData) {
-        	//console.log(respData.events.length);
-        	//console.log(respData.events);
         	addMyEvents(respData.pastEvents, "past");
         	addMyEvents(respData.currentEvents, "current");
 
@@ -35,7 +33,7 @@ function addMyEvents(jsonResp, htmlID) {
 		var index = index.toString();
 		var eventID = 'event_'  + htmlID + index;
 		var eventPrice = 'event-price_'  + htmlID + index;
-		var eventParticipants = 'event-participants_'  + htmlID + index;
+		var eventParticipants = 'event-num-participants_'  + htmlID + index;
 		var eventTime = 'event-time_'  + htmlID + index;
 
 		// Append the html to the list_activities div
@@ -45,10 +43,10 @@ function addMyEvents(jsonResp, htmlID) {
 			'<div class="button_result_left">' +
 
 			'<div class="row-title">' + index + '. ' + data.name + '</div><br>' +
-			'<div class="row-description">' + data.description + '</div>' +
-			'<div class="row-num-participants" id="' + eventParticipants + '"></div>' +
+			'<div class="row-description"><b>Description:</b> ' + data.description + '</div>' +
 			'<div class="row-time-range" id="' + eventTime + '"></div>' +
-			'<div class="row-participants" id="event-participants_' + htmlID + index + '"></div>' +
+			'<div class="row-num-participants" id="' + eventParticipants + '"></div>' +
+			'<div class="row-participants" id="event-invite-participants_' + htmlID + index + '"></div>' +
 			'</div>' +
 
 			'<div class = "button_result_right">' +
@@ -57,6 +55,7 @@ function addMyEvents(jsonResp, htmlID) {
 			'<div class="row-price-range" id ="' + eventPrice + '"></div>' +
 			
 			'</div>' +
+			'</div>' +
 
 			'</li>'
 		);
@@ -64,16 +63,12 @@ function addMyEvents(jsonResp, htmlID) {
 		// Do some additional fixing of the event details
 		var t1Str = convertMsToString(data.time1);
 		var t2Str = convertMsToString(data.time2);
-		$('#' + eventTime).html('Time of Event: ' + t1Str + ' to ' + t2Str);
+		$('#' + eventTime).html('<b>Time of Event:</b> ' + t1Str + ' to ' + t2Str);
 
-		// Add the invited participants
-		var participantsDivID = '#event-participants_' + htmlID + index;
-		console.log("DATA ATTENDING USERS");
-		console.log(data);
-		addInvitedParticipants(participantsDivID, data.attendingusers);
+		
 
 		// Get the Activity Details
-		getActivityDetail(data.activityid, index, function(activityJSON) {
+		getActivityDetail(data.activityid, data.attendingusers, htmlID + index, function(activityJSON) {
 			var eventData = data;
 			eventData.category = activityJSON.category;
 			eventData.lowprice = activityJSON.lowprice;
@@ -95,18 +90,7 @@ function addMyEvents(jsonResp, htmlID) {
 	});
 }
 
-function addInvitedParticipants(participantsDivID, attendingUsers) {
-	var participantsStr = "Invited Participants: ";
-	console.log("ATTENDING USERS:");
-	console.log(attendingUsers);
-	var participantsList = attendingUsers.split(',');
-	for (var key in participantsList) {
-		participantsStr = participantsStr + participantsList[key] + ', ';
-	}
-	$(participantsDivID).html(participantsStr);
-}
-
-function getActivityDetail(activityID, eventIndex, callback) {
+function getActivityDetail(activityID, attendingusers, eventIndex, callback) {
 	var activityJSON = {activityid: activityID};
 	$.ajax({
         type: 'GET',
@@ -115,8 +99,8 @@ function getActivityDetail(activityID, eventIndex, callback) {
         contentType: "application/json",
         dataType: "json",
         success: function(respData) {
-        	handleInsertActivityDetail(respData.activity, eventIndex);
-        	callback(respData.activity);
+        	console.log("SUCCESS FOR " + eventIndex);
+        	handleInsertActivityDetail(respData.activity, attendingusers, eventIndex, callback);
         },
         failure: function(err) {
         	console.log('Failure');
@@ -124,27 +108,32 @@ function getActivityDetail(activityID, eventIndex, callback) {
     });
 }
 
-function handleInsertActivityDetail(activityJSON, eventIndex) {
-	var eventPrice = 'event-price-' + eventIndex;
-	var eventParticipants = 'event-participants-' + eventIndex;
-	var eventTime = 'event-time-' + eventIndex;
-	var eventCategory = 'event-category-' + eventIndex;
+function handleInsertActivityDetail(activityJSON, attendingusers, eventIndex, callback) {
+	var eventPrice = 'event-price_' + eventIndex;
+	var eventNumParticipants = 'event-num-participants_' + eventIndex;
+	var eventTime = 'event-time_' + eventIndex;
+	var eventCategory = 'event-category_' + eventIndex;
 
 	var participantsStr = 'For ' + activityJSON.lownumparticipants + ' to ' + activityJSON.highnumparticipants + ' people';
 	var priceRangeStr = 'Price Range: $' + activityJSON.lowprice + ' to $' + activityJSON.highprice;
 
 
-	$('#' + eventParticipants).html(participantsStr);
+	$('#' + eventNumParticipants).html(participantsStr);
 	$('#' + eventPrice).html(priceRangeStr);
 	$('#' + eventCategory).html(activityJSON.category);
 
 	// Fix some of the event details
 	fixPriceRange(parseInt(activityJSON.lowprice), parseInt(activityJSON.highprice), eventPrice);
-	fixParticipantsRange(parseInt(activityJSON.lownumparticipants), parseInt(activityJSON.highnumparticipants), eventParticipants);
+	fixParticipantsRange(parseInt(activityJSON.lownumparticipants), parseInt(activityJSON.highnumparticipants), eventNumParticipants);
 
+	// Add the invited participants
+	var participantsDivID = '#event-invite-participants_' + eventIndex;
+	addInvitedParticipants(participantsDivID, attendingusers);
+	
 	// Calculate the address from the provided latitude and longitude, and insert it into the html
 	reverseGeocodeAddress(activityJSON.latitude, activityJSON.longitude, function(address) {
-		$("#event-address-" + eventIndex).append('<span class="row-address-name">' + address + '</span>');
+		$('#event-address_' + eventIndex).append('<span class="row-address-name">' + address + '</span>');
+		callback(activityJSON);
 	});
 	
 }

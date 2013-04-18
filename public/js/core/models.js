@@ -875,7 +875,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, usernames, callback)
 {
-  console.log("addUsersToEvent Model Called");
+  console.log("adding users: " + " to event");
   usernames = usernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
@@ -890,8 +890,9 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
         var usernamesAndEmailsList = [];
         usernamesAndEmailsList.push(newUids.usernames);
         usernamesAndEmailsList.push(newUids.emails);
-        eventRecord.attendingusers = newUids.toString();
-        console.log("SAVING EVENT");
+        console.log("newUids = " + usernamesAndEmailsList);
+        console.log("About to add attendingusers: " + usernamesAndEmailsList.toString());
+        eventRecord.attendingusers = usernamesAndEmailsList.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
         {
           if(err)
@@ -902,11 +903,9 @@ Event.addUsersToEvent = function(eventid, usernames, callback)
           }
           else
           {
-            console.log("EVENT INVITING");
             var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
             Event.invite({eventid: eventid, emails: newUids.email, userIds: newUids.id, message: message}, function(respDict)
             {
-              console.log("DONE INVITING");
               callback({errCode: 1});
             });
           }
