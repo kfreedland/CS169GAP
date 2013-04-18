@@ -266,17 +266,24 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     if(err)
     {
       //database error
+      console.log("error looking up user");
       removeUserFromEventCallBack(7, callback);
       return;
 
     } 
     else if (userRecord)
     {
+
+      console.log("found user");
       var userName = userRecord.username;
       //remove username from event attendingusers
       geddy.model.Event.first({id: eventID} , function(err, eventRecord){
 
         if(eventRecord){
+
+          console.log("found event, event = ");
+          console.dir(eventRecord);
+
 
           var attendingUsersString = eventRecord.attendingusers;
           var attendingUsersList = attendingUsersString.split(",");
@@ -289,11 +296,14 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
               if(err){
                 //database error
+                console.log("error saving event");
+
                 removeUserFromEventCallBack(7, callback);
                 return;
 
               } else {
-               //succeeded in removing username from attending users
+                //succeeded in removing username from attending users
+                console.log("succeeded in removing username from attending users");
 
 
                 //remove event from user
@@ -330,6 +340,8 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
 
         } else {
           //event does not exist
+          console.log("event does not exist in database");
+
           removeUserFromEventCallBack(10, callback);
           return;
 
@@ -340,6 +352,8 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     } else {
 
       //user does not exist
+      console.log("user does not exist in database");
+
       removeUserFromEventCallBack(10, callback);
       return;
     }
