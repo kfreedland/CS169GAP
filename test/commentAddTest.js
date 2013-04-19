@@ -371,12 +371,11 @@ describe('Comment', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = user.username;
+                            eventData.inviterId = userRecord.id;
                             eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
                             {
-                                
                                 geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
                                     var eventid = eventRecord.id;
@@ -447,7 +446,7 @@ describe('Comment', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = user.username;
+                            eventData.inviterId = userRecord.id;
                             eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
@@ -524,7 +523,7 @@ describe('Comment', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = user.username;
+                            eventData.inviterId = userRecord.id;
                             eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
@@ -602,7 +601,7 @@ describe('Comment', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = user.username;
+                            eventData.inviterId = userRecord.id;
                             eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
@@ -679,7 +678,7 @@ describe('Comment', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = user.username;
+                            eventData.inviterId = userRecord.id;
                             eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)
@@ -754,7 +753,7 @@ describe('Comment', function()
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = 'my Event';
-                            eventData.attendingusers = user.username;
+                            eventData.inviterId = userRecord.id;
                             eventData.noemail = true;
 
                             Event.add(eventData, function(respDict)

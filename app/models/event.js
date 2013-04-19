@@ -53,7 +53,7 @@ Event.add = function(params, callback)
     {
       idsOrEmails = params.attendingusers.split(',');
     }
-    console.log("idsOrEmails = " + idsOrEmails);
+    // console.log("idsOrEmails = " + idsOrEmails);
     getEmailAndId(idsOrEmails, callback, function(emailAndId)
     {
       var emails = emailAndId.emails;
@@ -75,7 +75,7 @@ Event.add = function(params, callback)
               var usersToAdd = [];
               usersToAdd.push(inviterUsername);
               usernames.push(inviterUsername);
-              console.log("usernames = " + usernames);
+              // console.log("usernames = " + usernames);
               //all required fields are valid
               var eventDict = {};
               // console.dir(emailAndId.records);
@@ -250,7 +250,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, inputUsernames, callback)
 {
-  console.log("usernames = " + inputUsernames);
+  // console.log("usernames = " + inputUsernames);
   var usernameArray = inputUsernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
@@ -260,15 +260,15 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
 
       removeDuplicateAndAlreadyAttendingUsers(data, eventid, function (result){
         var usernameEmailDictArray = result;
-        console.log("usernameEmailDictArray :");
-        console.dir(usernameEmailDictArray);
+        // console.log("usernameEmailDictArray :");
+        // console.dir(usernameEmailDictArray);
 
         //For Invite
         var usernames = [];
         var emails = [];
 
         var usernamesAndEmailsToAdd = [];
-        console.log("usernameEmailDictArray.length = " + usernameEmailDictArray.length);
+        // console.log("usernameEmailDictArray.length = " + usernameEmailDictArray.length);
         for (var key in usernameEmailDictArray){
           var usernameEmailDict = usernameEmailDictArray[key];
           //If the user had a username, push that to attending users
@@ -567,7 +567,7 @@ function getUserNameAndEmail (userNameOrEmail, callback) {
 function addEventToUsers(eventid, usernames, callback)
 {
   var numberOfUsersAdded = 0;
-  console.log("GOT USERNAMES: " + usernames);
+  // console.log("GOT USERNAMES: " + usernames);
   if(!usernames || usernames.length === 0)
   {
     console.log('empty usernames in addEventToUsers');
@@ -843,20 +843,20 @@ function emitEventForUsernames (params) {
   {
     var username = params.usernames[key];
     var eventName = username + 'InviteEvent';
-    console.log("Emitting event: " + eventName);
+    // console.log("Emitting event: " + eventName);
     geddy.io.sockets.emit(eventName, {eventId: params.eventModel.id, eventName: params.eventModel.name});
 
     //Update user's notification number
     geddy.model.User.first({username: username}, function (err, userModel){
-      console.log("About to increment mynotifications");
+      // console.log("About to increment mynotifications");
       if (!err && userModel){
-        console.log("userModel exists and no err so incrementing mynotifications");
+        // console.log("userModel exists and no err so incrementing mynotifications");
         if (userModel.mynotifications){
           userModel.mynotifications += 1;
         } else {
           userModel.mynotifications = 1;
         }
-        console.log("mynotifications = " + userModel.mynotifications);
+        // console.log("mynotifications = " + userModel.mynotifications);
         userModel.errors = null;
         userModel.save(function (err, result){
           //do nothing

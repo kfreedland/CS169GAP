@@ -40,17 +40,17 @@ Comment.addComment = function(eventID, userID, text, callback)
   }
 
   if(!userID){
-    addCommentCallBack(6, callback);
+    addCommentCallback(6, callback);
     return;
   }
 
   if(!text){
-    addCommentCallBack(6, callback);
+    addCommentCallback(6, callback);
     return;
   }
 
   if(text == ''){
-    addCommentCallBack(6, callback);
+    addCommentCallback(6, callback);
     return;
   }
 
@@ -66,7 +66,7 @@ Comment.addComment = function(eventID, userID, text, callback)
 
     } else if (userRecord){
 
-      console.log("successfully found user");
+      // console.log("successfully found user");
 
       //create comment and add it to event
       geddy.model.Event.first({id:eventID}, function(err, eventRecord){
@@ -80,7 +80,7 @@ Comment.addComment = function(eventID, userID, text, callback)
 
         } else if (eventRecord){
 
-          console.log("successfully found event");
+          // console.log("successfully found event");
 
           //create comment and add to event
           var commentDict = {};
@@ -101,10 +101,10 @@ Comment.addComment = function(eventID, userID, text, callback)
             } else if (commentRecord){
               //add to event
 
-              console.log("successfully saved Comment");
+              // console.log("successfully saved Comment");
               var comments = eventRecord.comments;
               if (!comments){
-                console.log("event's comments are null");
+                // console.log("event's comments are null");
                 eventRecord.comments = commentRecord.id;
               } else {
                 var commentList = comments.split(',');
@@ -124,7 +124,7 @@ Comment.addComment = function(eventID, userID, text, callback)
                 } else {
 
                   //succeeded
-                  console.log("saving event with comment succeeded");
+                  // console.log("saving event with comment succeeded");
                   addCommentCallback(1, callback);
                   return;
                 }
@@ -185,15 +185,18 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
       //get comments
       var commentIDsString = eventRecord.comments;
-      console.log("commentIDsString = " + commentIDsString);
-      var commentIDsList = commentIDsString.split(',');
+      // console.log("commentIDsString = " + commentIDsString);
+      var commentIDsList = [];
+      if (commentIDsString && commentIDsString !== ''){
+        commentIDsList = commentIDsString.split(',');
+      }
 
       var commentListToReturn = [];
 
       for (var index in commentIDsList){
 
         var currentCommentID = commentIDsList[index];
-        console.log("currentCommentID = " + currentCommentID);
+        // console.log("currentCommentID = " + currentCommentID);
         geddy.model.Comment.first({id:currentCommentID}, function(err, commentRecord){
 
           if(err){
@@ -206,10 +209,10 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
             //add comment to list
             commentListToReturn.push(commentRecord);
-            console.log("commentListToReturn.length = " + commentListToReturn.length);
-            console.log("commentIDsList.length = " + commentIDsList.length);
+            // console.log("commentListToReturn.length = " + commentListToReturn.length);
+            // console.log("commentIDsList.length = " + commentIDsList.length);
             if(commentListToReturn.length >= commentIDsList.length){
-              console.log("About to call getCommentsCallback");
+              // console.log("About to call getCommentsCallback");
               //return 
               getCommentsCallback(1, commentListToReturn, callback);
               return;
@@ -239,8 +242,8 @@ function getCommentsCallback(errCode, comments, callback){
   var responseDict = {};
   responseDict.errCode = errCode;
   responseDict.comments = comments;
-  console.log("Calling callback with responseDict: ");
-  console.dir(responseDict);
+  // console.log("Calling callback with responseDict: ");
+  // console.dir(responseDict);
   callback(responseDict);
 }
 

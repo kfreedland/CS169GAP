@@ -156,7 +156,7 @@ describe('Event Remove User', function()
 
                                     geddy.model.Event.removeUserFromEvent(paramEventID, paramUserID, function(removeUserResponse){
 
-                                        assert.deepEqual(addCommentResponse, {errCode: 6});
+                                        assert.deepEqual(removeUserResponse, {errCode: 6});
                                         done();
 
                                     });
@@ -233,7 +233,7 @@ describe('Event Remove User', function()
 
                                     geddy.model.Event.removeUserFromEvent(paramEventID, paramUserID, function(removeUserResponse){
 
-                                        assert.deepEqual(addCommentResponse, {errCode: 6});
+                                        assert.deepEqual(removeUserResponse, {errCode: 6});
                                         done();
 
                                     });
@@ -310,7 +310,7 @@ describe('Event Remove User', function()
 
                                     geddy.model.Event.removeUserFromEvent(paramEventID, paramUserID, function(removeUserResponse){
 
-                                        assert.deepEqual(addCommentResponse, {errCode: 10});
+                                        assert.deepEqual(removeUserResponse, {errCode: 10});
                                         done();
 
                                     });
@@ -387,7 +387,7 @@ describe('Event Remove User', function()
 
                                     geddy.model.Event.removeUserFromEvent(paramEventID, paramUserID, function(removeUserResponse){
 
-                                        assert.deepEqual(addCommentResponse, {errCode: 10});
+                                        assert.deepEqual(removeUserResponse, {errCode: 10});
                                         done();
 
                                     });

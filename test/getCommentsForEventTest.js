@@ -80,8 +80,8 @@ describe('Comment', function()
                                 {
                                     geddy.model.Comment.addComment(eventRecord.id, userRecord.id, "sample comment", function (addCommentResponse){
 
-                                        console.log("about to get comments with addCommentResponse ");
-                                        console.dir(addCommentResponse);
+                                        // console.log("about to get comments with addCommentResponse ");
+                                        // console.dir(addCommentResponse);
                                         geddy.model.Comment.getCommentsForEvent(eventRecord.id, function (getCommentsResponse){
 
                                             assert.deepEqual(getCommentsResponse.errCode, 1);
@@ -232,8 +232,8 @@ describe('Comment.getComment - add and get 2 comment from 1 event', function()
                                 {
                                     geddy.model.Comment.addComment(eventRecord.id, userRecord.id, "sample comment", function (addCommentResponse){
 
-                                        console.log("about to get comments with addCommentResponse ");
-                                        console.dir(addCommentResponse);
+                                        // console.log("about to get comments with addCommentResponse ");
+                                        // console.dir(addCommentResponse);
 
 
                                         var parameventid = eventRecord.id + "invalid";
