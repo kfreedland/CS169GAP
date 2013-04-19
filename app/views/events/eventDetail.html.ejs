@@ -8,7 +8,6 @@
         eventUserData = {};
         eventUserData.eventid = jsonData.id;
         eventUserData.userid = username;
-        console.log(eventUserData);
         $.ajax({
             type: 'GET',
             url: '/events/removeuser',

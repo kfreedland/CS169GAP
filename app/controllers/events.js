@@ -201,6 +201,8 @@ var Events = function () {
     {
       geddy.model.Event.addUsersToEvent(params.eventid, params.usernames, function(resp)
       {
+        console.log("RESP FOR ADDUSERS:");
+        console.log(resp);
         self.respond(resp, {format: 'json'});
       });
     }

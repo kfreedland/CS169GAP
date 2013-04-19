@@ -1,6 +1,5 @@
 
 $(document).ready(function() {
-	console.log("ON THE EVENT DETAIL PAGE");
 	var encodedDataStr = window.location.hash;
 	// Remove the # in the front
 	var encodedDataFixed = encodedDataStr.slice(1);
