@@ -1087,6 +1087,7 @@ Event.changeDateTime = function(params, callback)
 };
 
 Event.getMyEvents = function (params, callback) {
+  var currentDate = new Date();
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
     var currentEvents = []
         ,  pastEvents = [];
@@ -1111,9 +1112,8 @@ Event.getMyEvents = function (params, callback) {
               } else if (eventModel){
                 //console.log("EVENT MODEL:");
                 //console.log(eventModel);
-                var currentDate = new Date();
                 //to deal with server latency we are multiplying this by a high value close to 1
-                if (eventModel.enddate < (currentDate.getTime()*.999999))
+                if (eventModel.enddate < (currentDate.getTime()*.99999))
                 {
                   pastEvents.push(eventModel);
                 } else {

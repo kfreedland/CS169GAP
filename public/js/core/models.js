@@ -310,16 +310,17 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
                   console.log('errcode is');
                   console.dir(respDict);
                 }
+
               });
             } else {
               console.log("No Usernames needed to addUsersToEvent");
             }
-            //Invite all users via email
-            var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
-            Event.invite({eventid: eventid, emails: emails, usernames: usernames, message: message}, function(respDict)
-            {
-              callback({errCode: 1});
-            });
+                            //Invite all users via email
+                var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
+                Event.invite({eventid: eventid, emails: emails, usernames: usernames, message: message}, function(respDict)
+                {
+                  callback({errCode: 1});
+                });
           }
         });
       });
