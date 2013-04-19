@@ -744,6 +744,7 @@ Event.add = function(params, callback)
     {
       idsOrEmails = params.attendingusers.split(',');
     }
+    console.log("idsOrEmails = " + idsOrEmails);
     getEmailAndId(idsOrEmails, callback, function(emailAndId)
     {
       var emails = emailAndId.emails;
@@ -845,7 +846,7 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
   var emails = [];
   var usernames = [];
   var records = [];
-  if (!usernameOrEmail || usernameOrEmail.length === 0){
+  if (!usernamesOrEmails || usernamesOrEmails.length === 0){
     var resp = {};
     resp.usernames = usernames;
     resp.emails = emails;

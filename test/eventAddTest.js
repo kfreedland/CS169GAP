@@ -286,6 +286,150 @@ describe('Event', function()
         });
     });
 
+    describe('Event.add With email not in database', function()
+    {
+        it('should return errCode:1', function(done)
+        {
+            var eventDict = {};
+            eventDict.name = 'jogging';
+            eventDict.description = 'go for a run with some friends!';
+            eventDict.category = 'Sports';
+            eventDict.time1 = undefined;
+            eventDict.time2 = undefined;
+            eventDict.flag = 'anyTime';
+            eventDict.begindate = undefined;
+            eventDict.enddate = undefined;
+            eventDict.lowprice = '0';
+            eventDict.highprice = '0';
+            eventDict.lownumparticipants = '1';
+            eventDict.highnumparticipants = undefined;
+            eventDict.latitude = undefined;
+            eventDict.longitude = undefined;
+            eventDict.duration = '2';
+
+            Activity.add(eventDict, function(err, response)
+            {
+                var user = User.create({username: 'foo',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg@greg.com'});
+                User.add(user, function (answerDict) 
+                {
+                    var eventData = {};
+                    var expected = {errCode: 1};
+                    User.first({username: 'foo'}, function(err, userRecord)
+                    {
+                        var uId = userRecord.id;
+
+                        Activity.first({name: 'jogging'}, function(err, activityRecord)
+                        {
+                            var d = new Date();
+                            eventData.name ="magical orgy";
+                            eventData.activityid = activityRecord.id;
+                            eventData.time1 = 500;
+                            eventData.time2 = 1000;
+                            eventData.begindate = d.getTime();
+                            eventData.enddate = d.getTime() + 50000;
+                            eventData.description = 'my Event';
+                            eventData.attendingusers = 'grrrrrr@hohoh.com';
+                            eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
+
+                            Event.add(eventData, function(respDict)
+                            {
+                                assert.deepEqual(respDict, expected);
+                                done();
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    describe('Event.add event with 3 attending users', function()
+    {
+        it('should return errCode:1', function(done)
+        {
+            var eventDict = {};
+            eventDict.name = 'jogging';
+            eventDict.description = 'go for a run with some friends!';
+            eventDict.category = 'Sports';
+            eventDict.time1 = undefined;
+            eventDict.time2 = undefined;
+            eventDict.flag = 'anyTime';
+            eventDict.begindate = undefined;
+            eventDict.enddate = undefined;
+            eventDict.lowprice = '0';
+            eventDict.highprice = '0';
+            eventDict.lownumparticipants = '1';
+            eventDict.highnumparticipants = undefined;
+            eventDict.latitude = undefined;
+            eventDict.longitude = undefined;
+            eventDict.duration = '2';
+
+            Activity.add(eventDict, function(err, response)
+            {
+                var user = User.create({username: 'foo',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg@greg.com'});
+                User.add(user, function (answerDict) 
+                {
+                    var user2 = User.create({username: 'foo2',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg2@greg.com'});
+                    User.add(user2, function (answerDict2) 
+                    {
+                        var user3 = User.create({username: 'Bob',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'bob@bob.com'});
+                        User.add(user3, function (answerDict3) 
+                        {
+                            var eventData = {};
+                            var expected = {errCode: 1};
+                            User.first({username: 'foo'}, function(err, userRecord)
+                            {
+                                var uId = userRecord.id;
+
+                                Activity.first({name: 'jogging'}, function(err, activityRecord)
+                                {
+                                    var d = new Date();
+                                    eventData.name ="magical orgy";
+                                    eventData.activityid = activityRecord.id;
+                                    eventData.time1 = 500;
+                                    eventData.time2 = 1000;
+                                    eventData.begindate = d.getTime();
+                                    eventData.enddate = d.getTime() + 50000;
+                                    eventData.description = 'my Event';
+                                    eventData.attendingusers = 'foo2, bob@bob.com';
+                                    eventData.noemail = true;
+                                    eventData.inviterId = userRecord.id;
+
+                                    Event.add(eventData, function(respDict)
+                                    {
+                                        assert.deepEqual(respDict, expected);
+                                        done();
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
     describe('Event.add invalid start/eventDictdate', function()
     {
         it('should return errCode:8', function(done)
