@@ -778,7 +778,7 @@ Event.add = function(params, callback)
               var usersToAdd = [];
               usersToAdd.push(inviterUsername);
               usernames.push(inviterUsername);
-              console.log("usernames = " + usernames);
+              // console.log("usernames = " + usernames);
               //all required fields are valid
               var eventDict = {};
               // console.dir(emailAndId.records);
