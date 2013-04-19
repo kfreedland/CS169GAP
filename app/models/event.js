@@ -345,7 +345,7 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     return;
   }
   
-  geddy.model.User.first({username: userID}, function(err, userRecord) {
+  geddy.model.User.first({id: userID}, function(err, userRecord) {
     if(err)
     {
       //database error

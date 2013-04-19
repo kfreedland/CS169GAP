@@ -283,7 +283,7 @@ CS169GAP
 <ul>
 	{
 	<li>'eventid': [string],</li>
-	<li>'userid': [List of strings],</li>
+	<li>'userid': [userId string],</li>
 	<li>'text': [String]</li>
 	}
 </ul>
