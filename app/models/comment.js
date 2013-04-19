@@ -185,6 +185,15 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
       //get comments
       var commentIDsString = eventRecord.comments;
+
+      if(!commentIDsString || commentIDsString == ''){
+
+        getCommentsCallback(1, [], callback);
+        return;
+
+      }
+
+
       // console.log("commentIDsString = " + commentIDsString);
       var commentIDsList = [];
       if (commentIDsString && commentIDsString !== ''){
