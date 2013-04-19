@@ -600,6 +600,15 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
       //get comments
       var commentIDsString = eventRecord.comments;
+
+      if(!commentIDsString || commentIDsString == ''){
+
+        getCommentsCallback(1, [], callback);
+        return;
+
+      }
+
+
       // console.log("commentIDsString = " + commentIDsString);
       var commentIDsList = [];
       if (commentIDsString && commentIDsString !== ''){
@@ -769,7 +778,7 @@ Event.add = function(params, callback)
               var usersToAdd = [];
               usersToAdd.push(inviterUsername);
               usernames.push(inviterUsername);
-              // console.log("usernames = " + usernames);
+              console.log("usernames = " + usernames);
               //all required fields are valid
               var eventDict = {};
               // console.dir(emailAndId.records);
@@ -1006,7 +1015,7 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
                 }
               });
             } else {
-              console.log("No Usernames needed to addUsersToEvent");
+              console.log("No Usernames needed to addEventToUsers");
             }
             //Invite all users via email
             var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";

@@ -312,7 +312,7 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
                 }
               });
             } else {
-              console.log("No Usernames needed to addUsersToEvent");
+              console.log("No Usernames needed to addEventToUsers");
             }
             //Invite all users via email
             var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
