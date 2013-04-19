@@ -111,7 +111,8 @@ var Comments = function () {
     var self = this;
 
     geddy.model.Comment.addComment(params.eventid, params.userid, params.text, function(responseDict){
-
+      console.log("RESPONSE DICT FOR ADD COMMENT");
+      console.log(responseDict);
       self.respond(responseDict, {format:'json'});
 
     });

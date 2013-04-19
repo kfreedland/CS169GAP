@@ -61,7 +61,7 @@ router.get('/events/eventdetail').to('Events.detail');
 router.get('/events/removeuser').to('Events.removeUser');
 
 
-router.get('/comments/add').to('Comments.add');
+router.get('/comments/add').to('Comments.addComment');
 router.get('/comments/getcommentsforevent').to('Comments.getCommentsForEvent');
 
 
