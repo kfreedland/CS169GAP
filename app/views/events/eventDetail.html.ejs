@@ -29,7 +29,7 @@
       $('#addCommentButton').click(function() {
         commentData = {};
         commentData.eventid = jsonData.id;
-        commentData.userid = username;
+        commentData.userid = userId;
         commentData.text = $('#commentTextarea').val();
         $.ajax({
             type: 'POST',
@@ -40,7 +40,7 @@
             success: function(respData) {
               console.log('Success');
               console.log(respData);
-              // location.reload();
+              location.reload();
             },
             failure: function(err) {
               console.log('Failure');
