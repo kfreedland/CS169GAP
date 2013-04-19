@@ -87,8 +87,8 @@ Comment.addComment = function(eventID, userID, text, callback)
           commentDict.text = text;
           commentDict.userid = userID;
           var commentRecord = geddy.model.Comment.create(commentDict);
-          console.log("created comment record:");
-          console.dir(commentRecord);
+          // console.log("created comment record:");
+          // console.dir(commentRecord);
           geddy.model.Comment.save(commentRecord, function(err, result){
 
             if (err){
@@ -105,11 +105,12 @@ Comment.addComment = function(eventID, userID, text, callback)
               var comments = eventRecord.comments;
               if (!comments){
                 console.log("event's comments are null");
-                comments = "";
+                eventRecord.comments = commentRecord.id;
+              } else {
+                var commentList = comments.split(',');
+                commentList.push(commentRecord.id);
+                eventRecord.comments = commentList.join(',');
               }
-              var commentList = comments.split(',');
-              commentList.push(commentRecord.id);
-              eventRecord.comments = commentList.join(',');
 
               eventRecord.save(function(err, result){
 
@@ -134,9 +135,7 @@ Comment.addComment = function(eventID, userID, text, callback)
               //comment.save failed
               console.log("comment.save returned nothing  ");
               addCommentCallback(7, callback);
-
-
-
+              return;
             }
 
           });
@@ -186,6 +185,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
       //get comments
       var commentIDsString = eventRecord.comments;
+      console.log("commentIDsString = " + commentIDsString);
       var commentIDsList = commentIDsString.split(',');
 
       var commentListToReturn = [];
@@ -193,6 +193,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
       for (var index in commentIDsList){
 
         var currentCommentID = commentIDsList[index];
+        console.log("currentCommentID = " + currentCommentID);
         geddy.model.Comment.first({id:currentCommentID}, function(err, commentRecord){
 
           if(err){
@@ -205,14 +206,17 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
             //add comment to list
             commentListToReturn.push(commentRecord);
-
-            if(commentListToReturn.length == commentIDsList.length){
-
+            console.log("commentListToReturn.length = " + commentListToReturn.length);
+            console.log("commentIDsList.length = " + commentIDsList.length);
+            if(commentListToReturn.length >= commentIDsList.length){
+              console.log("About to call getCommentsCallback");
               //return 
               getCommentsCallback(1, commentListToReturn, callback);
               return;
 
             }
+          } else {
+            console.log("Didn't get a commentRecord");
           }
         });
 
@@ -235,8 +239,23 @@ function getCommentsCallback(errCode, comments, callback){
   var responseDict = {};
   responseDict.errCode = errCode;
   responseDict.comments = comments;
+  console.log("Calling callback with responseDict: ");
+  console.dir(responseDict);
   callback(responseDict);
 }
+
+Comment.TESTAPI_resetFixture = function (callback) {
+  geddy.model.Comment.all(function (err, result) {
+    // console.log("got all activity models with error: " + err + " and result: " + result);
+    for (var commentModel in result){
+      // console.log("trying to remove activityModel: " + result[activityModel]);
+      geddy.model.Comment.remove(result[commentModel].id);
+    }
+    var responseDict = {};
+    responseDict.errCode = 1;
+    callback(responseDict); //"SUCCESS"
+  });
+};  
 
 /*
 // Can also define them on the prototype

@@ -22,6 +22,7 @@ var Events = function () {
   {
     var self = this;
     params.inviterId = this.session.get('userId');
+    console.log("inviterId = " + params.inviterId);
     geddy.model.Event.add(params, function createCallback(respDict)
     {
       console.log('respDict is');
@@ -194,6 +195,7 @@ var Events = function () {
   };
 
   this.addUsersToEvent = function(req, resp, params) {
+    console.log("add Users to event Called");
     var self = this;
     if(params.usernames && typeof params.usernames == 'string' && params.eventid && typeof params.eventid == 'string')
     {

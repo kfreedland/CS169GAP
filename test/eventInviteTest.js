@@ -50,7 +50,7 @@ describe('Event.invite valid emails', function()
                             confirmPassword: 'MyPassword!',
                             familyName: 'LastName1',
                             givenName: 'FirstName1',
-                            email: 'elayman123@gmail.com'});
+                            email: 'bob@bob.com'});
 User.add(user, function (answerDict) 
                 {
                     var eventData = {};

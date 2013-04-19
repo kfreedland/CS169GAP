@@ -7,8 +7,12 @@ var assert = require("assert")
 
 var resetFixture = function (done){
     Activity.TESTAPI_resetFixture(function(){
-        User.TESTAPI_resetFixture(function() {
-            done();
+        Event.TESTAPI_resetFixture(function() {
+            Comment.TESTAPI_resetFixture(function() {
+                User.TESTAPI_resetFixture(function() {
+                    done();
+                });
+            });
         });
     });
 };
@@ -21,7 +25,7 @@ describe('Comment', function()
         resetFixture(done);
     });
 
-  describe('Comment.addComment normal - adds user to event first', function()
+  describe('Comment.getComment - add and get 1 comment from 1 event', function()
     {
         it('should return errCode:1', function(done)
         {
@@ -41,7 +45,6 @@ describe('Comment', function()
             eventDict.latitude = undefined;
             eventDict.longitude = undefined;
             eventDict.duration = '2';
-
             Activity.add(eventDict, function(err, response)
             {
                 var user = User.create({username: 'foo',
@@ -71,25 +74,20 @@ describe('Comment', function()
                             eventData.noemail = true;
 
                             eventData.inviterId = userRecord.id;
-                            Event.add(eventData, function(respDict)
+                            geddy.model.Event.add(eventData, function(respDict)
                             {
                                 geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
-                                    geddy.model.Comment.addComment(eventRecord.id, userRecord.id, "sample comment", function(addCommentResponse){
+                                    geddy.model.Comment.addComment(eventRecord.id, userRecord.id, "sample comment", function (addCommentResponse){
 
+                                        console.log("about to get comments with addCommentResponse ");
+                                        console.dir(addCommentResponse);
+                                        geddy.model.Comment.getCommentsForEvent(eventRecord.id, function (getCommentsResponse){
 
-                                        geddy.model.Comment.getCommentsForEvent(eventRecord.id, function(getCommentsResponse){
-
-                                            assert.deepEqual(addCommentResponse.errCode, 1);
-                                            assert.deepEqual(addCommentResponse.comments[0].text, "sample comment");
+                                            assert.deepEqual(getCommentsResponse.errCode, 1);
+                                            assert.deepEqual(getCommentsResponse.comments[0].text, "sample comment");
                                             done();
-
-
-
                                         });
-
-                                        
-
                                     });
                                 });
                             });
