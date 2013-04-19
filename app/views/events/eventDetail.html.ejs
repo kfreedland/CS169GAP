@@ -32,21 +32,22 @@
         commentData.text = $('#commentTextarea').val();
         console.log(commentData);
         $.ajax({
-              type: 'GET',
-              url: '/comments/add',
-              data: commentData,
-              contentType: "application/json",
-              dataType: "json",
-              success: function(respData) {
-                console.log('Success');
-                console.log(respData);
-              },
-              failure: function(err) {
-                console.log('Failure');
-              }
-          });
+            type: 'POST',
+            url: '/comments/add',
+            data: JSON.stringify(commentData),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(respData) {
+              console.log('Success');
+              console.log(respData);
+              location.reload();
+            },
+            failure: function(err) {
+              console.log('Failure');
+            }
         });
-      }
+      });
+    }
   </script>
   <!-- Include the eventDetail js -->
   <%- scriptLink('/js/event/eventDetail.js', {type:'text/javascript'}) %>
@@ -89,6 +90,8 @@
     </div>
 
     <input id="addCommentButton" type="button" value="Add A Comment" data-role="button" data-icon="home" data-theme="b">
+    <br />
+    <div id="comments_list"></div>
     <!-- End Comments -->
 
 

@@ -100,7 +100,8 @@ var Comments = function () {
     var self = this;
 
     geddy.model.Comment.getCommentsForEvent(params.eventid, function(responseDict){
-
+      console.log("RESPONSE DICT FOR GET COMMENTS");
+      console.log(responseDict);
       self.respond(responseDict, {format: 'json'});
     });
 

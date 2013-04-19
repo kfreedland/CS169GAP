@@ -25,7 +25,6 @@ function addMyEvents(jsonResp, htmlID) {
 		$("#my_events_" + htmlID).html('No events found.')
 	}
 
-	console.log(jsonResp);
 	// Loop through each activities entry in the dictionary
 	$.each(jsonResp, function(index, data) {
 		// Create variables for dynamic ids of certain divs
