@@ -195,7 +195,6 @@ var Events = function () {
   };
 
   this.addUsersToEvent = function(req, resp, params) {
-    console.log("add Users to event Called");
     var self = this;
     if(params.usernames && typeof params.usernames == 'string' && params.eventid && typeof params.eventid == 'string')
     {

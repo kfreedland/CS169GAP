@@ -1267,7 +1267,6 @@ function getUserNameAndEmail (userNameOrEmail, callback) {
 
 function addEventToUsers(eventid, usernames, callback)
 {
-  console.log("ADD EVENT TO USERS CALLED");
   var numberOfUsersAdded = 0;
   // console.log("GOT USERNAMES: " + usernames);
   if(!usernames || usernames.length === 0)
@@ -1302,12 +1301,8 @@ function addEventToUsers(eventid, usernames, callback)
           }
           userRecord.confirmPassword = userRecord.password;
           userRecord.errors = null;
-          console.log("SAVING USER IN DB");
-          
           geddy.model.User.save(userRecord, function(err, result)
           {
-            console.log("USER WAS SAVED");
-            console.log(userRecord);
             numberOfUsersAdded++;
             if(err)
             {
@@ -1318,8 +1313,6 @@ function addEventToUsers(eventid, usernames, callback)
             } else if (numberOfUsersAdded >= usernames.length)
             {
               // console.log("numberOfUsersAdded >= userIds.length");
-              console.log("ERRCODE 1 RETURNED");
-              console.log(userRecord.username);
               callback({errCode: 1}); //success!
 
               return;
