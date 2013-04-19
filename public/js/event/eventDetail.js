@@ -20,6 +20,14 @@ function handleEventDetailResponse(jsonData) {
 	$('#event-category').html('<b>Category:</b> ' + jsonData.category);
 	var priceRangeStr = '<b>Price Range:</b> $' + jsonData.lowprice + ' to $' + jsonData.highprice;
 	$('#event-price-range').html(priceRangeStr);
+
+	var beginDate = new Date(jsonData.begindate);
+	var endDate = new Date(jsonData.enddate);
+	var dateRangeStr = '<b>Date Range:</b> ' + beginDate.toDateString() + ' to ' + endDate.toDateString();
+	if (beginDate.toDateString() === endDate.toDateString()) {
+		dateRangeStr = '<b>Date Range:</b> ' + beginDate.toDateString();
+	}
+	$('#event-date-range').html(dateRangeStr);
 	
 	// Do some additional fixing of the event details
 	fixPriceRange(parseInt(jsonData.lowprice), parseInt(jsonData.highprice), 'event-price-range');

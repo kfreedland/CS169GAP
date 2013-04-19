@@ -34,6 +34,7 @@ function addMyEvents(jsonResp, htmlID) {
 		var eventID = 'event_'  + htmlID + index;
 		var eventPrice = 'event-price_'  + htmlID + index;
 		var eventParticipants = 'event-num-participants_'  + htmlID + index;
+		var eventDate = 'event-date_'  + htmlID + index;
 		var eventTime = 'event-time_'  + htmlID + index;
 
 		// Append the html to the list_activities div
@@ -44,15 +45,16 @@ function addMyEvents(jsonResp, htmlID) {
 
 			'<div class="row-title">' + index + '. ' + data.name + '</div><br>' +
 			'<div class="row-description"><b>Description:</b> ' + data.description + '</div>' +
+			'<div class="row-date-range" id="' + eventDate + '"></div>' +
 			'<div class="row-time-range" id="' + eventTime + '"></div>' +
 			'<div class="row-num-participants" id="' + eventParticipants + '"></div>' +
-			'<div class="row-participants" id="event-invite-participants_' + htmlID + index + '"></div>' +
 			'</div>' +
 
 			'<div class = "button_result_right">' +
 			'<div class="row-category" id="event-category_' + htmlID + index + '"></div><br>' +
 			'<div class="row-address" id="event-address_' + htmlID + index + '"></div><br>' +
 			'<div class="row-price-range" id ="' + eventPrice + '"></div>' +
+			'<div class="row-participants" id="event-invite-participants_' + htmlID + index + '"></div>' +
 			
 			'</div>' +
 			'</div>' +
@@ -65,7 +67,13 @@ function addMyEvents(jsonResp, htmlID) {
 		var t2Str = convertMsToString(data.time2);
 		$('#' + eventTime).html('<b>Time of Event:</b> ' + t1Str + ' to ' + t2Str);
 
-		
+		var beginDate = new Date(data.begindate);
+		var endDate = new Date(data.enddate);
+		var dateRangeStr = '<b>Date Range:</b> ' + beginDate.toDateString() + ' to ' + endDate.toDateString();
+		if (beginDate.toDateString() === endDate.toDateString()) {
+			dateRangeStr = '<b>Date Range:</b> ' + beginDate.toDateString();
+		}
+		$('#' + eventDate).html(dateRangeStr);
 
 		// Get the Activity Details
 		getActivityDetail(data.activityid, data.attendingusers, htmlID + index, function(activityJSON) {
