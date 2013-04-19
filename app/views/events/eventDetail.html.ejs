@@ -29,7 +29,7 @@
       $('#addCommentButton').click(function() {
         commentData = {};
         commentData.eventid = jsonData.id;
-        commentData.userid = username;
+        commentData.userid = userId;
         commentData.text = $('#commentTextarea').val();
         $.ajax({
             type: 'POST',
