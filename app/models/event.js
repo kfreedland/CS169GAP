@@ -250,18 +250,17 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, inputUsernames, callback)
 {
-  // console.log("usernames = " + inputUsernames);
+  //console.log("usernames = " + inputUsernames);
   var usernameArray = inputUsernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
     if(eventRecord && eventRecord.attendingusers)
     {
-      var data = eventRecord.attendingusers.split(',').concat(usernameArray);
 
-      removeDuplicateAndAlreadyAttendingUsers(data, eventid, function (result){
+      removeDuplicateAndAlreadyAttendingUsers(usernameArray, eventid, function (result){
         var usernameEmailDictArray = result;
-        // console.log("usernameEmailDictArray :");
-        // console.dir(usernameEmailDictArray);
+        console.log("usernameEmailDictArray :");
+        console.dir(usernameEmailDictArray);
 
         //For Invite
         var usernames = [];
