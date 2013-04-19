@@ -1113,6 +1113,7 @@ Event.getMyEvents = function (params, callback) {
                 //console.log("EVENT MODEL:");
                 //console.log(eventModel);
                 //to deal with server latency we are multiplying this by a high value close to 1
+                console.log("eventModel.enddate: "+eventModel.enddate+" currentDate.getTime: "+currentDate.getTime());
                 if (eventModel.enddate < (currentDate.getTime()*.99999))
                 {
                   pastEvents.push(eventModel);
