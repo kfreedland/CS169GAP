@@ -94,4 +94,317 @@ describe('Event Remove User', function()
         });
     });
 
+
+  describe('Event.RemoveUserFromEvent null eventid', function()
+    {
+        it('should return errCode:6', function(done)
+        {
+            var eventDict = {};
+            eventDict.name = 'jogging';
+            eventDict.description = 'go for a run with some friends!';
+            eventDict.category = 'Sports';
+            eventDict.time1 = undefined;
+            eventDict.time2 = undefined;
+            eventDict.flag = 'anyTime';
+            eventDict.begindate = undefined;
+            eventDict.enddate = undefined;
+            eventDict.lowprice = '0';
+            eventDict.highprice = '0';
+            eventDict.lownumparticipants = '1';
+            eventDict.highnumparticipants = undefined;
+            eventDict.latitude = undefined;
+            eventDict.longitude = undefined;
+            eventDict.duration = '2';
+
+            Activity.add(eventDict, function(err, response)
+            {
+                var user = User.create({username: 'foo',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg@greg.com'});
+                User.add(user, function (answerDict) 
+                {
+                    var eventData = {};
+                    var expected = {errCode: 1};
+                    User.first({username: 'foo'}, function(err, userRecord)
+                    {
+                        var uId = userRecord.id;
+
+                        Activity.first({name: 'jogging'}, function(err, activityRecord)
+                        {
+                            var d = new Date();
+                            eventData.name ="Jogging with friends!";
+                            eventData.activityid = activityRecord.id;
+                            eventData.time1 = 500;
+                            eventData.time2 = 1000;
+                            eventData.begindate = d.getTime();
+                            eventData.enddate = d.getTime() + 50000;
+                            eventData.description = 'my Event';
+                            eventData.attendingusers = user.username;
+                            eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
+                            Event.add(eventData, function(respDict)
+                            {
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+                                {
+
+                                    //var paramEventID = eventRecord.id;
+                                    var paramEventID = null;
+                                    var paramUserID = userRecord.id;
+
+
+                                    geddy.model.Event.removeUserFromEvent(paramEventID, paramUserID, function(removeUserResponse){
+
+                                        assert.deepEqual(addCommentResponse, {errCode: 6});
+                                        done();
+
+                                    });
+
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+
+  describe('Event.RemoveUserFromEvent null userid', function()
+    {
+        it('should return errCode:6', function(done)
+        {
+            var eventDict = {};
+            eventDict.name = 'jogging';
+            eventDict.description = 'go for a run with some friends!';
+            eventDict.category = 'Sports';
+            eventDict.time1 = undefined;
+            eventDict.time2 = undefined;
+            eventDict.flag = 'anyTime';
+            eventDict.begindate = undefined;
+            eventDict.enddate = undefined;
+            eventDict.lowprice = '0';
+            eventDict.highprice = '0';
+            eventDict.lownumparticipants = '1';
+            eventDict.highnumparticipants = undefined;
+            eventDict.latitude = undefined;
+            eventDict.longitude = undefined;
+            eventDict.duration = '2';
+
+            Activity.add(eventDict, function(err, response)
+            {
+                var user = User.create({username: 'foo',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg@greg.com'});
+                User.add(user, function (answerDict) 
+                {
+                    var eventData = {};
+                    var expected = {errCode: 1};
+                    User.first({username: 'foo'}, function(err, userRecord)
+                    {
+                        var uId = userRecord.id;
+
+                        Activity.first({name: 'jogging'}, function(err, activityRecord)
+                        {
+                            var d = new Date();
+                            eventData.name ="Jogging with friends!";
+                            eventData.activityid = activityRecord.id;
+                            eventData.time1 = 500;
+                            eventData.time2 = 1000;
+                            eventData.begindate = d.getTime();
+                            eventData.enddate = d.getTime() + 50000;
+                            eventData.description = 'my Event';
+                            eventData.attendingusers = user.username;
+                            eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
+                            Event.add(eventData, function(respDict)
+                            {
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+                                {
+
+                                    var paramEventID = eventRecord.id;
+                                    //var paramEventID = null;
+                                    //var paramUserID = userRecord.id;
+                                    var paramUserID = null;
+
+                                    geddy.model.Event.removeUserFromEvent(paramEventID, paramUserID, function(removeUserResponse){
+
+                                        assert.deepEqual(addCommentResponse, {errCode: 6});
+                                        done();
+
+                                    });
+
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+
+  describe('Event.RemoveUserFromEvent invalid userid', function()
+    {
+        it('should return errCode:10', function(done)
+        {
+            var eventDict = {};
+            eventDict.name = 'jogging';
+            eventDict.description = 'go for a run with some friends!';
+            eventDict.category = 'Sports';
+            eventDict.time1 = undefined;
+            eventDict.time2 = undefined;
+            eventDict.flag = 'anyTime';
+            eventDict.begindate = undefined;
+            eventDict.enddate = undefined;
+            eventDict.lowprice = '0';
+            eventDict.highprice = '0';
+            eventDict.lownumparticipants = '1';
+            eventDict.highnumparticipants = undefined;
+            eventDict.latitude = undefined;
+            eventDict.longitude = undefined;
+            eventDict.duration = '2';
+
+            Activity.add(eventDict, function(err, response)
+            {
+                var user = User.create({username: 'foo',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg@greg.com'});
+                User.add(user, function (answerDict) 
+                {
+                    var eventData = {};
+                    var expected = {errCode: 1};
+                    User.first({username: 'foo'}, function(err, userRecord)
+                    {
+                        var uId = userRecord.id;
+
+                        Activity.first({name: 'jogging'}, function(err, activityRecord)
+                        {
+                            var d = new Date();
+                            eventData.name ="Jogging with friends!";
+                            eventData.activityid = activityRecord.id;
+                            eventData.time1 = 500;
+                            eventData.time2 = 1000;
+                            eventData.begindate = d.getTime();
+                            eventData.enddate = d.getTime() + 50000;
+                            eventData.description = 'my Event';
+                            eventData.attendingusers = user.username;
+                            eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
+                            Event.add(eventData, function(respDict)
+                            {
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+                                {
+
+                                    var paramEventID = eventRecord.id;
+                                    //var paramEventID = null;
+                                    //var paramUserID = userRecord.id;
+                                    var paramUserID = userRecord.id + "invalid";
+
+                                    geddy.model.Event.removeUserFromEvent(paramEventID, paramUserID, function(removeUserResponse){
+
+                                        assert.deepEqual(addCommentResponse, {errCode: 10});
+                                        done();
+
+                                    });
+
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+
+  describe('Event.RemoveUserFromEvent invalid eventid', function()
+    {
+        it('should return errCode:10', function(done)
+        {
+            var eventDict = {};
+            eventDict.name = 'jogging';
+            eventDict.description = 'go for a run with some friends!';
+            eventDict.category = 'Sports';
+            eventDict.time1 = undefined;
+            eventDict.time2 = undefined;
+            eventDict.flag = 'anyTime';
+            eventDict.begindate = undefined;
+            eventDict.enddate = undefined;
+            eventDict.lowprice = '0';
+            eventDict.highprice = '0';
+            eventDict.lownumparticipants = '1';
+            eventDict.highnumparticipants = undefined;
+            eventDict.latitude = undefined;
+            eventDict.longitude = undefined;
+            eventDict.duration = '2';
+
+            Activity.add(eventDict, function(err, response)
+            {
+                var user = User.create({username: 'foo',
+                            password: 'MyPassword!',
+                            confirmPassword: 'MyPassword!',
+                            familyName: 'LastName1',
+                            givenName: 'FirstName1',
+                            email: 'greg@greg.com'});
+                User.add(user, function (answerDict) 
+                {
+                    var eventData = {};
+                    var expected = {errCode: 1};
+                    User.first({username: 'foo'}, function(err, userRecord)
+                    {
+                        var uId = userRecord.id;
+
+                        Activity.first({name: 'jogging'}, function(err, activityRecord)
+                        {
+                            var d = new Date();
+                            eventData.name ="Jogging with friends!";
+                            eventData.activityid = activityRecord.id;
+                            eventData.time1 = 500;
+                            eventData.time2 = 1000;
+                            eventData.begindate = d.getTime();
+                            eventData.enddate = d.getTime() + 50000;
+                            eventData.description = 'my Event';
+                            eventData.attendingusers = user.username;
+                            eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
+                            Event.add(eventData, function(respDict)
+                            {
+                                geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
+                                {
+
+                                    //var paramEventID = eventRecord.id;
+                                    var paramEventID = eventRecord.id + "invalid";
+                                    var paramUserID = userRecord.id;
+                                    //var paramUserID = userRecord.id + "invalid";
+
+                                    geddy.model.Event.removeUserFromEvent(paramEventID, paramUserID, function(removeUserResponse){
+
+                                        assert.deepEqual(addCommentResponse, {errCode: 10});
+                                        done();
+
+                                    });
+
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+
+
+
+
+
 });
