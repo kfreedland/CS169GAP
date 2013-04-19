@@ -287,8 +287,9 @@ Event.add(eventData, function(respDict)
                             eventData.begindate = d.getTime();
                             eventData.enddate = d.getTime() + 50000;
                             eventData.description = activityDict.description;
-                            eventData.attendingusers = userRecord.username;
+                            // eventData.attendingusers = '';
                             eventData.noemail = true;
+                            eventData.inviterId = userRecord.id;
                             
                             Event.add(eventData, function (eventResp1)
                             {
@@ -334,7 +335,7 @@ Event.add(eventData, function(respDict)
                                             eventData2.begindate = d2.getTime();
                                             eventData2.enddate = d2.getTime() + 50000;
                                             eventData2.description = activityDict2.description;
-                                            eventData2.attendingusers = userRecord.username;
+                                            eventData2.inviterId = userRecord.id;
                                             eventData2.noemail = true;
                                             
                                             Event.add(eventData2, function (eventResp2)
