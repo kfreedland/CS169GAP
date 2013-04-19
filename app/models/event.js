@@ -250,18 +250,17 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
 
 Event.addUsersToEvent = function(eventid, inputUsernames, callback)
 {
-  // console.log("usernames = " + inputUsernames);
+  //console.log("usernames = " + inputUsernames);
   var usernameArray = inputUsernames.split(',');
   geddy.model.Event.first({id: eventid}, function (err, eventRecord)
   {
     if(eventRecord && eventRecord.attendingusers)
     {
-      var data = eventRecord.attendingusers.split(',').concat(usernameArray);
 
-      removeDuplicateAndAlreadyAttendingUsers(data, eventid, function (result){
+      removeDuplicateAndAlreadyAttendingUsers(usernameArray, eventid, function (result){
         var usernameEmailDictArray = result;
-        // console.log("usernameEmailDictArray :");
-        // console.dir(usernameEmailDictArray);
+        console.log("usernameEmailDictArray :");
+        console.dir(usernameEmailDictArray);
 
         //For Invite
         var usernames = [];
@@ -345,8 +344,7 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     return;
   }
   
-  geddy.model.User.first({id: userID}, function(err, userRecord) {
-
+  geddy.model.User.first({username: userID}, function(err, userRecord) {
     if(err)
     {
       //database error
@@ -566,6 +564,7 @@ function getUserNameAndEmail (userNameOrEmail, callback) {
 
 function addEventToUsers(eventid, usernames, callback)
 {
+  console.log("ADD EVENT TO USERS CALLED");
   var numberOfUsersAdded = 0;
   // console.log("GOT USERNAMES: " + usernames);
   if(!usernames || usernames.length === 0)
@@ -600,8 +599,12 @@ function addEventToUsers(eventid, usernames, callback)
           }
           userRecord.confirmPassword = userRecord.password;
           userRecord.errors = null;
+          console.log("SAVING USER IN DB");
+          
           geddy.model.User.save(userRecord, function(err, result)
           {
+            console.log("USER WAS SAVED");
+            console.log(userRecord);
             numberOfUsersAdded++;
             if(err)
             {
@@ -612,7 +615,10 @@ function addEventToUsers(eventid, usernames, callback)
             } else if (numberOfUsersAdded >= usernames.length)
             {
               // console.log("numberOfUsersAdded >= userIds.length");
+              console.log("ERRCODE 1 RETURNED");
+              console.log(userRecord.username);
               callback({errCode: 1}); //success!
+
               return;
             }
           });
