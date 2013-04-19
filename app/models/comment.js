@@ -55,7 +55,7 @@ Comment.addComment = function(eventID, userID, text, callback)
   }
 
   //check if userid is valid
-  geddy.model.User.first({id:userID}, function(err,userRecord){
+  geddy.model.User.first({username:userID}, function(err,userRecord){
 
     if(err){
 
