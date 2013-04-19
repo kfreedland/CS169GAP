@@ -8,7 +8,7 @@
       $("#removeEventButton").click(function() {
         eventUserData = {};
         eventUserData.eventid = jsonData.id;
-        eventUserData.userid = username;
+        eventUserData.userid = userId;
         $.ajax({
             type: 'GET',
             url: '/events/removeuser',
