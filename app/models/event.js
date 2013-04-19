@@ -309,16 +309,17 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
                   console.log('errcode is');
                   console.dir(respDict);
                 }
+                //Invite all users via email
+                var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
+                Event.invite({eventid: eventid, emails: emails, usernames: usernames, message: message}, function(respDict)
+                {
+                  callback({errCode: 1});
+                });
               });
             } else {
               console.log("No Usernames needed to addEventToUsers");
             }
-            //Invite all users via email
-            var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
-            Event.invite({eventid: eventid, emails: emails, usernames: usernames, message: message}, function(respDict)
-            {
-              callback({errCode: 1});
-            });
+
           }
         });
       });
@@ -564,7 +565,6 @@ function getUserNameAndEmail (userNameOrEmail, callback) {
 
 function addEventToUsers(eventid, usernames, callback)
 {
-  console.log("ADD EVENT TO USERS CALLED");
   var numberOfUsersAdded = 0;
   // console.log("GOT USERNAMES: " + usernames);
   if(!usernames || usernames.length === 0)
@@ -599,12 +599,8 @@ function addEventToUsers(eventid, usernames, callback)
           }
           userRecord.confirmPassword = userRecord.password;
           userRecord.errors = null;
-          console.log("SAVING USER IN DB");
-          
           geddy.model.User.save(userRecord, function(err, result)
           {
-            console.log("USER WAS SAVED");
-            console.log(userRecord);
             numberOfUsersAdded++;
             if(err)
             {
@@ -615,8 +611,6 @@ function addEventToUsers(eventid, usernames, callback)
             } else if (numberOfUsersAdded >= usernames.length)
             {
               // console.log("numberOfUsersAdded >= userIds.length");
-              console.log("ERRCODE 1 RETURNED");
-              console.log(userRecord.username);
               callback({errCode: 1}); //success!
 
               return;
@@ -1115,10 +1109,10 @@ Event.getMyEvents = function (params, callback) {
                 console.dir(err);
                 getEventsCallback(7, currentEvents, pastEvents, callback);
               } else if (eventModel){
-                //console.log("EVENT MODEL:");
-                //console.log(eventModel);
                 var currentDate = new Date();
-                if (eventModel.enddate < currentDate.getTime())
+                //to deal with server latency we are multiplying this by a high value close to 1
+                var enddatetime = eventModel.enddate + eventModel.time2;
+                if (enddatetime < (currentDate.getTime()*.999999))
                 {
                   pastEvents.push(eventModel);
                 } else {

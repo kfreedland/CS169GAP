@@ -309,7 +309,7 @@ CS169GAP
 <h3>Response: </h3>
 <ul>
 	<li>'errCode': [1 = success, 6 = missing required param, 7 = backend error, 10 invalid eventid] </li>
-	<li>'comments': json ist of comment models from this event </li>
+	<li>'comments': json list of comment models from this event </li>
 
 </ul>
 

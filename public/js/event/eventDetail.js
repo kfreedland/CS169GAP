@@ -9,6 +9,7 @@ $(document).ready(function() {
 	inviteMoreFriends(jsonData.id);
 	removeEvent(jsonData);
 	addComment(jsonData);
+	getComments(jsonData.id);
 });
 
 function handleEventDetailResponse(jsonData) {
@@ -61,5 +62,44 @@ function inviteMoreFriends(eventID) {
 	        	console.log('Failure');
 	        }
 	    });
+	});
+}
+
+function getComments(eventID) {
+	data = {eventid: eventID};
+	$.ajax({
+        type: 'GET',
+        url: '/comments/getcommentsforevent',
+        data: data,
+        contentType: "application/json",
+        dataType: "json",
+        success: function(respData) {
+        	console.log('Success');
+        	console.log(respData);
+        	handleGetCommentsResponse(respData.comments);
+        },
+        failure: function(err) {
+        	console.log('Failure');
+        }
+    });
+}
+
+function handleGetCommentsResponse(commentData) {
+	// Loop through each comments entry in the dictionary
+	$.each(commentData, function(index, data) {
+		// Append the html to the list_activities div
+		$('#comments_list').append(
+			// '<div class="comment_box">' + commentStr + '</div>'
+			'<div class="comment_box">' +
+			
+			'<div class="comment_username">' +
+				'<b>' + data.userid + ':</b>' +
+			'</div>' +
+			'<div class="comment_text">' +
+				data.text +
+			'</div>' +
+
+			'</div>'
+		);
 	});
 }
