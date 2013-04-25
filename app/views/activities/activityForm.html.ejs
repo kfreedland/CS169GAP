@@ -92,7 +92,7 @@
     <form>
       <div>
         <center>
-          <div data-role="controlgroup" data-type="horizontal">
+          <div data-role="controlgroup" data-type="horizontal" data-mini="true">
             <!--Find Activity Button-->
             <% if(form.type === "find") { %>
               <!-- display activity created successfully when redirected -->
@@ -180,22 +180,22 @@
       <fieldset data-role="controlgroup" data-type="horizontal">
         <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-a-<%= form.type; %>" value="startEnd" data-mini="true" checked="checked" />
         <label for="radio-view-a-<%= form.type; %>">
-          <img src="/img/11-clock.png" width="20">
+          <img src="/img/11-clock.png" width="20"><br />
           <span class="time-font">Set Time</span>
         </label>
         <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-b-<%= form.type; %>" data-inline="true" data-mini="true" value="dayTime" />
         <label for="radio-view-b-<%= form.type; %>">
-          <img src="/img/171-sun.png" width="20">
+          <img src="/img/171-sun.png" width="20"><br />
           <span class="time-font">Day</span>
         </label>
         <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-c-<%= form.type; %>" data-mini="true" value="nightTime" />
         <label for="radio-view-c-<%= form.type; %>">
-          <img src="/img/126-moon.png" width="15">
+          <img src="/img/126-moon.png" width="15"><br />
           <span class="time-font">Night</span>
         </label>
         <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-d-<%= form.type; %>" data-mini="true" value="anyTime" />
         <label for="radio-view-d-<%= form.type; %>">
-          <img src="/img/11-clock.png" width="20">
+          <img src="/img/11-clock.png" width="20"><br />
           <span class="time-font">Any Time</span>
         </label>
       </fieldset>
