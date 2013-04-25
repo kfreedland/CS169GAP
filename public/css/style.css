@@ -225,6 +225,10 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     margin: 20px;
   }
 
+  .time-font {
+    font-size: 9px;
+  }
+
   /*Error messages for create and add user*/
   .errorMessage{
     color: red;

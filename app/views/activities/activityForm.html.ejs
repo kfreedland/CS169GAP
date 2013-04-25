@@ -178,14 +178,26 @@
       <!-- Time Range -->
       <center>
       <fieldset data-role="controlgroup" data-type="horizontal">
-        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-a-<%= form.type; %>" value="startEnd" checked="checked" />
-        <label for="radio-view-a-<%= form.type; %>">Set Time</label>
-        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-b-<%= form.type; %>" value="dayTime" />
-        <label for="radio-view-b-<%= form.type; %>">Day Time</label>
-        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-c-<%= form.type; %>" value="nightTime" />
-        <label for="radio-view-c-<%= form.type; %>">Night Time</label>
-        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-d-<%= form.type; %>" value="anyTime" />
-        <label for="radio-view-d-<%= form.type; %>">Any Time</label>
+        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-a-<%= form.type; %>" value="startEnd" data-mini="true" checked="checked" />
+        <label for="radio-view-a-<%= form.type; %>">
+          <img src="/img/11-clock.png" width="20">
+          <span class="time-font">Set Time</span>
+        </label>
+        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-b-<%= form.type; %>" data-inline="true" data-mini="true" value="dayTime" />
+        <label for="radio-view-b-<%= form.type; %>">
+          <img src="/img/171-sun.png" width="20">
+          <span class="time-font">Day</span>
+        </label>
+        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-c-<%= form.type; %>" data-mini="true" value="nightTime" />
+        <label for="radio-view-c-<%= form.type; %>">
+          <img src="/img/126-moon.png" width="15">
+          <span class="time-font">Night</span>
+        </label>
+        <input type="radio" name="time_range_<%= form.type; %>" id="radio-view-d-<%= form.type; %>" data-mini="true" value="anyTime" />
+        <label for="radio-view-d-<%= form.type; %>">
+          <img src="/img/11-clock.png" width="20">
+          <span class="time-font">Any Time</span>
+        </label>
       </fieldset>
       </center>
       <div id="start_end_range_<%= form.type; %>">
@@ -224,11 +236,7 @@
       <div data-role="fieldcontain" class="location-div">
         <label for="location_input_<%= form.type; %>">Location: </label>
         <input id="location_input_<%= form.type; %>" name="location_input" type="text" placeholder="Starting Location" />
-        <!-- <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="home" data-iconpos="notext" title="Get Current Location">Current Location</a> -->
          <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="location-arrow" data-iconpos="notext" title="Get Current Location">Current Location</a>
-        <!-- <a id="loc_link_<%= form.type; %>" class="loclink" data-inline="true"title="Get Current Location">
-          <img src="/img/193-location-arrow.png" width="15"> 
-        </a>-->
       </div>
       <!-- Distance is only in the find activity view -->
       <% if(form.type === "find") { %>
