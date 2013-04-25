@@ -47,9 +47,9 @@ function setupCreateActivity(){
 	*/
 	$('input:radio[name="time_range_create"]').change(function() {
     	if ($(this).val() === "startEnd") {
-        	$('#start_end_range_create').show();
+        	$('#start_end_range_create').slideDown();
         } else {
-        	$('#start_end_range_create').hide();
+        	$('#start_end_range_create').slideUp();
         }
 	});
 
