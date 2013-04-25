@@ -319,7 +319,7 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
                 });
               });
             } else {
-              console.log("No Usernames needed to addUsersToEvent");
+              console.log("No Usernames needed to addEventToUsers");
             }
 
           }
@@ -347,7 +347,7 @@ Event.removeUserFromEvent = function(eventID, userID, callback)
     return;
   }
   
-  geddy.model.User.first({username: userID}, function(err, userRecord) {
+  geddy.model.User.first({id: userID}, function(err, userRecord) {
     if(err)
     {
       //database error
@@ -1112,11 +1112,9 @@ Event.getMyEvents = function (params, callback) {
                 console.dir(err);
                 getEventsCallback(7, currentEvents, pastEvents, callback);
               } else if (eventModel){
-                //console.log("EVENT MODEL:");
-                //console.log(eventModel);
                 //to deal with server latency we are multiplying this by a high value close to 1
-                console.log("eventModel.enddate: "+eventModel.enddate+" currentDate.getTime: "+currentDate.getTime());
-                if (eventModel.enddate < (currentDate.getTime()*.99999))
+                var enddatetime = eventModel.enddate + eventModel.time2;
+                if (enddatetime < (currentDate.getTime()*.999999))
                 {
                   pastEvents.push(eventModel);
                 } else {

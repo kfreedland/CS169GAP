@@ -1,6 +1,12 @@
+$(function(){
+  // Bind the event.
+  $(window).hashchange(setupCreateActivity);
 
+  // Trigger the event (useful on page load).
+  setupCreateActivity();
+});
 
-$(document).ready(function() {
+function setupCreateActivity(){
 	$('#list_activities_container').hide();
 
 	//Hide error message
@@ -54,7 +60,7 @@ $(document).ready(function() {
 			$("#location_input_create").val(pos);
 		});
 	});
-});
+}
 
 
 /*

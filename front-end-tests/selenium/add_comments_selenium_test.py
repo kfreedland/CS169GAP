@@ -1,4 +1,4 @@
-#Iteration 2 - Front End - Selenium Testing
+#Iteration 3 - Front End - Selenium Testing
 
 """
 OVERVIEW:
@@ -12,42 +12,44 @@ send_keys() - inputs user-defined keys (e.g. 15, "bob", etc.)
 
 """
 
-from selenium import selenium
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 import time
 
+browser = webdriver.Firefox() # Get local session of firefox
+
+
 def initialize():
-	browser = webdriver.Firefox() # Get local session of firefox
-	browser.get("gap3.herokuapp.com") # Load page
+	#browser = webdriver.Firefox() # Get local session of firefox
+	browser.get("http://gap3.herokuapp.com") # Load page
 	assert "Group Activity Planner" in browser.title
 
 	"""
 	LOGIN
 	"""
 
-def login():
+def login(user, password):
 	#Clicking the login button
 	login = browser.find_element_by_id("login_button")
 	login.click()
-	login.click()
+	#login.click()
 
 	#insert name into username
 	usernameText = browser.find_element_by_name("username")
-	usernameText.send_keys("superuser")
+	usernameText.send_keys(user)
 
 	#insert password into the field
 	passwordText = browser.find_element_by_name("password")
-	passwordText.send_keys("password")
+	passwordText.send_keys(password)
 
 	#Click the Submit Button
 	loginSubmit = browser.find_element_by_id("loginSubmitButton")
 	loginSubmit.click()
 	loginSubmit.click()
-	time.sleep(.5) #Let the browser log in
+	time.sleep(1) #Let the browser log in
 
-	browser.refresh()
+	#browser.refresh()
 
 
 def create_event():
@@ -132,17 +134,33 @@ def create_event():
 	create_event_button = browser.find_element_by_id("createEventButton")
 	create_event_button.click();
 
+	"""
+	Go to my events
+	"""
 
 
 	print "All tests pass, you should be seeing a result page"
 
 	#Wait for results. Assert that the proper results are in
 
+
+def add_comment():
+	"""
+	Now at my events
+	"""
+	commentBox = browser.find_element_by_id("commentTextarea")
+	commentBox.clear()
+	commentBox.sendKeys("this is a comment from Selenium!")
+	addCommentButton = browser.find_element_by_id("addCommentButton")
+	addCommentButton.click()
+	time.sleep(1)
+
 def close():
 	browser.close()
 
 
 initialize()
-login()
+login("superuser", "password")
 create_event()
+add_comment()
 close()

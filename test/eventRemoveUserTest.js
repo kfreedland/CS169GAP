@@ -59,7 +59,7 @@ describe('Event Remove User', function()
                     User.first({username: 'foo'}, function(err, userRecord)
                     {
                         var uId = userRecord.id;
-
+                        console.log("uID = " + uId);
                         Activity.first({name: 'jogging'}, function(err, activityRecord)
                         {
                             var d = new Date();
@@ -77,7 +77,7 @@ describe('Event Remove User', function()
                             {
                                 geddy.model.Event.first({name: eventData.name}, function(err, eventRecord)
                                 {
-                                    geddy.model.Event.removeUserFromEvent(eventRecord.id, userRecord.id, function(removeUserResponse){
+                                    geddy.model.Event.removeUserFromEvent(eventRecord.id, uId, function(removeUserResponse){
 
                                         assert.deepEqual(removeUserResponse, {errCode: 1});
                                         done();

@@ -1,5 +1,4 @@
 
-
 $(document).ready(function() {
 	/*
 	  When the Back button is clicked, return to the 

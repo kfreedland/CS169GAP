@@ -1,6 +1,21 @@
 
+$(function(){
+  // Bind the event.
+  $(window).hashchange(setupFindActivity);
 
-$(document).ready(function() {
+  // Trigger the event (useful on page load).
+  setupFindActivity();
+});
+
+
+
+// $(document).ready(function() {
+
+// 	setupPage();
+// });
+
+
+function setupFindActivity() {
 	$('#list_activities_container').hide();
 	/*
 	  When the Find Activities button is clicked, send an ajax call to /activities/search with the form data
@@ -61,7 +76,7 @@ $(document).ready(function() {
 			$("#location_input_find").val(pos);
 		});
 	});	
-});
+}
 
 /*
   Fix the price range html if necessary
