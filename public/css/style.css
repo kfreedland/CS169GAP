@@ -91,7 +91,7 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   }
 }
 
-@media only screen and (min-width: 600px) {
+/*@media only screen and (min-width: 600px) {*/
   .ui-field-contain input.ui-input-text, .ui-field-contain textarea.ui-input-text, .ui-field-contain .ui-input-search {
     width: 72%;
   }
@@ -263,4 +263,4 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     cursor: auto;
     background-color: #fff;
   }
-}
+/*}*/
