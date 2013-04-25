@@ -1,16 +1,9 @@
-$(function(){
-  // Bind the event.
-  $(window).hashchange(setupCreateActivity);
-
-  // Trigger the event (useful on page load).
-  setupCreateActivity();
-});
-
-function setupCreateActivity(){
+$(document).ready(function () {
 	$('#list_activities_container').hide();
 
 	//Hide error message
 	$('#missingParams').hide();
+
 	/*
 	  When the Create Activity button is clicked, send an ajax call to /activities/create with the form data
 	*/
@@ -60,7 +53,7 @@ function setupCreateActivity(){
 			$("#location_input_create").val(pos);
 		});
 	});
-}
+});
 
 
 /*

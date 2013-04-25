@@ -130,7 +130,10 @@ function update_ui(address, addressDivId) {
 */
 function autocomplete_init(type) {
 	var input = document.getElementById('location_input_' + type);
-    var autocomplete = new google.maps.places.Autocomplete(input);
+	var autocomplete = null;
+	if (input){
+    	autocomplete = new google.maps.places.Autocomplete(input);
+	}
 }
 
 /*
@@ -139,6 +142,10 @@ function autocomplete_init(type) {
   @param fn callback - Callback fn to be called with the found position
 */
 function getCurrentPosition(callback) {
+	//Import sensor for your location
+	// document.write("<script type='text/javascript' src='http://maps.google.com/maps/api/js?libraries=places&sensor=true'></script>");
+
+
 	var currentposition = new google.maps.LatLng(0.0, 0.0);
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition (function(pos) {
