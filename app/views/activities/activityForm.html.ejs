@@ -168,11 +168,11 @@
       <!-- Date Range -->
       <div data-role="fieldcontain">
         <label for="begin_date_<%= form.type; %>">Start Date: </label>
-        <input name="begin_date" id="begin_date_<%= form.type; %>" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
+        <input name="begin_date" id="begin_date_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
       </div>
       <div data-role="fieldcontain">
         <label for="end_date_<%= form.type; %>">End Date: </label>
-        <input name="end_date" id="end_date_<%= form.type; %>" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
+        <input name="end_date" id="end_date_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
       </div>
 
       <!-- Time Range -->
@@ -203,11 +203,11 @@
       <div id="start_end_range_<%= form.type; %>">
         <div data-role="fieldcontain">
           <label for="start_time_<%= form.type; %>">Start Time: </label>
-          <input name="start_time" id="start_time_<%= form.type; %>" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
+          <input name="start_time" id="start_time_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
         </div>
         <div data-role="fieldcontain">
           <label for="end_time_<%= form.type; %>">End Time: </label>
-          <input name="end_time" id="end_time_<%= form.type; %>" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
+          <input name="end_time" id="end_time_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
         </div>
         <div data-role="fieldcontain">
           <label for="duration_<%= form.type; %>">Duration (Mins): </label>

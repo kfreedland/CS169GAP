@@ -258,4 +258,9 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     position: absolute;
     right: 0;
   }
+
+  input[readonly].hide_readonly_effect {
+    cursor: auto;
+    background-color: #fff;
+  }
 }
