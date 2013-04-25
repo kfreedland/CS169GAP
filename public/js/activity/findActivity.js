@@ -56,7 +56,7 @@ function setupFindActivity() {
         }
 	});
 	
-		/*
+	/*
 	  Show or hide the date range options depending on whether the checkbox is active
 	*/
 	$('input:checkbox[name="checkbox-1"]').click(function() {

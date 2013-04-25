@@ -46,7 +46,7 @@ function setupCreateActivity(){
 	  Show or hide the time range options depending on which radio button is active
 	*/
 	$('input:radio[name="time_range_create"]').change(function() {
-    	if ($(this).val() === "start_end") {
+    	if ($(this).val() === "startEnd") {
         	$('#start_end_range_create').show();
         } else {
         	$('#start_end_range_create').hide();
