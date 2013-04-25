@@ -215,16 +215,10 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     padding: 0px;
   }
   
-  .row-price-range {
-
-  }
-
-  .row-num-participants {
-
-  }
-
-  .row-time-range {
-
+  .ui-icon-location-arrow {
+    background-image: url('/img/193-location-arrow.png');
+    background-size: 17px 17px;
+    background-color: #ddd;
   }
 
   .ui-li.ui-btn {

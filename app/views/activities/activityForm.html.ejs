@@ -221,10 +221,14 @@
       </div>
 
       <!-- Location -->
-      <div data-role="fieldcontain">
+      <div data-role="fieldcontain" class="location-div">
         <label for="location_input_<%= form.type; %>">Location: </label>
         <input id="location_input_<%= form.type; %>" name="location_input" type="text" placeholder="Starting Location" />
-        <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="grid" data-iconpos="notext" title="Get Current Location">Current Location</a>
+        <!-- <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="home" data-iconpos="notext" title="Get Current Location">Current Location</a> -->
+         <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="location-arrow" data-iconpos="notext" title="Get Current Location">Current Location</a>
+        <!-- <a id="loc_link_<%= form.type; %>" class="loclink" data-inline="true"title="Get Current Location">
+          <img src="/img/193-location-arrow.png" width="15"> 
+        </a>-->
       </div>
       <!-- Distance is only in the find activity view -->
       <% if(form.type === "find") { %>
