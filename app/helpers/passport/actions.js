@@ -125,7 +125,7 @@ var actions = new (function () {
       , handler = function (badCredsError, user, noCredsError) {
           var responseDict = {};
           if (badCredsError || noCredsError) {
-            // console.log("Bad or no credentials. Redirecting to failureRedirect: " + failureRedirect);
+            console.log("Bad or no credentials. Redirecting to failureRedirect: " + failureRedirect);
             self.redirect(failureRedirect + '?errCode=5');
             //Error errCode = 5 bad credentials
           }
@@ -134,7 +134,7 @@ var actions = new (function () {
             self.session.set('userId', user.id);
             self.session.set('authType', 'local');
             // console.log("this.local No Error so about to redirect to successRedirect: " + successRedirect);
-            self.redirect(successRedirect + '?errCode=1');
+            self.redirect("/?errCode=1");
             //Success errCode = 1
           }
         };

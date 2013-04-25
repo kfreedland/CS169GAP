@@ -104,15 +104,16 @@
                   <% } else { %>
                     <script type='text/javascript'>
                       console.log("PATH IS " + window.location.pathname);
+                      window.location.pathname = "/";
                       // window.location.reload(true);
                     </script>
                   <% } %>
                 <% } %>
                 </div>
               <% } %>
-              <a href="/#find_activity_page" id="findActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
+              <a href="" id="findActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
             <% } else { %>
-              <a href="/#find_activity_page" id="findActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
+              <a href="" id="findActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
             <% } %>
               <span class="ui-btn-inner ui-btn-corner-all">
                 <span class="ui-btn-text">Find Activity</span>
@@ -120,9 +121,9 @@
             </a>
             <!--Create Activity Button-->
             <% if(form.type === "find") { %>
-              <a href="/#create_activity_page" id="createActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
+              <a href="" id="createActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-up-c" data-transition="slide">
             <% } else { %>
-              <a href="/#create_activity_page" id="createActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
+              <a href="" id="createActivityButton" data-role="button" data-theme="c" class="ui-btn ui-btn-corner-all ui-shadow ui-btn-active" data-transition="slide">
             <% } %>
               <span class="ui-btn-inner ui-btn-corner-all">
                 <span class="ui-btn-text">Create Activity</span>
