@@ -289,6 +289,8 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
         // console.log("USERNAMES = " + usernames);
 
         // console.log("About to add attendingusers: " + usernamesAndEmailsToAdd.toString());
+        var currentAttendingUsers = eventRecord.attendingusers.split(',');
+        usernamesAndEmailsToAdd = currentAttendingUsers.concat(usernamesAndEmailsToAdd);
         eventRecord.attendingusers = usernamesAndEmailsToAdd.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
         {
@@ -310,17 +312,17 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
                   console.log('errcode is');
                   console.dir(respDict);
                 }
-
-              });
-            } else {
-              console.log("No Usernames needed to addUsersToEvent");
-            }
-                            //Invite all users via email
+                //Invite all users via email
                 var message = "You are cordially invited to join the following event: " + eventRecord.name + " login or signup at Group Activity Planner for more details!";
                 Event.invite({eventid: eventid, emails: emails, usernames: usernames, message: message}, function(respDict)
                 {
                   callback({errCode: 1});
                 });
+              });
+            } else {
+              console.log("No Usernames needed to addUsersToEvent");
+            }
+
           }
         });
       });
@@ -1088,6 +1090,7 @@ Event.changeDateTime = function(params, callback)
 };
 
 Event.getMyEvents = function (params, callback) {
+  var currentDate = new Date();
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
     var currentEvents = []
         ,  pastEvents = [];
@@ -1112,9 +1115,9 @@ Event.getMyEvents = function (params, callback) {
               } else if (eventModel){
                 //console.log("EVENT MODEL:");
                 //console.log(eventModel);
-                var currentDate = new Date();
                 //to deal with server latency we are multiplying this by a high value close to 1
-                if (eventModel.enddate < (currentDate.getTime()*.999999))
+                console.log("eventModel.enddate: "+eventModel.enddate+" currentDate.getTime: "+currentDate.getTime());
+                if (eventModel.enddate < (currentDate.getTime()*.99999))
                 {
                   pastEvents.push(eventModel);
                 } else {

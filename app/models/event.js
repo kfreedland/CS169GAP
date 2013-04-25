@@ -288,6 +288,8 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
         // console.log("USERNAMES = " + usernames);
 
         // console.log("About to add attendingusers: " + usernamesAndEmailsToAdd.toString());
+        var currentAttendingUsers = eventRecord.attendingusers.split(',');
+        usernamesAndEmailsToAdd = currentAttendingUsers.concat(usernamesAndEmailsToAdd);
         eventRecord.attendingusers = usernamesAndEmailsToAdd.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
         {
