@@ -288,6 +288,8 @@ Event.addUsersToEvent = function(eventid, inputUsernames, callback)
         // console.log("USERNAMES = " + usernames);
 
         // console.log("About to add attendingusers: " + usernamesAndEmailsToAdd.toString());
+        var currentAttendingUsers = eventRecord.attendingusers.split(',');
+        usernamesAndEmailsToAdd = currentAttendingUsers.concat(usernamesAndEmailsToAdd);
         eventRecord.attendingusers = usernamesAndEmailsToAdd.toString();
         geddy.model.Event.save(eventRecord, function(err, result)
         {
@@ -1087,6 +1089,7 @@ Event.changeDateTime = function(params, callback)
 };
 
 Event.getMyEvents = function (params, callback) {
+  var currentDate = new Date();
   geddy.model.User.first({id: params.userId}, function (err, userModel) {
     var currentEvents = []
         ,  pastEvents = [];
@@ -1109,7 +1112,6 @@ Event.getMyEvents = function (params, callback) {
                 console.dir(err);
                 getEventsCallback(7, currentEvents, pastEvents, callback);
               } else if (eventModel){
-                var currentDate = new Date();
                 //to deal with server latency we are multiplying this by a high value close to 1
                 var enddatetime = eventModel.enddate + eventModel.time2;
                 if (enddatetime < (currentDate.getTime()*.999999))

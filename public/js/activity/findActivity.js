@@ -35,13 +35,13 @@ $(document).ready(function() {
 	*/
 	$('input:radio[name="time_range_find"]').change(function() {
     	if ($(this).val() === "startEnd") {
-        	$('#start_end_range_find').show();
+        	$('#start_end_range_find').slideDown();
         } else {
-        	$('#start_end_range_find').hide();
+        	$('#start_end_range_find').slideUp();
         }
 	});
 	
-		/*
+	/*
 	  Show or hide the date range options depending on whether the checkbox is active
 	*/
 	$('input:checkbox[name="checkbox-1"]').click(function() {

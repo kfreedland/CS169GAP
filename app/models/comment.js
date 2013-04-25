@@ -85,7 +85,7 @@ Comment.addComment = function(eventID, userID, text, callback)
           //create comment and add to event
           var commentDict = {};
           commentDict.text = text;
-          commentDict.userid = userID;
+          commentDict.userid = userRecord.username;
           var commentRecord = geddy.model.Comment.create(commentDict);
           // console.log("created comment record:");
           // console.dir(commentRecord);

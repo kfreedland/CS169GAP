@@ -64,6 +64,16 @@ label {
   padding: 5px;
 }
 
+.time-font {
+  font-size: 9px;
+}
+
+.ui-icon-location-arrow {
+  background-image: url('/img/193-location-arrow.png');
+  background-size: 17px 17px;
+  background-color: #ddd;
+}
+
 /* Fix Bootstrap's Styling */
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
   height: 35px;
@@ -71,6 +81,11 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 
 input[type="file"], input[type="image"], input[type="submit"], input[type="reset"], input[type="button"], input[type="radio"], input[type="checkbox"] {
   width: 100%;
+}
+
+input[readonly].hide_readonly_effect {
+  cursor: auto;
+  background-color: #fff;
 }
 
 @media (max-width: 480px) {
@@ -170,7 +185,145 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     float : right;
   }
 
-  /*STYLING BRANDON'S HAIR AKA List Page*/
+  .list-item {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 10px 20px;
+      position: relative;
+      height : 200px;
+      width: 600px;
+      box-shadow: rgba(0, 0, 0, 0.4) 0 1px 5px 0px;
+      border-radius: 3px;
+      margin-bottom: 30px;
+
+  }
+
+  .ui-btn-up-c .button_result {
+    font-weight: normal;
+    color: #222;
+    text-shadow: 0 1px 0 #fff;
+  }
+
+  .row-title {
+    font-size: 2em;
+  }
+
+  .row-description {
+    height : 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .row-participants {
+    overflow: hidden;
+    text-overflow: ellipsis; 
+  }
+
+  .row-category {
+    height : 15px;
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  .row-address {
+    padding: 0px;
+  }
+
+  .ui-li.ui-btn {
+    margin: 20px;
+  }
+
+  /*Error messages for create and add user*/
+  .errorMessage{
+    color: red;
+    text-align: center;
+  }
+
+  #container {
+    width: 300px;
+    height: 55px;
+    position: relative;
+  }
+
+  #welcome_container{
+    width: 100%;
+    position: absolute;
+    top: 15px;
+    left: 0;
+  } 
+  #username_container{
+    width: 64%;
+    position: absolute;
+    top: 0px;
+    left: 70px;
+  }
+
+  #logout_button {
+    position: absolute;
+    right: 0;
+  }
+}
+
+@media only screen and (min-width: 240px) {
+.grid_label {
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 14px;
+  }
+
+  #find_activity,
+  #create_activity,
+  #suggested_activities,
+  #activity_detail_content,
+  #profile_content,
+  #create_event_page,
+  #myevent_content,
+  #event_detail_content {
+    margin:0 auto;
+    width: 50%;
+    padding-top: 100px;
+  }
+
+  .hero-unit {
+    margin:0 auto;
+    width: 50%;
+    padding-top: 100px;
+  }
+
+
+  .form-actions {
+    background-color: transparent;
+    border-top: 0px;
+  }
+
+  div {
+    display: block;
+  }
+
+  legend {
+    text-align: center;
+  }
+
+  .list-item div {
+    background: white;
+    border-bottom: 0px;
+    padding: 0px;
+  }
+
+  .list-item div > * {
+  padding: 0px;
+  }
+
+  .button_result_left {
+    width : 60%;
+    float: left;
+  }
+
+  .button_result_right {
+    width: 220px;
+    float : right;
+  }
+
   .list-item {
       background: #fff;
       margin-bottom: 10px;
@@ -215,18 +368,6 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     padding: 0px;
   }
   
-  .row-price-range {
-
-  }
-
-  .row-num-participants {
-
-  }
-
-  .row-time-range {
-
-  }
-
   .ui-li.ui-btn {
     margin: 20px;
   }

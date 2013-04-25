@@ -2,12 +2,13 @@
 <div data-role="page" class="event_detail_page">
   <script type='text/javascript'>
     var username = '<%= user.username %>';
+    var userId = '<%= user.id %>';
     
     function removeEvent(jsonData) {  
       $("#removeEventButton").click(function() {
         eventUserData = {};
         eventUserData.eventid = jsonData.id;
-        eventUserData.userid = username;
+        eventUserData.userid = userId;
         $.ajax({
             type: 'GET',
             url: '/events/removeuser',
@@ -28,9 +29,8 @@
       $('#addCommentButton').click(function() {
         commentData = {};
         commentData.eventid = jsonData.id;
-        commentData.userid = username;
+        commentData.userid = userId;
         commentData.text = $('#commentTextarea').val();
-        console.log(commentData);
         $.ajax({
             type: 'POST',
             url: '/comments/add',
