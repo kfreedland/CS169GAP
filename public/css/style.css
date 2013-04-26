@@ -380,8 +380,14 @@ input[readonly].hide_readonly_effect {
   }
 
   #container {
-    width: 300px;
+    width: 350px;
     height: 55px;
+    position: relative;
+  }
+
+  .welcome_text {
+    padding-left: 15px;
+    text-align: left;
     position: relative;
   }
 
@@ -389,13 +395,14 @@ input[readonly].hide_readonly_effect {
     width: 100%;
     position: absolute;
     top: 15px;
-    left: 0;
-  } 
-  #username_container{
+    left: 10px;
+  }
+
+  #username_container {
     width: 64%;
     position: absolute;
     top: 0px;
-    left: 70px;
+    left: 110px;
   }
 
   #logout_button {
