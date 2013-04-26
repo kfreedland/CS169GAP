@@ -142,13 +142,13 @@ input[readonly].hide_readonly_effect {
   #event_detail_content {
     margin:0 auto;
     width: 50%;
-    padding-top: 100px;
+    padding-top: 5%;
   }
 
   .hero-unit {
     margin:0 auto;
     width: 50%;
-    padding-top: 100px;
+    padding-top: 5%;
   }
 
 
@@ -274,7 +274,7 @@ input[readonly].hide_readonly_effect {
   #myevent_content,
   #event_detail_content {
     margin:0 auto;
-    padding-top: 100px;
+    padding-top: 5%;
   }
 
   .form-actions {
