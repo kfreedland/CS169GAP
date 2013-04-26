@@ -74,6 +74,15 @@ label {
   background-color: #ddd;
 }
 
+.header_title {
+  text-align: center;
+  padding-top: 15px;
+}
+
+#navBarHeader {
+  padding-bottom: 20px;
+}
+
 /* Fix Bootstrap's Styling */
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
   height: 35px;
@@ -264,17 +273,19 @@ input[readonly].hide_readonly_effect {
   }
 }
 
-@media only screen and (min-width: 240px) {
-  #find_activity,
-  #create_activity,
-  #suggested_activities,
+@media only screen and (max-width: 400px) {
+  #suggested_activities {
+    margin: 0 auto;
+    padding-top: 120px;
+  }
+
   #activity_detail_content,
   #profile_content,
   #create_event_page,
   #myevent_content,
   #event_detail_content {
     margin:0 auto;
-    padding-top: 100px;
+    padding-top: 10px;
   }
 
   .form-actions {
@@ -297,7 +308,7 @@ input[readonly].hide_readonly_effect {
   }
 
   .list-item div > * {
-  padding: 0px;
+    padding: 0px;
   }
 
   .list-item {
@@ -351,6 +362,21 @@ input[readonly].hide_readonly_effect {
   .errorMessage{
     color: red;
     text-align: center;
+  }
+
+  #userButtonsDiv {
+    position: relative;
+  }
+
+  .parent_container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+
+  #navBarHeader {
+    padding-bottom: 60px;
   }
 
   #container {
