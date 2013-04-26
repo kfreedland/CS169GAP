@@ -51,3 +51,62 @@ function setupClickHandlers() {
 		return false;
 	});
 }
+
+
+
+
+
+//Make fullscreen
+function hideAddressBar()
+{
+    if(!window.location.hash)
+    {
+        if(document.height <= window.outerHeight + 10)
+        {
+            document.body.style.height = (window.outerHeight + 50) +'px';
+            setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+        }
+        else
+        {
+            setTimeout( function(){ window.scrollTo(0, 1); }, 0 );
+        }
+    }
+}
+ 
+window.addEventListener("load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
+window.addEventListener("orientationchange", hideAddressBar );
+
+
+//Make content size big in case it doesn't fill full screen
+window.addEventListener("load", function(){
+       if(document.height <= window.outerHeight)
+       {
+           document.body.style.height = (window.outerHeight + 50) + 'px';
+           setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+       }
+       else
+       {
+           setTimeout( function(){ window.scrollTo(0, 1); }, 0 );
+       }
+   }
+);
+
+//Handle if you were directed to page via an anchor
+if( !window.location.hash )
+{
+    window.addEventListener("load", function(){
+        if(document.height <= window.outerHeight + 10)
+        {
+            document.body.style.height = (window.outerHeight + 50) +'px';
+            setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+        }
+        else
+        {
+            setTimeout( function(){ window.scrollTo(0, 1); }, 0 );
+        }
+    }
+    );
+}
+
+
+//Make all links not open a new safari
