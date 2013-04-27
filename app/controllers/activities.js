@@ -26,6 +26,7 @@ var Activities = function () {
     // console.log("inSearch");
     var self = this;
     var hour = 3600000;
+    var day = 86400000;
     //We want to assure ourselves that the model only gets the relevant params and not anything extra
     //I use default values for fields that are left blank to make for easier queries in the model
     var queryInfo = {};
@@ -45,12 +46,12 @@ var Activities = function () {
 
     if (params.beginDate)
     {
-      queryInfo.beginDate = {gt: parseFloat(params.beginDate)};
+      queryInfo.beginDate = {gt: parseFloat(params.beginDate) - day};
     }
 
     if (params.endDate)
     {
-      queryInfo.endDate = {lt: parseFloat(params.beginDate)};
+      queryInfo.endDate = {lt: parseFloat(params.beginDate) + day};
     }
 
     if (params.flag && (typeof params.time1 == 'string'))
