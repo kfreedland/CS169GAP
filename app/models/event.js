@@ -845,7 +845,7 @@ function emitEventForUsernames (params) {
   {
     var username = params.usernames[key];
     var eventName = username + 'InviteEvent';
-    // console.log("Emitting event: " + eventName);
+    console.log("EMITTING EVENT: " + eventName);
     geddy.io.sockets.emit(eventName, {eventId: params.eventModel.id, eventName: params.eventModel.name});
 
     //Update user's notification number
@@ -1098,7 +1098,7 @@ Event.getMyEvents = function (params, callback) {
       console.dir(err);
       // console.log("err exists: ");
       // console.dir(err);
-      getEventsCallback(7, currentEvents, pastEvents, callback);
+      getMyEventsCallback(7, currentEvents, pastEvents, callback);
     } else {
       if (userModel){
         if (userModel.myevents){
@@ -1110,7 +1110,7 @@ Event.getMyEvents = function (params, callback) {
               if (err){
                 console.log("error in event.first in getMyEvents");
                 console.dir(err);
-                getEventsCallback(7, currentEvents, pastEvents, callback);
+                getMyEventsCallback(7, currentEvents, pastEvents, callback);
               } else if (eventModel){
                 //to deal with server latency we are multiplying this by a high value close to 1
                 var enddatetime = eventModel.enddate + eventModel.time2;
@@ -1128,21 +1128,21 @@ Event.getMyEvents = function (params, callback) {
                 userModel.errors = null;
                 userModel.save(function (err, result){
                   //Return now
-                  getEventsCallback(1, currentEvents, pastEvents, callback);
+                  getMyEventsCallback(1, currentEvents, pastEvents, callback);
                 });
                 // console.log("index = " + index);
               }
             });
           }
         } else {
-          getEventsCallback(1, currentEvents, pastEvents, callback);
+          getMyEventsCallback(1, currentEvents, pastEvents, callback);
         }
       }
     }
   });
 };
 
-function getEventsCallback(errCode, currentEvents, pastEvents, callback){
+function getMyEventsCallback(errCode, currentEvents, pastEvents, callback){
   var responseDict = {};
   responseDict.errCode = errCode;
   responseDict.pastEvents = pastEvents;
@@ -1150,7 +1150,41 @@ function getEventsCallback(errCode, currentEvents, pastEvents, callback){
   callback(responseDict);
 }
 
-  
+
+Event.getEvent = function (params, callback) {
+  var eventId = params.eventId;
+  geddy.model.Event.first({id: eventId}, function (err, eventModel)
+  {
+    if (err){
+      console.log("error in event.first in getEvent");
+      console.dir(err);
+      getEventCallback(7, {}, callback);
+    } else if (eventModel){
+      //Get current user and clear notification number
+      geddy.model.User.first({id: params.userId}, function (err, userModel) {
+        //Reset mynotifications counter
+        userModel.mynotifications = 0;
+        userModel.errors = null;
+        userModel.save(function (err, result){
+          //Return now
+          getEventCallback(1, eventModel, callback);
+        });
+      });
+    } else {
+      getEventCallback(1, {}, callback);
+    }
+  });
+};
+
+
+//Helper for getEvent
+function getEventCallback(errCode, event, callback){
+  var responseDict = {};
+  responseDict.errCode = errCode;
+  responseDict.event = event;
+  callback(responseDict);
+}
+
 /*
 // Can also define them on the prototype
 Event.prototype.someOtherMethod = function () {

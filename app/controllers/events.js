@@ -135,7 +135,25 @@ var Events = function () {
 
     geddy.model.Event.getMyEvents({userId: self.session.get('userId')}, function(responseDict) {
       params.errCode = responseDict.errCode;
-      params.events = responseDict.events;
+      // params.pastEvents = pastEvents;
+      // params.currentEvents = currentEvents;
+      // params.events = responseDict.events;
+      //This output is used
+      self.respond(responseDict, {format: 'json'});
+    });
+  };
+
+
+
+
+  //Get Event for real-time update
+  this.getEvent = function (req, resp, params) {
+    var self = this;
+
+    geddy.model.Event.getEvent({eventId: params.eventId, userId: self.session.get('userId')}, function(responseDict) {
+      params.errCode = responseDict.errCode;
+      // params.event = responseDict.event;
+      //This output is used
       self.respond(responseDict, {format: 'json'});
     });
   };

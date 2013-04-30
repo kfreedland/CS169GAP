@@ -46,6 +46,7 @@ function execute_test_code(mochaInstance, cb) {
     mochaInstance.addFile('./test/getMyEventsTest.js');
     mochaInstance.addFile('./test/commentAddTest.js');
     mochaInstance.addFile('./test/getCommentsForEventTest.js');
+    mochaInstance.addFile('./test/getEventTest.js');
     mochaInstance.options.ignoreLeaks = true;
     //Set up socket io because geddy isn't initialized correctly
     geddy.io = require('socket.io').listen(5000);

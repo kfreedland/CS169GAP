@@ -32,12 +32,14 @@
               $('.badge').hide();
               var badgeNum = 0;
               var userName = '<%= user.username %>';
+              var pastEventIds = [];
 
               var href = document.location.protocol + document.location.hostname;
               console.log('href = ' + href);
               var socket = io.connect(href);
               var eventName = userName + 'InviteEvent';
               console.log("Listening for " + eventName);
+              
 
               <% if (user.mynotifications) { %>
                 badgeNum = <%= user.mynotifications %>;
@@ -46,15 +48,50 @@
                   $('.badge').show();
                 }
               <% } %>
-
+              console.log("USER NOTIFICATIONS: <%=user.mynotifications%>");
+              console.log("BADGENUM: " + badgeNum);
               socket.on(eventName, function (data) {
                 console.log("GOT THE EVENT:" + data);
                 console.log(data);
-                
-                console.log("USER NOTIFICATIONS: <%=user.mynotifications%>");
-                badgeNum += 1;
-                $('.badge').html(badgeNum);
-                $('.badge').show();
+
+
+                //If on myEvents page, push new event. 
+                var path = window.location.pathname;
+                console.log("PATH IS : " + path);
+                if (path == '/events/myevents'){
+                  if (data && data.eventId){
+                    $.ajax({
+                        type: 'GET',
+                        url: '/events/getevent',
+                        data: {eventId: data.eventId},
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function(respData) {
+                          addMyEvents([respData.event], "current", true /*shouldPrepend*/);
+
+                          // Reset the notification number
+                          $('.badge').hide();
+                        },
+                        failure: function(err) {
+                          console.log('Failure');
+                        }
+                    });
+                  }
+                } else {
+                  //Otherwise update badge
+
+                  // Catch duplicate event emits
+                  if ($.inArray(data.eventId, pastEventIds) === -1) {
+                    pastEventIds.push(data.eventId);
+                    badgeNum += 1;
+                  }
+
+                  console.log("Inner USER NOTIFICATIONS: <%=user.mynotifications%>");
+                  console.log("Inner BADGENUM: " + badgeNum);
+
+                  $('.badge').html(badgeNum);
+                  $('.badge').show();
+                }
               });
             </script>
           <% } else { %>
