@@ -27,6 +27,7 @@ function createActivityList(jsonResp) {
 
 		// Append the html to the list_activities div
 		$("#list_activities").append(
+			'<div class="ui-btn-inner ui-li">' +
 			'<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c" id="' + activityID + '">' +
 			'<div class="button_result">' +
 			'<div class="button_result_left">' +
@@ -43,7 +44,8 @@ function createActivityList(jsonResp) {
 			'<div class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.lowprice + ' to $' + data.highprice + '</div>' +
 			
 			'</div>' +
-			'</li>'
+			'</li>' + 
+			'</div>'
 		);
 
 		// Add on click functionality to the activity
