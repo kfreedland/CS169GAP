@@ -14,22 +14,28 @@ $(document).ready(function () {
 			// Validate the dictionary object before sending it
 			// TODO: Write the success and failure functions
 			validateData(dataResp, function(validData) {
-				$.ajax({
-			        type: 'POST',
-			        url: '/activities/create',
-			        data: JSON.stringify(dataResp),
-			        contentType: "application/json",
-			        dataType: "json",
-			        success: function(respData) {
-			        	console.log('Successful Create Activity Call');
-			        	console.log(respData);
-			        	
-			        	handleCreateActivityResponse(respData);
-			        },
-			        failure: function(err) {
-			        	console.log('Failure');
-			        }
-			    });
+				if (validData.errMsg !== undefined) {
+					$('#missingParams').html(validData.errMsg);
+					$('#missingParams').show();
+					$('body').scrollTop(0);
+				} else {
+					$.ajax({
+				        type: 'POST',
+				        url: '/activities/create',
+				        data: JSON.stringify(dataResp),
+				        contentType: "application/json",
+				        dataType: "json",
+				        success: function(respData) {
+				        	console.log('Successful Create Activity Call');
+				        	console.log(respData);
+				        	
+				        	handleCreateActivityResponse(respData);
+				        },
+				        failure: function(err) {
+				        	console.log('Failure');
+				        }
+				    });
+				}
 			});
 		});
 	    return false;
@@ -68,7 +74,15 @@ function handleCreateActivityResponse(status) {
       window.location = '/?methodType=createActivity&errCode=' + status.errCode;
     } else if (status.errCode === 6){
       //missing required parameter
+      var errMsg = 'Error: ' + status.message;
+      if (status.message = 'null time1') {
+      	errMsg = 'Error: Null Start Time';
+      } else if (status.message = 'null time2') {
+      	errMsg = 'Error: Null End Time';
+      }
+      $('#missingParams').html(errMsg);
       $('#missingParams').show();
+      $('body').scrollTop(0);
       //window.location = '/#create_activity_page?errCode=' + status.errCode;
     }
 	// window.location = '/';

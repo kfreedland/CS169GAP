@@ -241,7 +241,7 @@
         </div>
         <div data-role="fieldcontain">
           <label for="duration_<%= form.type; %>">Duration (Mins): </label>
-          <input type="number" name="duration" id="duration_<%= form.type; %>" value="30" pattern="[0-9]*" min="0" max="9999999" />
+          <input type="number" name="duration" id="duration_<%= form.type; %>" value="30" pattern="[0-9]*" min="1" max="9999999" onkeydown="limit(this, 1);" onkeyup="limit(this, 1);" />
         </div>
       </div>
 
