@@ -185,13 +185,13 @@
           <label for="low_num_participants_<%= form.type; %>" class="grid_label">Min: </label>
         </div>
         <div class="ui-block-b">
-          <input type="number" name="low_num_participants" id="low_num_participants_<%= form.type; %>" value="1" pattern="[0-9]*" min="0" max="9999999" />
+          <input type="number" name="low_num_participants" id="low_num_participants_<%= form.type; %>" value="1" pattern="[0-9]*" min="1" max="9999999" onkeydown="limit(this, 1);" onkeyup="limit(this, 1);" />
         </div>
         <div class="ui-block-c">
           <label for="high_num_participants_<%= form.type; %>" class="grid_label">Max: </label>
         </div>
         <div class="ui-block-d">
-          <input type="number" name="high_num_participants" id="high_num_participants_<%= form.type; %>" value="1" pattern="[0-9]*" min="0" max="9999999" />
+          <input type="number" name="high_num_participants" id="high_num_participants_<%= form.type; %>" value="1" pattern="[0-9]*" min="1" max="9999999" onkeydown="limit(this, 1);" onkeyup="limit(this, 1);" />
         </div>
       </div>
 
@@ -252,13 +252,13 @@
           <label for="low_price_<%= form.type; %>" class="grid_label">Min: </label>
         </div>
         <div class="ui-block-b">
-          <input type="number" name="low_price" id="min_price_<%= form.type; %>" value="1" pattern="[0-9]*" min="0" max="9999999" />
+          <input type="number" name="low_price" id="min_price_<%= form.type; %>" value="1" pattern="[0-9]*" min="0" max="9999999" onkeydown="limit(this, 0);" onkeyup="limit(this, 0);" />
         </div>
         <div class="ui-block-c">
           <label for="max_price_<%= form.type; %>" class="grid_label">Max: </label>
         </div>
         <div class="ui-block-d">
-          <input type="number" name="max_price" id="max_price_<%= form.type; %>" value="1" pattern="[0-9]*" min="0" max="9999999" />
+          <input type="number" name="max_price" id="max_price_<%= form.type; %>" value="1" pattern="[0-9]*" min="0" max="9999999" onkeydown="limit(this, 0);" onkeyup="limit(this, 0);" />
         </div>
       </div>
 
@@ -272,7 +272,7 @@
       <% if(form.type === "find") { %>
         <div data-role="fieldcontain">
           <label for="distance_<%= form.type; %>">Distance (Miles): </label>
-          <input type="number" name="distance" id="distance_<%= form.type; %>" value="0" pattern="[0-9]*" min="0" max="999999999999" />
+          <input type="number" name="distance" id="distance_<%= form.type; %>" value="1" pattern="[0-9]*" min="1" max="9999999" onkeydown="limit(this, 1);" onkeyup="limit(this, 1);" />
         </div>
       <% } %>
 

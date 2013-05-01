@@ -227,6 +227,16 @@ function addInvitedParticipants(participantsDivID, attendingUsers) {
 	$(participantsDivID).html(participantsStr);
 }
 
+function limit(element, minValue) {
+	var num = element.value;
+	
+	if (num === "") {
+		element.value = minValue;
+	} else if (element.value < minValue) {
+		element.value = minValue;
+	}
+}
+
 /*********************************************
 	Helper Time Functions
 *********************************************/
