@@ -36,9 +36,6 @@
             </div>
             <script type='text/javascript'>
               $('.badge').hide();
-            </script>
-            <% if(form.type === "find") { %>
-            <script type='text/javascript'>
               var badgeNum = 0;
               var userName = '<%= user.username %>';
               var pastEventIds = [];
@@ -90,7 +87,6 @@
                 }
               });
             </script>
-            <% } %>
           <% } else { %>
             <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
             <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
