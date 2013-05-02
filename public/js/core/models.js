@@ -541,6 +541,16 @@ Comment.addComment = function(eventID, userID, text, callback)
                   //succeeded
                   // console.log("saving event with comment succeeded");
                   addCommentCallback(1, callback);
+
+                  //push notification after successfully adding comment
+                  //params required in param dict: usernames, eventID, commentModel
+                  var emitAddParamDict = {};
+                  emitAddParamDict.usernames = eventRecord.attendingusers;
+                  emitAddParamDict.eventID = eventRecord.id;
+                  emitAddParamDict.commentModel = commentRecord;
+                  emitAddCommentEventForUsernames(emitAddParamDict);
+
+
                   return;
                 }
 
@@ -659,6 +669,39 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
   });
 
+}
+
+//params has usernames, eventID, commentModel
+function emitAddCommentEventForUsernames (params) {
+  for (var key in params.usernames)
+  {
+    var username = params.usernames[key];
+    var updateName = username + 'CommentUpdate';
+    console.log("EMITTING UPDATE: " + updateName);
+    geddy.io.sockets.emit(updateName, {eventId: params.eventID, comment: params.commentModel});
+
+    //Update user's notification number
+    // geddy.model.User.first({username: username}, function (err, userModel){
+    //   // console.log("About to increment mynotifications");
+    //   if (!err && userModel){
+    //     // console.log("userModel exists and no err so incrementing mynotifications");
+    //     if (userModel.mynotifications){
+    //       userModel.mynotifications += 1;
+    //     } else {
+    //       userModel.mynotifications = 1;
+    //     }
+    //     // console.log("mynotifications = " + userModel.mynotifications);
+    //     userModel.errors = null;
+    //     userModel.save(function (err, result){
+    //       //do nothing
+    //       if (err){
+    //         console.log("Got error when saving user after updating notification number: ");
+    //         console.dir(err);
+    //       }
+    //     });
+    //   }
+    // });
+  }
 }
 
 
