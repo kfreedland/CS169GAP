@@ -14,6 +14,13 @@ $(document).ready(function () {
 	$('#begin_date_create').change(beginDateCreateChanged);
 	$('#end_date_create').change(endDateCreateChanged);
 
+	//Initialize the time pickers
+	setupCreateActivityTimePickers();
+	//Register change handlers to the date pickers
+	//To change max/min dates of other field
+	$('#start_time_create').change(startTimeCreateChanged);
+	$('#end_time_create').change(endTimeCreateChanged);
+
 	/*
 	  When the Create Activity button is clicked, send an ajax call to /activities/create with the form data
 	*/
@@ -165,5 +172,107 @@ function endDateCreateChanged() {
         mode: 'scroller',
         dateOrder: 'M D ddyy'
     });
+}
 
+function setupCreateActivityTimePickers() {
+	$('#start_time_create').die("click tap");
+	$('#start_time_create').live("click tap", function() {
+		$('#start_time_create').mobiscroll('show'); 
+        return false;
+	});
+
+	$('#start_time_create').mobiscroll().time({
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        timeFormat: 'h:ii A',
+        timeWheels: 'hhiiA'
+    });
+
+    $('#end_time_create').die("click tap");
+	$('#end_time_create').live("click tap", function() {
+		$('#end_time_create').mobiscroll('show'); 
+        return false;
+	});
+
+	$('#end_time_create').mobiscroll().time({
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        timeFormat: 'h:ii A',
+        timeWheels: 'hhiiA'
+    });
+}
+
+function startTimeCreateChanged() {
+	//Set minDate for endDate
+	var today = new Date();
+	var day = today.getDate();
+	var month = today.getMonth()+1; //January is 0!
+
+	var year = today.getFullYear();
+
+	//Get selected time hours and minutes
+	var index = $('#start_time_create').val().indexOf(':');
+	var minutes = $('#start_time_create').val().substring(index+1, index+3);
+	var hours = $('#start_time_create').val().substring(0, index);
+
+	//If PM, add 12 hours
+	if ($('#start_time_create').val().indexOf("PM") > 0){
+		hours = parseInt(hours, 10) + 12;
+	}
+
+	//Set minDate for endTime
+	var maxDate = $('#end_time_create').mobiscroll().time.maxTime;
+	var minDate = new Date(year, month, day, hours, minutes, 0 /*seconds*/, 0 /*ms*/);
+
+	console.log("minDate = " + minDate);
+	console.log("maxDate = " + maxDate);
+
+	$('#end_time_create').mobiscroll().time({
+        minDate: minDate,
+        maxDate: maxDate,
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        timeFormat: 'h:ii A',
+        timeWheels: 'hhiiA'
+    });
+}
+
+function endTimeCreateChanged() {
+
+	var today = new Date();
+	var day = today.getDate();
+	var month = today.getMonth()+1; //January is 0!
+
+	var year = today.getFullYear();
+
+	//Get selected time hours and minutes
+	var index = $('#end_time_create').val().indexOf(':');
+	var minutes = $('#end_time_create').val().substring(index+1, index+3);
+	var hours = $('#end_time_create').val().substring(0, index);
+
+	//If PM, add 12 hours
+	if ($('#end_time_create').val().indexOf("PM") > 0){
+		hours = parseInt(hours, 10) + 12;
+	}
+
+	//Set maxDate for startTime
+	var maxDate = new Date(year, month, day, hours, minutes, 0 /*seconds*/, 0 /*ms*/);
+	var minDate = $('#start_time_create').mobiscroll().time.maxTime;
+
+
+	console.log("minDate = " + minDate);
+	console.log("maxDate = " + maxDate);
+
+	$('#start_time_create').mobiscroll().time({
+        minDate: minDate,
+        maxDate: maxDate,
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        timeFormat: 'h:ii A',
+        timeWheels: 'hhiiA'
+    });
 }

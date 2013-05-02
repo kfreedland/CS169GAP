@@ -222,67 +222,102 @@ function endDateFindChanged() {
 function setupFindActivityTimePickers() {
 	$('#start_time_find').die("click tap");
 	$('#start_time_find').live("click tap", function() {
-		$('#begin_date_find').mobiscroll('show'); 
+		$('#start_time_find').mobiscroll('show'); 
         return false;
 	});
 
-	$('#begin_date_find').mobiscroll().date({
+	$('#start_time_find').mobiscroll().time({
         theme: 'ios',
         display: 'bottom',
         mode: 'scroller',
-        dateOrder: 'M D ddyy'
+        timeFormat: 'h:ii A',
+        timeWheels: 'hhiiA'
     });
 
-    $('#end_date_find').die("click tap");
-	$('#end_date_find').live("click tap", function() {
-		$('#end_date_find').mobiscroll('show'); 
+    $('#end_time_find').die("click tap");
+	$('#end_time_find').live("click tap", function() {
+		$('#end_time_find').mobiscroll('show'); 
         return false;
 	});
 
-	$('#end_date_find').mobiscroll().date({
+	$('#end_time_find').mobiscroll().time({
         theme: 'ios',
         display: 'bottom',
         mode: 'scroller',
-        dateOrder: 'M D ddyy'
+        timeFormat: 'h:ii A',
+        timeWheels: 'hhiiA'
     });
 }
 
 function startTimeFindChanged() {
 	//Set minDate for endDate
-	var minDate = new Date($('#begin_date_find').val());
-	var maxDate = $('#end_date_find').mobiscroll().date.maxDate;
+	var today = new Date();
+	var day = today.getDate();
+	var month = today.getMonth()+1; //January is 0!
 
+	var year = today.getFullYear();
+
+	//Get selected time hours and minutes
+	var index = $('#start_time_find').val().indexOf(':');
+	var minutes = $('#start_time_find').val().substring(index+1, index+3);
+	var hours = $('#start_time_find').val().substring(0, index);
+
+	//If PM, add 12 hours
+	if ($('#start_time_find').val().indexOf("PM") > 0){
+		hours = parseInt(hours, 10) + 12;
+	}
+
+	//Set minDate for endTime
+	var maxDate = $('#end_time_find').mobiscroll().time.maxTime;
+	var minDate = new Date(year, month, day, hours, minutes, 0 /*seconds*/, 0 /*ms*/);
 
 	console.log("minDate = " + minDate);
 	console.log("maxDate = " + maxDate);
 
-	$('#end_date_find').mobiscroll().date({
-        //invalid: { daysOfWeek: [0, 8] , daysOfMonth: ['5/1', '12/24', '12/25'] },
+	$('#end_time_find').mobiscroll().time({
         minDate: minDate,
         maxDate: maxDate,
         theme: 'ios',
         display: 'bottom',
         mode: 'scroller',
-        dateOrder: 'M D ddyy'
+        timeFormat: 'h:ii A',
+        timeWheels: 'hhiiA'
     });
 }
 
 function endTimeFindChanged() {
-	//Set maxDate for beginDate
-	var minDate = $('#begin_date_find').mobiscroll().date.maxDate;
-	var maxDate = new Date($('#end_date_find').val());
+
+	var today = new Date();
+	var day = today.getDate();
+	var month = today.getMonth()+1; //January is 0!
+
+	var year = today.getFullYear();
+
+	//Get selected time hours and minutes
+	var index = $('#end_time_find').val().indexOf(':');
+	var minutes = $('#end_time_find').val().substring(index+1, index+3);
+	var hours = $('#end_time_find').val().substring(0, index);
+
+	//If PM, add 12 hours
+	if ($('#end_time_find').val().indexOf("PM") > 0){
+		hours = parseInt(hours, 10) + 12;
+	}
+
+	//Set maxDate for startTime
+	var maxDate = new Date(year, month, day, hours, minutes, 0 /*seconds*/, 0 /*ms*/);
+	var minDate = $('#start_time_find').mobiscroll().time.maxTime;
 
 
 	console.log("minDate = " + minDate);
 	console.log("maxDate = " + maxDate);
 
-	$('#begin_date_find').mobiscroll().date({
-        //invalid: { daysOfWeek: [0, 8] , daysOfMonth: ['5/1', '12/24', '12/25'] },
+	$('#start_time_find').mobiscroll().time({
         minDate: minDate,
         maxDate: maxDate,
         theme: 'ios',
         display: 'bottom',
         mode: 'scroller',
-        dateOrder: 'M D ddyy'
+        timeFormat: 'h:ii A',
+        timeWheels: 'hhiiA'
     });
 }
