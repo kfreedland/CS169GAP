@@ -130,7 +130,12 @@ Comment.addComment = function(eventID, userID, text, callback)
                   //push notification after successfully adding comment
                   //params required in param dict: usernames, eventId, commentModel
                   var emitAddParamDict = {};
-                  emitAddParamDict.usernames = eventRecord.attendingusers;
+
+                  //remove local user from user array to send push updates to
+                  var userArray = eventRecord.attendingusers.split(',');
+                  userArray.splice(userArray.indexOf(userRecord.username),1);
+
+                  emitAddParamDict.usernames = userArray;
                   emitAddParamDict.eventId = eventRecord.id;
                   emitAddParamDict.commentModel = commentRecord;
                   emitAddCommentEventForUsernames(emitAddParamDict);
