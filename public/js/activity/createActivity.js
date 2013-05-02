@@ -1,7 +1,5 @@
 $(document).ready(function () {	
 
-	$('#list_activities_container').hide();
-
 	//Hide error message
 	$('#missingParams').hide();
 
