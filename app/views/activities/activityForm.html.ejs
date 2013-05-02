@@ -86,6 +86,36 @@
                   $('.badge').show();
                 }
               });
+
+
+              var updateName = userName + 'CommentUpdate';
+              socket.on(updateName, function (data){
+
+                var path = window.location.pathname;
+                if (path == '/events/eventdetail'){
+                  if(data && data.eventId){
+
+
+                    var encodedDataStr = window.location.hash;
+                    // Remove the # in the front
+                    var encodedDataFixed = encodedDataStr.slice(1);
+                    
+                    var jsonData = $.parseJSON(window.atob(encodedDataFixed));
+
+                    if(data.eventId == jsonData.id){
+
+                      var commentArray = [data.commentModel];
+
+                      handleGetCommentsResponse(commentArray, true);
+
+                    }
+
+                  }
+
+              });
+
+
+
             </script>
           <% } else { %>
             <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>

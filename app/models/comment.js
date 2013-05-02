@@ -128,10 +128,10 @@ Comment.addComment = function(eventID, userID, text, callback)
                   addCommentCallback(1, callback);
 
                   //push notification after successfully adding comment
-                  //params required in param dict: usernames, eventID, commentModel
+                  //params required in param dict: usernames, eventId, commentModel
                   var emitAddParamDict = {};
                   emitAddParamDict.usernames = eventRecord.attendingusers;
-                  emitAddParamDict.eventID = eventRecord.id;
+                  emitAddParamDict.eventId = eventRecord.id;
                   emitAddParamDict.commentModel = commentRecord;
                   emitAddCommentEventForUsernames(emitAddParamDict);
 
@@ -256,14 +256,14 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
 }
 
-//params has usernames, eventID, commentModel
+//params has usernames, eventId, commentModel
 function emitAddCommentEventForUsernames (params) {
   for (var key in params.usernames)
   {
     var username = params.usernames[key];
     var updateName = username + 'CommentUpdate';
     console.log("EMITTING UPDATE: " + updateName);
-    geddy.io.sockets.emit(updateName, {eventId: params.eventID, comment: params.commentModel});
+    geddy.io.sockets.emit(updateName, {eventId: params.eventId, comment: params.commentModel});
 
     //Update user's notification number
     // geddy.model.User.first({username: username}, function (err, userModel){
