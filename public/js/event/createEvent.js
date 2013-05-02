@@ -1,4 +1,8 @@
 $(document).ready(function() {
+
+	// $( "#begin_date_create").datepicker();
+	// $( "#begin_date_find").datepicker();
+
 	var encodedDataStr = window.location.hash;
 	// Remove the # in the front
 	var encodedDataFixed = encodedDataStr.slice(1);

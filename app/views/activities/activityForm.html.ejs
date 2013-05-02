@@ -7,112 +7,6 @@
   <div data-role="page" id="create_activity_page">
 <% } %>
 
-  <!--Navigation Bar-->
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div data-role="header" id="navBarHeader">
-        <div class="header_title">
-          Group Activity Planner
-        </div>
-        <div class="parent_container">
-        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right" id="userButtonsDiv">
-          <% if (user) {%>
-            <div id="container">
-              <div id="welcome_container">
-                <div class="welcome_text">Welcome: 
-                  <!-- <span class="welcome_text">Welcome: </span> -->
-                  <div id="username_container">
-                    <a href="/events/myevents">
-                      <span class="full_name">
-                        <%=user.givenName%> <%=user.familyName%>
-                      </span>
-                      <span class="badgeContainer">
-                        <img src="/img/facebook-blank-photo.jpg" width="25" id="blankPhoto">
-                        <span class="badge"></span>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-                <!-- </p> -->
-              </div>
-              <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
-            </div>
-            
-            <script type='text/javascript'>
-              $('.badge').hide();
-              var badgeNum = 0;
-              var userName = '<%= user.username %>';
-              var pastEventIds = [];
-
-              var href = document.location.protocol + document.location.hostname;
-              console.log('href = ' + href);
-              var socket = io.connect(href);
-              var eventName = userName + 'InviteEvent';
-              console.log("Listening for " + eventName);
-              
-
-              <% if (user.mynotifications) { %>
-                badgeNum = <%= user.mynotifications %>;
-                if (badgeNum > 0){
-                  $('.badge').html(badgeNum);
-                  $('.badge').show();
-                }
-              <% } %>
-              console.log("USER NOTIFICATIONS: <%=user.mynotifications%>");
-              console.log("BADGENUM: " + badgeNum);
-              socket.on(eventName, function (data) {
-                console.log("GOT THE EVENT:" + data);
-                console.log(data);
-
-
-                //If on myEvents page, push new event. 
-                var path = window.location.pathname;
-                console.log("PATH IS : " + path);
-                if (path == '/events/myevents'){
-                  if (data && data.eventId){
-                    $.ajax({
-                        type: 'GET',
-                        url: '/events/getevent',
-                        data: {eventId: data.eventId},
-                        contentType: "application/json",
-                        dataType: "json",
-                        success: function(respData) {
-                          addMyEvents([respData.event], "current", true /*shouldPrepend*/);
-
-                          // Reset the notification number
-                          $('.badge').hide();
-                        },
-                        failure: function(err) {
-                          console.log('Failure');
-                        }
-                    });
-                  }
-                } else {
-                  //Otherwise update badge
-
-                  // Catch duplicate event emits
-                  if ($.inArray(data.eventId, pastEventIds) === -1) {
-                    pastEventIds.push(data.eventId);
-                    badgeNum += 1;
-                  }
-
-                  console.log("Inner USER NOTIFICATIONS: <%=user.mynotifications%>");
-                  console.log("Inner BADGENUM: " + badgeNum);
-
-                  $('.badge').html(badgeNum);
-                  $('.badge').show();
-                }
-              });
-            </script>
-          <% } else { %>
-            <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
-            <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
-          <% } %>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
 <% if(form.type === "find") { %>
   <div id="find_activity" class="box" data-role="content">
@@ -199,6 +93,7 @@
       </div>
 
       <!-- Date Range -->
+      <!-- <input name="begin_date" id="begin_date_<%= form.type; %>" > -->
       <div data-role="fieldcontain">
         <label for="begin_date_<%= form.type; %>">Start Date: </label>
         <input name="begin_date" id="begin_date_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
