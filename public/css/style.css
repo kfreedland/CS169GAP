@@ -64,6 +64,25 @@ label {
   padding: 5px;
 }
 
+.time-font {
+  font-size: 9px;
+}
+
+.ui-icon-location-arrow {
+  background-image: url('/img/193-location-arrow.png');
+  background-size: 17px 17px;
+  background-color: #ddd;
+}
+
+.header_title {
+  text-align: center;
+  padding-top: 15px;
+}
+
+#navBarHeader {
+  padding-bottom: 20px;
+}
+
 /* Fix Bootstrap's Styling */
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
   height: 35px;
@@ -71,6 +90,11 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 
 input[type="file"], input[type="image"], input[type="submit"], input[type="reset"], input[type="button"], input[type="radio"], input[type="checkbox"] {
   width: 100%;
+}
+
+input[readonly].hide_readonly_effect {
+  cursor: auto;
+  background-color: #fff;
 }
 
 @media (max-width: 480px) {
@@ -127,13 +151,13 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   #event_detail_content {
     margin:0 auto;
     width: 50%;
-    padding-top: 100px;
+    padding-top: 5%;
   }
 
   .hero-unit {
     margin:0 auto;
     width: 50%;
-    padding-top: 100px;
+    padding-top: 5%;
   }
 
 
@@ -170,7 +194,6 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     float : right;
   }
 
-  /*STYLING BRANDON'S HAIR AKA List Page*/
   .list-item {
       background: #fff;
       margin-bottom: 10px;
@@ -214,18 +237,6 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
   .row-address {
     padding: 0px;
   }
-  
-  .row-price-range {
-
-  }
-
-  .row-num-participants {
-
-  }
-
-  .row-time-range {
-
-  }
 
   .ui-li.ui-btn {
     margin: 20px;
@@ -254,6 +265,144 @@ input[type="file"], input[type="image"], input[type="submit"], input[type="reset
     position: absolute;
     top: 0px;
     left: 70px;
+  }
+
+  #logout_button {
+    position: absolute;
+    right: 0;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #suggested_activities {
+    margin: 0 auto;
+    padding-top: 120px;
+  }
+
+  #activity_detail_content,
+  #profile_content,
+  #create_event_page,
+  #myevent_content,
+  #event_detail_content {
+    margin:0 auto;
+    padding-top: 5%;
+  }
+
+  .form-actions {
+    background-color: transparent;
+    border-top: 0px;
+  }
+
+  div {
+    display: block;
+  }
+
+  legend {
+    text-align: center;
+  }
+
+  .list-item div {
+    background: white;
+    border-bottom: 0px;
+    padding: 0px;
+  }
+
+  .list-item div > * {
+    padding: 0px;
+  }
+
+  .list-item {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 10px 20px;
+      position: relative;
+      width: 100%;
+      box-shadow: rgba(0, 0, 0, 0.4) 0 1px 5px 0px;
+      border-radius: 3px;
+      margin-bottom: 30px;
+
+  }
+
+  .ui-btn-up-c .button_result {
+    font-weight: normal;
+    color: #222;
+    text-shadow: 0 1px 0 #fff;
+  }
+
+  .row-title {
+    font-size: 2em;
+  }
+
+  .row-description {
+    height : 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .row-participants {
+    overflow: hidden;
+    text-overflow: ellipsis; 
+  }
+
+  .row-category {
+    height : 15px;
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  .row-address {
+    padding: 0px;
+  }
+  
+  .ui-li.ui-btn {
+    margin: 20px;
+  }
+
+  /*Error messages for create and add user*/
+  .errorMessage{
+    color: red;
+    text-align: center;
+  }
+
+  #userButtonsDiv {
+    position: relative;
+  }
+
+  .parent_container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+
+  #navBarHeader {
+    padding-bottom: 60px;
+  }
+
+  #container {
+    width: 350px;
+    height: 55px;
+    position: relative;
+  }
+
+  .welcome_text {
+    padding-left: 15px;
+    text-align: left;
+    position: relative;
+  }
+
+  #welcome_container{
+    width: 100%;
+    position: absolute;
+    top: 15px;
+    left: 10px;
+  }
+
+  #username_container {
+    width: 64%;
+    position: absolute;
+    top: 0px;
+    left: 110px;
   }
 
   #logout_button {

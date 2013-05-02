@@ -32,8 +32,8 @@ var Main = function () {
     if (!localParams.methodType){
       localParams.methodType = 0;
     }
-    console.log("params.methodType =" + params.methodType + " and params.errCode =" + params.errCode);
-    console.log("this.session.get('userId') = " + this.session.get('userId'));
+    // console.log("params.methodType =" + params.methodType + " and params.errCode =" + params.errCode);
+    // console.log("this.session.get('userId') = " + this.session.get('userId'));
     if (!this.session.get('userId')){
       this.session.set('userId', 0);
     }
@@ -42,11 +42,11 @@ var Main = function () {
       params.user = null;
       params.authType = null;
       if (data) {
-        console.log("Got User: " + data);
+        // console.log("Got User: " + data);
         params.user = data;
         params.authType = authTypes[self.session.get('authType')].name;
       }
-      console.log("Params.User = " + params.user);
+      // console.log("Params.User = " + params.user);
       self.respond(params, {
         format: 'html'
       , template: 'app/views/main/index'

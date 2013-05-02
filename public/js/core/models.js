@@ -476,7 +476,7 @@ function removeDuplicateAndAlreadyAttendingUsers(usernameOrEmailArray, eventid, 
           var attendingUserArray = eventRecord.attendingusers.split(',');
           for (var key in attendingUserArray){
             var userNameOrEmail = attendingUserArray[key];
-            usernameOrEmailHash.userNameOrEmail = true;
+            usernameOrEmailHash[userNameOrEmail] = true;
           }
           
           //Now remove attending users and duplicates
@@ -846,7 +846,7 @@ function emitEventForUsernames (params) {
   {
     var username = params.usernames[key];
     var eventName = username + 'InviteEvent';
-    // console.log("Emitting event: " + eventName);
+    console.log("EMITTING EVENT: " + eventName);
     geddy.io.sockets.emit(eventName, {eventId: params.eventModel.id, eventName: params.eventModel.name});
 
     //Update user's notification number
@@ -1099,7 +1099,7 @@ Event.getMyEvents = function (params, callback) {
       console.dir(err);
       // console.log("err exists: ");
       // console.dir(err);
-      getEventsCallback(7, currentEvents, pastEvents, callback);
+      getMyEventsCallback(7, currentEvents, pastEvents, callback);
     } else {
       if (userModel){
         if (userModel.myevents){
@@ -1111,7 +1111,7 @@ Event.getMyEvents = function (params, callback) {
               if (err){
                 console.log("error in event.first in getMyEvents");
                 console.dir(err);
-                getEventsCallback(7, currentEvents, pastEvents, callback);
+                getMyEventsCallback(7, currentEvents, pastEvents, callback);
               } else if (eventModel){
                 //to deal with server latency we are multiplying this by a high value close to 1
                 var enddatetime = eventModel.enddate + eventModel.time2;
@@ -1129,21 +1129,21 @@ Event.getMyEvents = function (params, callback) {
                 userModel.errors = null;
                 userModel.save(function (err, result){
                   //Return now
-                  getEventsCallback(1, currentEvents, pastEvents, callback);
+                  getMyEventsCallback(1, currentEvents, pastEvents, callback);
                 });
                 // console.log("index = " + index);
               }
             });
           }
         } else {
-          getEventsCallback(1, currentEvents, pastEvents, callback);
+          getMyEventsCallback(1, currentEvents, pastEvents, callback);
         }
       }
     }
   });
 };
 
-function getEventsCallback(errCode, currentEvents, pastEvents, callback){
+function getMyEventsCallback(errCode, currentEvents, pastEvents, callback){
   var responseDict = {};
   responseDict.errCode = errCode;
   responseDict.pastEvents = pastEvents;
@@ -1151,7 +1151,41 @@ function getEventsCallback(errCode, currentEvents, pastEvents, callback){
   callback(responseDict);
 }
 
-  
+
+Event.getEvent = function (params, callback) {
+  var eventId = params.eventId;
+  geddy.model.Event.first({id: eventId}, function (err, eventModel)
+  {
+    if (err){
+      console.log("error in event.first in getEvent");
+      console.dir(err);
+      getEventCallback(7, {}, callback);
+    } else if (eventModel){
+      //Get current user and clear notification number
+      geddy.model.User.first({id: params.userId}, function (err, userModel) {
+        //Reset mynotifications counter
+        userModel.mynotifications = 0;
+        userModel.errors = null;
+        userModel.save(function (err, result){
+          //Return now
+          getEventCallback(1, eventModel, callback);
+        });
+      });
+    } else {
+      getEventCallback(1, {}, callback);
+    }
+  });
+};
+
+
+//Helper for getEvent
+function getEventCallback(errCode, event, callback){
+  var responseDict = {};
+  responseDict.errCode = errCode;
+  responseDict.event = event;
+  callback(responseDict);
+}
+
 /*
 // Can also define them on the prototype
 Event.prototype.someOtherMethod = function () {
@@ -1196,8 +1230,8 @@ Passport = geddy.model.register('Passport', Passport);
 (function () {
 var passport = require('passport')
   , passportHelper = require('../helpers/passport/index')
-  , cryptPass = passportHelper.cryptPass;
-
+  , cryptPass = passportHelper.cryptPass
+  , check = require("validator").check;
 var User = function () {
 
 	this.property('username', 'string', {required: true});
@@ -1209,8 +1243,7 @@ var User = function () {
     this.property('mynotifications', 'number');
     this.validatesLength('username', {min: 3, max:128});
     this.validatesLength('password', {min: 8, max:128});
-    this.validatesConfirmed('password', 'confirmPassword');
-
+    this.validatesConfirmed('password', 'confirmPassword');    
     this.hasMany('Passports');
 };
 
@@ -1241,33 +1274,54 @@ User.add = function(user, callback){
         if (user.isValid()) {
           user.password = cryptPass(user.password);
         }
-        // console.log("user is : username: " + user.username + " and password: " + user.password);
-        user.save(function(err, data) {
-          // console.log("Got Data: " + data);
-          if (err) {
-            // params.errors = err;
-            //Database Error errCode=7
-            console.log("Error saving User: ");
-            responseDict.message = "";
-            for (var item in err){
-              responseDict.message += err[item];
+        //if the user does not give us an email we don't care but if they do it should be valid
+        if(!user.email || isValidEmail(user.email))
+        {
+          // console.log("user is : username: " + user.username + " and password: " + user.password);
+          user.save(function(err, data) {
+            // console.log("Got Data: " + data);
+            if (err) {
+              // params.errors = err;
+              //Database Error errCode=7
+              console.log("Error saving User: ");
+              responseDict.message = "";
+              for (var item in err){
+                responseDict.message += err[item];
+              }
+              console.log(responseDict.message);
+              responseDict.errCode = 7;
+              callback(responseDict);
+              // self.transfer('add');
             }
-            console.log(responseDict.message);
-            responseDict.errCode = 7;
-            callback(responseDict);
-            // self.transfer('add');
-          }
-          else {
-            //Success errCode=1
-            responseDict.errCode = 1;
-            callback(responseDict);
-              // self.redirect({controller: self.name});
-          }
-        });
+            else {
+              //Success errCode=1
+              responseDict.errCode = 1;
+              callback(responseDict);
+                // self.redirect({controller: self.name});
+            }
+          });
+        }
+        else
+        {
+          responseDict.errCode = 14;
+          callback(responseDict);
+        }
       }
     }
     });
 };
+
+function isValidEmail(email) { 
+  try
+  {
+    check(email).isEmail();
+    return true;
+  } 
+  catch (error)
+  {
+    return false;
+  }
+}
 
 User.getUsernames = function(callback)
 {

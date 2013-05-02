@@ -55,6 +55,8 @@ router.post('/events/adduserstoevent').to('Events.addUsersToEvent');
 router.post('/events/create').to('Events.add');
 router.post('/events/changedatetime').to('Events.changeDateTime');
 router.get('/events/getmyevents').to('Events.getMyEvents');
+//Used for real-time updates of new events
+router.get('/events/getevent').to('Events.getEvent');
 router.get('/events/createnew').to('Events.createNewEvent');
 router.get('/events/myevents').to('Events.myEvents');
 router.get('/events/eventdetail').to('Events.detail');

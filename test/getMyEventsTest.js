@@ -130,7 +130,7 @@ describe('Event', function()
                             eventData.noemail = true;
 
                             eventData.inviterId = userRecord.id;
-Event.add(eventData, function(respDict)
+                            Event.add(eventData, function(respDict)
                             {
                                 assert.deepEqual(respDict, expected);
                                 Event.first({name: eventData.name}, function (err, eventModel) {
@@ -211,7 +211,7 @@ Event.add(eventData, function(respDict)
                             eventData.noemail = true;
 
                             eventData.inviterId = userRecord.id;
-Event.add(eventData, function(respDict)
+                            Event.add(eventData, function(respDict)
                             {
                                 assert.deepEqual(respDict, expected);
                                 Event.first({name: eventData.name}, function (err, eventModel) {

@@ -18,6 +18,9 @@ CS169GAP
 
 <h1> CHANGELOGS:</h1>
 
+<b> Changelog Entry 17: </b>
+	//Added getEvent API
+
 <b> Changelog Entry 16: </b>
 	//Edited database creation for comments
 	
@@ -122,6 +125,7 @@ CS169GAP
 		<li>11 - Event date/time is invalid </li>
 		<li>12 - Atleast one email in the list of emails is malformed </li>
 		<li>13 - Invite Email failed to send </li>
+		<li>14 - Email given at user creation is invalid </li>
 	</ul>
 
 <h2> ACTIVITIES </h2>
@@ -248,6 +252,29 @@ CS169GAP
 	<li>'errCode': [1 = success] </li>
 	<li>'currentEvents': [Contains list of current events for the current user]</li>
 	<li>'pastEvents': [Contains list of past events for the current user]</li>
+
+	OR
+	<li>Redirect to /login if User Not Authenticated</li>
+</ul>
+
+
+<h6><b>GET EVENT</b></h6>
+//Returns a single event for the specified eventId
+
+<h3>URL: </h3> /events/getevent
+
+
+<h3>Params:</h3>
+<ul>
+	{
+		eventId: [eventId of event you want]
+	}
+</ul>
+
+<h3>Response: </h3>
+<ul>
+	<li>'errCode': [1 = success] </li>
+	<li>'event': [Contains single event or empty object]</li>
 
 	OR
 	<li>Redirect to /login if User Not Authenticated</li>

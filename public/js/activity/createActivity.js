@@ -1,16 +1,9 @@
-$(function(){
-  // Bind the event.
-  $(window).hashchange(setupCreateActivity);
-
-  // Trigger the event (useful on page load).
-  setupCreateActivity();
-});
-
-function setupCreateActivity(){
+$(document).ready(function () {
 	$('#list_activities_container').hide();
 
 	//Hide error message
 	$('#missingParams').hide();
+
 	/*
 	  When the Create Activity button is clicked, send an ajax call to /activities/create with the form data
 	*/
@@ -21,22 +14,28 @@ function setupCreateActivity(){
 			// Validate the dictionary object before sending it
 			// TODO: Write the success and failure functions
 			validateData(dataResp, function(validData) {
-				$.ajax({
-			        type: 'POST',
-			        url: '/activities/create',
-			        data: JSON.stringify(dataResp),
-			        contentType: "application/json",
-			        dataType: "json",
-			        success: function(respData) {
-			        	console.log('Successful Create Activity Call');
-			        	console.log(respData);
-			        	
-			        	handleCreateActivityResponse(respData);
-			        },
-			        failure: function(err) {
-			        	console.log('Failure');
-			        }
-			    });
+				if (validData.errMsg !== undefined) {
+					$('#missingParams').html(validData.errMsg);
+					$('#missingParams').show();
+					$('body').scrollTop(0);
+				} else {
+					$.ajax({
+				        type: 'POST',
+				        url: '/activities/create',
+				        data: JSON.stringify(dataResp),
+				        contentType: "application/json",
+				        dataType: "json",
+				        success: function(respData) {
+				        	console.log('Successful Create Activity Call');
+				        	console.log(respData);
+				        	
+				        	handleCreateActivityResponse(respData);
+				        },
+				        failure: function(err) {
+				        	console.log('Failure');
+				        }
+				    });
+				}
 			});
 		});
 	    return false;
@@ -46,10 +45,10 @@ function setupCreateActivity(){
 	  Show or hide the time range options depending on which radio button is active
 	*/
 	$('input:radio[name="time_range_create"]').change(function() {
-    	if ($(this).val() === "start_end") {
-        	$('#start_end_range_create').show();
+    	if ($(this).val() === "startEnd") {
+        	$('#start_end_range_create').slideDown();
         } else {
-        	$('#start_end_range_create').hide();
+        	$('#start_end_range_create').slideUp();
         }
 	});
 
@@ -60,7 +59,7 @@ function setupCreateActivity(){
 			$("#location_input_create").val(pos);
 		});
 	});
-}
+});
 
 
 /*
@@ -75,7 +74,15 @@ function handleCreateActivityResponse(status) {
       window.location = '/?methodType=createActivity&errCode=' + status.errCode;
     } else if (status.errCode === 6){
       //missing required parameter
+      var errMsg = 'Error: ' + status.message;
+      if (status.message = 'null time1') {
+      	errMsg = 'Error: Null Start Time';
+      } else if (status.message = 'null time2') {
+      	errMsg = 'Error: Null End Time';
+      }
+      $('#missingParams').html(errMsg);
       $('#missingParams').show();
+      $('body').scrollTop(0);
       //window.location = '/#create_activity_page?errCode=' + status.errCode;
     }
 	// window.location = '/';

@@ -1,15 +1,17 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
-    <div data-role="header">
+    <div data-role="header" id="navBarHeader">
       <div data-type="horizontal" data-group="controlgroup" class="ui-btn-left">
         <a href="/" id="back_button" type="submit" name="back" value="Back" data-inline="true" data-theme="a" data-role="button">Back</a>
       </div>
-      <h1>
+      <div class="header_title">
         Group Activity Planner
-      </h1>
-      <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
+      </div>
+      <div class="parent_container">
+      <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right" id="userButtonsDiv">
         <a href="/login" id="login_button" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
         <a href="/users/add" id="sign_up_button" class="ui-btn-active" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+      </div>
       </div>
     </div>
   </div>
@@ -32,6 +34,10 @@
             <% } else { %>
               <% if (params.errCode == 7) { %>
                 <p> Error: <%= params.message %> </p>
+              <% } else { %>
+                <% if (params.errCode == 14) { %>
+                  <p> Error: Please enter a valid email. <p> 
+                <% } %>
               <% } %>
             <% } %>
           <% } %>

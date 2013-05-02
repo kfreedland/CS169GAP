@@ -1,22 +1,7 @@
 
-$(function(){
-  // Bind the event.
-  $(window).hashchange(setupFindActivity);
-
-  // Trigger the event (useful on page load).
-  setupFindActivity();
-});
-
-
-
-// $(document).ready(function() {
-
-// 	setupPage();
-// });
-
-
-function setupFindActivity() {
+$(document).ready(function() {
 	$('#list_activities_container').hide();
+
 	/*
 	  When the Find Activities button is clicked, send an ajax call to /activities/search with the form data
 	*/
@@ -50,13 +35,13 @@ function setupFindActivity() {
 	*/
 	$('input:radio[name="time_range_find"]').change(function() {
     	if ($(this).val() === "startEnd") {
-        	$('#start_end_range_find').show();
+        	$('#start_end_range_find').slideDown();
         } else {
-        	$('#start_end_range_find').hide();
+        	$('#start_end_range_find').slideUp();
         }
 	});
 	
-		/*
+	/*
 	  Show or hide the date range options depending on whether the checkbox is active
 	*/
 	$('input:checkbox[name="checkbox-1"]').click(function() {
@@ -76,7 +61,7 @@ function setupFindActivity() {
 			$("#location_input_find").val(pos);
 		});
 	});	
-}
+});
 
 /*
   Fix the price range html if necessary

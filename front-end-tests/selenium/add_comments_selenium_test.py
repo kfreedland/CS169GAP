@@ -162,5 +162,5 @@ def close():
 initialize()
 login("superuser", "password")
 create_event()
-add_comment()
+add_comment() 
 close()

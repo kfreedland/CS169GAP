@@ -1,17 +1,18 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-      <div data-role="header">
+      <div data-role="header" id="navBarHeader">
         <div data-type="horizontal" data-group="controlgroup" class="ui-btn-left">
-          <a href="#" onClick="history.back()" id="back_button" name="back" value="Back" data-inline="true" data-theme="a" data-role="button">Back</a>
+          <a href="#" onClick="window.history.back()" id="back_button" name="back" value="Back" data-inline="true" data-theme="a" data-role="button">Back</a>
         </div>
-        <h1>
+        <div class="header_title">
           Group Activity Planner
-        </h1>
-        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right">
+        </div>
+        <div class="parent_container">
+        <div data-type="horizontal" data-group="controlgroup" class="ui-btn-right" id="userButtonsDiv">
           <% if (user) {%>
             <div id="container">
               <div id="welcome_container">
-                <p>Welcome: 
+                <div class="welcome_text">Welcome: 
                   <div id="username_container">
                     <a href="/events/myevents">
                       <span class="full_name">
@@ -23,7 +24,7 @@
                       </span>
                     </a>
                   </div>
-                </p>
+                </div>
               </div>
               <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
             </div>
@@ -31,12 +32,14 @@
               $('.badge').hide();
               var badgeNum = 0;
               var userName = '<%= user.username %>';
+              var pastEventIds = [];
 
               var href = document.location.protocol + document.location.hostname;
               console.log('href = ' + href);
               var socket = io.connect(href);
               var eventName = userName + 'InviteEvent';
               console.log("Listening for " + eventName);
+              
 
               <% if (user.mynotifications) { %>
                 badgeNum = <%= user.mynotifications %>;
@@ -45,21 +48,57 @@
                   $('.badge').show();
                 }
               <% } %>
-
+              console.log("USER NOTIFICATIONS: <%=user.mynotifications%>");
+              console.log("BADGENUM: " + badgeNum);
               socket.on(eventName, function (data) {
                 console.log("GOT THE EVENT:" + data);
                 console.log(data);
-                
-                console.log("USER NOTIFICATIONS: <%=user.mynotifications%>");
-                badgeNum += 1;
-                $('.badge').html(badgeNum);
-                $('.badge').show();
+
+
+                //If on myEvents page, push new event. 
+                var path = window.location.pathname;
+                console.log("PATH IS : " + path);
+                if (path == '/events/myevents'){
+                  if (data && data.eventId){
+                    $.ajax({
+                        type: 'GET',
+                        url: '/events/getevent',
+                        data: {eventId: data.eventId},
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function(respData) {
+                          addMyEvents([respData.event], "current", true /*shouldPrepend*/);
+
+                          // Reset the notification number
+                          $('.badge').hide();
+                        },
+                        failure: function(err) {
+                          console.log('Failure');
+                        }
+                    });
+                  }
+                } else {
+                  //Otherwise update badge
+
+                  // Catch duplicate event emits
+                  if ($.inArray(data.eventId, pastEventIds) === -1) {
+                    pastEventIds.push(data.eventId);
+                    badgeNum += 1;
+                  }
+
+                  console.log("Inner USER NOTIFICATIONS: <%=user.mynotifications%>");
+                  console.log("Inner BADGENUM: " + badgeNum);
+
+                  $('.badge').html(badgeNum);
+                  $('.badge').show();
+                }
               });
             </script>
           <% } else { %>
-            <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
-            <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
+            <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-mini="true" data-inline="true" data-theme="a" data-role="button">Login</a>
+            <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-mini="true" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
           <% } %>
+        </div>
         </div>
       </div>
     </div>

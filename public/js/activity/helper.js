@@ -17,9 +17,7 @@ function pullAndReturnData(type, callback) {
     if (flag === 'startEnd') {
     	var startTime = $('#start_time_' + type).val();
     	var endTime = $('#end_time_' + type).val();
-    	if (type === 'find') {
-    		var duration = $('#duration_' + type).val();
-    	}
+    	var duration = $('#duration_' + type).val();
     }
     var locationInput = $('#location_input_' + type).val();
     var distance = $('#distance_' + type).val();
@@ -46,6 +44,7 @@ function pullAndReturnData(type, callback) {
 			begindate: epochStartDate,
 			enddate: epochEndDate,
 			flag: flag,
+			duration: duration,
 			lowprice: minPrice,
 			highprice: maxPrice,
 			lownumparticipants: minPeople,
@@ -130,7 +129,10 @@ function update_ui(address, addressDivId) {
 */
 function autocomplete_init(type) {
 	var input = document.getElementById('location_input_' + type);
-    var autocomplete = new google.maps.places.Autocomplete(input);
+	var autocomplete = null;
+	if (input){
+    	autocomplete = new google.maps.places.Autocomplete(input);
+	}
 }
 
 /*
@@ -139,6 +141,10 @@ function autocomplete_init(type) {
   @param fn callback - Callback fn to be called with the found position
 */
 function getCurrentPosition(callback) {
+	//Import sensor for your location
+	// document.write("<script type='text/javascript' src='http://maps.google.com/maps/api/js?libraries=places&sensor=true'></script>");
+
+
 	var currentposition = new google.maps.LatLng(0.0, 0.0);
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition (function(pos) {
@@ -173,6 +179,13 @@ function validateData(data, callback) {
 			data.duration = duration_int;
 		} catch(err) {
 			errMsg = "Duration is not valid, needs to be integer.";
+		}
+		if (data.time1 && data.time2) {
+			// Check that duration is less than end time - start time, converted to minutes
+			var timeDiff = (data.time2 - data.time1) / 60000;
+			if (data.duration > timeDiff) {
+				errMsg = "Duration is greater than difference between Start Time and End Time";
+			}
 		}
 	}
 	if (data.lownumparticipants) {
@@ -218,6 +231,16 @@ function addInvitedParticipants(participantsDivID, attendingUsers) {
 		participantsStr = participantsStr + participantsList[key] + ', ';
 	}
 	$(participantsDivID).html(participantsStr);
+}
+
+function limit(element, minValue) {
+	var num = element.value;
+	
+	if (num === "") {
+		element.value = minValue;
+	} else if (element.value < minValue) {
+		element.value = minValue;
+	}
 }
 
 /*********************************************

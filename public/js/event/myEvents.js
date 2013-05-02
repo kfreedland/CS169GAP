@@ -19,81 +19,91 @@ $(document).ready(function() {
     });
 });
 
-function addMyEvents(jsonResp, htmlID) {
+var eventIdHash = {};
+
+function addMyEvents(jsonResp, htmlID, shouldPrepend) {
 	var geocoder = new google.maps.Geocoder();
 	if (jsonResp.length === 0) {
-		$("#my_events_" + htmlID).html('No events found.')
+		$("#my_events_" + htmlID).html('No events found.');
 	}
 
 	// Loop through each activities entry in the dictionary
 	$.each(jsonResp, function(index, data) {
-		// Create variables for dynamic ids of certain divs
-		var index = parseInt(index) + 1;
-		var index = index.toString();
-		var eventID = 'event_'  + htmlID + index;
-		var eventPrice = 'event-price_'  + htmlID + index;
-		var eventParticipants = 'event-num-participants_'  + htmlID + index;
-		var eventDate = 'event-date_'  + htmlID + index;
-		var eventTime = 'event-time_'  + htmlID + index;
+		//Check if eventId is in hash so we don't add duplicates
+		if (!eventIdHash[data.id]){
+			//Add eventId to hash so we don't add duplicates
+			eventIdHash[data.id] = true;
 
-		// Append the html to the list_activities div
-		$("#my_events_"  + htmlID).append(
-			'<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c" id="' + eventID + '">' +
-			'<div class="button_result">' +
-			'<div class="button_result_left">' +
+			// Create variables for dynamic ids of certain divs
+			var index = parseInt(index) + 1;
+			index = index.toString();
+			var eventID = 'event_'  + htmlID + index;
+			var eventPrice = 'event-price_'  + htmlID + index;
+			var eventParticipants = 'event-num-participants_'  + htmlID + index;
+			var eventDate = 'event-date_'  + htmlID + index;
+			var eventTime = 'event-time_'  + htmlID + index;
 
-			'<div class="row-title">' + index + '. ' + data.name + '</div><br>' +
-			'<div class="row-description"><b>Description:</b> ' + data.description + '</div>' +
-			'<div class="row-date-range" id="' + eventDate + '"></div>' +
-			'<div class="row-time-range" id="' + eventTime + '"></div>' +
-			'<div class="row-num-participants" id="' + eventParticipants + '"></div>' +
-			'</div>' +
+			// Append the html to the list_activities div
+			var newHTML = '<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c" id="' + eventID + '">' +
+				'<div class="button_result">' +
+				'<div class="button_result_left">' +
 
-			'<div class = "button_result_right">' +
-			'<div class="row-category" id="event-category_' + htmlID + index + '"></div><br>' +
-			'<div class="row-address" id="event-address_' + htmlID + index + '"></div><br>' +
-			'<div class="row-price-range" id ="' + eventPrice + '"></div>' +
-			'<div class="row-participants" id="event-invite-participants_' + htmlID + index + '"></div>' +
-			
-			'</div>' +
-			'</div>' +
+				'<div class="row-title">' + index + '. ' + data.name + '</div><br>' +
+				'<div class="row-description"><b>Description:</b> ' + data.description + '</div>' +
+				'<div class="row-date-range" id="' + eventDate + '"></div>' +
+				'<div class="row-time-range" id="' + eventTime + '"></div>' +
+				'<div class="row-num-participants" id="' + eventParticipants + '"></div>' +
+				'</div>' +
 
-			'</li>'
-		);
+				'<div class = "button_result_right">' +
+				'<div class="row-category" id="event-category_' + htmlID + index + '"></div><br>' +
+				'<div class="row-address" id="event-address_' + htmlID + index + '"></div><br>' +
+				'<div class="row-price-range" id ="' + eventPrice + '"></div>' +
+				'<div class="row-participants" id="event-invite-participants_' + htmlID + index + '"></div>' +
+				
+				'</div>' +
+				'</div>' +
 
-		// Do some additional fixing of the event details
-		var t1Str = convertMsToString(data.time1);
-		var t2Str = convertMsToString(data.time2);
-		$('#' + eventTime).html('<b>Time of Event:</b> ' + t1Str + ' to ' + t2Str);
+				'</li>';
+			if (shouldPrepend){
+				$(newHTML).clone().hide().prependTo("#my_events_"  + htmlID).slideDown();
+			} else {
+				$("#my_events_"  + htmlID).append(newHTML);
+			}
 
-		var beginDate = new Date(data.begindate);
-		var endDate = new Date(data.enddate);
-		var dateRangeStr = '<b>Date Range:</b> ' + beginDate.toDateString() + ' to ' + endDate.toDateString();
-		if (beginDate.toDateString() === endDate.toDateString()) {
-			dateRangeStr = '<b>Date Range:</b> ' + beginDate.toDateString();
-		}
-		$('#' + eventDate).html(dateRangeStr);
+			// Do some additional fixing of the event details
+			var t1Str = convertMsToString(data.time1);
+			var t2Str = convertMsToString(data.time2);
+			$('#' + eventTime).html('<b>Time of Event:</b> ' + t1Str + ' to ' + t2Str);
 
-		// Get the Activity Details
-		getActivityDetail(data.activityid, data.attendingusers, htmlID + index, function(activityJSON) {
-			var eventData = data;
-			eventData.category = activityJSON.category;
-			eventData.lowprice = activityJSON.lowprice;
-			eventData.highprice = activityJSON.highprice;
-			eventData.lownumparticipants = activityJSON.lownumparticipants;
-			eventData.highnumparticipants = activityJSON.highnumparticipants;
-			eventData.latitude = activityJSON.latitude;
-			eventData.longitude = activityJSON.longitude;
+			var beginDate = new Date(data.begindate);
+			var endDate = new Date(data.enddate);
+			var dateRangeStr = '<b>Date Range:</b> ' + beginDate.toDateString() + ' to ' + endDate.toDateString();
+			if (beginDate.toDateString() === endDate.toDateString()) {
+				dateRangeStr = '<b>Date Range:</b> ' + beginDate.toDateString();
+			}
+			$('#' + eventDate).html(dateRangeStr);
 
-			// Encode the json object to a string
-			var encodedData = window.btoa(JSON.stringify(eventData));
+			// Get the Activity Details
+			getActivityDetail(data.activityid, data.attendingusers, htmlID + index, function(activityJSON) {
+				var eventData = data;
+				eventData.category = activityJSON.category;
+				eventData.lowprice = activityJSON.lowprice;
+				eventData.highprice = activityJSON.highprice;
+				eventData.lownumparticipants = activityJSON.lownumparticipants;
+				eventData.highnumparticipants = activityJSON.highnumparticipants;
+				eventData.latitude = activityJSON.latitude;
+				eventData.longitude = activityJSON.longitude;
 
-			// Add on click functionality to the event
-			$('#' + eventID).click(function() {
-				window.location = '/events/eventdetail#' + encodedData;
+				// Encode the json object to a string
+				var encodedData = window.btoa(JSON.stringify(eventData));
+
+				// Add on click functionality to the event
+				$('#' + eventID).click(function() {
+					window.location = '/events/eventdetail#' + encodedData;
+				});
 			});
-		});
-
+		}
 	});
 }
 
