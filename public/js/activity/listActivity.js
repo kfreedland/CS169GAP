@@ -1,14 +1,18 @@
 
 $(document).ready(function() {
-	/*
-	  When the Back button is clicked, return to the 
-	*/
-	$('#list_back_button').click(function() {
-		console.log('test');
-		location.reload();
-	});
+	var encodedDataStr = window.location.hash;
+	// Remove the # in the front
+	var encodedDataFixed = encodedDataStr.slice(1);
+	
+	var jsonData = $.parseJSON(window.atob(encodedDataFixed));
+	createActivityList(jsonData);
 });
 
+/*
+  Function to populate the suggested activities list
+
+  @param Dict jsonResp - The JSON object returned from the AJAX call to Find Activities
+*/
 function createActivityList(jsonResp) {
 	var geocoder = new google.maps.Geocoder();
 
@@ -27,7 +31,6 @@ function createActivityList(jsonResp) {
 
 		// Append the html to the list_activities div
 		$("#list_activities").append(
-			'<div class="ui-btn-inner ui-li">' +
 			'<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c" id="' + activityID + '">' +
 			'<div class="button_result">' +
 			'<div class="button_result_left">' +
@@ -44,8 +47,8 @@ function createActivityList(jsonResp) {
 			'<div class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.lowprice + ' to $' + data.highprice + '</div>' +
 			
 			'</div>' +
-			'</li>' + 
-			'</div>'
+
+			'</li>'
 		);
 
 		// Add on click functionality to the activity

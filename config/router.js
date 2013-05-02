@@ -48,6 +48,7 @@ router.get('/users/usernames').to('Users.getUsernames');
 
 router.post('/activities/create').to('Activities.add');
 router.get('/activities/search').to('Activities.search');
+router.get('/activities/findActivity').to('Activities.find');
 router.get('/activities/activitydetail').to('Activities.detail');
 router.get('/activities/getactivitybyid').to('Activities.getActivityById');
 

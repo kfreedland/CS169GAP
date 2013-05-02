@@ -34,10 +34,11 @@
               </div>
               <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
             </div>
-            
-            <% if(form.type === "find") { %>
             <script type='text/javascript'>
               $('.badge').hide();
+            </script>
+            <% if(form.type === "find") { %>
+            <script type='text/javascript'>
               var badgeNum = 0;
               var userName = '<%= user.username %>';
               var pastEventIds = [];
