@@ -49,7 +49,7 @@ Comment.addComment = function(eventID, userID, text, callback)
     return;
   }
 
-  if(text == ''){
+  if(text === ''){
     addCommentCallback(6, callback);
     return;
   }
@@ -177,7 +177,7 @@ Comment.addComment = function(eventID, userID, text, callback)
 
   });
 
-}
+};
 
 function addCommentCallback(errCode, callback){
   var responseDict = {};
@@ -203,7 +203,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
       //get comments
       var commentIDsString = eventRecord.comments;
 
-      if(!commentIDsString || commentIDsString == ''){
+      if(!commentIDsString || commentIDsString === ''){
 
         getCommentsCallback(1, [], callback);
         return;
@@ -261,7 +261,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
   });
 
-}
+};
 
 //params has usernames, eventId, commentModel
 function emitAddCommentEventForUsernames (params) {

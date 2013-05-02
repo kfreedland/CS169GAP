@@ -85,9 +85,9 @@ function handleCreateActivityResponse(status) {
     } else if (status.errCode === 6){
       //missing required parameter
       var errMsg = 'Error: ' + status.message;
-      if (status.message = 'null time1') {
+      if (status.message == 'null time1') {
       	errMsg = 'Error: Null Start Time';
-      } else if (status.message = 'null time2') {
+      } else if (status.message == 'null time2') {
       	errMsg = 'Error: Null End Time';
       }
       $('#missingParams').html(errMsg);

@@ -159,7 +159,7 @@ var Users = function () {
     {
       self.respond(response);
     });
-  }
+  };
 
 };
 

@@ -227,7 +227,7 @@ var Events = function () {
     {
       self.respond({errCode: 1}, {format: 'json'});
     }
-  }
+  };
 
   this.removeUser = function(req, resp, params) {
 
@@ -239,7 +239,7 @@ var Events = function () {
       self.respond(responseDict, {format:'json'});
     });
 
-  }
+  };
 
   // Event Detail
   this.detail = function (req, resp, params) {

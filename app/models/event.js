@@ -173,9 +173,9 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
       {
         geddy.model.User.first({email: usernameOrEmail}, function(err, record)
         {
+          var entry = {};
           if(record && record.email && record.username)
-          {
-            var entry = {};
+          { 
             entry.username = record.username;
             entry.email = record.email;
             records.push(entry);
@@ -192,7 +192,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
           }
           else
           {
-            var entry = {};
             entry.email = usernameOrEmail;
             records.push(entry);
             emails.push(usernameOrEmail);
@@ -491,10 +490,10 @@ function removeDuplicateAndAlreadyAttendingUsers(usernameOrEmailArray, eventid, 
                 //Set these to true so we don't add duplicates in the future
                 usernameOrEmailHash[username] = true;
                 usernameOrEmailHash[email] = true;
-
+                var entry = {};
                 if (username){
                   //Found user in database so push email and username
-                  var entry = {
+                  entry = {
                     'username':username,
                     'email':email
                   };
@@ -502,7 +501,7 @@ function removeDuplicateAndAlreadyAttendingUsers(usernameOrEmailArray, eventid, 
                 } else {
                   //Database didn't have this user/email so it's probably an email
                   //Let's push that
-                  var entry = {
+                  entry = {
                     'username':null,
                     'email':usernameOrEmail
                   };

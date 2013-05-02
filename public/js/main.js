@@ -20,7 +20,7 @@ function setupClickHandlers() {
 		//If there are params, remove them so it doesn't save them on page load
 		var newHREF = "";
 		//If there are params, remove them so it doesn't save them on page load
-		if (window.location.search != ""){
+		if (window.location.search !== ""){
 			var questionMarkLocation = window.location.href.indexOf("?");
 			newHREF = window.location.href.substring(0, questionMarkLocation - 1);
 			// window.location.search = "";
@@ -47,7 +47,7 @@ function setupClickHandlers() {
 
 		var newHREF = "";
 		//If there are params, remove them so it doesn't save them on page load
-		if (window.location.search != ""){
+		if (window.location.search !== ""){
 			var questionMarkLocation = window.location.href.indexOf("?");
 			newHREF = window.location.href.substring(0, questionMarkLocation - 1);
 			// window.location.search = "";

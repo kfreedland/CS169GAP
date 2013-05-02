@@ -120,7 +120,7 @@ function setupCreateEventDatePickers(activityStartDate, activityEndDate) {
 		minDate = new Date(activityStartDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
 	}
 	if (activityEndDate){
-		var maxDate = new Date(activityEndDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
+		maxDate = new Date(activityEndDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
 	}
 	console.log("minDate = " + minDate);
 
@@ -142,20 +142,20 @@ function setupCreateEventDatePickers(activityStartDate, activityEndDate) {
         return false;
 	});
 
-	var minDate = null;
-	var maxDate = null;
+	endMinDate = null;
+	endMaxDate = null;
 
 	if (activityStartDate){
-		minDate = new Date(activityStartDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
+		endMinDate = new Date(activityStartDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
 	}
 	if (activityEndDate){
-		var maxDate = new Date(activityEndDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
+		endMaxDate = new Date(activityEndDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
 	}
 
 	$('#endDate').mobiscroll().date({
         //invalid: { daysOfWeek: [0, 8] , daysOfMonth: ['5/1', '12/24', '12/25'] },
-        minDate: minDate,
-        maxDate: maxDate,
+        minDate: endMinDate,
+        maxDate: endMaxDate,
         theme: 'ios',
         display: 'bottom',
         mode: 'scroller',
