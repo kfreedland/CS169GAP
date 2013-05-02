@@ -5,6 +5,15 @@ $(document).ready(function() {
 	/*
 	  When the Find Activities button is clicked, send an ajax call to /activities/search with the form data
 	*/
+
+	//Initialize the date pickers
+	setupDatePickers();
+	//Register change handlers to the date pickers
+	//To change max/min dates of other field
+	$('#begin_date_find').change(beginDateChanged);
+	$('#end_date_find').change(endDateChanged);
+
+
 	$('#find_activity_button').click(function() {
 		// Get the values from the form inputs
 		pullAndReturnData('find', function(dataResp) {
@@ -190,4 +199,73 @@ function handleFindActivityResponse(jsonResp) {
 			$("#activity-address-" + index).append('<span class="row-address-name">' + address + '</span>');
 		});
 	});
+}
+
+function setupDatePickers() {
+	$('#begin_date_find').die("click tap");
+	$('#begin_date_find').live("click tap", function() {
+		$('#begin_date_find').mobiscroll('show'); 
+        return false;
+	});
+
+	$('#begin_date_find').mobiscroll().date({
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        dateOrder: 'M D ddyy'
+    });
+
+    $('#end_date_find').die("click tap");
+	$('#end_date_find').live("click tap", function() {
+		$('#end_date_find').mobiscroll('show'); 
+        return false;
+	});
+
+	$('#end_date_find').mobiscroll().date({
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        dateOrder: 'M D ddyy'
+    });
+}
+
+function beginDateChanged() {
+	//Set minDate for endDate
+	var minDate = new Date($('#begin_date_find').val());
+	var maxDate = $('#end_date_find').mobiscroll().date.maxDate;
+
+
+	console.log("minDate = " + minDate);
+	console.log("maxDate = " + maxDate);
+
+	$('#end_date_find').mobiscroll().date({
+        //invalid: { daysOfWeek: [0, 8] , daysOfMonth: ['5/1', '12/24', '12/25'] },
+        minDate: minDate,
+        maxDate: maxDate,
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        dateOrder: 'M D ddyy'
+    });
+}
+
+function endDateChanged() {
+	//Set maxDate for beginDate
+	var minDate = $('#begin_date_find').mobiscroll().date.maxDate;
+	var maxDate = new Date($('#end_date_find').val());
+
+
+	console.log("minDate = " + minDate);
+	console.log("maxDate = " + maxDate);
+
+	$('#begin_date_find').mobiscroll().date({
+        //invalid: { daysOfWeek: [0, 8] , daysOfMonth: ['5/1', '12/24', '12/25'] },
+        minDate: minDate,
+        maxDate: maxDate,
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        dateOrder: 'M D ddyy'
+    });
+
 }

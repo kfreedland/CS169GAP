@@ -185,14 +185,16 @@
       </div>
 
       <!-- Date Range -->
-      <!-- <input name="begin_date" id="begin_date_<%= form.type; %>" > -->
+     
       <div data-role="fieldcontain">
         <label for="begin_date_<%= form.type; %>">Start Date: </label>
-        <input name="begin_date" id="begin_date_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
+        <input name="begin_date" id="begin_date_<%= form.type; %>" class="hide_readonly_effect" >
+        <!-- <input name="begin_date" id="begin_date_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'> -->
       </div>
       <div data-role="fieldcontain">
         <label for="end_date_<%= form.type; %>">End Date: </label>
-        <input name="end_date" id="end_date_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'>
+        <input name="end_date" id="end_date_<%= form.type; %>" class="hide_readonly_effect" >
+        <!-- <input name="end_date" id="end_date_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "calbox", "useNewStyle": true, "useTodayButton": true}'> -->
       </div>
 
       <!-- Time Range -->

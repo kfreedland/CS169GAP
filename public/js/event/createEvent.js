@@ -1,24 +1,11 @@
 $(document).ready(function() {
 
-	// $( "#begin_date_create").datepicker();
-	// $( "#begin_date_find").datepicker();
-
-	$('#begin_date_create').click(function(){
-		$('#begin_date_create').mobiscroll('show'); 
-        return false;
-	});
-	$('#begin_date_create').mobiscroll().date({
-        invalid: { daysOfWeek: [0, 6], daysOfMonth: ['5/1', '12/24', '12/25'] },
-        theme: 'ios',
-        display: 'bottom',
-        mode: 'scroller',
-        dateOrder: 'mmD ddyy'
-    });    
-
 	var encodedDataStr = window.location.hash;
 	// Remove the # in the front
 	var encodedDataFixed = encodedDataStr.slice(1);
 	var jsonData = $.parseJSON(window.atob(encodedDataFixed));
+
+	console.log("EVENT ID IS " + jsonData.id);
 
 	var name = jsonData.name;
 	var desc = jsonData.description;
@@ -57,6 +44,15 @@ $(document).ready(function() {
 	$('#lowNumPart').val(lowpart);
 	$('#highNumPart').val(highpart);
 	$('#category').val(category);
+
+
+	//Setup date picker
+	setupDatePickers(date1, date2);
+
+	//Register change handlers to the date pickers
+	//To change max/min dates of other field
+	$('#beginDate').change(beginDateChanged);
+	$('#endDate').change(endDateChanged);
 
 	createEvent(id);
 });
@@ -108,4 +104,103 @@ function createEvent(activityId) {
 	        }
 	    });
 	});
+}
+
+function setupDatePickers(activityStartDate, activityEndDate) {
+	$('#beginDate').die("click tap");
+	$('#beginDate').live("click tap", function() {
+		$('#beginDate').mobiscroll('show'); 
+        return false;
+	});
+
+	var minDate = null;
+	var maxDate = null;
+
+	if (activityStartDate){
+		minDate = new Date(activityStartDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
+	}
+	if (activityEndDate){
+		var maxDate = new Date(activityEndDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
+	}
+	console.log("minDate = " + minDate);
+
+	$('#beginDate').mobiscroll().date({
+        //invalid: { daysOfWeek: [0, 8] , daysOfMonth: ['5/1', '12/24', '12/25'] },
+        minDate: minDate,
+        maxDate: maxDate,
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        dateOrder: 'M D ddyy'
+    });
+
+
+    //End Date
+    $('#endDate').die("click tap");
+	$('#endDate').live("click tap", function() {
+		$('#endDate').mobiscroll('show'); 
+        return false;
+	});
+
+	var minDate = null;
+	var maxDate = null;
+
+	if (activityStartDate){
+		minDate = new Date(activityStartDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
+	}
+	if (activityEndDate){
+		var maxDate = new Date(activityEndDate);//new Date(year, month, day, hours, minutes, seconds, milliseconds);
+	}
+
+	$('#endDate').mobiscroll().date({
+        //invalid: { daysOfWeek: [0, 8] , daysOfMonth: ['5/1', '12/24', '12/25'] },
+        minDate: minDate,
+        maxDate: maxDate,
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        dateOrder: 'M D ddyy'
+    });
+}
+
+
+function beginDateChanged() {
+	//Set minDate for endDate
+	var minDate = new Date($('#beginDate').val());
+	var maxDate = $('#endDate').mobiscroll().date.maxDate;
+
+
+	console.log("minDate = " + minDate);
+	console.log("maxDate = " + maxDate);
+
+	$('#endDate').mobiscroll().date({
+        //invalid: { daysOfWeek: [0, 8] , daysOfMonth: ['5/1', '12/24', '12/25'] },
+        minDate: minDate,
+        maxDate: maxDate,
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        dateOrder: 'M D ddyy'
+    });
+}
+
+function endDateChanged() {
+	//Set maxDate for beginDate
+	var minDate = $('#beginDate').mobiscroll().date.maxDate;
+	var maxDate = new Date($('#endDate').val());
+
+
+	console.log("minDate = " + minDate);
+	console.log("maxDate = " + maxDate);
+
+	$('#beginDate').mobiscroll().date({
+        //invalid: { daysOfWeek: [0, 8] , daysOfMonth: ['5/1', '12/24', '12/25'] },
+        minDate: minDate,
+        maxDate: maxDate,
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        dateOrder: 'M D ddyy'
+    });
+
 }
