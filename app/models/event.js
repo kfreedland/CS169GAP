@@ -475,7 +475,7 @@ function removeDuplicateAndAlreadyAttendingUsers(usernameOrEmailArray, eventid, 
           var attendingUserArray = eventRecord.attendingusers.split(',');
           for (var key in attendingUserArray){
             var userNameOrEmail = attendingUserArray[key];
-            usernameOrEmailHash.userNameOrEmail = true;
+            usernameOrEmailHash[userNameOrEmail] = true;
           }
           
           //Now remove attending users and duplicates
