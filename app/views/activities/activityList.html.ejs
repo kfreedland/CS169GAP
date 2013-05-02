@@ -1,0 +1,18 @@
+<div data-role="page" id="list_activities_container">
+	<!-- Include the activityDetail js -->
+	<%- scriptLink('/js/activity/listActivity.js', {type:'text/javascript'}) %>
+	<!--Navigation Bar-->
+	<%- partial('../main/navBar', {form: {type: 'navbar'}, params: params, user: user}) %>
+
+	<div id="suggested_activities" data-role="content" class="box">
+	  	<h3>Suggested Activities</h3>
+	  	<center>
+	  	<div class="content-primary">
+		  	<ul class="ui-listview" data-role="listview">
+		  		<div id="list_activities">
+		  		</div>
+		  	</ul>
+	  	</div>
+	  	</center>
+  	</div>
+</div>
