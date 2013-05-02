@@ -47,12 +47,12 @@ $(document).ready(function() {
 
 
 	//Setup date picker
-	setupDatePickers(date1, date2);
+	setupCreateEventDatePickers(date1, date2);
 
 	//Register change handlers to the date pickers
 	//To change max/min dates of other field
-	$('#beginDate').change(beginDateChanged);
-	$('#endDate').change(endDateChanged);
+	$('#beginDate').change(beginDateCreateEventChanged);
+	$('#endDate').change(endDateCreateEventChanged);
 
 	createEvent(id);
 });
@@ -106,7 +106,7 @@ function createEvent(activityId) {
 	});
 }
 
-function setupDatePickers(activityStartDate, activityEndDate) {
+function setupCreateEventDatePickers(activityStartDate, activityEndDate) {
 	$('#beginDate').die("click tap");
 	$('#beginDate').live("click tap", function() {
 		$('#beginDate').mobiscroll('show'); 
@@ -164,7 +164,7 @@ function setupDatePickers(activityStartDate, activityEndDate) {
 }
 
 
-function beginDateChanged() {
+function beginDateCreateEventChanged() {
 	//Set minDate for endDate
 	var minDate = new Date($('#beginDate').val());
 	var maxDate = $('#endDate').mobiscroll().date.maxDate;
@@ -184,7 +184,7 @@ function beginDateChanged() {
     });
 }
 
-function endDateChanged() {
+function endDateCreateEventChanged() {
 	//Set maxDate for beginDate
 	var minDate = $('#beginDate').mobiscroll().date.maxDate;
 	var maxDate = new Date($('#endDate').val());

@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function () {	
 
 	$('#list_activities_container').hide();
 
@@ -8,11 +8,11 @@ $(document).ready(function () {
 
 
 	//Initialize the date pickers
-	setupDatePickers();
+	setupCreateActivityDatePickers();
 	//Register change handlers to the date pickers
 	//To change max/min dates of other field
-	$('#begin_date_create').change(beginDateChanged);
-	$('#end_date_create').change(endDateChanged);
+	$('#begin_date_create').change(beginDateCreateChanged);
+	$('#end_date_create').change(endDateCreateChanged);
 
 	/*
 	  When the Create Activity button is clicked, send an ajax call to /activities/create with the form data
@@ -99,7 +99,7 @@ function handleCreateActivityResponse(status) {
 }
 
 
-function setupDatePickers() {
+function setupCreateActivityDatePickers() {
 	$('#begin_date_create').die("click tap");
 	$('#begin_date_create').live("click tap", function() {
 		$('#begin_date_create').mobiscroll('show'); 
@@ -127,7 +127,7 @@ function setupDatePickers() {
     });
 }
 
-function beginDateChanged() {
+function beginDateCreateChanged() {
 	//Set minDate for endDate
 	var minDate = new Date($('#begin_date_create').val());
 	var maxDate = $('#end_date_create').mobiscroll().date.maxDate;
@@ -147,7 +147,7 @@ function beginDateChanged() {
     });
 }
 
-function endDateChanged() {
+function endDateCreateChanged() {
 	//Set maxDate for beginDate
 	var minDate = $('#begin_date_create').mobiscroll().date.maxDate;
 	var maxDate = new Date($('#end_date_create').val());

@@ -282,6 +282,7 @@ input[readonly].hide_readonly_effect {
   #activity_detail_content,
   #profile_content,
   #create_event_page,
+  #list_activities_container,
   #myevent_content,
   #event_detail_content {
     margin:0 auto;

@@ -540,7 +540,19 @@ Comment.addComment = function(eventID, userID, text, callback)
 
                   //succeeded
                   // console.log("saving event with comment succeeded");
+
+                  //push notification after successfully adding comment
+                  //params required in param dict: usernames, eventID, commentModel
+                  var emitAddParamDict = {};
+                  emitAddParamDict.usernames = eventRecord.attendingusers;
+                  emitAddParamDict.eventID = eventRecord.id;
+                  emitAddParamDict.commentModel = commentRecord;
+                  console.log("CALLING emitAddCommentEventForUsernames");
+                  emitAddCommentEventForUsernames(emitAddParamDict);
+
                   addCommentCallback(1, callback);
+
+
                   return;
                 }
 
@@ -659,6 +671,41 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
   });
 
+}
+
+//params has usernames, eventID, commentModel
+function emitAddCommentEventForUsernames (params) {
+  console.log("PARAMS IS ");
+  console.dir(params);
+  for (var key in params.usernames)
+  {
+    var username = params.usernames[key];
+    var updateName = username + 'CommentUpdate';
+    console.log("EMITTING UPDATE: " + updateName);
+    geddy.io.sockets.emit(updateName, {eventId: params.eventID, comment: params.commentModel});
+
+    //Update user's notification number
+    // geddy.model.User.first({username: username}, function (err, userModel){
+    //   // console.log("About to increment mynotifications");
+    //   if (!err && userModel){
+    //     // console.log("userModel exists and no err so incrementing mynotifications");
+    //     if (userModel.mynotifications){
+    //       userModel.mynotifications += 1;
+    //     } else {
+    //       userModel.mynotifications = 1;
+    //     }
+    //     // console.log("mynotifications = " + userModel.mynotifications);
+    //     userModel.errors = null;
+    //     userModel.save(function (err, result){
+    //       //do nothing
+    //       if (err){
+    //         console.log("Got error when saving user after updating notification number: ");
+    //         console.dir(err);
+    //       }
+    //     });
+    //   }
+    // });
+  }
 }
 
 
@@ -1178,7 +1225,7 @@ function removeDuplicateAndAlreadyAttendingUsers(usernameOrEmailArray, eventid, 
           var attendingUserArray = eventRecord.attendingusers.split(',');
           for (var key in attendingUserArray){
             var userNameOrEmail = attendingUserArray[key];
-            usernameOrEmailHash.userNameOrEmail = true;
+            usernameOrEmailHash[userNameOrEmail] = true;
           }
           
           //Now remove attending users and duplicates
@@ -1932,8 +1979,8 @@ Passport = geddy.model.register('Passport', Passport);
 (function () {
 var passport = require('passport')
   , passportHelper = require('../helpers/passport/index')
-  , cryptPass = passportHelper.cryptPass;
-
+  , cryptPass = passportHelper.cryptPass
+  , check = require("validator").check;
 var User = function () {
 
 	this.property('username', 'string', {required: true});
@@ -1945,8 +1992,7 @@ var User = function () {
     this.property('mynotifications', 'number');
     this.validatesLength('username', {min: 3, max:128});
     this.validatesLength('password', {min: 8, max:128});
-    this.validatesConfirmed('password', 'confirmPassword');
-
+    this.validatesConfirmed('password', 'confirmPassword');    
     this.hasMany('Passports');
 };
 
@@ -1977,33 +2023,54 @@ User.add = function(user, callback){
         if (user.isValid()) {
           user.password = cryptPass(user.password);
         }
-        // console.log("user is : username: " + user.username + " and password: " + user.password);
-        user.save(function(err, data) {
-          // console.log("Got Data: " + data);
-          if (err) {
-            // params.errors = err;
-            //Database Error errCode=7
-            console.log("Error saving User: ");
-            responseDict.message = "";
-            for (var item in err){
-              responseDict.message += err[item];
+        //if the user does not give us an email we don't care but if they do it should be valid
+        if(!user.email || isValidEmail(user.email))
+        {
+          // console.log("user is : username: " + user.username + " and password: " + user.password);
+          user.save(function(err, data) {
+            // console.log("Got Data: " + data);
+            if (err) {
+              // params.errors = err;
+              //Database Error errCode=7
+              console.log("Error saving User: ");
+              responseDict.message = "";
+              for (var item in err){
+                responseDict.message += err[item];
+              }
+              console.log(responseDict.message);
+              responseDict.errCode = 7;
+              callback(responseDict);
+              // self.transfer('add');
             }
-            console.log(responseDict.message);
-            responseDict.errCode = 7;
-            callback(responseDict);
-            // self.transfer('add');
-          }
-          else {
-            //Success errCode=1
-            responseDict.errCode = 1;
-            callback(responseDict);
-              // self.redirect({controller: self.name});
-          }
-        });
+            else {
+              //Success errCode=1
+              responseDict.errCode = 1;
+              callback(responseDict);
+                // self.redirect({controller: self.name});
+            }
+          });
+        }
+        else
+        {
+          responseDict.errCode = 14;
+          callback(responseDict);
+        }
       }
     }
     });
 };
+
+function isValidEmail(email) { 
+  try
+  {
+    check(email).isEmail();
+    return true;
+  } 
+  catch (error)
+  {
+    return false;
+  }
+}
 
 User.getUsernames = function(callback)
 {

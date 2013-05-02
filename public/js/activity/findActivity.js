@@ -1,26 +1,22 @@
 
 $(document).ready(function() {
-	$('#list_activities_container').hide();
-
 	/*
 	  When the Find Activities button is clicked, send an ajax call to /activities/search with the form data
 	*/
 
 	//Initialize the date pickers
-	setupDatePickers();
+	setupFindActivityDatePickers();
 	//Register change handlers to the date pickers
 	//To change max/min dates of other field
-	$('#begin_date_find').change(beginDateChanged);
-	$('#end_date_find').change(endDateChanged);
+	$('#begin_date_find').change(beginDateFindChanged);
+	$('#end_date_find').change(endDateFindChanged);
 
 
 	$('#find_activity_button').click(function() {
 		// Get the values from the form inputs
 		pullAndReturnData('find', function(dataResp) {
 			// Validate the dictionary object before sending it
-			// TODO: Write the success and failure functions
 			validateData(dataResp, function(validData) {
-				console.log(dataResp);
 				$.ajax({
 			        type: 'GET',
 			        url: '/activities/search',
@@ -138,70 +134,16 @@ function addTimeRange(flag, time1, time2, timeDivId) {
 /*
   Function to handle the response from clicking on the 'Find Activities' button
 
-  Take the JSON object from the AJAX response and populate the html with the list of suggested activities.
+  Take the JSON object from the AJAX response, hash it, and call the findActivity view with the hashed object
 
   @param Dict jsonResp - The JSON object returned from the AJAX call to Find Activities
 */
 function handleFindActivityResponse(jsonResp) {
-	// Hide the find activities form and show the suggested activities list
-	$('#find_activity').hide();
-	window.scrollTo(0, 0);
-	$('#list_activities_container').show();
-
-	var geocoder = new google.maps.Geocoder();
-
-	// Loop through each activities entry in the dictionary
-	$.each(jsonResp, function(index, data) {
-		// Create variables for dynamic ids of certain divs
-		var index = parseInt(index) + 1;
-		var index = index.toString();
-		var activityID = "activity-" + index;
-		var activityPrice = 'activity-price-' + index;
-		var activityParticipants = 'activity-participants-' + index;
-		var activityTime = 'activity-time-' + index;
-
-		// Encode the json object to a string
-		var encodedData = window.btoa(JSON.stringify(data));
-
-		// Append the html to the list_activities div
-		$("#list_activities").append(
-			'<li class="list-item ui-btn ui-btn-icon-right ui-li ui-li-has-alt ui-li-has-thumb ui-btn-up-c" id="' + activityID + '">' +
-			'<div class="button_result">' +
-			'<div class="button_result_left">' +
-
-			'<div class="row-title">' + index + '. ' + data.name + '</div><br>' +
-			'<div class="row-description">' + data.description + '</div>' +
-			'<div class="row-num-participants" id="' + activityParticipants + '">For ' + data.lownumparticipants + ' to ' + data.highnumparticipants + ' people</div>' +
-			'<div class="row-time-range" id="' + activityTime + '"></div>' +
-			
-			'</div>' +
-			'<div class = "button_result_right">' +
-			'<div class="row-category">' + data.category + '</div><br>' +
-			'<div class="row-address" id="activity-address-' + index + '"></div><br>' +
-			'<div class="row-price-range" id ="' + activityPrice + '">Price Range: $' + data.lowprice + ' to $' + data.highprice + '</div>' +
-			
-			'</div>' +
-			'</li>'
-		);
-
-		// Add on click functionality to the activity
-		$('#' + activityID).click(function() {
-			window.location = '/activities/activitydetail#' + encodedData;
-		});
-
-		// Do some additional fixing of the activity details
-		fixPriceRange(parseInt(data.lowprice), parseInt(data.highprice), activityPrice);
-		fixParticipantsRange(parseInt(data.lownumparticipants), parseInt(data.highnumparticipants), activityParticipants);
-		addTimeRange(data.flag, data.time1, data.time2, activityTime);
-
-		// Calculate the address from the provided latitude and longitude, and insert it into the html
-		reverseGeocodeAddress(data.latitude, data.longitude, function(address) {
-			$("#activity-address-" + index).append('<span class="row-address-name">' + address + '</span>');
-		});
-	});
+	var encodedData = window.btoa(JSON.stringify(jsonResp));
+	window.location = '/activities/findActivity#' + encodedData;
 }
 
-function setupDatePickers() {
+function setupFindActivityDatePickers() {
 	$('#begin_date_find').die("click tap");
 	$('#begin_date_find').live("click tap", function() {
 		$('#begin_date_find').mobiscroll('show'); 
@@ -229,7 +171,7 @@ function setupDatePickers() {
     });
 }
 
-function beginDateChanged() {
+function beginDateFindChanged() {
 	//Set minDate for endDate
 	var minDate = new Date($('#begin_date_find').val());
 	var maxDate = $('#end_date_find').mobiscroll().date.maxDate;
@@ -249,7 +191,7 @@ function beginDateChanged() {
     });
 }
 
-function endDateChanged() {
+function endDateFindChanged() {
 	//Set maxDate for beginDate
 	var minDate = $('#begin_date_find').mobiscroll().date.maxDate;
 	var maxDate = new Date($('#end_date_find').val());

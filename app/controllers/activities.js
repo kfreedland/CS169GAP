@@ -91,7 +91,7 @@ var Activities = function () {
     geddy.model.Activity.search(queryInfo, parseFloat(params.latitude), parseFloat(params.longitude), function(responseDict)
     {
       //this is because 0 is represented as null in the db and we want to return free items as having cost 0 not cost null!
-      var max_returned = 3;
+      var max_returned = 20;
       var count = 0;
       var toReturn = [];
       for(var key in responseDict)
@@ -168,6 +168,32 @@ var Activities = function () {
       self.respond(params, {
         format: 'html'
       , template: 'app/views/activities/activityDetail'
+      });
+    });
+  };
+
+  this.find = function (req, resp, params) {
+    var self = this
+      , User = geddy.model.User;
+
+    var localParams = params;
+    if (!localParams.errCode){
+      localParams.errCode = 0;
+    }
+    if (!localParams.methodType){
+      localParams.methodType = 0;
+    }
+    User.first({id: this.session.get('userId')}, function (err, data) {
+      var params = localParams;
+      params.user = null;
+      params.authType = null;
+      if (data) {
+        params.user = data;
+        params.authType = authTypes[self.session.get('authType')].name;
+      }
+      self.respond(params, {
+        format: 'html'
+      , template: 'app/views/activities/activityList'
       });
     });
   };

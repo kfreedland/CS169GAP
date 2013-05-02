@@ -34,8 +34,6 @@
               </div>
               <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
             </div>
-            
-            <% if(form.type === "find") { %>
             <script type='text/javascript'>
               $('.badge').hide();
               var badgeNum = 0;
@@ -89,7 +87,6 @@
                 }
               });
             </script>
-            <% } %>
           <% } else { %>
             <a href="/login" id="login_button" target="_parent" type="submit" name="login" value="Login" data-inline="true" data-theme="a" data-role="button">Login</a>
             <a href="/users/add" id="sign_up_button" target="_parent" type="submit" name="signup" value="Sign Up" data-inline="true" data-theme="a" data-role="button">Sign Up</a>
@@ -225,11 +222,13 @@
       <div id="start_end_range_<%= form.type; %>">
         <div data-role="fieldcontain">
           <label for="start_time_<%= form.type; %>">Start Time: </label>
-          <input name="start_time" id="start_time_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
+           <input name="start_time" id="start_time_<%= form.type; %>" class="hide_readonly_effect">
+          <!-- <input name="start_time" id="start_time_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'> -->
         </div>
         <div data-role="fieldcontain">
           <label for="end_time_<%= form.type; %>">End Time: </label>
-          <input name="end_time" id="end_time_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'>
+          <input name="end_time" id="end_time_<%= form.type; %>" class="hide_readonly_effect">
+          <!-- <input name="end_time" id="end_time_<%= form.type; %>" class="hide_readonly_effect" type="date" data-role="datebox" data-options='{"mode": "timebox", "useNewStyle": true}'> -->
         </div>
         <div data-role="fieldcontain">
           <label for="duration_<%= form.type; %>">Duration (Mins): </label>
