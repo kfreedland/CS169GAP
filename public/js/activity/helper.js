@@ -17,9 +17,7 @@ function pullAndReturnData(type, callback) {
     if (flag === 'startEnd') {
     	var startTime = $('#start_time_' + type).val();
     	var endTime = $('#end_time_' + type).val();
-    	if (type === 'find') {
-    		var duration = $('#duration_' + type).val();
-    	}
+    	var duration = $('#duration_' + type).val();
     }
     var locationInput = $('#location_input_' + type).val();
     var distance = $('#distance_' + type).val();
@@ -46,6 +44,7 @@ function pullAndReturnData(type, callback) {
 			begindate: epochStartDate,
 			enddate: epochEndDate,
 			flag: flag,
+			duration: duration,
 			lowprice: minPrice,
 			highprice: maxPrice,
 			lownumparticipants: minPeople,
@@ -181,6 +180,13 @@ function validateData(data, callback) {
 		} catch(err) {
 			errMsg = "Duration is not valid, needs to be integer.";
 		}
+		if (data.time1 && data.time2) {
+			// Check that duration is less than end time - start time, converted to minutes
+			var timeDiff = (data.time2 - data.time1) / 60000;
+			if (data.duration > timeDiff) {
+				errMsg = "Duration is greater than difference between Start Time and End Time";
+			}
+		}
 	}
 	if (data.lownumparticipants) {
 		try {
@@ -225,6 +231,16 @@ function addInvitedParticipants(participantsDivID, attendingUsers) {
 		participantsStr = participantsStr + participantsList[key] + ', ';
 	}
 	$(participantsDivID).html(participantsStr);
+}
+
+function limit(element, minValue) {
+	var num = element.value;
+	
+	if (num === "") {
+		element.value = minValue;
+	} else if (element.value < minValue) {
+		element.value = minValue;
+	}
 }
 
 /*********************************************

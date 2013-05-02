@@ -12,7 +12,7 @@
           <% if (user) {%>
             <div id="container">
               <div id="welcome_container">
-                <p class="welcome_text">Welcome: 
+                <div class="welcome_text">Welcome: 
                   <div id="username_container">
                     <a href="/events/myevents">
                       <span class="full_name">
@@ -24,9 +24,9 @@
                       </span>
                     </a>
                   </div>
-                </p>
+                </div>
               </div>
-              <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button" data-mini="true">Logout</a>
+              <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
             </div>
             <script type='text/javascript'>
               $('.badge').hide();

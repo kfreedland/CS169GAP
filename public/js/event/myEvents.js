@@ -20,10 +20,19 @@ $(document).ready(function() {
 });
 
 var eventIdHash = {};
+var noEvents = false;
 
 function addMyEvents(jsonResp, htmlID, shouldPrepend) {
 	var geocoder = new google.maps.Geocoder();
+
+	//If no events found previously, remove the text and push new ones
+	if (noEvents){
+		$("#my_events_" + htmlID).html("");
+		console.log("Set html to nothing. " + $("#my_events_" + htmlID).innerHTML);
+	}
+
 	if (jsonResp.length === 0) {
+		noEvents = true;
 		$("#my_events_" + htmlID).html('No events found.');
 	}
 
