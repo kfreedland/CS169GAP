@@ -18,12 +18,18 @@ function setupClickHandlers() {
 			window.location.pathname = "/";
 		}
 		//If there are params, remove them so it doesn't save them on page load
+		var newHREF = "";
+		//If there are params, remove them so it doesn't save them on page load
 		if (window.location.search != ""){
-			window.location.search = "";
+			var questionMarkLocation = window.location.href.indexOf("?");
+			newHREF = window.location.href.substring(0, questionMarkLocation - 1);
+			// window.location.search = "";
 		}
-		if (window.location.hash != ""){
-			window.location.hash = "";
-		}
+		window.location.href = newHREF;
+
+		// if (window.location.hash != ""){
+		// 	window.location.hash = "";
+		// }
 		return false;
 	});
 
@@ -38,11 +44,18 @@ function setupClickHandlers() {
 		if (window.location.pathname != "/"){
 			window.location.pathname = "/";
 		}
+
+		var newHREF = "";
 		//If there are params, remove them so it doesn't save them on page load
 		if (window.location.search != ""){
-			window.location.search = "";
+			var questionMarkLocation = window.location.href.indexOf("?");
+			newHREF = window.location.href.substring(0, questionMarkLocation - 1);
+			// window.location.search = "";
 		}
-		window.location.hash = "create_activity_page";
+		newHREF += '#create_activity_page';
+		window.location.href = newHREF;
+		// window.location.hash = "create_activity_page";
+
 		// if (document.location.search != ""){
 		// 	document.location.search = "";
 		// 	document.location.hash = "";

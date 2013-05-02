@@ -28,7 +28,7 @@ function addMyEvents(jsonResp, htmlID, shouldPrepend) {
 	//If no events found previously, remove the text and push new ones
 	if (noEvents){
 		$("#my_events_" + htmlID).html("");
-		console.log("Set html to nothing. " + $("#my_events_" + htmlID).innerHTML);
+		// console.log("Set html to nothing. " + $("#my_events_" + htmlID).innerHTML);
 	}
 
 	if (jsonResp.length === 0) {

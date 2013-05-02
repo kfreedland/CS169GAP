@@ -3,6 +3,18 @@ $(document).ready(function() {
 	// $( "#begin_date_create").datepicker();
 	// $( "#begin_date_find").datepicker();
 
+	$('#begin_date_create').click(function(){
+		$('#begin_date_create').mobiscroll('show'); 
+        return false;
+	});
+	$('#begin_date_create').mobiscroll().date({
+        invalid: { daysOfWeek: [0, 6], daysOfMonth: ['5/1', '12/24', '12/25'] },
+        theme: 'ios',
+        display: 'bottom',
+        mode: 'scroller',
+        dateOrder: 'mmD ddyy'
+    });    
+
 	var encodedDataStr = window.location.hash;
 	// Remove the # in the front
 	var encodedDataFixed = encodedDataStr.slice(1);
