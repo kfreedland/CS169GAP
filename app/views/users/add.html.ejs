@@ -34,6 +34,10 @@
             <% } else { %>
               <% if (params.errCode == 7) { %>
                 <p> Error: <%= params.message %> </p>
+              <% } else { %>
+                <% if (params.errCode == 14) { %>
+                  <p> Error: Please enter a valid email. <p> 
+                <% } %>
               <% } %>
             <% } %>
           <% } %>

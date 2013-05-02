@@ -125,6 +125,7 @@ CS169GAP
 		<li>11 - Event date/time is invalid </li>
 		<li>12 - Atleast one email in the list of emails is malformed </li>
 		<li>13 - Invite Email failed to send </li>
+		<li>14 - Email given at user creation is invalid </li>
 	</ul>
 
 <h2> ACTIVITIES </h2>
