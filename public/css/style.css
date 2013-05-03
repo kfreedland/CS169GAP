@@ -317,7 +317,7 @@ input[readonly].hide_readonly_effect {
       margin-bottom: 10px;
       padding: 10px 20px;
       position: relative;
-      width: 90%;
+      width: 80%;
       box-shadow: rgba(0, 0, 0, 0.4) 0 1px 5px 0px;
       border-radius: 3px;
   }
