@@ -60,8 +60,8 @@ $(document).ready(function() {
 
 	//Register change handlers to the time pickers
 	//To change max/min dates of other field
-	$('#start_time').change(startTimeCreateEventChanged);
-	$('#end_time').change(endTimeCreateEventChanged);
+	$('#startTimeEvent').change(startTimeCreateEventChanged);
+	$('#endTimeEvent').change(endTimeCreateEventChanged);
 
 	createEvent(id);
 });
@@ -214,7 +214,7 @@ function endDateCreateEventChanged() {
 }
 
 
-function setupCreateEventTimePickers(date1, date2) {
+function setupCreateEventTimePickers(activityStartDate, activityEndDate) {
 	$('#startTimeEvent').die("click tap");
 	$('#startTimeEvent').live("click tap", function() {
 		$('#startTimeEvent').mobiscroll('show'); 

@@ -10,6 +10,17 @@ $(document).ready(function() {
 	removeEvent(jsonData);
 	addComment(jsonData);
 	getComments(jsonData.id);
+
+	$('#commentTextarea').focus(function() {
+	    if (this.value === this.defaultValue) {
+	        this.value = '';
+	    }
+	})
+	.blur(function() {
+	    if (this.value === '') {
+	        this.value = this.defaultValue;
+	    }
+	});
 });
 
 function handleEventDetailResponse(jsonData) {
@@ -109,7 +120,7 @@ function handleGetCommentsResponse(commentData, isUpdate) {
 
 			} else {
 
-				$('#comments_list').append(commentHTML);
+				$('#comments_list').prepend(commentHTML);
 
 			}
 		} else {
