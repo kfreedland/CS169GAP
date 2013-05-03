@@ -32,7 +32,7 @@
                   </div>
                 </div>
               </div>
-              <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="c" data-role="button">Logout</a>
+              <a href="/logout" id="logout_button" target="_parent" type="submit" name="logout" value="Logout" data-inline="true" data-theme="a" data-role="button">Logout</a>
             </div>
             <script type='text/javascript'>
               $('.badge').hide();
@@ -288,7 +288,19 @@
       <div data-role="fieldcontain" class="location-div">
         <label for="location_input_<%= form.type; %>">Location: </label>
         <input id="location_input_<%= form.type; %>" name="location_input" type="text" placeholder="Starting Location" />
-         <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="location-arrow" data-iconpos="notext" title="Get Current Location">Current Location</a>
+        <a id="loc_link_<%= form.type; %>" class="loclink ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-c" data-role="button" data-inline="true" data-icon="location-arrow" title="Get Current Location" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c">
+          <span class="ui-btn-inner ui-btn-corner-all" id="locButton">
+            <span class="ui-btn-text">
+              <img src="/img/193-location-arrow.png">
+            </span>
+            <span class="ui-icon ui-icon-location-arrow ui-icon-shadow">&nbsp;</span>
+          </span>
+        </a>
+
+          <!-- <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="location-arrow" title="Get Current Location">
+            <img src='/img/193-location-arrow.png'>
+          </a> -->
+         <!-- <a id="loc_link_<%= form.type; %>" class="loclink" data-role="button" data-inline="true" data-icon="location-arrow" data-iconpos="notext" title="Get Current Location">Current Location</a> -->
       </div>
       <!-- Distance is only in the find activity view -->
       <% if(form.type === "find") { %>
@@ -312,10 +324,10 @@
 
       <!-- Submit Button -->
       <% if(form.type === "find") { %>
-        <input id="find_activity_button" type="button" value="Find Activities" data-role="button" data-icon="search" data-theme="b">
+        <input id="find_activity_button" type="button" value="Find Activities" data-role="button" data-icon="search" data-theme="a">
       <% } %>
       <% if(form.type === "create") { %>
-        <input id="create_activity_button" type="button" value="Create Activity" data-role="button" data-icon="home" data-theme="b">
+        <input id="create_activity_button" type="button" value="Create Activity" data-role="button" data-icon="home" data-theme="a">
       <% } %>
     </form>
   </div> <!-- End Content -->

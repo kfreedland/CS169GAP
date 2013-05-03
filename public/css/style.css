@@ -30,6 +30,14 @@ label {
   margin: 5px;
 }
 
+#locButton {
+  padding-left: 0px;
+  padding: 0px;
+  width: 18px;
+  height: 18px;
+  margin: 0px 2px 3px 2px;
+}
+
 .ui-grid-a .ui-input-datebox {
   width: 70%;
 }
