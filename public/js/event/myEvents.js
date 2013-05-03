@@ -116,7 +116,6 @@ function getActivityDetail(activityID, attendingusers, eventIndex, callback) {
         contentType: "application/json",
         dataType: "json",
         success: function(respData) {
-        	console.log("SUCCESS FOR " + eventIndex);
         	handleInsertActivityDetail(respData.activity, attendingusers, eventIndex, callback);
         },
         failure: function(err) {
