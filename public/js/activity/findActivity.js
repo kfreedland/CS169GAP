@@ -65,13 +65,10 @@ $(document).ready(function() {
         }
 	});
 
-
-
 	autocomplete_init('find');
 
 	var currentPosition = getCurrentPosition(function(pos) {
 		$("#loc_link_find").click(function() {
-			alert('WHY YOU NO WORK');
 			$("#location_input_find").val(pos);
 		});
 	});	
