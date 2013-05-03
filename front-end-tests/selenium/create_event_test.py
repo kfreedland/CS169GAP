@@ -1,53 +1,10 @@
 #Iteration 2 - Front End - Selenium Testing
 
-"""
-OVERVIEW:
-
-Selenium testing is used for front end browser automation
-
-Methods:
-find_element_by_id() - finds the object based on the id tag in the HTML
-click() - clicks the object
-send_keys() - inputs user-defined keys (e.g. 15, "bob", etc.)
-
-"""
-
 from selenium import selenium
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 import time
-
-def initialize():
-	browser = webdriver.Firefox() # Get local session of firefox
-	browser.get("gap3.herokuapp.com") # Load page
-	assert "Group Activity Planner" in browser.title
-
-	"""
-	LOGIN
-	"""
-
-def login():
-	#Clicking the login button
-	login = browser.find_element_by_id("login_button")
-	login.click()
-	login.click()
-
-	#insert name into username
-	usernameText = browser.find_element_by_name("username")
-	usernameText.send_keys("superuser")
-
-	#insert password into the field
-	passwordText = browser.find_element_by_name("password")
-	passwordText.send_keys("password")
-
-	#Click the Submit Button
-	loginSubmit = browser.find_element_by_id("loginSubmitButton")
-	loginSubmit.click()
-	loginSubmit.click()
-	time.sleep(.5) #Let the browser log in
-
-	browser.refresh()
 
 
 def create_event():

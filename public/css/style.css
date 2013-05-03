@@ -18,7 +18,7 @@ label {
 }
 
 .list-item div {
-  background: white;
+  /*background: white;*/
   border-bottom: 2px solid #ccc;
 }
 
@@ -32,6 +32,12 @@ label {
 
 .ui-grid-a .ui-input-datebox {
   width: 70%;
+}
+
+.ui-btn-up-c {
+  font-weight: bold;
+  color: #dfd8d8;
+  text-shadow: 0 0 0 #194b7e;
 }
 
 #location_input {
@@ -175,7 +181,7 @@ input[readonly].hide_readonly_effect {
   }
 
   .list-item div {
-    background: white;
+    /*background: white;*/
     border-bottom: 0px;
     padding: 0px;
   }
@@ -303,7 +309,7 @@ input[readonly].hide_readonly_effect {
   }
 
   .list-item div {
-    background: white;
+    /*background: white;*/
     border-bottom: 0px;
     padding: 0px;
   }
