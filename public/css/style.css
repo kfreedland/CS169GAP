@@ -276,7 +276,7 @@ input[readonly].hide_readonly_effect {
 @media only screen and (max-width: 400px) {
   #suggested_activities {
     margin: 0 auto;
-    padding-top: 60px;
+    padding-top: 50px;
   }
 
   #activity_detail_content,
