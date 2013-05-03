@@ -20,10 +20,19 @@ $(document).ready(function() {
 });
 
 var eventIdHash = {};
+var noEvents = false;
 
 function addMyEvents(jsonResp, htmlID, shouldPrepend) {
 	var geocoder = new google.maps.Geocoder();
+
+	//If no events found previously, remove the text and push new ones
+	if (noEvents){
+		$("#my_events_" + htmlID).html("");
+		// console.log("Set html to nothing. " + $("#my_events_" + htmlID).innerHTML);
+	}
+
 	if (jsonResp.length === 0) {
+		noEvents = true;
 		$("#my_events_" + htmlID).html('No events found.');
 	}
 
@@ -116,7 +125,6 @@ function getActivityDetail(activityID, attendingusers, eventIndex, callback) {
         contentType: "application/json",
         dataType: "json",
         success: function(respData) {
-        	console.log("SUCCESS FOR " + eventIndex);
         	handleInsertActivityDetail(respData.activity, attendingusers, eventIndex, callback);
         },
         failure: function(err) {

@@ -245,7 +245,7 @@ input[readonly].hide_readonly_effect {
   }
 
   .ui-li.ui-btn {
-    margin: 20px;
+    margin-bottom: 20px;
   }
 
   /*Error messages for create and add user*/
@@ -282,7 +282,7 @@ input[readonly].hide_readonly_effect {
 @media only screen and (max-width: 400px) {
   #suggested_activities {
     margin: 0 auto;
-    padding-top: 120px;
+    padding-top: 50px;
   }
 
   #activity_detail_content,
@@ -323,11 +323,9 @@ input[readonly].hide_readonly_effect {
       margin-bottom: 10px;
       padding: 10px 20px;
       position: relative;
-      width: 100%;
+      width: 80%;
       box-shadow: rgba(0, 0, 0, 0.4) 0 1px 5px 0px;
       border-radius: 3px;
-      margin-bottom: 30px;
-
   }
 
   .ui-btn-up-c .button_result {

@@ -6,5 +6,5 @@ import time
 from initialize import SeleniumTest 
 
 def real_time_comments(driver):
-	my_account = driver.find_element_by_class("full_name")
+	my_account = driver.find_element_by_xpath("span[class='full_name']")
 	my_account.click()
