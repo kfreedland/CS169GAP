@@ -160,7 +160,7 @@ describe('Comment.getComment - add and get 2 comment from 1 event', function()
                                                 assert.deepEqual(getCommentsResponse.errCode, 1);
                                                 assert.deepEqual(getCommentsResponse.comments[0].text, "sample comment");
                                                 assert.deepEqual(getCommentsResponse.comments[1].text, "another comment");
-                                                assert.deepEqual(getCommentsResponse.comments[0].userid, uId);
+                                                assert.deepEqual(getCommentsResponse.comments[0].userid, userRecord.username);
                                                 done();
                                             });
 

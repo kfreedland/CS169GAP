@@ -464,7 +464,7 @@ Comment.addComment = function(eventID, userID, text, callback)
     return;
   }
 
-  if(text == ''){
+  if(text === ''){
     addCommentCallback(6, callback);
     return;
   }
@@ -540,15 +540,22 @@ Comment.addComment = function(eventID, userID, text, callback)
 
                   //succeeded
                   // console.log("saving event with comment succeeded");
-                  addCommentCallback(1, callback);
 
                   //push notification after successfully adding comment
-                  //params required in param dict: usernames, eventID, commentModel
+                  //params required in param dict: usernames, eventId, commentModel
                   var emitAddParamDict = {};
-                  emitAddParamDict.usernames = eventRecord.attendingusers;
-                  emitAddParamDict.eventID = eventRecord.id;
+
+                  //remove local user from user array to send push updates to
+                  var userArray = eventRecord.attendingusers.split(',');
+                  userArray.splice(userArray.indexOf(userRecord.username),1);
+
+                  emitAddParamDict.usernames = userArray;
+                  emitAddParamDict.eventId = eventRecord.id;
                   emitAddParamDict.commentModel = commentRecord;
+                  console.log("CALLING emitAddCommentEventForUsernames");
                   emitAddCommentEventForUsernames(emitAddParamDict);
+
+                  addCommentCallback(1, callback);
 
 
                   return;
@@ -585,7 +592,7 @@ Comment.addComment = function(eventID, userID, text, callback)
 
   });
 
-}
+};
 
 function addCommentCallback(errCode, callback){
   var responseDict = {};
@@ -611,7 +618,7 @@ Comment.getCommentsForEvent = function(eventID, callback)
       //get comments
       var commentIDsString = eventRecord.comments;
 
-      if(!commentIDsString || commentIDsString == ''){
+      if(!commentIDsString || commentIDsString === ''){
 
         getCommentsCallback(1, [], callback);
         return;
@@ -669,16 +676,18 @@ Comment.getCommentsForEvent = function(eventID, callback)
 
   });
 
-}
+};
 
-//params has usernames, eventID, commentModel
+//params has usernames, eventId, commentModel
 function emitAddCommentEventForUsernames (params) {
+  console.log("PARAMS IS ");
+  console.dir(params);
   for (var key in params.usernames)
   {
     var username = params.usernames[key];
     var updateName = username + 'CommentUpdate';
     console.log("EMITTING UPDATE: " + updateName);
-    geddy.io.sockets.emit(updateName, {eventId: params.eventID, comment: params.commentModel});
+    geddy.io.sockets.emit(updateName, {eventId: params.eventId, comment: params.commentModel});
 
     //Update user's notification number
     // geddy.model.User.first({username: username}, function (err, userModel){
@@ -919,9 +928,9 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
       {
         geddy.model.User.first({email: usernameOrEmail}, function(err, record)
         {
+          var entry = {};
           if(record && record.email && record.username)
-          {
-            var entry = {};
+          { 
             entry.username = record.username;
             entry.email = record.email;
             records.push(entry);
@@ -938,7 +947,6 @@ function getEmailAndId(usernamesOrEmails, errorCallback, successCallback)
           }
           else
           {
-            var entry = {};
             entry.email = usernameOrEmail;
             records.push(entry);
             emails.push(usernameOrEmail);
@@ -1237,10 +1245,10 @@ function removeDuplicateAndAlreadyAttendingUsers(usernameOrEmailArray, eventid, 
                 //Set these to true so we don't add duplicates in the future
                 usernameOrEmailHash[username] = true;
                 usernameOrEmailHash[email] = true;
-
+                var entry = {};
                 if (username){
                   //Found user in database so push email and username
-                  var entry = {
+                  entry = {
                     'username':username,
                     'email':email
                   };
@@ -1248,7 +1256,7 @@ function removeDuplicateAndAlreadyAttendingUsers(usernameOrEmailArray, eventid, 
                 } else {
                   //Database didn't have this user/email so it's probably an email
                   //Let's push that
-                  var entry = {
+                  entry = {
                     'username':null,
                     'email':usernameOrEmail
                   };

@@ -10,6 +10,17 @@ $(document).ready(function() {
 	removeEvent(jsonData);
 	addComment(jsonData);
 	getComments(jsonData.id);
+
+	$('#commentTextarea').focus(function() {
+	    if (this.value === this.defaultValue) {
+	        this.value = '';
+	    }
+	})
+	.blur(function() {
+	    if (this.value === '') {
+	        this.value = this.defaultValue;
+	    }
+	});
 });
 
 function handleEventDetailResponse(jsonData) {
@@ -84,22 +95,37 @@ function getComments(eventID) {
     });
 }
 
-function handleGetCommentsResponse(commentData) {
+var commentHash = {};
+
+function handleGetCommentsResponse(commentData, isUpdate) {
 	// Loop through each comments entry in the dictionary
 	$.each(commentData, function(index, data) {
-		// Append the html to the list_activities div
-		$('#comments_list').append(
-			// '<div class="comment_box">' + commentStr + '</div>'
-			'<div class="comment_box">' +
-			
-			'<div class="comment_username">' +
-				'<b>' + data.userid + ':</b>' +
-			'</div>' +
-			'<div class="comment_text">' +
-				data.text +
-			'</div>' +
+		// Prepend the html to the list_activities div
+		if (!commentHash[data.id]){
+			var commentHTML = '<div class="comment_box">' +
+				
+				'<div class="comment_username">' +
+					'<b>' + data.userid + ':</b>' +
+				'</div>' +
+				'<div class="comment_text">' +
+					data.text +
+				'</div>' +
 
-			'</div>'
-		);
+				'</div>';
+
+
+			if (isUpdate){
+
+				$(commentHTML).prependTo('#comments_list').slideDown();
+
+			} else {
+
+				$('#comments_list').prepend(commentHTML);
+
+			}
+		} else {
+			commentHash[data.id] = true;
+		}
+
 	});
 }

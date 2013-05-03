@@ -105,7 +105,7 @@ var Comments = function () {
       self.respond(responseDict, {format: 'json'});
     });
 
-  }
+  };
 
   this.addComment = function(req,resp,params) {
 
@@ -118,7 +118,7 @@ var Comments = function () {
 
     });
 
-  }
+  };
 
 };
 

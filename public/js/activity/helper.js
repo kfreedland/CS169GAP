@@ -14,9 +14,11 @@ function pullAndReturnData(type, callback) {
     var endDate = $('#end_date_' + type).val();
     var flag = $("input[type='radio'][name='time_range_" + type + "']:checked").val();
     // Check for the selected time range option
+    var startTime = 0;
+    var endTime = 0;
     if (flag === 'startEnd') {
-    	var startTime = $('#start_time_' + type).val();
-    	var endTime = $('#end_time_' + type).val();
+    	startTime = $('#start_time_' + type).val();
+    	endTime = $('#end_time_' + type).val();
     	var duration = $('#duration_' + type).val();
     }
     var locationInput = $('#location_input_' + type).val();

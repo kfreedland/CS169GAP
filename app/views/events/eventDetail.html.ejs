@@ -27,25 +27,35 @@
 
     function addComment(jsonData) {
       $('#addCommentButton').click(function() {
-        commentData = {};
-        commentData.eventid = jsonData.id;
-        commentData.userid = userId;
-        commentData.text = $('#commentTextarea').val();
-        $.ajax({
-            type: 'POST',
-            url: '/comments/add',
-            data: JSON.stringify(commentData),
-            contentType: "application/json",
-            dataType: "json",
-            success: function(respData) {
-              console.log('Success');
-              console.log(respData);
-              location.reload();
-            },
-            failure: function(err) {
-              console.log('Failure');
-            }
-        });
+        //Make sure text isn't the default
+        console.log("currentValue = " + $('#commentTextarea').val() + " and defaultValue = " + document.getElementById("commentTextarea").defaultValue);
+        if ($('#commentTextarea').val() !== document.getElementById("commentTextarea").defaultValue){
+          commentData = {};
+          commentData.eventid = jsonData.id;
+          commentData.userid = userId;
+          commentData.text = $('#commentTextarea').val();
+          $.ajax({
+              type: 'POST',
+              url: '/comments/add',
+              data: JSON.stringify(commentData),
+              contentType: "application/json",
+              dataType: "json",
+              success: function(respData) {
+                console.log('Success');
+                console.log(respData);
+                var commentDict = {};
+                commentDict.text = commentData.text;
+                commentDict.userid = username;
+                handleGetCommentsResponse([commentDict], true);
+
+                //Set default text again
+                $('#commentTextarea').val(document.getElementById("commentTextarea").defaultValue);
+              },
+              failure: function(err) {
+                console.log('Failure');
+              }
+          });
+        }
       });
     }
   </script>
@@ -78,18 +88,18 @@
       <textarea name="textarea" id="invitedFriends"></textarea>
     </div>
 
-    <input id="inviteFriendsButton" type="button" value="Invite More Friends" data-role="button" data-icon="home" data-theme="b">
+    <input id="inviteFriendsButton" type="button" value="Invite More Friends" data-role="button" data-icon="plus" data-theme="b">
     <!-- End Invite Friends -->
 
     <!-- Comments -->
     <div id="comments_box">
       <h3>Comments</h3>
       <div id="add_comment">
-        <textarea name="textarea" id="commentTextarea">Add a comment!</textarea>
+        <textarea name="textarea" id="commentTextarea" defaultValue="Add a comment!">Add a comment!</textarea>
       </div>
     </div>
 
-    <input id="addCommentButton" type="button" value="Add A Comment" data-role="button" data-icon="home" data-theme="b">
+    <input id="addCommentButton" type="button" value="Add A Comment" data-role="button" data-icon="plus" data-theme="b">
     <br />
     <div id="comments_list"></div>
     <!-- End Comments -->
