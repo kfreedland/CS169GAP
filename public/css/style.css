@@ -48,6 +48,11 @@ label {
   text-shadow: 0 0 0 #194b7e;
 }
 
+.ui-body-c textarea,
+.ui-overlay-c textarea {
+  background: #fff;
+}
+
 #location_input {
   width: 72%;
 }
