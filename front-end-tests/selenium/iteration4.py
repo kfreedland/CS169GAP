@@ -20,9 +20,11 @@ se_test2 = SeleniumTest()
 se_test2.initialize("http://gap3.herokuapp.com")
 se_test2.login("asdf")
 time.sleep(.5)
+time.sleep(5)
 
 real_time_comments.go_to_events(se_test1)
 real_time_comments.write_comment(se_test1)
+time.sleep(5)
 real_time_comments.submit_comment(se_test1)
 se_test1.browser.close()
 
