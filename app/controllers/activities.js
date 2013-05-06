@@ -115,6 +115,8 @@ var Activities = function () {
         count+=1;
 
       }
+      console.log("SEARCH FINISHED, RETURNING: ");
+      console.dir(toReturn);
       self.respond(toReturn, {format: 'json'});
     });
   };
