@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	$('#createEvent').hide();
 
 	var encodedDataStr = window.location.hash;
 	// Remove the # in the front
@@ -68,11 +69,6 @@ $(document).ready(function() {
 
 function createEvent(activityId) {
 	$('#createEventButton').click(function() {
-		$.mobile.loading( 'show' , {
-			text: 'Creating Event',
-			textVisible: true,
-			theme: 'a'
-		});
 		// Create JSON Dict for event data
 		var eventData = {};
 
@@ -85,33 +81,55 @@ function createEvent(activityId) {
 		var epochEndDate = convertDateToEpoch(endDate);
 		var time1 = findMsFromMidnight(startTime);
 		var time2 = findMsFromMidnight(endTime);
+		if (isNaN(epochStartDate)) {
+			$('#eventError').html('Invalid Start Date');
+			$('#eventError').show();
+			$('body').scrollTop(0);
+		} else if (isNaN(epochEndDate)) {
+			$('#eventError').html('Invalid End Date');
+			$('#eventError').show();
+			$('body').scrollTop(0);
+		} else if (time1 === undefined) {
+			$('#eventError').html('Start Time is Null');
+			$('#eventError').show();
+			$('body').scrollTop(0);
+		} else if (time2 === undefined) {
+			$('#eventError').html('End Time is Null');
+			$('#eventError').show();
+			$('body').scrollTop(0);
+		} else {
+			$.mobile.loading( 'show' , {
+				text: 'Creating Event',
+				textVisible: true,
+				theme: 'a'
+			});
+			eventData.name = $('#name').val();
+			eventData.activityid = activityId;
+			eventData.time1 = time1;
+		    eventData.time2 = time2;
+		    eventData.begindate = epochStartDate;
+		    eventData.enddate = epochEndDate;
+		    eventData.description = $('#activityDescription').val();
 
-		eventData.name = $('#name').val();
-		eventData.activityid = activityId;
-		eventData.time1 = time1;
-	    eventData.time2 = time2;
-	    eventData.begindate = epochStartDate;
-	    eventData.enddate = epochEndDate;
-	    eventData.description = $('#activityDescription').val();
-
-		var invitedFriends = $('#invitedFriends').val();
-		eventData.attendingusers = invitedFriends;
-		
-		$.ajax({
-	        type: 'POST',
-	        url: '/events/create',
-	        data: JSON.stringify(eventData),
-	        contentType: "application/json",
-	        dataType: "json",
-	        success: function(respData) {
-	        	console.log('Success');
-	        	console.log(respData);
-	        	window.location = '/events/myevents';
-	        },
-	        failure: function(err) {
-	        	console.log('Failure');
-	        }
-	    });
+			var invitedFriends = $('#invitedFriends').val();
+			eventData.attendingusers = invitedFriends;
+			
+			$.ajax({
+		        type: 'POST',
+		        url: '/events/create',
+		        data: JSON.stringify(eventData),
+		        contentType: "application/json",
+		        dataType: "json",
+		        success: function(respData) {
+		        	console.log('Success');
+		        	console.log(respData);
+		        	window.location = '/events/myevents';
+		        },
+		        failure: function(err) {
+		        	console.log('Failure');
+		        }
+		    });
+		}
 	});
 }
 
